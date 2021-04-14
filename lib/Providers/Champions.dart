@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:dio/dio.dart';
 
+import '../Utilities/index.dart' as Utilities;
 import '../Models/Champion.dart' as Models;
+import '../Constants.dart' as Constants;
 
 class Champions with ChangeNotifier {
   List<Models.Champion> _champions = [];
@@ -13,8 +14,7 @@ class Champions with ChangeNotifier {
   }
 
   Future<void> fetchChampions() async {
-    final httpClient = Dio(BaseOptions(baseUrl: "http://192.168.0.103:8000/"));
-    final response = await httpClient.get('champions');
+    final response = await Utilities.api.get(Constants.URLS.champions);
     final data = response.data as List<dynamic>;
     final champions =
         data.map((jsonMap) => Models.Champion.fromJson(jsonMap)).toList();

@@ -5,4 +5,5 @@ final routes = {
   Screens.Home.routeName: (_) => Screens.Home(),
   Screens.Champions.routeName: (_) => Screens.Champions(),
   Screens.ChampionDetail.routeName: (_) => Screens.ChampionDetail(),
+  Screens.PlayerDetail.routeName: (_) => Screens.PlayerDetail(),
 };

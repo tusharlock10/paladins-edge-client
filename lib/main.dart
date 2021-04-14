@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Providers.Champions()),
+        ChangeNotifierProvider(create: (_) => Providers.Search()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -28,6 +29,10 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blueGrey,
           brightness: Brightness.light,
           fontFamily: GoogleFonts.manrope().fontFamily,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+          )),
           primaryTextTheme: TextTheme(
             headline6: TextStyle(
               fontFamily: GoogleFonts.raleway().fontFamily,

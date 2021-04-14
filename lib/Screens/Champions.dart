@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../Widgets/index.dart' as Widgets;
 import '../Providers/index.dart' as Providers;
 import '../Models/index.dart' as Models;
-import 'index.dart' as Screens;
+import './index.dart' as Screens;
 
 class Champions extends StatelessWidget {
   static const routeName = '/champions';
