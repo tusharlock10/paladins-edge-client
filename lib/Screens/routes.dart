@@ -1,8 +1,9 @@
 import './index.dart' as Screens;
 
 final routes = {
+  Screens.Login.routeName: (_) => Screens.Login(),
   Screens.BottomTabs.routeName: (_) => Screens.BottomTabs(),
-  Screens.Home.routeName: (_) => Screens.Home(),
+  Screens.Search.routeName: (_) => Screens.Search(),
   Screens.Champions.routeName: (_) => Screens.Champions(),
   Screens.ChampionDetail.routeName: (_) => Screens.ChampionDetail(),
   Screens.PlayerDetail.routeName: (_) => Screens.PlayerDetail(),

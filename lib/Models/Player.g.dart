@@ -6,18 +6,18 @@ part of 'Player.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Ranked _$RankedFromJson(Map<String, dynamic> json) {
-  return Ranked(
-    wins: json['wins'] as int,
-    looses: json['looses'] as int,
-    rank: json['rank'] as int,
-    rankName: json['rankName'] as String,
-    rankIconUrl: json['rankIconUrl'] as String,
-    points: json['points'] as int,
+_Ranked _$_RankedFromJson(Map<String, dynamic> json) {
+  return _Ranked(
+    wins: json['wins'] as int?,
+    looses: json['looses'] as int?,
+    rank: json['rank'] as int?,
+    rankName: json['rankName'] as String?,
+    rankIconUrl: json['rankIconUrl'] as String?,
+    points: json['points'] as int?,
   );
 }
 
-Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
+Map<String, dynamic> _$_RankedToJson(_Ranked instance) => <String, dynamic>{
       'wins': instance.wins,
       'looses': instance.looses,
       'rank': instance.rank,
@@ -29,19 +29,23 @@ Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
 Player _$PlayerFromJson(Map<String, dynamic> json) {
   return Player(
     name: json['name'] as String,
-    title: json['title'] as String,
+    title: json['title'] as String?,
     playerId: json['playerId'] as int,
-    avatarUrl: json['avatarUrl'] as String,
-    totalXP: json['totalXP'] as int,
-    hoursPlayed: json['hoursPlayed'] as int,
-    level: json['level'] as int,
-    totalWins: json['totalWins'] as int,
-    totalLosses: json['totalLosses'] as int,
-    platform: json['platform'] as String,
-    region: json['region'] as String,
-    lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
-    accountCreationDate: DateTime.parse(json['accountCreationDate'] as String),
-    ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
+    avatarUrl: json['avatarUrl'] as String?,
+    totalXP: json['totalXP'] as int?,
+    hoursPlayed: json['hoursPlayed'] as int?,
+    level: json['level'] as int?,
+    totalWins: json['totalWins'] as int?,
+    totalLosses: json['totalLosses'] as int?,
+    platform: json['platform'] as String?,
+    region: json['region'] as String?,
+    accountCreationDate: json['accountCreationDate'] == null
+        ? null
+        : DateTime.parse(json['accountCreationDate'] as String),
+    lastLoginDate: json['lastLoginDate'] == null
+        ? null
+        : DateTime.parse(json['lastLoginDate'] as String),
+    ranked: _Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
   );
 }
 
@@ -57,7 +61,7 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'totalLosses': instance.totalLosses,
       'platform': instance.platform,
       'region': instance.region,
-      'lastLoginDate': instance.lastLoginDate.toIso8601String(),
-      'accountCreationDate': instance.accountCreationDate.toIso8601String(),
+      'accountCreationDate': instance.accountCreationDate?.toIso8601String(),
+      'lastLoginDate': instance.lastLoginDate?.toIso8601String(),
       'ranked': instance.ranked,
     };

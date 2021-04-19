@@ -5,12 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import './Providers/index.dart' as Providers;
 import './Screens/index.dart' as Screens;
+import './Constants.dart' as Constants;
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
-    statusBarBrightness: Brightness.light,
-  ));
   runApp(MyApp());
 }
 
@@ -22,17 +19,27 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => Providers.Champions()),
         ChangeNotifierProvider(create: (_) => Providers.Search()),
+        ChangeNotifierProvider(create: (_) => Providers.Auth()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: Colors.blueGrey,
+          scaffoldBackgroundColor: Colors.white,
+          accentColor: Constants.themeMaterialColor.shade200,
+          textSelectionTheme: TextSelectionThemeData(
+            selectionHandleColor: Constants.themeMaterialColor.shade900,
+            selectionColor: Constants.themeMaterialColor.shade900,
+            cursorColor: Constants.themeMaterialColor.shade900,
+          ),
+          primarySwatch: Constants.themeMaterialColor,
           brightness: Brightness.light,
           fontFamily: GoogleFonts.manrope().fontFamily,
           elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-          )),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Constants.themeMaterialColor),
+            ),
+          ),
           primaryTextTheme: TextTheme(
             headline6: TextStyle(
               fontFamily: GoogleFonts.raleway().fontFamily,

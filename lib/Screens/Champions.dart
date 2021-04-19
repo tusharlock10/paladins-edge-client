@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../Widgets/index.dart' as Widgets;
 import '../Providers/index.dart' as Providers;
 import '../Models/index.dart' as Models;
 import './index.dart' as Screens;
+import '../Constants.dart' as Constants;
 
 class Champions extends StatelessWidget {
   static const routeName = '/champions';
@@ -53,7 +55,12 @@ class Champions extends StatelessWidget {
               .fetchChampions(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: SpinKitRing(
+                  lineWidth: 4,
+                  color: Constants.themeMaterialColor,
+                ),
+              );
             }
             return buildChampionsList(context);
           }),

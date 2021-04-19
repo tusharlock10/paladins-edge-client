@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "280154424805",
+    "project_id": "paladins-edge",
+    "storage_bucket": "paladins-edge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280154424805:android:935bdd39d46aa621aa1b0c",
+        "android_client_info": {
+          "package_name": "ml.paladinsedge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280154424805-63qdrbkisl4vav5b0pre3u24rbkcuubj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ml.paladinsedge",
+            "certificate_hash": "296bfb3efff8ee8e0413af030a47f974a4fdf103"
+          }
+        },
+        {
+          "client_id": "280154424805-fgg1uomf87llbe69lbd2vmsenemh4ekh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUMi5hu_qRESYn89dp0VFjpeXg-l4HEfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280154424805-fgg1uomf87llbe69lbd2vmsenemh4ekh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

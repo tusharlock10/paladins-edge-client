@@ -5,32 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Android",
+      "name": "paladins-edge-client",
       "request": "launch",
-      "type": "dart",
-      "flutterMode": "debug",
-      "deviceId": "af076a7a"
-    },
-    {
-      "name": "Android Profile",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile",
-      "deviceId": "af076a7a"
-    },
-    {
-      "name": "Web",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "debug",
-      "deviceId": "chrome"
-    },
-    {
-      "name": "Web Profile",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile",
-      "deviceId": "chrome"
+      "type": "dart"
     }
   ]
 }
