@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jiffy/jiffy.dart';
 
 import '../Providers/index.dart' as Providers;
 import '../Models/index.dart' as Models;
@@ -117,7 +118,23 @@ class _SearchState extends State<Search> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return Text('${searchData.searchHistory[index]}');
+          final search = searchData.searchHistory[index];
+          final String playerName = search['playerName'];
+          final DateTime _time = search['time'];
+          final time = Jiffy(_time).fromNow();
+          return ListTile(
+            title: Text(
+              '$playerName',
+              style: TextStyle(fontSize: 18),
+            ),
+            trailing: Text(
+              '$time',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).textTheme.headline1?.color,
+              ),
+            ),
+          );
         },
         childCount: searchData.searchHistory.length,
       ),

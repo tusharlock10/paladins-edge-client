@@ -8,11 +8,11 @@ class Search with ChangeNotifier {
   Models.Player? playerData;
   List<Models.Player> topSearchList = [];
   List<dynamic> lowerSearchList = [];
-  List<String> searchHistory = [];
+  List<Map<String, dynamic>> searchHistory = []; // [{playerName, time]}]
 
   Future<bool> searchByName(String playerName) async {
     final response = await Utilities.api.get(
-      Constants.URLS.searchPlayers,
+      Constants.Urls.searchPlayers,
       queryParameters: {'playerName': playerName},
     );
     final exactMatch = response.data['exactMatch'];
@@ -31,14 +31,14 @@ class Search with ChangeNotifier {
         }).toList();
       }
     }
-    this.searchHistory.add(playerName);
+    this.searchHistory.add({'playerName': playerName, 'time': DateTime.now()});
     notifyListeners();
     return exactMatch;
   }
 
-  void clearSearchList(){
-    this.topSearchList=[];
-    this.lowerSearchList=[];
+  void clearSearchList() {
+    this.topSearchList = [];
+    this.lowerSearchList = [];
     notifyListeners();
   }
 }

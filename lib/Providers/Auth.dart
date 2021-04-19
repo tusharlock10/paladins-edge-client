@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/index.dart' as Models;
 import '../Utilities/index.dart' as Utilities;
@@ -13,10 +10,9 @@ class Auth with ChangeNotifier {
   Models.User? user;
 
   Future<bool> login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final json = await prefs.getString(Constants.STORAGE_KEYS.token);
-    if (json != null) {
-      this.user = Models.User.fromJson(jsonDecode(json));
+    this.user = Utilities.Database.getUser();
+
+    if (this.user != null) {
       return true;
     } else {
       return false;
@@ -41,7 +37,7 @@ class Auth with ChangeNotifier {
     final firebaseUser =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    final response = await Utilities.api.post(Constants.URLS.login, data: {
+    final response = await Utilities.api.post(Constants.Urls.login, data: {
       'name': firebaseUser.user?.displayName,
       'email': firebaseUser.user?.email,
       'photoUrl': firebaseUser.user?.photoURL,
@@ -49,9 +45,7 @@ class Auth with ChangeNotifier {
     });
 
     this.user = Models.User.fromJson(response.data);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        Constants.STORAGE_KEYS.token, jsonEncode(this.user?.toJson()));
+    Utilities.Database.setUser(this.user!);
     return true;
   }
 }

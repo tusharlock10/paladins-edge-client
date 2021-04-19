@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class URLS {
+abstract class Urls {
   // login
   static const login = "/login"; // POST
 
@@ -12,7 +11,7 @@ abstract class URLS {
   static const searchPlayers = "/searchPlayers"; // GET
 }
 
-abstract class STORAGE_KEYS {
+abstract class StorageKeys {
   static const token = 'token';
 }
 

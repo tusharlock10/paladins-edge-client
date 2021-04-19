@@ -7,6 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import './index.dart' as Screens;
 import '../Providers/index.dart' as Providers;
 import '../Constants.dart' as Constants;
+import '../Widgets/index.dart' as Widgets;
+import '../Utilities/index.dart' as Utilities;
 
 class Login extends StatefulWidget {
   static const routeName = '/';
@@ -16,27 +18,40 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final Future<FirebaseApp> _initFirebase = Firebase.initializeApp();
+  final Future<void> _initDatabase = Utilities.Database.initDatabase();
   bool _isLoggingIn = false;
   bool _isCheckingLogin = true;
+  bool _isInitialized = false;
   bool _init = true;
 
   @override
   void didChangeDependencies() {
     if (this._init) {
-      Provider.of<Providers.Auth>(context).login().then((loggedIn) {
-        if (loggedIn) {
-          Navigator.pushReplacementNamed(context, Screens.BottomTabs.routeName);
-        } else {
-          this.setState(() {
-            this._isCheckingLogin = false;
-            this._init = false;
-          });
-        }
+      Future.wait([
+        this._initDatabase,
+        this._initFirebase,
+      ]).then((value) {
+        this.setState(() => this._isInitialized = true);
+        Provider.of<Providers.Auth>(context, listen: false)
+            .login()
+            .then((loggedIn) {
+          if (loggedIn) {
+            Navigator.pushReplacementNamed(
+                context, Screens.BottomTabs.routeName);
+          } else {
+            this.setState(() {
+              this._isCheckingLogin = false;
+              this._init = false;
+            });
+          }
+        });
       });
     }
     super.didChangeDependencies();
   }
+
+  Future<void> initApp() async {}
 
   void onGoogleSignIn(context) async {
     if (this._isLoggingIn) {
@@ -95,7 +110,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildGoogleButton(BuildContext context) {
-    return Container(
+    return Widgets.Ripple(
       margin: EdgeInsets.only(bottom: 25),
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
@@ -108,44 +123,36 @@ class _LoginState extends State<Login> {
               offset: Offset(0, 5),
             )
           ]),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Material(
-          child: InkWell(
-            onTap: () => this.onGoogleSignIn(context),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              child: Row(
-                children: [
-                  this._isLoggingIn
-                      ? SpinKitRing(
-                          lineWidth: 3,
-                          size: 36,
-                          color: Constants.themeMaterialColor,
-                        )
-                      : Image.asset(
-                          'assets/icons/google.png',
-                          width: 36,
-                          height: 36,
-                        ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'SignIn with Google',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey.shade800,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+      borderRadius: BorderRadius.circular(15),
+      onTap: () => this.onGoogleSignIn(context),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+      child: Row(
+        children: [
+          this._isLoggingIn
+              ? SpinKitRing(
+                  lineWidth: 3,
+                  size: 36,
+                  color: Constants.themeMaterialColor,
+                )
+              : Image.asset(
+                  'assets/icons/google.png',
+                  width: 36,
+                  height: 36,
+                ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                'SignIn with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey.shade800,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -159,23 +166,24 @@ class _LoginState extends State<Login> {
         ),
       );
     }
-    return FutureBuilder(
-      future: this._initialization,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              this.buildBigIcon(context),
-              this.buildTageLine(context),
-              this.buildGoogleButton(context),
-            ],
-          );
-        } else {
-          return Container();
-        }
-      },
-    );
+
+    if (this._isInitialized) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          this.buildBigIcon(context),
+          this.buildTageLine(context),
+          this.buildGoogleButton(context),
+        ],
+      );
+    } else {
+      return Center(
+        child: SpinKitRing(
+          lineWidth: 4,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 
   @override
