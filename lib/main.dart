@@ -25,19 +25,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
-          accentColor: Constants.themeMaterialColor.shade200,
+          accentColor: Constants.ThemeMaterialColor.shade200,
           textSelectionTheme: TextSelectionThemeData(
-            selectionHandleColor: Constants.themeMaterialColor.shade900,
-            selectionColor: Constants.themeMaterialColor.shade900,
-            cursorColor: Constants.themeMaterialColor.shade900,
+            selectionHandleColor: Constants.ThemeMaterialColor.shade900,
+            selectionColor: Constants.ThemeMaterialColor.shade900,
+            cursorColor: Constants.ThemeMaterialColor.shade900,
           ),
-          primarySwatch: Constants.themeMaterialColor,
+          primarySwatch: Constants.ThemeMaterialColor,
           brightness: Brightness.light,
           fontFamily: GoogleFonts.manrope().fontFamily,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
               backgroundColor:
-                  MaterialStateProperty.all(Constants.themeMaterialColor),
+                  MaterialStateProperty.all(Constants.ThemeMaterialColor),
             ),
           ),
           primaryTextTheme: TextTheme(

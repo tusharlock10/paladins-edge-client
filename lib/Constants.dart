@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 abstract class Urls {
@@ -29,4 +30,12 @@ const Map<int, Color> _colorValues = {
   900: Color.fromRGBO(22, 125, 148, 1),
 };
 
-const themeMaterialColor = MaterialColor(0xFF2193b0, _colorValues);
+const ThemeMaterialColor = MaterialColor(0xFF2193b0, _colorValues);
+
+const IsDebug = kDebugMode;
+
+const BaseUrl = IsDebug
+    ? "http://192.168.0.103:8000"
+    : "https://paladinsedge.herokuapp.com";
+
+const ApiTimeout = IsDebug ? 4 * 1000 : 10 * 1000;

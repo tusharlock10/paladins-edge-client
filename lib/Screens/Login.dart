@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
               ? SpinKitRing(
                   lineWidth: 3,
                   size: 36,
-                  color: Constants.themeMaterialColor,
+                  color: Constants.ThemeMaterialColor,
                 )
               : Image.asset(
                   'assets/icons/google.png',

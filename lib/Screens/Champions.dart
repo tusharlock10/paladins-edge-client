@@ -58,7 +58,7 @@ class Champions extends StatelessWidget {
               return Center(
                 child: SpinKitRing(
                   lineWidth: 4,
-                  color: Constants.themeMaterialColor,
+                  color: Constants.ThemeMaterialColor,
                 ),
               );
             }

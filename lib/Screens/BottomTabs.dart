@@ -49,8 +49,8 @@ class _BottomTabsState extends State<BottomTabs> {
               ._pages
               .map(
                 (page) => BottomNavyBarItem(
-                  activeColor: Constants.themeMaterialColor,
-                  inactiveColor: Constants.themeMaterialColor.shade300,
+                  activeColor: Constants.ThemeMaterialColor,
+                  inactiveColor: Constants.ThemeMaterialColor.shade300,
                   icon: Icon(page['icon'] as IconData),
                   title: Text(page['title'] as String),
                 ),
