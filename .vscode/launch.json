@@ -8,6 +8,12 @@
       "name": "paladins-edge-client",
       "request": "launch",
       "type": "dart"
+    },
+    {
+      "name": "paladins-edge-client-web",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome"
     }
   ]
 }

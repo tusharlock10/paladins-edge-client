@@ -6,6 +6,7 @@ import 'package:jiffy/jiffy.dart';
 
 import '../Providers/index.dart' as Providers;
 import '../Models/index.dart' as Models;
+import '../Widgets/index.dart' as Widgets;
 import './index.dart' as Screens;
 
 class Search extends StatefulWidget {
@@ -18,6 +19,16 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final textController = TextEditingController();
   bool isLoading = false;
+  bool _init = true;
+
+  @override
+  void didChangeDependencies() {
+    if (this._init) {
+      this.setState(() => this._init = false);
+      Provider.of<Providers.Search>(context, listen: false).getSearchHistory();
+    }
+    super.didChangeDependencies();
+  }
 
   void onSearch(BuildContext context, String playerName) {
     EasyDebounce.debounce('search', Duration(seconds: 1), () async {
@@ -55,21 +66,18 @@ class _SearchState extends State<Search> {
         ),
       ),
       actions: [
-        this.isLoading
-            ? Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: SpinKitRing(
+        IconButton(
+          icon: this.isLoading
+              ? SpinKitRing(
                   lineWidth: 2,
                   color: Colors.white,
-                  size: 24,
-                ),
-              )
-            : IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  this.onSearch(context, this.textController.text);
-                },
-              ),
+                  size: 20,
+                )
+              : Icon(Icons.search),
+          onPressed: this.isLoading
+              ? null
+              : () => this.onSearch(context, this.textController.text),
+        ),
       ],
       floating: true,
       elevation: 4,
@@ -79,9 +87,13 @@ class _SearchState extends State<Search> {
 
   Widget buildTopSearchItem(Models.Player player) {
     return ListTile(
+      onTap: () {
+        Navigator.pushNamed(context, Screens.PlayerDetail.routeName,
+            arguments: player.playerId);
+      },
       title: Text('${player.name}'),
       trailing: player.ranked.rankIconUrl != ""
-          ? Image.network(player.ranked.rankIconUrl as String)
+          ? Image.network(player.ranked.rankIconUrl!)
           : Container(),
     );
   }
@@ -123,6 +135,10 @@ class _SearchState extends State<Search> {
           final DateTime _time = search['time'];
           final time = Jiffy(_time).fromNow();
           return ListTile(
+            onTap: () {
+              this.textController.text = playerName;
+              this.onSearch(context, this.textController.text);
+            },
             title: Text(
               '$playerName',
               style: TextStyle(fontSize: 18),

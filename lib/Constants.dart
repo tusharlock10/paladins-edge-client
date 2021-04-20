@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 abstract class Urls {
   // login
-  static const login = "/login"; // POST
+  static const login = "/auth/login"; // POST
 
   // champions
-  static const champions = "/champions"; // GET
+  static const allChampions = "/champions/allChampions"; // GET
 
   // players
-  static const searchPlayers = "/searchPlayers"; // GET
+  static const searchPlayers = "/players/searchPlayers"; // GET
+  static const playerDetail = "/players/playerDetail"; // GET
 }
 
 abstract class StorageKeys {

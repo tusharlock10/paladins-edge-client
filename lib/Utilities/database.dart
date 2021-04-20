@@ -26,4 +26,18 @@ abstract class Database {
     final user = Models.User.fromJson(jsonMap);
     return user;
   }
+
+  static void addSearchItem(Map<String, dynamic> searchItem) {
+    _searchHistoryBox?.add(searchItem);
+  }
+
+  static List<Map<String, dynamic>> getSearchHistory() {
+    final json = _searchHistoryBox?.values;
+    if (json == null) {
+      return [];
+    }
+    final searchHistory =
+        json.map((item) => Map<String, dynamic>.from(item)).toList();
+    return searchHistory.reversed.toList();
+  }
 }

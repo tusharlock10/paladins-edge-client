@@ -3,6 +3,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 import './index.dart' as Screens;
 import '../Constants.dart' as Constants;
+import '../Widgets/index.dart' as Widgets;
 
 class BottomTabs extends StatefulWidget {
   static const routeName = "/home";
@@ -35,11 +36,7 @@ class _BottomTabsState extends State<BottomTabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-          child: Center(
-            child: Text('Drawer'),
-          ),
-        ),
+        drawer: Widgets.AppDrawer(),
         body: this._pages[_selectedPageIndex]['screen'] as Widget,
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: this._selectedPageIndex,

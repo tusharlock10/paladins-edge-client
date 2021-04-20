@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:dio/dio.dart';
 
 import '../Utilities/index.dart' as Utilities;
 import '../Models/index.dart' as Models;
@@ -10,11 +11,24 @@ class Search with ChangeNotifier {
   List<dynamic> lowerSearchList = [];
   List<Map<String, dynamic>> searchHistory = []; // [{playerName, time]}]
 
+  getSearchHistory() {
+    // gets the search history from local db
+    this.searchHistory = Utilities.Database.getSearchHistory();
+  }
+
   Future<bool> searchByName(String playerName) async {
-    final response = await Utilities.api.get(
-      Constants.Urls.searchPlayers,
-      queryParameters: {'playerName': playerName},
-    );
+    // makes a req. to api for search
+    // saves the searchItem in the searchHistory
+    // saves the searchItem in the local db
+    Response response;
+    try {
+      response = await Utilities.api.get(
+        Constants.Urls.searchPlayers,
+        queryParameters: {'playerName': playerName},
+      );
+    } catch (_) {
+      return false;
+    }
     final exactMatch = response.data['exactMatch'];
     if (exactMatch) {
       this.playerData = Models.Player.fromJson(response.data['playerData']);
@@ -31,7 +45,9 @@ class Search with ChangeNotifier {
         }).toList();
       }
     }
-    this.searchHistory.add({'playerName': playerName, 'time': DateTime.now()});
+    final searchItem = {'playerName': playerName, 'time': DateTime.now()};
+    this.searchHistory.insert(0, searchItem);
+    Utilities.Database.addSearchItem(searchItem);
     notifyListeners();
     return exactMatch;
   }
@@ -39,6 +55,25 @@ class Search with ChangeNotifier {
   void clearSearchList() {
     this.topSearchList = [];
     this.lowerSearchList = [];
+    notifyListeners();
+  }
+
+  void clearPlayerData(){
+    this.playerData=null;
+  }
+
+  void getPlayerData(int playerId) async {
+    Response response;
+    try {
+      response = await Utilities.api.get(
+        Constants.Urls.playerDetail,
+        queryParameters: {'playerId': playerId},
+      );
+    } catch (_) {
+      return;
+    }
+
+    this.playerData = Models.Player.fromJson(response.data);
     notifyListeners();
   }
 }

@@ -9,8 +9,7 @@ class User {
 
   final String token; // token used for authentication
 
-  final int? playerId; // the id of this user in paladins
-  final String? playerName; // the name of this user in paladins
+  final String? playerId; // id of the connected player model
 
   final String photoUrl; // photo of the user
   final String uid; // uid provided by the oauth provider
@@ -20,10 +19,9 @@ class User {
     required this.name,
     required this.email,
     required this.token,
-    this.playerId,
-    this.playerName,
     required this.photoUrl,
     required this.uid,
+    this.playerId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

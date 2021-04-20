@@ -8,11 +8,12 @@ class ShadowAvatar extends StatelessWidget {
   final double? borderWidth;
   final double? elevation;
 
-  ShadowAvatar(
-      {required this.imageUrl,
-      required this.radius,
-      this.borderWidth,
-      this.elevation});
+  ShadowAvatar({
+    required this.imageUrl,
+    required this.radius,
+    this.borderWidth,
+    this.elevation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +22,11 @@ class ShadowAvatar extends StatelessWidget {
       width: this.radius * 2,
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          border: Border.all(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              width: this.borderWidth ?? 0),
           borderRadius: BorderRadius.circular(this.radius),
+          border: Border.all(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            width: this.borderWidth ?? 0,
+          ),
           boxShadow: [
             BoxShadow(
               color: Color(0xFF202020).withOpacity(0.25),

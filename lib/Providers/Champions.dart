@@ -14,7 +14,7 @@ class Champions with ChangeNotifier {
   }
 
   Future<void> fetchChampions() async {
-    final response = await Utilities.api.get(Constants.Urls.champions);
+    final response = await Utilities.api.get(Constants.Urls.allChampions);
     final data = response.data as List<dynamic>;
     final champions =
         data.map((jsonMap) => Models.Champion.fromJson(jsonMap)).toList();

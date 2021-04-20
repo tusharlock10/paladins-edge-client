@@ -84,24 +84,27 @@ class _LoginState extends State<Login> {
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'Feature rich\nPaladins manager',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
           Container(
-            transform: Matrix4.translationValues(-10, 0, 0)..rotateZ(0.12),
+            transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
             child: Image.asset(
               'assets/icons/paladins.png',
               width: 140,
-            ),
-          ),
-          Expanded(
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                'Feature rich\nPaladins manager',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ),
           ),
         ],
@@ -110,9 +113,10 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildGoogleButton(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Widgets.Ripple(
-      margin: EdgeInsets.only(bottom: 25),
-      width: MediaQuery.of(context).size.width * 0.8,
+      margin: EdgeInsets.only(bottom: 25, left: 15, right: 15),
+      width: width - 30,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -158,7 +162,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildLogin(BuildContext context) {
-    if (this._isCheckingLogin) {
+    if (this._isCheckingLogin || !this._isInitialized) {
       return Center(
         child: SpinKitRing(
           lineWidth: 4,
@@ -167,31 +171,45 @@ class _LoginState extends State<Login> {
       );
     }
 
-    if (this._isInitialized) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          this.buildBigIcon(context),
-          this.buildTageLine(context),
-          this.buildGoogleButton(context),
-        ],
-      );
-    } else {
-      return Center(
-        child: SpinKitRing(
-          lineWidth: 4,
-          color: Colors.white,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        this.buildBigIcon(context),
+        this.buildTageLine(context),
+        this.buildGoogleButton(context),
+      ],
+    );
+  }
+
+  Widget buildLoginLandscape(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          flex: 1,
+          child: this.buildBigIcon(context),
         ),
-      );
-    }
+        Flexible(
+          flex: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              this.buildTageLine(context),
+              this.buildGoogleButton(context),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -200,7 +218,9 @@ class _LoginState extends State<Login> {
               Color(0xFF6DD5ED),
               Color(0xFF2193B0),
             ])),
-        child: this.buildLogin(context),
+        child: height > width
+            ? this.buildLogin(context)
+            : this.buildLoginLandscape(context),
       ),
     );
   }

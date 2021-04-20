@@ -13,6 +13,7 @@ class Auth with ChangeNotifier {
     this.user = Utilities.Database.getUser();
 
     if (this.user != null) {
+      Utilities.api.options.headers["authorization"] = this.user!.token;
       return true;
     } else {
       return false;
@@ -46,6 +47,7 @@ class Auth with ChangeNotifier {
 
     this.user = Models.User.fromJson(response.data);
     Utilities.Database.setUser(this.user!);
+    Utilities.api.options.headers["authorization"] = this.user!.token;
     return true;
   }
 }
