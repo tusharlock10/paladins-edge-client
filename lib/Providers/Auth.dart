@@ -8,6 +8,7 @@ import '../Constants.dart' as Constants;
 
 class Auth with ChangeNotifier {
   Models.User? user;
+  Models.Player? player;
 
   Future<bool> login() async {
     this.user = Utilities.Database.getUser();
@@ -49,5 +50,40 @@ class Auth with ChangeNotifier {
     Utilities.Database.setUser(this.user!);
     Utilities.api.options.headers["authorization"] = this.user!.token;
     return true;
+  }
+
+  Future<void> logout() async {
+    // 1) Clear user's storage first so,
+    //    if the logout fails in the steps below
+    //    he can still login
+    // 2) Signout from google
+    // 3) Notify backend about logout
+    // 4) remove user from provider
+
+    Utilities.Database.clear();
+    await GoogleSignIn().signOut();
+    await Utilities.api.post(Constants.Urls.logout);
+    this.user = null;
+  }
+
+  Future<bool> claimPlayer(String otp, int playerId) async {
+    // Sends an otp and playerId to server to check if a loadout exists with that otp
+    // if it does, then player is verified
+
+    final response = await Utilities.api.post(Constants.Urls.claimPlayer,
+        data: {
+          'otp': otp,
+          'playerId': playerId
+        }); // response.data = {verified:bool, user:User, player:Player}
+    if (response.data['verified']) {
+      // if verified, then save the user and player in the provider
+
+      response.data['user']['token'] = this.user!   .token;
+      this.user = Models.User.fromJson(response.data['user']);
+      this.player = Models.Player.fromJson(response.data['player']);
+      Utilities.Database.setUser(this.user!);
+    }
+
+    return response.data['verified'];
   }
 }

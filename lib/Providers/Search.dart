@@ -16,7 +16,8 @@ class Search with ChangeNotifier {
     this.searchHistory = Utilities.Database.getSearchHistory();
   }
 
-  Future<bool> searchByName(String playerName) async {
+  Future<bool> searchByName(String playerName,
+      {bool simpleResults = false}) async {
     // makes a req. to api for search
     // saves the searchItem in the searchHistory
     // saves the searchItem in the local db
@@ -24,7 +25,10 @@ class Search with ChangeNotifier {
     try {
       response = await Utilities.api.get(
         Constants.Urls.searchPlayers,
-        queryParameters: {'playerName': playerName},
+        queryParameters: {
+          'playerName': playerName,
+          'simpleResults': simpleResults
+        },
       );
     } catch (_) {
       return false;
@@ -58,8 +62,8 @@ class Search with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearPlayerData(){
-    this.playerData=null;
+  void clearPlayerData() {
+    this.playerData = null;
   }
 
   void getPlayerData(int playerId) async {

@@ -55,7 +55,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
           Row(
             children: [
               Widgets.ShadowAvatar(
-                radius: 36,
+                size: 36,
                 imageUrl: player.avatarUrl!,
               ),
               Text('${player.name}')

@@ -38,7 +38,10 @@ class _LoginState extends State<Login> {
             .then((loggedIn) {
           if (loggedIn) {
             Navigator.pushReplacementNamed(
-                context, Screens.BottomTabs.routeName);
+              context,
+              Screens.ConnectProfile.routeName
+              // Screens.BottomTabs.routeName,
+            );
           } else {
             this.setState(() {
               this._isCheckingLogin = false;

@@ -11,12 +11,13 @@ class ChampionDetail extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Models.Champion;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    final statusBarHeight = MediaQuery.of(context).padding.top;
+    bool showSplash = true;
 
     double headerHeight;
     if (height < width) {
       // means in landscape mode, fix the headerHeight
       headerHeight = 156;
+      showSplash = false;
     } else {
       // make the headerHeight half of widht
       headerHeight = width / 2;
@@ -39,10 +40,10 @@ class ChampionDetail extends StatelessWidget {
       flexibleSpace: Container(
         alignment: Alignment.bottomRight,
         child: Widgets.FastImage(
-          imageUrl: champion.headerUrl,
+          imageUrl: showSplash ? champion.splashUrl : champion.headerUrl,
           height: headerHeight,
           width: headerHeight * 2,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
       expandedHeight: headerHeight,
@@ -62,7 +63,7 @@ class ChampionDetail extends StatelessWidget {
                 tag: '${champion.championId}Icon',
                 child: Widgets.ShadowAvatar(
                   imageUrl: champion.iconUrl,
-                  radius: 36,
+                  size: 36,
                 ),
               )
             ],

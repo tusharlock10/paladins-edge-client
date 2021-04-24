@@ -27,6 +27,11 @@ abstract class Database {
     return user;
   }
 
+  static void clear() {
+    _userBox?.clear();
+    _searchHistoryBox?.clear();
+  }
+
   static void addSearchItem(Map<String, dynamic> searchItem) {
     _searchHistoryBox?.add(searchItem);
   }

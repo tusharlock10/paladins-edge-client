@@ -27,6 +27,8 @@ class _Ranked {
 
 @JsonSerializable()
 class Player {
+  @JsonKey(name: '_id')
+  final String id;
   final String name; // name of the player in the game eg. tusharlock10
   final String? title; // Paladins title that appears below name eg. The 1%
   final int playerId; // paladins Id of the player
@@ -45,8 +47,10 @@ class Player {
   final DateTime? lastLoginDate; // the date at which the user logged in last
 
   final _Ranked ranked; // ranked details of the player
+  final String? userId; // id of the connected user model
 
   Player({
+    required this.id,
     required this.name,
     required this.title,
     required this.playerId,
@@ -61,6 +65,7 @@ class Player {
     required this.accountCreationDate,
     required this.lastLoginDate,
     required this.ranked,
+    this.userId,
   });
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);

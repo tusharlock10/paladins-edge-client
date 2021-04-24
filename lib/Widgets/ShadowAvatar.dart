@@ -4,25 +4,28 @@ import 'index.dart' as Widgets;
 
 class ShadowAvatar extends StatelessWidget {
   final String imageUrl;
-  final double radius;
+  final double size;
+  final double? borderRadius;
   final double? borderWidth;
   final double? elevation;
 
   ShadowAvatar({
     required this.imageUrl,
-    required this.radius,
+    required this.size,
     this.borderWidth,
     this.elevation,
+    this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: this.radius * 2,
-      width: this.radius * 2,
+      height: this.size * 2,
+      width: this.size * 2,
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(this.radius),
+          borderRadius:
+              BorderRadius.circular(this.borderRadius ?? this.size / 2),
           border: Border.all(
             color: Theme.of(context).scaffoldBackgroundColor,
             width: this.borderWidth ?? 0,
@@ -36,7 +39,7 @@ class ShadowAvatar extends StatelessWidget {
           ]),
       child: Widgets.FastImage(
         imageUrl: this.imageUrl,
-        borderRadius: BorderRadius.circular(this.radius),
+        borderRadius: BorderRadius.circular(this.borderRadius ?? this.size / 2),
       ),
     );
   }

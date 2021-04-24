@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 abstract class Urls {
   // login
   static const login = "/auth/login"; // POST
+  static const logout = "/auth/logout"; // POST
+  static const claimPlayer = "/auth/claimPlayer"; // POST
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -38,4 +40,4 @@ const BaseUrl = IsDebug
     ? "http://192.168.0.103:8000"
     : "https://paladinsedge.herokuapp.com";
 
-const ApiTimeout = IsDebug ? 4 * 1000 : 10 * 1000;
+const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;

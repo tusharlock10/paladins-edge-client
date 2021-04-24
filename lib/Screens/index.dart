@@ -4,5 +4,6 @@ export './Search.dart';
 export './BottomTabs.dart';
 export './PlayerDetail.dart';
 export './Login.dart';
+export './ConnectProfile.dart';
 
 export './routes.dart';

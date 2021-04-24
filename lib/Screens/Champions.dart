@@ -21,7 +21,7 @@ class Champions extends StatelessWidget {
           tag: '${champion.championId}Icon',
           child: Widgets.ShadowAvatar(
             imageUrl: champion.iconUrl,
-            radius: 28,
+            size: 28,
           ),
         ),
         title: Text('${champion.name}'),

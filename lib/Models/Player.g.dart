@@ -28,6 +28,7 @@ Map<String, dynamic> _$_RankedToJson(_Ranked instance) => <String, dynamic>{
 
 Player _$PlayerFromJson(Map<String, dynamic> json) {
   return Player(
+    id: json['_id'] as String,
     name: json['name'] as String,
     title: json['title'] as String?,
     playerId: json['playerId'] as int,
@@ -46,10 +47,12 @@ Player _$PlayerFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['lastLoginDate'] as String),
     ranked: _Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
+    userId: json['userId'] as String?,
   );
 }
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
+      '_id': instance.id,
       'name': instance.name,
       'title': instance.title,
       'playerId': instance.playerId,
@@ -64,4 +67,5 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'accountCreationDate': instance.accountCreationDate?.toIso8601String(),
       'lastLoginDate': instance.lastLoginDate?.toIso8601String(),
       'ranked': instance.ranked,
+      'userId': instance.userId,
     };
