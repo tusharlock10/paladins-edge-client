@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:paladinsedge/Models/Champion.dart';
+import 'package:paladinsedge/Models/index.dart';
 
 abstract class Urls {
   // login
@@ -41,3 +43,17 @@ const BaseUrl = IsDebug
     : "https://paladinsedge.herokuapp.com";
 
 const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;
+
+const OtpSalt = "EszqnsYd";
+
+abstract class TypeIds {
+  // when adding another type id, add it in the
+  // bottom with a unique id, do not change the value of the filds above it
+  static const Champion = 0;
+  static const Champion_Ability = 1;
+  static const Champion_Talent = 2;
+  static const Champion_Card = 3;
+  static const Player = 4;
+  static const Player_Ranked = 5;
+  static const User = 6;
+}

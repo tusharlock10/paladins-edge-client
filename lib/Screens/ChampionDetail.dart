@@ -19,7 +19,7 @@ class ChampionDetail extends StatelessWidget {
       headerHeight = 156;
       showSplash = false;
     } else {
-      // make the headerHeight half of widht
+      // make the headerHeight half of width
       headerHeight = width / 2;
     }
 

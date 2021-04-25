@@ -28,44 +28,48 @@ class _LoginState extends State<Login> {
   @override
   void didChangeDependencies() {
     if (this._init) {
-      Future.wait([
-        this._initDatabase,
-        this._initFirebase,
-      ]).then((value) {
-        this.setState(() => this._isInitialized = true);
-        Provider.of<Providers.Auth>(context, listen: false)
-            .login()
-            .then((loggedIn) {
-          if (loggedIn) {
-            Navigator.pushReplacementNamed(
-              context,
-              Screens.ConnectProfile.routeName
-              // Screens.BottomTabs.routeName,
-            );
-          } else {
-            this.setState(() {
-              this._isCheckingLogin = false;
-              this._init = false;
-            });
-          }
-        });
-      });
+      this.initApp();
     }
     super.didChangeDependencies();
   }
 
-  Future<void> initApp() async {}
+  Future<void> initApp() async {
+    await Future.wait([this._initDatabase, this._initFirebase]);
+    this.setState(() => this._isInitialized = true);
+
+    final authProvider = Provider.of<Providers.Auth>(context, listen: false);
+    final loggedIn = await authProvider.login();
+
+    if (loggedIn) {
+      Navigator.pushReplacementNamed(
+        context,
+        authProvider.user?.playerId == null
+            ? Screens.ConnectProfile.routeName
+            : Screens.BottomTabs.routeName,
+      );
+    } else {
+      this.setState(() {
+        this._isCheckingLogin = false;
+        this._init = false;
+      });
+    }
+  }
 
   void onGoogleSignIn(context) async {
     if (this._isLoggingIn) {
       return;
     }
+    final authProvider = Provider.of<Providers.Auth>(context, listen: false);
+
     this.setState(() => this._isLoggingIn = true);
-    final loginSuccess =
-        await Provider.of<Providers.Auth>(context, listen: false)
-            .signInWithGoogle();
+    final loginSuccess = await authProvider.signInWithGoogle();
     if (loginSuccess) {
-      Navigator.pushReplacementNamed(context, Screens.BottomTabs.routeName);
+      Navigator.pushReplacementNamed(
+        context,
+        authProvider.user?.playerId == null
+            ? Screens.ConnectProfile.routeName
+            : Screens.BottomTabs.routeName,
+      );
     } else {
       this.setState(() => this._isLoggingIn = false);
     }

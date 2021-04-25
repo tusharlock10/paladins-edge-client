@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 
 import '../Providers/index.dart' as Providers;
 import '../Widgets/index.dart' as Widgets;
@@ -17,41 +16,43 @@ class ConnectProfile extends StatefulWidget {
 class _ConnectProfileState extends State<ConnectProfile> {
   final _textController = TextEditingController();
   bool _isLoading = false;
+  bool _isVerifying = false;
   int _step = 0; // at which step of the proccess the user is at
-  String _otp =
-      "MAIN"; // (Random().nextInt(899999) + 100000).toString(); // generates a random otp for verification
+  String _otp = (Random().nextInt(899999) + 100000)
+      .toString(); // generates a random otp for verification
   Map<String, dynamic>? _selectedPlayer; // the player selected in search step
 
-  void onSearch(BuildContext context, String playerName) {
+  void onSearch(BuildContext context, String playerName) async {
     // exactMatch will always be false
     // topSearchList will be empty
     // lowerSeachList will contain all the search data
     // even for a single item
-    EasyDebounce.debounce('search', Duration(seconds: 1), () async {
-      this.setState(() => this._isLoading = true);
-      final searchData = Provider.of<Providers.Search>(context, listen: false);
-      await searchData.searchByName(
-        playerName,
-        simpleResults: true,
-      );
-      this.setState(() => this._isLoading = false);
-    });
+
+    this.setState(() => this._isLoading = true);
+    final searchData = Provider.of<Providers.Search>(context, listen: false);
+    await searchData.searchByName(playerName, simpleResults: true);
+    this.setState(() => this._isLoading = false);
   }
 
   void onVerify(BuildContext context) async {
-    EasyDebounce.debounce('verify', Duration(seconds: 1), () async {
-      final authProvider = Provider.of<Providers.Auth>(context, listen: false);
-      final verified = await authProvider.claimPlayer(
-          this._otp, this._selectedPlayer?['playerId']);
-      if (verified) {
-        this.setState(() => this._step++);
-      } else {
-        this.onVerificationFailed(context);
-      }
-    });
+    this.setState(() => this._isVerifying = true);
+    final authProvider = Provider.of<Providers.Auth>(context, listen: false);
+    final verified = await authProvider.claimPlayer(
+      this._otp,
+      this._selectedPlayer?['playerId'],
+    );
+    if (verified) {
+      this.setState(() {
+        this._isVerifying = false;
+        this._step++;
+      });
+    } else {
+      this.onVerificationFailed(context);
+    }
   }
 
   void onVerificationFailed(BuildContext context) {
+    this.setState(() => this._isVerifying = false);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Verification failed'),
@@ -252,7 +253,12 @@ class _ConnectProfileState extends State<ConnectProfile> {
         Text('Click verify once you have created and saved your loadout'),
         TextButton(
           onPressed: () => this.onVerify(context),
-          child: Text('Verify'),
+          child: this._isVerifying
+              ? Widgets.LoadingIndicator(
+                  size: 18,
+                  lineWidth: 2,
+                )
+              : Text('Verify'),
         ),
         TextButton(
           onPressed: () => this.setState(() => this._step--),

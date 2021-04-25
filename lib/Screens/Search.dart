@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:jiffy/jiffy.dart';
 
 import '../Providers/index.dart' as Providers;
 import '../Models/index.dart' as Models;
-import '../Widgets/index.dart' as Widgets;
 import './index.dart' as Screens;
 
 class Search extends StatefulWidget {
@@ -30,8 +28,8 @@ class _SearchState extends State<Search> {
     super.didChangeDependencies();
   }
 
-  void onSearch(BuildContext context, String playerName) {
-    EasyDebounce.debounce('search', Duration(seconds: 1), () async {
+  void onSearch(BuildContext context, String playerName)async  {
+    
       this.setState(() => this.isLoading = true);
       final searchData = Provider.of<Providers.Search>(context, listen: false);
       final exactMatch = await searchData.searchByName(playerName);
@@ -39,7 +37,7 @@ class _SearchState extends State<Search> {
       if (exactMatch) {
         Navigator.pushNamed(context, Screens.PlayerDetail.routeName);
       }
-    });
+    
   }
 
   Widget buildSearchBar(Providers.Search searchData) {
