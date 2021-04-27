@@ -1,6 +1,6 @@
 {
-    "name": "paladinsedge",
-    "short_name": "paladinsedge",
+    "name": "Paladins Edge",
+    "short_name": "Paladins Edge",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
@@ -17,6 +17,16 @@
         {
             "src": "icons/Icon-512.png",
             "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-16.png",
+            "sizes": "16x16",
             "type": "image/png"
         }
     ]
