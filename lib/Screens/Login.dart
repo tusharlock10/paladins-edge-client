@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
   @override
   void didChangeDependencies() {
     if (this._init) {
+      this._init = false;
       this.initApp();
     }
     super.didChangeDependencies();

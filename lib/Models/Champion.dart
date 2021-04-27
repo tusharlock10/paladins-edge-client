@@ -102,8 +102,6 @@ class Champion {
   @JsonKey(name: '_id')
   @HiveField(0)
   final String id;
-  @HiveField(1)
-  final DateTime dateCreated;
   @HiveField(2)
   final int championId; // Paladins champion id
   @HiveField(3)
@@ -148,7 +146,6 @@ class Champion {
 
   Champion({
     required this.id,
-    required this.dateCreated,
     required this.championId,
     required this.name,
     required this.iconUrl,

@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:paladinsedge/Models/Champion.dart';
-import 'package:paladinsedge/Models/index.dart';
 
 abstract class Urls {
   // login
@@ -15,6 +13,9 @@ abstract class Urls {
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
+
+  // queue
+  static const queueDetails = "/queue/queueDetails"; // GET
 }
 
 abstract class StorageKeys {

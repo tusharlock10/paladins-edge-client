@@ -165,7 +165,6 @@ class ChampionAdapter extends TypeAdapter<Champion> {
     };
     return Champion(
       id: fields[0] as String,
-      dateCreated: fields[1] as DateTime,
       championId: fields[2] as int,
       name: fields[3] as String,
       iconUrl: fields[4] as String,
@@ -190,11 +189,9 @@ class ChampionAdapter extends TypeAdapter<Champion> {
   @override
   void write(BinaryWriter writer, Champion obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.dateCreated)
       ..writeByte(2)
       ..write(obj.championId)
       ..writeByte(3)
@@ -311,7 +308,6 @@ Map<String, dynamic> _$_CardToJson(_Card instance) => <String, dynamic>{
 Champion _$ChampionFromJson(Map<String, dynamic> json) {
   return Champion(
     id: json['_id'] as String,
-    dateCreated: DateTime.parse(json['dateCreated'] as String),
     championId: json['championId'] as int,
     name: json['name'] as String,
     iconUrl: json['iconUrl'] as String,
@@ -341,7 +337,6 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       '_id': instance.id,
-      'dateCreated': instance.dateCreated.toIso8601String(),
       'championId': instance.championId,
       'name': instance.name,
       'iconUrl': instance.iconUrl,

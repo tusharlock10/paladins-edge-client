@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => Providers.Champions()),
         ChangeNotifierProvider(create: (_) => Providers.Search()),
         ChangeNotifierProvider(create: (_) => Providers.Auth()),
+        ChangeNotifierProvider(create: (_) => Providers.Queue()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -24,7 +24,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
   @override
   void didChangeDependencies() {
     if (this._init) {
-      this.setState(() => this._init = false);
+      this._init = false;
       // check if the playerId is passed in arguments
       // if passed set loading to true and fetch the
       // data from server using playerId else show the player

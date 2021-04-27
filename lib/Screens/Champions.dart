@@ -8,8 +8,29 @@ import '../Models/index.dart' as Models;
 import './index.dart' as Screens;
 import '../Constants.dart' as Constants;
 
-class Champions extends StatelessWidget {
+class Champions extends StatefulWidget {
   static const routeName = '/champions';
+
+  @override
+  _ChampionsState createState() => _ChampionsState();
+}
+
+class _ChampionsState extends State<Champions> {
+  bool _init = true;
+  bool _isLoading = true;
+
+  @override
+  void didChangeDependencies() {
+    final championsProvider =
+        Provider.of<Providers.Champions>(context, listen: false);
+    if (this._init) {
+      this._init = false;
+      championsProvider.fetchChampions().then((_) {
+        this.setState(() => this._isLoading = false);
+      });
+    }
+    super.didChangeDependencies();
+  }
 
   buildChampion(BuildContext context, Models.Champion champion) {
     return Container(
@@ -33,12 +54,10 @@ class Champions extends StatelessWidget {
     final champions = Provider.of<Providers.Champions>(context).champions;
 
     return ListView.builder(
-      itemCount: champions.length + 1,
+      physics: BouncingScrollPhysics(),
+      itemCount: champions.length,
       itemBuilder: (context, index) {
-        if (index == 0) {
-          return SizedBox(height: 20);
-        }
-        final champion = champions[index - 1];
+        final champion = champions[index];
         return this.buildChampion(context, champion);
       },
     );
@@ -46,24 +65,19 @@ class Champions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return Column(children: [
+      AppBar(
         title: Text('Champions'),
       ),
-      body: FutureBuilder(
-          future: Provider.of<Providers.Champions>(context, listen: false)
-              .fetchChampions(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: SpinKitRing(
-                  lineWidth: 4,
-                  color: Constants.ThemeMaterialColor,
-                ),
-              );
-            }
-            return buildChampionsList(context);
-          }),
-    );
+      Expanded(
+          child: this._isLoading
+              ? Center(
+                  child: SpinKitRing(
+                    lineWidth: 4,
+                    color: Constants.ThemeMaterialColor,
+                  ),
+                )
+              : buildChampionsList(context))
+    ]);
   }
 }

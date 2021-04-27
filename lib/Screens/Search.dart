@@ -22,7 +22,7 @@ class _SearchState extends State<Search> {
   @override
   void didChangeDependencies() {
     if (this._init) {
-      this.setState(() => this._init = false);
+      this._init = false;
       Provider.of<Providers.Search>(context, listen: false).getSearchHistory();
     }
     super.didChangeDependencies();

@@ -8,4 +8,5 @@ final routes = {
   Screens.ChampionDetail.routeName: (_) => Screens.ChampionDetail(),
   Screens.PlayerDetail.routeName: (_) => Screens.PlayerDetail(),
   Screens.ConnectProfile.routeName: (_) => Screens.ConnectProfile(),
+  Screens.Home.routeName: (_) => Screens.Home(),
 };
