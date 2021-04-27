@@ -41,7 +41,7 @@ const IsDebug = kDebugMode;
 
 const BaseUrl = IsDebug
     ? "http://192.168.0.103:8000"
-    : "https://paladinsedge.herokuapp.com";
+    : "https://api.paladinsedge.ml";
 
 const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;
 
