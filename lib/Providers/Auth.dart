@@ -48,9 +48,17 @@ class Auth with ChangeNotifier {
       'photoUrl': firebaseUser.user?.photoURL,
       'uid': firebaseUser.user?.uid,
     });
+    // response = {user, player}
+    // user will have token
+    // If player is null, navigate to ConnectProfile
 
-    this.user = Models.User.fromJson(response.data);
+    this.user = Models.User.fromJson(response.data['user']);
     Utilities.Database.setUser(this.user!);
+    if (response.data['player'] != null) {
+      this.player = Models.Player.fromJson(response.data['player']);
+      Utilities.Database.setPlyer(this.player!);
+    }
+
     Utilities.api.options.headers["authorization"] = this.user!.token;
     return true;
   }

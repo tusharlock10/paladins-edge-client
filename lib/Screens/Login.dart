@@ -147,7 +147,7 @@ class _LoginState extends State<Login> {
                   color: Constants.ThemeMaterialColor,
                 )
               : Image.asset(
-                  'assets/icons/google.png',
+                  'assets/icons/google-colored.png',
                   width: 36,
                   height: 36,
                 ),
