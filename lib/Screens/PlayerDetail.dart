@@ -30,7 +30,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
       // data from server using playerId else show the player
       // from the playerData in provider
 
-      final playerId = ModalRoute.of(context)?.settings.arguments as int?;
+      final playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
         // fetch data from server
         Provider.of<Providers.Search>(context, listen: false)
@@ -39,15 +39,30 @@ class _PlayerDetailState extends State<PlayerDetail> {
     }
     super.didChangeDependencies();
   }
-
+  
   Widget buildLoading() {
     return Center(
-        child: Widgets.LoadingIndicator(
-      size: 36,
-    ));
+      child: Widgets.LoadingIndicator(
+        size: 36,
+      ),
+    );
   }
 
-  Widget buildPlayerDeatil(Models.Player player) {
+  Widget buildObserve() {
+    final authProvider = Provider.of<Providers.Auth>(context);
+    final player = Provider.of<Providers.Search>(context).playerData;
+
+    return IconButton(
+      icon: Icon(
+        authProvider.user?.observeList.contains(player?.playerId) == true
+            ? Icons.visibility_off_outlined
+            : Icons.visibility_outlined,
+      ),
+      onPressed: () => authProvider.observePlayer(player!.playerId),
+    );
+  }
+
+  Widget buildPlayerDetail(Models.Player player) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: ListView(
@@ -60,7 +75,8 @@ class _PlayerDetailState extends State<PlayerDetail> {
               ),
               Text('${player.name}')
             ],
-          )
+          ),
+          this.buildObserve(),
         ],
       ),
     );
@@ -75,7 +91,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
         title: Text('Player Details'),
       ),
       body:
-          player == null ? this.buildLoading() : this.buildPlayerDeatil(player),
+          player == null ? this.buildLoading() : this.buildPlayerDetail(player),
     );
   }
 }

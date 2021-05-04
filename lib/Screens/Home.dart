@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
     return Card(
       child: Column(
         children: [
-          Text('${queue.name}'),
+          Text('${queue.name.replaceAll(RegExp('_'), ' ')}'),
           Text('${queue.activeMatchCount}'),
         ],
       ),

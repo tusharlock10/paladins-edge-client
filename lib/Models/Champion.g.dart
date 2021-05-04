@@ -164,69 +164,66 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Champion(
-      id: fields[0] as String,
-      championId: fields[2] as int,
-      name: fields[3] as String,
-      iconUrl: fields[4] as String,
-      headerUrl: fields[5] as String,
-      splashUrl: fields[6] as String,
-      title: fields[7] as String,
-      role: fields[8] as String,
-      releaseDate: fields[9] as DateTime,
-      health: fields[10] as int,
-      movementSpeed: fields[11] as int,
-      damageFallOffRange: fields[12] as int,
-      lore: fields[13] as String?,
-      abilities: (fields[14] as List?)?.cast<_Ability>(),
-      talents: (fields[15] as List?)?.cast<_Talent>(),
-      cards: (fields[16] as List?)?.cast<_Card>(),
-      latestChampion: fields[17] as bool,
-      onFreeWeeklyRotation: fields[18] as bool,
-      onFreeRotation: fields[19] as bool,
+      championId: fields[0] as String,
+      name: fields[1] as String,
+      iconUrl: fields[2] as String,
+      headerUrl: fields[3] as String,
+      splashUrl: fields[4] as String,
+      title: fields[5] as String,
+      role: fields[6] as String,
+      releaseDate: fields[7] as DateTime,
+      health: fields[8] as int,
+      movementSpeed: fields[9] as int,
+      damageFallOffRange: fields[10] as int,
+      lore: fields[11] as String?,
+      abilities: (fields[12] as List?)?.cast<_Ability>(),
+      talents: (fields[13] as List?)?.cast<_Talent>(),
+      cards: (fields[14] as List?)?.cast<_Card>(),
+      latestChampion: fields[15] as bool,
+      onFreeWeeklyRotation: fields[16] as bool,
+      onFreeRotation: fields[17] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Champion obj) {
     writer
-      ..writeByte(19)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(2)
-      ..write(obj.championId)
-      ..writeByte(3)
-      ..write(obj.name)
-      ..writeByte(4)
-      ..write(obj.iconUrl)
-      ..writeByte(5)
-      ..write(obj.headerUrl)
-      ..writeByte(6)
-      ..write(obj.splashUrl)
-      ..writeByte(7)
-      ..write(obj.title)
-      ..writeByte(8)
-      ..write(obj.role)
-      ..writeByte(9)
-      ..write(obj.releaseDate)
-      ..writeByte(10)
-      ..write(obj.health)
-      ..writeByte(11)
-      ..write(obj.movementSpeed)
-      ..writeByte(12)
-      ..write(obj.damageFallOffRange)
-      ..writeByte(13)
-      ..write(obj.lore)
-      ..writeByte(14)
-      ..write(obj.abilities)
-      ..writeByte(15)
-      ..write(obj.talents)
-      ..writeByte(16)
-      ..write(obj.cards)
-      ..writeByte(17)
-      ..write(obj.latestChampion)
       ..writeByte(18)
+      ..writeByte(0)
+      ..write(obj.championId)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.iconUrl)
+      ..writeByte(3)
+      ..write(obj.headerUrl)
+      ..writeByte(4)
+      ..write(obj.splashUrl)
+      ..writeByte(5)
+      ..write(obj.title)
+      ..writeByte(6)
+      ..write(obj.role)
+      ..writeByte(7)
+      ..write(obj.releaseDate)
+      ..writeByte(8)
+      ..write(obj.health)
+      ..writeByte(9)
+      ..write(obj.movementSpeed)
+      ..writeByte(10)
+      ..write(obj.damageFallOffRange)
+      ..writeByte(11)
+      ..write(obj.lore)
+      ..writeByte(12)
+      ..write(obj.abilities)
+      ..writeByte(13)
+      ..write(obj.talents)
+      ..writeByte(14)
+      ..write(obj.cards)
+      ..writeByte(15)
+      ..write(obj.latestChampion)
+      ..writeByte(16)
       ..write(obj.onFreeWeeklyRotation)
-      ..writeByte(19)
+      ..writeByte(17)
       ..write(obj.onFreeRotation);
   }
 
@@ -307,8 +304,7 @@ Map<String, dynamic> _$_CardToJson(_Card instance) => <String, dynamic>{
 
 Champion _$ChampionFromJson(Map<String, dynamic> json) {
   return Champion(
-    id: json['_id'] as String,
-    championId: json['championId'] as int,
+    championId: json['championId'] as String,
     name: json['name'] as String,
     iconUrl: json['iconUrl'] as String,
     headerUrl: json['headerUrl'] as String,
@@ -336,7 +332,6 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
-      '_id': instance.id,
       'championId': instance.championId,
       'name': instance.name,
       'iconUrl': instance.iconUrl,

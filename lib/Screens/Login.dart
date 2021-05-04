@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,8 +19,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final Future<FirebaseApp> _initFirebase = Firebase.initializeApp();
-  final Future<void> _initDatabase = Utilities.Database.initDatabase();
   bool _isLoggingIn = false;
   bool _isCheckingLogin = true;
   bool _isInitialized = false;
@@ -35,13 +34,19 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> initApp() async {
-    await Future.wait([this._initDatabase, this._initFirebase]);
+    await Utilities.Database.initDatabase();
+    await Firebase.initializeApp();
+
     this.setState(() => this._isInitialized = true);
 
     final authProvider = Provider.of<Providers.Auth>(context, listen: false);
     final loggedIn = await authProvider.login();
 
     if (loggedIn) {
+      // after the user is logged in, send the device fcm token to the server
+      final fcmToken = await Utilities.Messaging.initMessaging();
+      if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
+
       Navigator.pushReplacementNamed(
         context,
         authProvider.user?.playerId == null
@@ -65,6 +70,10 @@ class _LoginState extends State<Login> {
     this.setState(() => this._isLoggingIn = true);
     final loginSuccess = await authProvider.signInWithGoogle();
     if (loginSuccess) {
+      // after the user is logged in, send the device fcm token to the server
+      final fcmToken = await Utilities.Messaging.initMessaging();
+      if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
+
       Navigator.pushReplacementNamed(
         context,
         authProvider.user?.playerId == null

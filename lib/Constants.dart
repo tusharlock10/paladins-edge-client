@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 abstract class Urls {
-  // login
+  // auth
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
+  static const fcmToken = "/auth/fcmToken"; // POST
   static const claimPlayer = "/auth/claimPlayer"; // POST
+  static const observePlayer = "/auth/observePlayer"; // POST
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -39,9 +41,8 @@ const ThemeMaterialColor = MaterialColor(0xFF2193b0, _colorValues);
 
 const IsDebug = kDebugMode;
 
-const BaseUrl = IsDebug
-    ? "http://192.168.0.103:8000"
-    : "https://api.paladinsedge.ml";
+const BaseUrl =
+    IsDebug ? "http://192.168.0.103:8000" : "https://api.paladinsedge.ml";
 
 const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;
 

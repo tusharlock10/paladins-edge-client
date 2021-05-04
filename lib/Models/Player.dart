@@ -39,15 +39,14 @@ class _Ranked {
 @HiveType(typeId: TypeIds.Player)
 @JsonSerializable()
 class Player {
-  @JsonKey(name: '_id')
   @HiveField(0)
-  final String id;
+  final String playerId; // paladins player id
   @HiveField(1)
-  final String name; // name of the player in the game eg. tusharlock10
+  final String? userId; // id of the connected user model
   @HiveField(2)
-  final String? title; // Paladins title that appears below name eg. The 1%
+  final String name; // name of the player in the game eg. tusharlock10
   @HiveField(3)
-  final int playerId; // paladins Id of the player
+  final String? title; // Paladins title that appears below name eg. The 1%
   @HiveField(4)
   final String? avatarUrl; // image url of the avatar
   @HiveField(5)
@@ -75,13 +74,13 @@ class Player {
   @HiveField(14)
   final _Ranked ranked; // ranked details of the player
   @HiveField(15)
-  final String? userId; // id of the connected user model
+  final String? status;
 
   Player({
-    required this.id,
+    required this.playerId,
+    this.userId,
     required this.name,
     required this.title,
-    required this.playerId,
     required this.avatarUrl,
     required this.totalXP,
     required this.hoursPlayed,
@@ -93,7 +92,7 @@ class Player {
     required this.accountCreationDate,
     required this.lastLoginDate,
     required this.ranked,
-    this.userId,
+    this.status,
   });
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);

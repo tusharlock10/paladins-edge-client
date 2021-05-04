@@ -18,7 +18,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   bool _isLoading = false;
   bool _isVerifying = false;
   int _step = 0; // at which step of the proccess the user is at
-  String _otp = (Random().nextInt(899999) + 100000)
+  String _otp = "MAIN" // (Random().nextInt(899999) + 100000)
       .toString(); // generates a random otp for verification
   Map<String, dynamic>? _selectedPlayer; // the player selected in search step
 
@@ -30,7 +30,11 @@ class _ConnectProfileState extends State<ConnectProfile> {
 
     this.setState(() => this._isLoading = true);
     final searchData = Provider.of<Providers.Search>(context, listen: false);
-    await searchData.searchByName(playerName, simpleResults: true);
+    await searchData.searchByName(
+      playerName,
+      simpleResults: true,
+      addInSeachHistory: false,
+    );
     this.setState(() => this._isLoading = false);
   }
 

@@ -15,18 +15,20 @@ class User {
   final String name;
   @HiveField(2)
   final String email;
-  @HiveField(4)
+  @HiveField(3)
   final String token; // token used for authentication
 
-  @HiveField(5)
+  @HiveField(4)
   final String? playerId; // id of the connected player model
+
+  @HiveField(5)
+  final String photoUrl; // photo of the user
   @HiveField(6)
-  final int? paladinsPlayerId; // id of the player for paladins API
+  final String uid; // uid provided by the oauth provider
 
   @HiveField(7)
-  final String photoUrl; // photo of the user
-  @HiveField(8)
-  final String uid; // uid provided by the oauth provider
+  List<String>
+      observeList; // the connected observe id for observing players
 
   User({
     required this.id,
@@ -36,7 +38,7 @@ class User {
     required this.photoUrl,
     required this.uid,
     this.playerId,
-    this.paladinsPlayerId,
+    required this.observeList,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

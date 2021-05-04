@@ -8,16 +8,14 @@ part of 'Queue.dart';
 
 Queue _$QueueFromJson(Map<String, dynamic> json) {
   return Queue(
-    id: json['_id'] as String,
+    queueId: json['queueId'] as String,
     name: json['name'] as String,
-    queueId: json['queueId'] as int,
     activeMatchCount: json['activeMatchCount'] as int,
   );
 }
 
 Map<String, dynamic> _$QueueToJson(Queue instance) => <String, dynamic>{
-      '_id': instance.id,
-      'name': instance.name,
       'queueId': instance.queueId,
+      'name': instance.name,
       'activeMatchCount': instance.activeMatchCount,
     };

@@ -77,7 +77,15 @@ class Auth with ChangeNotifier {
     this.user = null;
   }
 
-  Future<bool> claimPlayer(String otp, int playerId) async {
+  void sendFcmToken(String fcmToken) async {
+    // send the fcm token of the devivce to the server
+    // for sending notification fcm token is use only
+    // for the server, and not stored on the app/ browser
+
+    Utilities.api.post(Constants.Urls.fcmToken, data: {'fcmToken': fcmToken});
+  }
+
+  Future<bool> claimPlayer(String otp, String playerId) async {
     // Sends an otp and playerId to server to check if a loadout exists with that otp
     // if it does, then player is verified
     //
@@ -100,5 +108,26 @@ class Auth with ChangeNotifier {
     }
 
     return response.data['verified'];
+  }
+
+  Future<void> observePlayer(String playerId) async {
+    if (this.user == null) return;
+
+    if (this.user!.observeList.contains(playerId) == false)
+      // player is not in the observe list, so we need to add him
+      this.user!.observeList.add(playerId);
+    else
+      // if he is in the observe list, then remove him
+      this.user!.observeList.remove(playerId);
+
+    notifyListeners();
+
+    // after we update the UI, update the list in backend
+    // update the UI for the latest changes
+
+    final response = await Utilities.api
+        .post(Constants.Urls.observePlayer, data: {'playerId': playerId});
+    this.user!.observeList = List<String>.from(response.data['observeList']);
+    notifyListeners();
   }
 }

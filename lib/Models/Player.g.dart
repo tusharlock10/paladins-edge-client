@@ -66,10 +66,10 @@ class PlayerAdapter extends TypeAdapter<Player> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Player(
-      id: fields[0] as String,
-      name: fields[1] as String,
-      title: fields[2] as String?,
-      playerId: fields[3] as int,
+      playerId: fields[0] as String,
+      userId: fields[1] as String?,
+      name: fields[2] as String,
+      title: fields[3] as String?,
       avatarUrl: fields[4] as String?,
       totalXP: fields[5] as int?,
       hoursPlayed: fields[6] as int?,
@@ -81,7 +81,7 @@ class PlayerAdapter extends TypeAdapter<Player> {
       accountCreationDate: fields[12] as DateTime?,
       lastLoginDate: fields[13] as DateTime?,
       ranked: fields[14] as _Ranked,
-      userId: fields[15] as String?,
+      status: fields[15] as String?,
     );
   }
 
@@ -90,13 +90,13 @@ class PlayerAdapter extends TypeAdapter<Player> {
     writer
       ..writeByte(16)
       ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.title)
-      ..writeByte(3)
       ..write(obj.playerId)
+      ..writeByte(1)
+      ..write(obj.userId)
+      ..writeByte(2)
+      ..write(obj.name)
+      ..writeByte(3)
+      ..write(obj.title)
       ..writeByte(4)
       ..write(obj.avatarUrl)
       ..writeByte(5)
@@ -120,7 +120,7 @@ class PlayerAdapter extends TypeAdapter<Player> {
       ..writeByte(14)
       ..write(obj.ranked)
       ..writeByte(15)
-      ..write(obj.userId);
+      ..write(obj.status);
   }
 
   @override
@@ -160,10 +160,10 @@ Map<String, dynamic> _$_RankedToJson(_Ranked instance) => <String, dynamic>{
 
 Player _$PlayerFromJson(Map<String, dynamic> json) {
   return Player(
-    id: json['_id'] as String,
+    playerId: json['playerId'] as String,
+    userId: json['userId'] as String?,
     name: json['name'] as String,
     title: json['title'] as String?,
-    playerId: json['playerId'] as int,
     avatarUrl: json['avatarUrl'] as String?,
     totalXP: json['totalXP'] as int?,
     hoursPlayed: json['hoursPlayed'] as int?,
@@ -179,15 +179,15 @@ Player _$PlayerFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['lastLoginDate'] as String),
     ranked: _Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
-    userId: json['userId'] as String?,
+    status: json['status'] as String?,
   );
 }
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
-      '_id': instance.id,
+      'playerId': instance.playerId,
+      'userId': instance.userId,
       'name': instance.name,
       'title': instance.title,
-      'playerId': instance.playerId,
       'avatarUrl': instance.avatarUrl,
       'totalXP': instance.totalXP,
       'hoursPlayed': instance.hoursPlayed,
@@ -199,5 +199,5 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'accountCreationDate': instance.accountCreationDate?.toIso8601String(),
       'lastLoginDate': instance.lastLoginDate?.toIso8601String(),
       'ranked': instance.ranked,
-      'userId': instance.userId,
+      'status': instance.status,
     };

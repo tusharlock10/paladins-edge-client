@@ -99,53 +99,49 @@ class _Card {
 @HiveType(typeId: TypeIds.Champion)
 @JsonSerializable()
 class Champion {
-  @JsonKey(name: '_id')
   @HiveField(0)
-  final String id;
-  @HiveField(2)
-  final int championId; // Paladins champion id
-  @HiveField(3)
+  final String championId; // Paladins champion id
+  @HiveField(1)
   final String name; // eg. Androxus
-  @HiveField(4)
+  @HiveField(2)
   final String iconUrl; // Icon of the champion
-  @HiveField(5)
+  @HiveField(3)
   final String headerUrl; // Header image of the champion
-  @HiveField(6)
+  @HiveField(4)
   final String splashUrl; // Splash image of the champion
-  @HiveField(7)
+  @HiveField(5)
   final String title; // eg. The Godslayer
-  @HiveField(8)
+  @HiveField(6)
   final String role; // eg. Flank
 
-  @HiveField(9)
+  @HiveField(7)
   final DateTime releaseDate;
-  @HiveField(10)
+  @HiveField(8)
   final int health; // eg. 2100
-  @HiveField(11)
+  @HiveField(9)
   final int movementSpeed; // eg. 370
-  @HiveField(12)
+  @HiveField(10)
   final int damageFallOffRange; // eg. 50 (units)
-  @HiveField(13)
+  @HiveField(11)
   final String? lore; // lore of that champion,
 
-  @HiveField(14)
+  @HiveField(12)
   final List<_Ability>? abilities; // List of all the abilities of th champion
-  @HiveField(15)
+  @HiveField(13)
   final List<_Talent>? talents; // List of all the talents of th champion
-  @HiveField(16)
+  @HiveField(14)
   final List<_Card>? cards; // List of all the cards of th champion
 
-  @HiveField(17)
+  @HiveField(15)
   final bool latestChampion; // Whether the champion is newly added in the game
-  @HiveField(18)
+  @HiveField(16)
   final bool
       onFreeWeeklyRotation; // Whether the champion is on weekly free rotation
-  @HiveField(19)
+  @HiveField(17)
   final bool
       onFreeRotation; // Whether the champion is on free rotation for some other causes
 
   Champion({
-    required this.id,
     required this.championId,
     required this.name,
     required this.iconUrl,

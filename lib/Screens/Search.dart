@@ -28,16 +28,16 @@ class _SearchState extends State<Search> {
     super.didChangeDependencies();
   }
 
-  void onSearch(BuildContext context, String playerName)async  {
-    
-      this.setState(() => this.isLoading = true);
-      final searchData = Provider.of<Providers.Search>(context, listen: false);
-      final exactMatch = await searchData.searchByName(playerName);
-      this.setState(() => this.isLoading = false);
-      if (exactMatch) {
-        Navigator.pushNamed(context, Screens.PlayerDetail.routeName);
-      }
-    
+  void onSearch(BuildContext context, String playerName,
+      {bool addInSeachHistory = true}) async {
+    this.setState(() => this.isLoading = true);
+    final searchData = Provider.of<Providers.Search>(context, listen: false);
+    final exactMatch = await searchData.searchByName(playerName,
+        addInSeachHistory: addInSeachHistory);
+    this.setState(() => this.isLoading = false);
+    if (exactMatch) {
+      Navigator.pushNamed(context, Screens.PlayerDetail.routeName);
+    }
   }
 
   Widget buildSearchBar(Providers.Search searchData) {
@@ -86,8 +86,11 @@ class _SearchState extends State<Search> {
   Widget buildTopSearchItem(Models.Player player) {
     return ListTile(
       onTap: () {
-        Navigator.pushNamed(context, Screens.PlayerDetail.routeName,
-            arguments: player.playerId);
+        Navigator.pushNamed(
+          context,
+          Screens.PlayerDetail.routeName,
+          arguments: player.playerId,
+        );
       },
       title: Text('${player.name}'),
       trailing: player.ranked.rankIconUrl != ""
@@ -116,7 +119,8 @@ class _SearchState extends State<Search> {
             return buildTopSearchItem(topSearchList[index]);
           } else {
             return buildLowerSearchItem(
-                lowerSearchList[index - topSearchList.length]);
+              lowerSearchList[index - topSearchList.length],
+            );
           }
         },
         childCount: childCount,
@@ -135,7 +139,8 @@ class _SearchState extends State<Search> {
           return ListTile(
             onTap: () {
               this.textController.text = playerName;
-              this.onSearch(context, this.textController.text);
+              this.onSearch(context, this.textController.text,
+                  addInSeachHistory: false);
             },
             title: Text(
               '$playerName',
