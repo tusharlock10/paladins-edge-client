@@ -45,7 +45,13 @@ class _ChampionsState extends State<Champions> {
             size: 28,
           ),
         ),
-        title: Text('${champion.name}'),
+        title: Text(
+          '${champion.name}',
+          style: Theme.of(context)
+              .primaryTextTheme
+              .headline6
+              ?.copyWith(fontSize: 16),
+        ),
       ),
     );
   }
@@ -68,6 +74,7 @@ class _ChampionsState extends State<Champions> {
     return Column(children: [
       AppBar(
         title: Text('Champions'),
+        brightness: Theme.of(context).primaryColorBrightness,
       ),
       Expanded(
           child: this._isLoading

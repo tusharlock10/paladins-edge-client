@@ -13,12 +13,17 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Center(
-        child: TextButton(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        TextButton(
           onPressed: () => this.onLogout(context),
           child: Text('Logout'),
         ),
-      ),
+        TextButton(
+          onPressed:
+              Provider.of<Providers.Auth>(context, listen: false).toggleTheme,
+          child: Text('ChangeTheme'),
+        ),
+      ]),
     );
   }
 }

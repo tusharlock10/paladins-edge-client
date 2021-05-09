@@ -32,7 +32,7 @@ class ShadowAvatar extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF202020).withOpacity(0.25),
+              color: Theme.of(context).shadowColor.withOpacity(0.25),
               blurRadius: this.elevation ?? 5,
               offset: Offset(0, this.elevation ?? 5),
             )

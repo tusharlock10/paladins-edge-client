@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/index.dart' as Providers;
@@ -64,6 +65,7 @@ class _HomeState extends State<Home> {
       children: [
         AppBar(
           title: Text('Home'),
+          brightness: Theme.of(context).primaryColorBrightness,
         ),
         Expanded(
           child: Container(

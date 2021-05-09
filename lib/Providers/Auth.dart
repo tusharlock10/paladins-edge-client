@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart' as Crypto;
@@ -8,13 +8,22 @@ import '../Models/index.dart' as Models;
 import '../Utilities/index.dart' as Utilities;
 import '../Constants.dart' as Constants;
 
+// handles auth and user data
 class Auth with ChangeNotifier {
   Models.User? user;
   Models.Player? player;
+  Models.Settings settings = Models.Settings();
 
   Future<bool> login() async {
     this.user = Utilities.Database.getUser();
     this.player = Utilities.Database.getPlayer();
+
+    final settings = Utilities.Database.getSettings();
+
+    if (settings != null) {
+      // if settings are present, then replace the newly create settings with user's settings
+      this.settings = settings;
+    }
 
     if (this.user != null) {
       Utilities.api.options.headers["authorization"] = this.user!.token;
@@ -56,7 +65,7 @@ class Auth with ChangeNotifier {
     Utilities.Database.setUser(this.user!);
     if (response.data['player'] != null) {
       this.player = Models.Player.fromJson(response.data['player']);
-      Utilities.Database.setPlyer(this.player!);
+      Utilities.Database.setPlayer(this.player!);
     }
 
     Utilities.api.options.headers["authorization"] = this.user!.token;
@@ -104,7 +113,7 @@ class Auth with ChangeNotifier {
       this.user = Models.User.fromJson(response.data['user']);
       this.player = Models.Player.fromJson(response.data['player']);
       Utilities.Database.setUser(this.user!);
-      Utilities.Database.setPlyer(this.player!);
+      Utilities.Database.setPlayer(this.player!);
     }
 
     return response.data['verified'];
@@ -128,6 +137,19 @@ class Auth with ChangeNotifier {
     final response = await Utilities.api
         .post(Constants.Urls.observePlayer, data: {'playerId': playerId});
     this.user!.observeList = List<String>.from(response.data['observeList']);
+    notifyListeners();
+  }
+
+  void toggleTheme() {
+    // toggles the theme
+    if (this.settings.themeMode == ThemeMode.dark) {
+      this.settings.themeMode = ThemeMode.light;
+    } else {
+      this.settings.themeMode = ThemeMode.dark;
+    }
+
+    // save the settings after changing the theme
+    Utilities.Database.setSettings(this.settings);
     notifyListeners();
   }
 }

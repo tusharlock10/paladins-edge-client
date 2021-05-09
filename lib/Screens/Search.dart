@@ -42,6 +42,7 @@ class _SearchState extends State<Search> {
 
   Widget buildSearchBar(Providers.Search searchData) {
     return SliverAppBar(
+      brightness: Theme.of(context).primaryColorBrightness,
       title: TextField(
         controller: this.textController,
         maxLength: 30,
@@ -92,7 +93,8 @@ class _SearchState extends State<Search> {
           arguments: player.playerId,
         );
       },
-      title: Text('${player.name}'),
+      title: Text('${player.name}',
+          style: Theme.of(context).primaryTextTheme.headline6),
       trailing: player.ranked.rankIconUrl != ""
           ? Image.network(player.ranked.rankIconUrl!)
           : Container(),
@@ -103,7 +105,8 @@ class _SearchState extends State<Search> {
     Map<String, dynamic> searchItem,
   ) {
     return ListTile(
-      title: Text('${searchItem['name']}'),
+      title: Text('${searchItem['name']}',
+          style: Theme.of(context).primaryTextTheme.headline6),
     );
   }
 
@@ -142,16 +145,11 @@ class _SearchState extends State<Search> {
               this.onSearch(context, this.textController.text,
                   addInSeachHistory: false);
             },
-            title: Text(
-              '$playerName',
-              style: TextStyle(fontSize: 18),
-            ),
+            title: Text('$playerName',
+                style: Theme.of(context).primaryTextTheme.headline6),
             trailing: Text(
               '$time',
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).textTheme.headline1?.color,
-              ),
+              style: Theme.of(context).primaryTextTheme.caption,
             ),
           );
         },

@@ -1,5 +1,10 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:overlay_support/overlay_support.dart';
+
+import '../Constants.dart' as Constants;
 
 abstract class Messaging {
   static FirebaseMessaging? messaging;
@@ -11,17 +16,37 @@ abstract class Messaging {
     messaging = FirebaseMessaging.instance;
 
     settings = await messaging!.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        sound: true,
-        provisional: true);
+      sound: true,
+      provisional: true,
+    );
+
     if (settings?.authorizationStatus != AuthorizationStatus.authorized) {
       return null;
     }
-
     final token = await messaging!.getToken();
-
     return token;
+  }
+
+  static Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+    print('Background $message');
+  }
+
+  static void onMessage() {
+    // register in main() before runApp()
+    FirebaseMessaging.onMessage.listen((message) {
+      HapticFeedback.vibrate();
+      showSimpleNotification(
+        Text("${message.notification?.title}"),
+        trailing: Image.network(message.notification!.android!.imageUrl!),
+        duration: Duration(seconds: 6),
+        background: Constants.ThemeMaterialColor,
+      );
+      print('Foreground ${message.notification?.android?.imageUrl}');
+    });
+  }
+
+  static void onBackgroundMessage() {
+    // register in main() before runApp()
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 }

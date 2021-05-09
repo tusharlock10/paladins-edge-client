@@ -40,6 +40,7 @@ class _BottomTabsState extends State<BottomTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomNavigationBarTheme = Theme.of(context).bottomNavigationBarTheme;
     return Scaffold(
       drawer: Widgets.AppDrawer(),
       body: IndexedStack(
@@ -47,18 +48,20 @@ class _BottomTabsState extends State<BottomTabs> {
         index: this._selectedPageIndex,
       ),
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: bottomNavigationBarTheme.backgroundColor,
         selectedIndex: this._selectedPageIndex,
         showElevation: true,
         onItemSelected: this._selectPage,
         curve: Curves.fastOutSlowIn,
         iconSize: 20,
+        animationDuration: Duration(milliseconds: 300),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         items: this
             ._pages
             .map(
               (page) => BottomNavyBarItem(
-                activeColor: Constants.ThemeMaterialColor,
-                inactiveColor: Constants.ThemeMaterialColor.shade300,
+                activeColor: bottomNavigationBarTheme.selectedItemColor!,
+                inactiveColor: bottomNavigationBarTheme.unselectedItemColor!,
                 icon: Icon(page['icon'] as IconData),
                 title: Text(page['title'] as String),
               ),
