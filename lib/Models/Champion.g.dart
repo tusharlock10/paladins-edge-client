@@ -21,7 +21,7 @@ class AbilityAdapter extends TypeAdapter<_Ability> {
       name: fields[1] as String,
       imageUrl: fields[2] as String,
       damageType: fields[3] as String,
-      cooldown: fields[4] as int,
+      cooldown: fields[4] as double,
       description: fields[5] as String,
     );
   }
@@ -69,7 +69,7 @@ class TalentAdapter extends TypeAdapter<_Talent> {
       talentId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
-      cooldown: fields[3] as int,
+      cooldown: fields[3] as double,
       description: fields[4] as String,
       modifier: fields[5] as String,
     );
@@ -118,7 +118,7 @@ class CardAdapter extends TypeAdapter<_Card> {
       cardId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
-      cooldown: fields[3] as int,
+      cooldown: fields[3] as double,
       description: fields[4] as String,
       modifier: fields[5] as String,
     );
@@ -153,6 +153,43 @@ class CardAdapter extends TypeAdapter<_Card> {
           typeId == other.typeId;
 }
 
+class TagAdapter extends TypeAdapter<_Tag> {
+  @override
+  final int typeId = 8;
+
+  @override
+  _Tag read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return _Tag(
+      name: fields[0] as String,
+      color: fields[1] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, _Tag obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.color);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TagAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class ChampionAdapter extends TypeAdapter<Champion> {
   @override
   final int typeId = 0;
@@ -172,23 +209,25 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       title: fields[5] as String,
       role: fields[6] as String,
       releaseDate: fields[7] as DateTime,
-      health: fields[8] as int,
-      movementSpeed: fields[9] as int,
-      damageFallOffRange: fields[10] as int,
-      lore: fields[11] as String?,
-      abilities: (fields[12] as List?)?.cast<_Ability>(),
-      talents: (fields[13] as List?)?.cast<_Talent>(),
-      cards: (fields[14] as List?)?.cast<_Card>(),
-      latestChampion: fields[15] as bool,
-      onFreeWeeklyRotation: fields[16] as bool,
-      onFreeRotation: fields[17] as bool,
+      health: fields[8] as double,
+      movementSpeed: fields[9] as double,
+      damageFallOffRange: fields[10] as double,
+      weaponDamage: fields[11] as double,
+      fireRate: fields[12] as double,
+      lore: fields[13] as String?,
+      abilities: (fields[14] as List?)?.cast<_Ability>(),
+      talents: (fields[15] as List?)?.cast<_Talent>(),
+      cards: (fields[16] as List?)?.cast<_Card>(),
+      latestChampion: fields[17] as bool,
+      onFreeRotation: fields[18] as bool,
+      tags: (fields[19] as List).cast<_Tag>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Champion obj) {
     writer
-      ..writeByte(18)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.championId)
       ..writeByte(1)
@@ -212,19 +251,23 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       ..writeByte(10)
       ..write(obj.damageFallOffRange)
       ..writeByte(11)
-      ..write(obj.lore)
+      ..write(obj.weaponDamage)
       ..writeByte(12)
-      ..write(obj.abilities)
+      ..write(obj.fireRate)
       ..writeByte(13)
-      ..write(obj.talents)
+      ..write(obj.lore)
       ..writeByte(14)
-      ..write(obj.cards)
+      ..write(obj.abilities)
       ..writeByte(15)
-      ..write(obj.latestChampion)
+      ..write(obj.talents)
       ..writeByte(16)
-      ..write(obj.onFreeWeeklyRotation)
+      ..write(obj.cards)
       ..writeByte(17)
-      ..write(obj.onFreeRotation);
+      ..write(obj.latestChampion)
+      ..writeByte(18)
+      ..write(obj.onFreeRotation)
+      ..writeByte(19)
+      ..write(obj.tags);
   }
 
   @override
@@ -248,7 +291,7 @@ _Ability _$_AbilityFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     imageUrl: json['imageUrl'] as String,
     damageType: json['damageType'] as String,
-    cooldown: json['cooldown'] as int,
+    cooldown: (json['cooldown'] as num).toDouble(),
     description: json['description'] as String,
   );
 }
@@ -267,7 +310,7 @@ _Talent _$_TalentFromJson(Map<String, dynamic> json) {
     talentId: json['talentId'] as int,
     name: json['name'] as String,
     imageUrl: json['imageUrl'] as String,
-    cooldown: json['cooldown'] as int,
+    cooldown: (json['cooldown'] as num).toDouble(),
     description: json['description'] as String,
     modifier: json['modifier'] as String,
   );
@@ -287,7 +330,7 @@ _Card _$_CardFromJson(Map<String, dynamic> json) {
     cardId: json['cardId'] as int,
     name: json['name'] as String,
     imageUrl: json['imageUrl'] as String,
-    cooldown: json['cooldown'] as int,
+    cooldown: (json['cooldown'] as num).toDouble(),
     description: json['description'] as String,
     modifier: json['modifier'] as String,
   );
@@ -302,6 +345,18 @@ Map<String, dynamic> _$_CardToJson(_Card instance) => <String, dynamic>{
       'modifier': instance.modifier,
     };
 
+_Tag _$_TagFromJson(Map<String, dynamic> json) {
+  return _Tag(
+    name: json['name'] as String,
+    color: json['color'] as String,
+  );
+}
+
+Map<String, dynamic> _$_TagToJson(_Tag instance) => <String, dynamic>{
+      'name': instance.name,
+      'color': instance.color,
+    };
+
 Champion _$ChampionFromJson(Map<String, dynamic> json) {
   return Champion(
     championId: json['championId'] as String,
@@ -312,9 +367,11 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
     title: json['title'] as String,
     role: json['role'] as String,
     releaseDate: DateTime.parse(json['releaseDate'] as String),
-    health: json['health'] as int,
-    movementSpeed: json['movementSpeed'] as int,
-    damageFallOffRange: json['damageFallOffRange'] as int,
+    health: (json['health'] as num).toDouble(),
+    movementSpeed: (json['movementSpeed'] as num).toDouble(),
+    damageFallOffRange: (json['damageFallOffRange'] as num).toDouble(),
+    weaponDamage: (json['weaponDamage'] as num).toDouble(),
+    fireRate: (json['fireRate'] as num).toDouble(),
     lore: json['lore'] as String?,
     abilities: (json['abilities'] as List<dynamic>?)
         ?.map((e) => _Ability.fromJson(e as Map<String, dynamic>))
@@ -326,8 +383,10 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
         ?.map((e) => _Card.fromJson(e as Map<String, dynamic>))
         .toList(),
     latestChampion: json['latestChampion'] as bool,
-    onFreeWeeklyRotation: json['onFreeWeeklyRotation'] as bool,
     onFreeRotation: json['onFreeRotation'] as bool,
+    tags: (json['tags'] as List<dynamic>)
+        .map((e) => _Tag.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -343,11 +402,13 @@ Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'health': instance.health,
       'movementSpeed': instance.movementSpeed,
       'damageFallOffRange': instance.damageFallOffRange,
+      'weaponDamage': instance.weaponDamage,
+      'fireRate': instance.fireRate,
       'lore': instance.lore,
       'abilities': instance.abilities,
       'talents': instance.talents,
       'cards': instance.cards,
       'latestChampion': instance.latestChampion,
-      'onFreeWeeklyRotation': instance.onFreeWeeklyRotation,
       'onFreeRotation': instance.onFreeRotation,
+      'tags': instance.tags,
     };

@@ -5,7 +5,7 @@ import 'package:overlay_support/overlay_support.dart';
 import './Providers/index.dart' as Providers;
 import './Screens/index.dart' as Screens;
 import './Constants.dart' as Constants;
-import './Utilities/messaging.dart' as Messaging;
+import './Utilities/Messaging.dart' as Messaging;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

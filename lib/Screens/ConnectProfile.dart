@@ -284,7 +284,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
         Text('Now you can enjoy all of the amazing features of paladins edge'),
         Row(
           children: [
-            Widgets.ShadowAvatar(
+            Widgets.ElevatedAvatar(
               size: 28,
               borderRadius: 10,
               imageUrl: player.avatarUrl!,

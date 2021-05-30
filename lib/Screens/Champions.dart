@@ -33,24 +33,74 @@ class _ChampionsState extends State<Champions> {
   }
 
   buildChampion(BuildContext context, Models.Champion champion) {
-    return Container(
+    final theme = Theme.of(context);
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       margin: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-      child: ListTile(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15),
         onTap: () => Navigator.of(context)
             .pushNamed(Screens.ChampionDetail.routeName, arguments: champion),
-        leading: Hero(
-          tag: '${champion.championId}Icon',
-          child: Widgets.ShadowAvatar(
-            imageUrl: champion.iconUrl,
-            size: 28,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Hero(
+                  tag: '${champion.championId}Icon',
+                  child: Expanded(
+                    child: Widgets.ElevatedAvatar(
+                      imageUrl: champion.iconUrl,
+                      size: 28,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        champion.name.toUpperCase(),
+                        style: theme.textTheme.headline1?.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Wrap(
+                      children: [
+                        Widgets.TextChip(
+                          spacing: 5,
+                          text: champion.role,
+                          color: Constants.ThemeMaterialColor,
+                        ),
+                        Widgets.TextChip(
+                          spacing: 5,
+                          hidden: !champion.onFreeRotation,
+                          text: 'Free',
+                          icon: Icons.rotate_right,
+                          color: Colors.green,
+                        ),
+                        Widgets.TextChip(
+                          spacing: 5,
+                          hidden: !champion.latestChampion,
+                          text: 'New',
+                          icon: Icons.star,
+                          color: Colors.orange,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
-        title: Text(
-          '${champion.name}',
-          style: Theme.of(context)
-              .primaryTextTheme
-              .headline6
-              ?.copyWith(fontSize: 16),
         ),
       ),
     );

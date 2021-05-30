@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+import "package:google_fonts/google_fonts.dart";
+import "./Utilities/index.dart" as Utilities;
 
 abstract class Urls {
   // root
@@ -25,11 +26,11 @@ abstract class Urls {
 }
 
 abstract class StorageKeys {
-  static const token = 'token';
+  static const token = "token";
 }
 
 const Map<int, Color> _colorValues = {
-  50: Color.fromRGBO(101, 214, 255, 1),
+  50: Color.fromRGBO(217, 245, 255, 1),
   100: Color.fromRGBO(101, 214, 255, 1),
   200: Color.fromRGBO(101, 214, 255, 1),
   300: Color.fromRGBO(101, 214, 255, 1),
@@ -44,7 +45,7 @@ const Map<int, Color> _colorValues = {
 const ThemeMaterialColor = MaterialColor(0xFF19a5cf, _colorValues);
 
 const Map<int, Color> _darkColorValues = {
-  50: Color.fromRGBO(44, 60, 67, 1),
+  50: Color.fromRGBO(63, 87, 97, 1),
   100: Color.fromRGBO(44, 60, 67, 1),
   200: Color.fromRGBO(44, 60, 67, 1),
   300: Color.fromRGBO(44, 60, 67, 1),
@@ -78,12 +79,19 @@ abstract class TypeIds {
   static const Player_Ranked = 5;
   static const User = 6;
   static const Settings = 7;
+  static const Champion_Tag = 8;
 }
 
 final lightTheme = ThemeData(
+  primaryColorLight: ThemeMaterialColor,
+  primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.light,
-  scaffoldBackgroundColor: Colors.white,
-  accentColor: ThemeMaterialColor.shade200,
+  scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
+  accentColor: DarkThemeMaterialColor.shade50,
+  cardTheme: CardTheme(
+    color: Colors.white,
+    shadowColor: DarkThemeMaterialColor,
+  ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: ThemeMaterialColor.shade100,
     selectionColor: ThemeMaterialColor.shade100,
@@ -98,8 +106,18 @@ final lightTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
+    headline1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: ThemeMaterialColor,
+      fontWeight: FontWeight.bold,
+    ),
+    headline2: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: ThemeMaterialColor,
+      fontWeight: FontWeight.bold,
+    ),
     bodyText2: TextStyle(
-      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.black,
     ),
   ),
@@ -111,19 +129,22 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
+  primaryColorLight: ThemeMaterialColor,
+  primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.dark,
   scaffoldBackgroundColor: DarkThemeMaterialColor,
-  accentColor: DarkThemeMaterialColor.shade200,
+  accentColor: ThemeMaterialColor.shade50,
   cardTheme: CardTheme(
-      color: DarkThemeMaterialColor.shade300,
-      shadowColor: DarkThemeMaterialColor.shade50),
+    color: DarkThemeMaterialColor.shade300,
+    shadowColor: DarkThemeMaterialColor.shade50,
+  ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: Color(0xff4d5c63),
     selectionColor: Color(0xff4d5c63),
     cursorColor: Color(0xff4d5c63),
   ),
   primarySwatch: DarkThemeMaterialColor,
-  brightness: Brightness.light,
+  brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -131,8 +152,18 @@ final darkTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
+    headline1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+    headline2: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
     bodyText2: TextStyle(
-      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.white,
     ),
   ),
@@ -145,3 +176,15 @@ final darkTheme = ThemeData(
     backgroundColor: DarkThemeMaterialColor.shade200,
   ),
 );
+
+const Map<String, Map<String, dynamic>> ChampionDamageType = {
+  'Area Damage': {"name": "Area Damage", "color": Colors.red},
+  'Crowd Control': {"name": "Crowd_Control", "color": Colors.teal},
+  'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
+  'Heal': {"name": "Heal", "color": Colors.green},
+  'Movement': {"name": "Movement", "color": Colors.amber},
+  'Protective': {"name": "Protective", "color": Colors.lightBlue},
+  'Reveal': {"name": "Reveal", "color": Colors.amber},
+  'Shield': {"name": "Shield", "color": Colors.indigo},
+  'Stealth': {"name": "Stealth", "color": Colors.blue},
+};

@@ -42,6 +42,8 @@ class _LoginState extends State<Login> {
     final authProvider = Provider.of<Providers.Auth>(context, listen: false);
     final loggedIn = await authProvider.login();
 
+    authProvider.loadSettings(); // load the settings from hive
+
     if (loggedIn) {
       // after the user is logged in, send the device fcm token to the server
       final fcmToken = await Utilities.Messaging.initMessaging();

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
@@ -43,6 +44,7 @@ class _BottomTabsState extends State<BottomTabs> {
     final bottomNavigationBarTheme = Theme.of(context).bottomNavigationBarTheme;
     return Scaffold(
       drawer: Widgets.AppDrawer(),
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width/3,
       body: IndexedStack(
         children: this._pages.map((page) => page['screen'] as Widget).toList(),
         index: this._selectedPageIndex,

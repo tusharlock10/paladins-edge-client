@@ -8,13 +8,34 @@ part 'Settings.g.dart';
 // model for storing user settings locally
 @HiveType(typeId: TypeIds.Settings)
 class Settings extends HiveObject {
-  // 0 means theme is light, 1 means theme is dark
+  // 0 means theme is system based, 1 means light theme, 2 means dark theme
+
+  // initialize _themeMode to the system theme
   @HiveField(0)
-  int _themeMode = ThemeMode.system == ThemeMode.light ? 0 : 1;
+  int _themeMode = 0;
 
-  ThemeMode get themeMode =>
-      this._themeMode == 0 ? ThemeMode.light : ThemeMode.dark;
+  ThemeMode get themeMode {
+    switch (this._themeMode) {
+      case 1:
+        return ThemeMode.light;
+      case 2:
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
+    }
+  }
 
-  set themeMode(ThemeMode themeMode) =>
-      this._themeMode = themeMode == ThemeMode.light ? 0 : 1;
+  set themeMode(ThemeMode themeMode) {
+    switch (themeMode) {
+      case ThemeMode.light:
+        this._themeMode = 1;
+        break;
+      case ThemeMode.dark:
+        this._themeMode = 2;
+        break;
+      default:
+        this._themeMode = 0;
+        break;
+    }
+  }
 }

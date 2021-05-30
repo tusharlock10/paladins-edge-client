@@ -1,5 +1,6 @@
 export './FastImage.dart';
-export './ShadowAvatar.dart';
+export './ElevatedAvatar.dart';
 export './Ripple.dart';
 export './Drawer.dart';
 export './LoadingIndicator.dart';
+export './TextChip.dart';

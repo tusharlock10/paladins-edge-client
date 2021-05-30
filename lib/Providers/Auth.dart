@@ -14,16 +14,19 @@ class Auth with ChangeNotifier {
   Models.Player? player;
   Models.Settings settings = Models.Settings();
 
-  Future<bool> login() async {
-    this.user = Utilities.Database.getUser();
-    this.player = Utilities.Database.getPlayer();
-
+  void loadSettings() {
     final settings = Utilities.Database.getSettings();
 
     if (settings != null) {
       // if settings are present, then replace the newly create settings with user's settings
       this.settings = settings;
     }
+    notifyListeners();
+  }
+
+  Future<bool> login() async {
+    this.user = Utilities.Database.getUser();
+    this.player = Utilities.Database.getPlayer();
 
     if (this.user != null) {
       Utilities.api.options.headers["authorization"] = this.user!.token;

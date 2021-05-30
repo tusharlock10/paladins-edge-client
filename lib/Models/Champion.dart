@@ -17,7 +17,7 @@ class _Ability {
   @HiveField(3)
   final String damageType; // Area or Direct damage
   @HiveField(4)
-  final int cooldown; // Recharge time of the ability in seconds
+  final double cooldown; // Recharge time of the ability in seconds
   @HiveField(5)
   final String description; // _Ability description
 
@@ -45,7 +45,7 @@ class _Talent {
   @HiveField(2)
   final String imageUrl; // Image of the talent
   @HiveField(3)
-  final int cooldown; // Recharge time of the talent in seconds
+  final double cooldown; // Recharge time of the talent in seconds
   @HiveField(4)
   final String description; // _Talent description
   @HiveField(5)
@@ -76,7 +76,7 @@ class _Card {
   @HiveField(2)
   final String imageUrl; // Image of the card
   @HiveField(3)
-  final int cooldown; // Recharge time of the card in seconds
+  final double cooldown; // Recharge time of the card in seconds
   @HiveField(4)
   final String description; // card description
   @HiveField(5)
@@ -94,6 +94,23 @@ class _Card {
 
   factory _Card.fromJson(Map<String, dynamic> json) => _$_CardFromJson(json);
   Map<String, dynamic> toJson() => _$_CardToJson(this);
+}
+
+@HiveType(typeId: TypeIds.Champion_Tag)
+@JsonSerializable()
+class _Tag {
+  @HiveField(0)
+  final String name; // name of the tag
+  @HiveField(1)
+  final String color; // color of tag in hex string
+
+  _Tag({
+    required this.name,
+    required this.color,
+  });
+
+  factory _Tag.fromJson(Map<String, dynamic> json) => _$_TagFromJson(json);
+  Map<String, dynamic> toJson() => _$_TagToJson(this);
 }
 
 @HiveType(typeId: TypeIds.Champion)
@@ -117,29 +134,31 @@ class Champion {
   @HiveField(7)
   final DateTime releaseDate;
   @HiveField(8)
-  final int health; // eg. 2100
+  final double health; // eg. 2100
   @HiveField(9)
-  final int movementSpeed; // eg. 370
+  final double movementSpeed; // eg. 370
   @HiveField(10)
-  final int damageFallOffRange; // eg. 50 (units)
+  final double damageFallOffRange; // eg. 50 (units)
   @HiveField(11)
+  final double weaponDamage; // damage of the champion eg. 520
+  @HiveField(12)
+  final double fireRate; // fire rate of the champion in sec eg. 0.36 
+  @HiveField(13)
   final String? lore; // lore of that champion,
 
-  @HiveField(12)
-  final List<_Ability>? abilities; // List of all the abilities of th champion
-  @HiveField(13)
-  final List<_Talent>? talents; // List of all the talents of th champion
   @HiveField(14)
+  final List<_Ability>? abilities; // List of all the abilities of th champion
+  @HiveField(15)
+  final List<_Talent>? talents; // List of all the talents of th champion
+  @HiveField(16)
   final List<_Card>? cards; // List of all the cards of th champion
 
-  @HiveField(15)
-  final bool latestChampion; // Whether the champion is newly added in the game
-  @HiveField(16)
-  final bool
-      onFreeWeeklyRotation; // Whether the champion is on weekly free rotation
   @HiveField(17)
-  final bool
-      onFreeRotation; // Whether the champion is on free rotation for some other causes
+  final bool latestChampion; // Whether the champion is newly added in the game
+  @HiveField(18)
+  final bool onFreeRotation; // Whether the champion is on free rotation
+  @HiveField(19)
+  final List<_Tag> tags; // For showing extra champion info
 
   Champion({
     required this.championId,
@@ -153,13 +172,15 @@ class Champion {
     required this.health,
     required this.movementSpeed,
     required this.damageFallOffRange,
+    required this.weaponDamage,
+    required this.fireRate,
     required this.lore,
     required this.abilities,
     required this.talents,
     required this.cards,
     required this.latestChampion,
-    required this.onFreeWeeklyRotation,
     required this.onFreeRotation,
+    required this.tags,
   });
 
   factory Champion.fromJson(Map<String, dynamic> json) =>

@@ -69,7 +69,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
         children: [
           Row(
             children: [
-              Widgets.ShadowAvatar(
+              Widgets.ElevatedAvatar(
                 size: 36,
                 imageUrl: player.avatarUrl!,
               ),

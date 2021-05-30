@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image/flutter_image.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:jiffy/jiffy.dart';
@@ -81,6 +82,8 @@ class _SearchState extends State<Search> {
       floating: true,
       elevation: 4,
       forceElevated: true,
+      iconTheme: IconThemeData(color: Colors.white),
+      textTheme: TextTheme(headline1: TextStyle(color: Colors.white)),
     );
   }
 
