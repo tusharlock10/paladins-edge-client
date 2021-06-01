@@ -88,9 +88,27 @@ final lightTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
   accentColor: DarkThemeMaterialColor.shade50,
+  appBarTheme: AppBarTheme(
+    elevation: 7,
+    shadowColor: DarkThemeMaterialColor.withOpacity(0.75),
+    centerTitle: true,
+    iconTheme: IconThemeData(
+      color: Colors.white,
+      size: 16,
+    ),
+    textTheme: TextTheme(
+      headline6: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontFamily: GoogleFonts.raleway().fontFamily,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
   cardTheme: CardTheme(
+    elevation: 4,
+    shadowColor: DarkThemeMaterialColor.withOpacity(0.25),
     color: Colors.white,
-    shadowColor: DarkThemeMaterialColor,
   ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: ThemeMaterialColor.shade100,
@@ -134,9 +152,28 @@ final darkTheme = ThemeData(
   primaryColorBrightness: Brightness.dark,
   scaffoldBackgroundColor: DarkThemeMaterialColor,
   accentColor: ThemeMaterialColor.shade50,
-  cardTheme: CardTheme(
-    color: DarkThemeMaterialColor.shade300,
+  appBarTheme: AppBarTheme(
+    elevation: 7,
     shadowColor: DarkThemeMaterialColor.shade50,
+    backgroundColor: DarkThemeMaterialColor.shade50,
+    centerTitle: true,
+    iconTheme: IconThemeData(
+      color: Colors.white,
+      size: 16,
+    ),
+    textTheme: TextTheme(
+      headline6: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontFamily: GoogleFonts.raleway().fontFamily,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+  cardTheme: CardTheme(
+    elevation: 4,
+    shadowColor: DarkThemeMaterialColor.shade50,
+    color: DarkThemeMaterialColor.shade300,
   ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: Color(0xff4d5c63),
@@ -171,9 +208,6 @@ final darkTheme = ThemeData(
     backgroundColor: DarkThemeMaterialColor.shade200,
     selectedItemColor: Color(0xff81b2c7),
     unselectedItemColor: Color(0xff658999),
-  ),
-  appBarTheme: AppBarTheme(
-    backgroundColor: DarkThemeMaterialColor.shade200,
   ),
 );
 

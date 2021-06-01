@@ -158,83 +158,80 @@ class ChampionDetail extends StatelessWidget {
     return Column(
       children: [
         this.renderTitle(context, 'Talents'),
-        Container(
-          child: Wrap(
-            children: champion.talents?.map(
-                  (talent) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+        Column(
+          children: champion.talents?.map(
+                (talent) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 5,
                       ),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-                      elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 5,
-                        ),
-                        child: Row(
-                          children: [
-                            Image.network(
-                              talent.imageUrl,
-                              height: 114,
-                              width: 114,
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    talent.name.toUpperCase(),
-                                    style: textTheme.headline1
-                                        ?.copyWith(fontSize: 18),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 5),
-                                    child: Wrap(
-                                      children: [
-                                        Widgets.TextChip(
+                      child: Row(
+                        children: [
+                          Image.network(
+                            talent.imageUrl,
+                            height: 114,
+                            width: 114,
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  talent.name.toUpperCase(),
+                                  style: textTheme.headline1
+                                      ?.copyWith(fontSize: 18),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  child: Wrap(
+                                    children: [
+                                      Widgets.TextChip(
+                                        spacing: 5,
+                                        text: talent.modifier,
+                                        color: Colors.teal,
+                                      ),
+                                      Widgets.TextChip(
+                                          hidden: talent.cooldown == 0,
                                           spacing: 5,
-                                          text: talent.modifier,
-                                          color: Colors.teal,
-                                        ),
-                                        Widgets.TextChip(
-                                            hidden: talent.cooldown == 0,
-                                            spacing: 5,
-                                            text:
-                                                '${talent.cooldown.toInt().toString()} sec',
-                                            color: Colors.blueGrey,
-                                            icon: Icons.timelapse),
-                                      ],
-                                    ),
+                                          text:
+                                              '${talent.cooldown.toInt().toString()} sec',
+                                          color: Colors.blueGrey,
+                                          icon: Icons.timelapse),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: ExpandText(
-                                      talent.description,
-                                      maxLines: 3,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          ?.copyWith(
-                                            fontSize: 14,
-                                            color: textTheme.bodyText2?.color
-                                                ?.withOpacity(0.8),
-                                          ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: ExpandText(
+                                    talent.description,
+                                    maxLines: 3,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2
+                                        ?.copyWith(
+                                          fontSize: 14,
+                                          color: textTheme.bodyText2?.color
+                                              ?.withOpacity(0.8),
+                                        ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    );
-                  },
-                ).toList() ??
-                [],
-          ),
+                    ),
+                  );
+                },
+              ).toList() ??
+              [],
         ),
       ],
     );
@@ -247,103 +244,99 @@ class ChampionDetail extends StatelessWidget {
     return Column(
       children: [
         this.renderTitle(context, 'Abilities'),
-        Container(
-          child: Wrap(
-            children: champion.abilities?.map(
-                  (ability) {
-                    final damageTypeChip =
-                        Constants.ChampionDamageType[ability.damageType];
+        Column(
+          children: champion.abilities?.map(
+                (ability) {
+                  final damageTypeChip =
+                      Constants.ChampionDamageType[ability.damageType];
 
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-                      elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        child: Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Widgets.FastImage(
-                                    imageUrl: ability.imageUrl,
-                                    borderRadius: BorderRadius.circular(10),
-                                    height: 72,
-                                    width: 72,
-                                  ),
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Widgets.FastImage(
+                                  imageUrl: ability.imageUrl,
+                                  borderRadius: BorderRadius.circular(10),
+                                  height: 72,
+                                  width: 72,
                                 ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(bottom: 10),
-                                        child: FittedBox(
-                                          fit: BoxFit.cover,
-                                          child: Text(
-                                            ability.name.toUpperCase(),
-                                            style: textTheme.headline1
-                                                ?.copyWith(fontSize: 18),
-                                          ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: FittedBox(
+                                        fit: BoxFit.cover,
+                                        child: Text(
+                                          ability.name.toUpperCase(),
+                                          style: textTheme.headline1
+                                              ?.copyWith(fontSize: 18),
                                         ),
                                       ),
-                                      Wrap(children: [
-                                        Widgets.TextChip(
-                                          hidden: damageTypeChip == null,
-                                          color: damageTypeChip?['color'],
-                                          text: damageTypeChip?['name'],
-                                          icon: damageTypeChip?['icon'],
-                                        ),
-                                        Widgets.TextChip(
-                                            hidden: ability.cooldown == 0,
-                                            spacing: 5,
-                                            text:
-                                                '${ability.cooldown.toInt().toString()} sec',
-                                            color: Colors.blueGrey,
-                                            icon: Icons.timelapse),
-                                      ])
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(5),
-                              child: ExpandText(
-                                Utilities.convertAbilityDescription(
-                                  ability.description,
-                                ),
-                                maxLines: 3,
-                                arrowSize: 24,
-                                overflow: TextOverflow.fade,
-                                arrowColor: textTheme.bodyText2?.color
-                                    ?.withOpacity(0.8),
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
-                                      fontSize: 13,
-                                      color: textTheme.bodyText2?.color
-                                          ?.withOpacity(0.8),
                                     ),
+                                    Wrap(children: [
+                                      Widgets.TextChip(
+                                        hidden: damageTypeChip == null,
+                                        color: damageTypeChip?['color'],
+                                        text: damageTypeChip?['name'],
+                                        icon: damageTypeChip?['icon'],
+                                      ),
+                                      Widgets.TextChip(
+                                          hidden: ability.cooldown == 0,
+                                          spacing: 5,
+                                          text:
+                                              '${ability.cooldown.toInt().toString()} sec',
+                                          color: Colors.blueGrey,
+                                          icon: Icons.timelapse),
+                                    ])
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: ExpandText(
+                              Utilities.convertAbilityDescription(
+                                ability.description,
                               ),
-                            )
-                          ],
-                        ),
+                              maxLines: 3,
+                              arrowSize: 24,
+                              overflow: TextOverflow.fade,
+                              arrowColor:
+                                  textTheme.bodyText2?.color?.withOpacity(0.8),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
+                                    fontSize: 13,
+                                    color: textTheme.bodyText2?.color
+                                        ?.withOpacity(0.8),
+                                  ),
+                            ),
+                          )
+                        ],
                       ),
-                    );
-                  },
-                ).toList() ??
-                [],
-          ),
+                    ),
+                  );
+                },
+              ).toList() ??
+              [],
         ),
       ],
     );
