@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_image/flutter_image.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 
-import '../Providers/index.dart' as Providers;
-import '../Models/index.dart' as Models;
 import './index.dart' as Screens;
+import '../Models/index.dart' as Models;
+import '../Providers/index.dart' as Providers;
 
 class Search extends StatefulWidget {
   static const routeName = '/search';
@@ -29,37 +28,49 @@ class _SearchState extends State<Search> {
     super.didChangeDependencies();
   }
 
-  void onSearch(BuildContext context, String playerName,
-      {bool addInSeachHistory = true}) async {
+  void onSearch(
+    BuildContext context,
+    String playerName, {
+    bool addInSeachHistory = true,
+  }) async {
     this.setState(() => this.isLoading = true);
-    final searchData = Provider.of<Providers.Search>(context, listen: false);
-    final exactMatch = await searchData.searchByName(playerName,
+
+    final searchProvider =
+        Provider.of<Providers.Search>(context, listen: false);
+    final exactMatch = await searchProvider.searchByName(playerName,
         addInSeachHistory: addInSeachHistory);
+
     this.setState(() => this.isLoading = false);
     if (exactMatch) {
       Navigator.pushNamed(context, Screens.PlayerDetail.routeName);
     }
   }
 
-  Widget buildSearchBar(Providers.Search searchData) {
+  Widget buildSearchBar(BuildContext context) {
+    final searchProvider =
+        Provider.of<Providers.Search>(context, listen: false);
+    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
+          color: Colors.white,
+          fontSize: 16,
+        );
     return SliverAppBar(
       brightness: Theme.of(context).primaryColorBrightness,
       title: TextField(
         controller: this.textController,
         maxLength: 30,
         enableInteractiveSelection: true,
-        style: TextStyle(color: Colors.white),
+        style: textStyle,
         decoration: InputDecoration(
           hintText: 'Search for a player...',
           counterText: "",
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: textStyle,
           border: InputBorder.none,
           suffixIcon: IconButton(
             color: Colors.white,
             iconSize: 18,
             icon: Icon(Icons.clear),
             onPressed: () {
-              searchData.clearSearchList();
+              searchProvider.clearSearchList();
               this.textController.clear();
             },
           ),
@@ -113,9 +124,10 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget buildSearchList(Providers.Search searchData) {
-    final topSearchList = searchData.topSearchList;
-    final lowerSearchList = searchData.lowerSearchList;
+  Widget buildSearchList(BuildContext context) {
+    final searchProvider = Provider.of<Providers.Search>(context);
+    final topSearchList = searchProvider.topSearchList;
+    final lowerSearchList = searchProvider.lowerSearchList;
     final childCount = topSearchList.length + lowerSearchList.length;
 
     return SliverList(
@@ -134,11 +146,12 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget buildSearchHistory(Providers.Search searchData) {
+  Widget buildSearchHistory(BuildContext context) {
+    final searchProvider = Provider.of<Providers.Search>(context);
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final search = searchData.searchHistory[index];
+          final search = searchProvider.searchHistory[index];
           final String playerName = search['playerName'];
           final DateTime _time = search['time'];
           final time = Jiffy(_time).fromNow();
@@ -156,21 +169,21 @@ class _SearchState extends State<Search> {
             ),
           );
         },
-        childCount: searchData.searchHistory.length,
+        childCount: searchProvider.searchHistory.length,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final searchData = Provider.of<Providers.Search>(context);
+    final searchProvider = Provider.of<Providers.Search>(context);
 
     return CustomScrollView(
       slivers: [
-        this.buildSearchBar(searchData),
-        searchData.topSearchList.isNotEmpty
-            ? this.buildSearchList(searchData)
-            : this.buildSearchHistory(searchData),
+        this.buildSearchBar(context),
+        searchProvider.topSearchList.isNotEmpty
+            ? this.buildSearchList(context)
+            : this.buildSearchHistory(context),
       ],
     );
   }

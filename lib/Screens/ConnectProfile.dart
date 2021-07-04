@@ -1,10 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './index.dart' as Screens;
 import '../Providers/index.dart' as Providers;
 import '../Widgets/index.dart' as Widgets;
-import './index.dart' as Screens;
 
 class ConnectProfile extends StatefulWidget {
   static const routeName = '/connectProfile';
@@ -29,8 +28,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
     // even for a single item
 
     this.setState(() => this._isLoading = true);
-    final searchData = Provider.of<Providers.Search>(context, listen: false);
-    await searchData.searchByName(
+    final searchProvider =
+        Provider.of<Providers.Search>(context, listen: false);
+    await searchProvider.searchByName(
       playerName,
       simpleResults: true,
       addInSeachHistory: false,
@@ -155,25 +155,13 @@ class _ConnectProfileState extends State<ConnectProfile> {
         this._step++;
         this._selectedPlayer = searchItem;
       }),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${searchItem['name']}',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: themeData.primaryColor,
-              fontSize: 18,
-            ),
-          ),
-          Text(
-            '${searchItem['isPrivate'] ? 'Private' : 'Public'}',
-            style: TextStyle(
-              color: Colors.grey.shade500,
-              fontSize: 14,
-            ),
-          ),
-        ],
+      title: Text(
+        '${searchItem['name']}',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: themeData.primaryColor,
+          fontSize: 18,
+        ),
       ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,

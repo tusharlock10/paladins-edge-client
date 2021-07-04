@@ -47,7 +47,7 @@ class TextChip extends StatelessWidget {
               : SizedBox.shrink(),
           Text(
             this.text!,
-            style: Theme.of(context).primaryTextTheme.bodyText2?.copyWith(
+            style: Theme.of(context).textTheme.headline2?.copyWith(
                   fontSize: 10,
                   color: color2,
                   fontWeight: FontWeight.normal,

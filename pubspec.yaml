@@ -1,5 +1,5 @@
 name: paladinsedge
-description: A new Flutter project.
+description: Feature rich Paladins manager
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -16,6 +16,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
+
+homepage: "https://paladinsedge.ml"
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -41,7 +43,7 @@ dependencies:
   overlay_support: ^1.2.1
   flutter_image: ^4.0.1
   expand_widget: ^2.1.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

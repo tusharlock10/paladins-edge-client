@@ -1,7 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
-import "./Utilities/index.dart" as Utilities;
 
 abstract class Urls {
   // root
@@ -16,10 +15,12 @@ abstract class Urls {
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
+  static const playerChampionsData = "/champions/playerChampionsData"; // GET
 
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
+  static const playerStatus = "/playerStatus"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
@@ -80,9 +81,11 @@ abstract class TypeIds {
   static const User = 6;
   static const Settings = 7;
   static const Champion_Tag = 8;
+  static const PlayerChampion = 9;
 }
 
 final lightTheme = ThemeData(
+  primaryColor: ThemeMaterialColor,
   primaryColorLight: ThemeMaterialColor,
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.light,
@@ -138,6 +141,10 @@ final lightTheme = ThemeData(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.black,
     ),
+    subtitle1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 12,
+    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
@@ -147,6 +154,7 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
+  primaryColor: DarkThemeMaterialColor,
   primaryColorLight: ThemeMaterialColor,
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.dark,
@@ -203,6 +211,10 @@ final darkTheme = ThemeData(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.white,
     ),
+    subtitle1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 12,
+    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: DarkThemeMaterialColor.shade200,
@@ -213,7 +225,7 @@ final darkTheme = ThemeData(
 
 const Map<String, Map<String, dynamic>> ChampionDamageType = {
   'Area Damage': {"name": "Area Damage", "color": Colors.red},
-  'Crowd Control': {"name": "Crowd_Control", "color": Colors.teal},
+  'Crowd Control': {"name": "Crowd Control", "color": Colors.teal},
   'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
   'Heal': {"name": "Heal", "color": Colors.green},
   'Movement': {"name": "Movement", "color": Colors.amber},
