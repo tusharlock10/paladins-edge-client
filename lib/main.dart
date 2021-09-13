@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 
+import './Constants.dart' as Constants;
 import './Providers/index.dart' as Providers;
 import './Screens/index.dart' as Screens;
-import './Constants.dart' as Constants;
 import './Utilities/Messaging.dart' as Messaging;
 
 void main() {
@@ -22,10 +22,11 @@ class MyApp extends StatelessWidget {
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => Providers.Champions()),
-          ChangeNotifierProvider(create: (_) => Providers.Search()),
           ChangeNotifierProvider(create: (_) => Providers.Auth()),
+          ChangeNotifierProvider(create: (_) => Providers.BountyStore()),
+          ChangeNotifierProvider(create: (_) => Providers.Champions()),
           ChangeNotifierProvider(create: (_) => Providers.Queue()),
+          ChangeNotifierProvider(create: (_) => Providers.Search()),
         ],
         child: Selector<Providers.Auth, ThemeMode>(
           selector: (_, authProvider) => authProvider.settings.themeMode,

@@ -20,6 +20,7 @@ class Champions extends StatefulWidget {
 class _ChampionsState extends State<Champions> {
   bool _init = true;
   bool _isLoading = true;
+  String search = '';
 
   @override
   void didChangeDependencies() {
@@ -39,7 +40,7 @@ class _ChampionsState extends State<Champions> {
   }
 
   Widget buildLoading() {
-    if (this._isLoading) return SizedBox.shrink();
+    if (this._isLoading) return SizedBox();
     return Center(
       child: SpinKitRing(
         lineWidth: 4,
@@ -58,8 +59,9 @@ class _ChampionsState extends State<Champions> {
         maxLength: 16,
         enableInteractiveSelection: true,
         style: textStyle,
+        onChanged: (search) => this.setState(() => this.search = search),
         decoration: InputDecoration(
-          hintText: 'Search champion...',
+          hintText: 'Search champion',
           counterText: "",
           hintStyle: textStyle,
           border: InputBorder.none,
@@ -67,7 +69,7 @@ class _ChampionsState extends State<Champions> {
             color: Colors.white,
             iconSize: 18,
             icon: Icon(Icons.clear),
-            onPressed: () {},
+            onPressed: () => this.setState(() => this.search = ''),
           ),
         ),
       ),
@@ -194,6 +196,18 @@ class _ChampionsState extends State<Champions> {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
+    // modify the champions list according to search
+    final newChampions = champions.where((champion) {
+      if (this.search == '') {
+        return true;
+      } else if (champion.name
+          .toUpperCase()
+          .contains(this.search.toUpperCase())) {
+        return true;
+      }
+      return false;
+    });
+
     return GridView.count(
       crossAxisCount: crossAxisCount,
       childAspectRatio: childAspectRatio,
@@ -201,7 +215,7 @@ class _ChampionsState extends State<Champions> {
       physics: BouncingScrollPhysics(),
       padding:
           EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20),
-      children: champions.map(
+      children: newChampions.map(
         (champion) {
           final playerChampion = Utilities.findPlayerChampion(
               playerChampions, champion.championId);

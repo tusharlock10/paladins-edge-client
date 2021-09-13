@@ -70,6 +70,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
   }
 
   Widget buildPlayerDetail(Models.Player player) {
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.all(10),
       child: ListView(
@@ -80,7 +81,50 @@ class _PlayerDetailState extends State<PlayerDetail> {
                 size: 36,
                 imageUrl: player.avatarUrl!,
               ),
-              Text('${player.name}')
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${player.name}',
+                    style: theme.textTheme.headline3?.copyWith(fontSize: 22),
+                  ),
+                  Text(
+                    '${player.title}',
+                    style: theme.textTheme.bodyText1?.copyWith(fontSize: 14),
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      player.ranked.rankIconUrl != null
+                          ? Widgets.FastImage(
+                              imageUrl: player.ranked.rankIconUrl!,
+                              height: 42,
+                              width: 42,
+                            )
+                          : SizedBox(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${player.ranked.rankName}',
+                            style: theme.textTheme.bodyText2
+                                ?.copyWith(fontSize: 11),
+                          ),
+                          Text(
+                            '${player.ranked.points} TP',
+                            style: theme.textTheme.bodyText1
+                                ?.copyWith(fontSize: 11),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              )
             ],
           ),
           this.buildObserve(),

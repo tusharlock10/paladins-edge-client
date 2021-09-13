@@ -237,6 +237,7 @@ class ChampionDetail extends StatelessWidget {
                               child: Wrap(
                                 children: [
                                   Widgets.TextChip(
+                                    hidden: talent.modifier=="None",
                                     spacing: 5,
                                     text: talent.modifier,
                                     color: Colors.teal,
@@ -287,8 +288,10 @@ class ChampionDetail extends StatelessWidget {
     return Column(
       children: champion.abilities?.map(
             (ability) {
-              final damageTypeChip =
-                  Constants.ChampionDamageType[ability.damageType];
+              final damageTypeChips =
+                  ability.damageType.split(',').map((damageType) {
+                return Constants.ChampionDamageType[damageType];
+              });
 
               return Card(
                 shape: RoundedRectangleBorder(
@@ -329,19 +332,23 @@ class ChampionDetail extends StatelessWidget {
                                   ),
                                 ),
                                 Wrap(children: [
-                                  Widgets.TextChip(
-                                    hidden: damageTypeChip == null,
-                                    color: damageTypeChip?['color'],
-                                    text: damageTypeChip?['name'],
-                                    icon: damageTypeChip?['icon'],
-                                  ),
-                                  Widgets.TextChip(
-                                      hidden: ability.cooldown == 0,
+                                  ...damageTypeChips.map((damageTypeChip) {
+                                    return Widgets.TextChip(
                                       spacing: 5,
-                                      text:
-                                          '${ability.cooldown.toInt().toString()} sec',
-                                      color: Colors.blueGrey,
-                                      icon: Icons.timelapse),
+                                      hidden: damageTypeChip == null,
+                                      color: damageTypeChip?['color'],
+                                      text: damageTypeChip?['name'],
+                                      icon: damageTypeChip?['icon'],
+                                    );
+                                  }),
+                                  Widgets.TextChip(
+                                    hidden: ability.cooldown == 0,
+                                    spacing: 5,
+                                    text:
+                                        '${ability.cooldown.toInt().toString()} sec',
+                                    color: Colors.blueGrey,
+                                    icon: Icons.timelapse,
+                                  ),
                                 ])
                               ],
                             ),
@@ -414,7 +421,7 @@ class ChampionDetail extends StatelessWidget {
         Utilities.findPlayerChampion(playerChampions, champion.championId);
 
     if (playerChampion == null) {
-      return SizedBox.shrink();
+      return SizedBox();
     }
 
     final playTimeString =

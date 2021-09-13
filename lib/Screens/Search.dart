@@ -47,21 +47,23 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildSearchBar(BuildContext context) {
+    final theme = Theme.of(context);
     final searchProvider =
         Provider.of<Providers.Search>(context, listen: false);
-    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
-          color: Colors.white,
-          fontSize: 16,
-        );
+    final textStyle = theme.textTheme.headline6?.copyWith(
+      color: Colors.white,
+      fontSize: 16,
+    );
     return SliverAppBar(
-      brightness: Theme.of(context).primaryColorBrightness,
+      brightness: theme.primaryColorBrightness,
       title: TextField(
         controller: this.textController,
         maxLength: 30,
         enableInteractiveSelection: true,
         style: textStyle,
+        cursorColor: theme.primaryColor,
         decoration: InputDecoration(
-          hintText: 'Search for a player...',
+          hintText: 'Search player',
           counterText: "",
           hintStyle: textStyle,
           border: InputBorder.none,

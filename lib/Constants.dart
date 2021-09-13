@@ -24,6 +24,9 @@ abstract class Urls {
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
+
+  // bountyStore
+  static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
 }
 
 abstract class StorageKeys {
@@ -137,6 +140,16 @@ final lightTheme = ThemeData(
       color: ThemeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
+    headline3: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: Colors.black54,
+    ),
     bodyText2: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.black,
@@ -207,6 +220,16 @@ final darkTheme = ThemeData(
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
+    headline3: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: Colors.white54,
+    ),
     bodyText2: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.white,
@@ -224,6 +247,7 @@ final darkTheme = ThemeData(
 );
 
 const Map<String, Map<String, dynamic>> ChampionDamageType = {
+  'Amplification': {"name": "Amplification", "color": Colors.pink},
   'Area Damage': {"name": "Area Damage", "color": Colors.red},
   'Crowd Control': {"name": "Crowd Control", "color": Colors.teal},
   'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
@@ -232,5 +256,7 @@ const Map<String, Map<String, dynamic>> ChampionDamageType = {
   'Protective': {"name": "Protective", "color": Colors.lightBlue},
   'Reveal': {"name": "Reveal", "color": Colors.amber},
   'Shield': {"name": "Shield", "color": Colors.indigo},
+  'Stance Change': {"name": "Stance Change", "color": Colors.pink},
   'Stealth': {"name": "Stealth", "color": Colors.blue},
+  'Ultimate': {"name": "Ultimate", "color": Colors.orange},
 };
