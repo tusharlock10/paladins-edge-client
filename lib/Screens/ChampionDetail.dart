@@ -72,7 +72,8 @@ class ChampionDetail extends StatelessWidget {
       brightness: Brightness.dark,
       forceElevated: true,
       elevation: 7,
-      pinned: true,
+      floating: true,
+      snap: true,
       backgroundColor: Constants.DarkThemeMaterialColor,
       leading: IconButton(
         iconSize: 20,
@@ -91,14 +92,19 @@ class ChampionDetail extends StatelessWidget {
         onPressed: () => Navigator.pop(context),
       ),
       expandedHeight: headerHeight,
-      flexibleSpace: Container(
-        alignment: Alignment.bottomRight,
-        child: Widgets.FastImage(
-          imageUrl: showSplash ? champion.splashUrl : champion.headerUrl,
-          height: headerHeight,
-          width: headerHeight * 2,
-          fit: BoxFit.cover,
-        ),
+      flexibleSpace: FlexibleSpaceBar(
+        background: showSplash
+            ? Widgets.FastImage(
+                imageUrl: champion.splashUrl,
+                fit: BoxFit.cover,
+              )
+            : Align(
+                alignment: Alignment.centerRight,
+                child: Widgets.FastImage(
+                  imageUrl: champion.headerUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
       ),
     );
   }
@@ -171,6 +177,28 @@ class ChampionDetail extends StatelessWidget {
     );
   }
 
+  Widget buildChampionStats(BuildContext context) {
+    final theme = Theme.of(context);
+    final champion =
+        ModalRoute.of(context)?.settings.arguments as Models.Champion;
+    var fallOffName = 'Range';
+
+    if (champion.damageFallOffRange > 0) {
+      fallOffName = 'Fall Off';
+    }
+
+    return Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      child: Column(
+        children: [
+          Text('Damage : ${champion.weaponDamage.toInt()}'),
+          Text('Fire Rate : ${champion.fireRate}/sec'),
+          Text('$fallOffName : ${champion.damageFallOffRange.toInt().abs()}'),
+        ],
+      ),
+    );
+  }
+
   Widget renderTitle(BuildContext context, String label) {
     final theme = Theme.of(context);
     return Align(
@@ -184,7 +212,7 @@ class ChampionDetail extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: 1.5,
-                color: theme.accentColor,
+                color: theme.colorScheme.secondary,
               ),
             ),
           ),
@@ -194,6 +222,39 @@ class ChampionDetail extends StatelessWidget {
               fontSize: 24,
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildLore(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final champion =
+        ModalRoute.of(context)?.settings.arguments as Models.Champion;
+
+    if (champion.lore == null) {
+      return SizedBox();
+    }
+
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 5,
+        ),
+        child: ExpandText(
+          champion.lore!,
+          maxLines: 8,
+          textAlign: TextAlign.justify,
+          style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                fontSize: 14,
+                color: textTheme.bodyText2?.color?.withOpacity(0.8),
+              ),
         ),
       ),
     );
@@ -237,7 +298,7 @@ class ChampionDetail extends StatelessWidget {
                               child: Wrap(
                                 children: [
                                   Widgets.TextChip(
-                                    hidden: talent.modifier=="None",
+                                    hidden: talent.modifier == "None",
                                     spacing: 5,
                                     text: talent.modifier,
                                     color: Colors.teal,
@@ -399,12 +460,13 @@ class ChampionDetail extends StatelessWidget {
         children: [
           Text(
             label,
-            style: theme.textTheme.headline1?.copyWith(fontSize: 18),
+            style: theme.textTheme.headline1
+                ?.copyWith(fontSize: 18, color: Colors.white),
           ),
           Text(
             text,
-            style: theme.textTheme.headline1
-                ?.copyWith(fontSize: 14, fontWeight: FontWeight.w200),
+            style: theme.textTheme.headline1?.copyWith(
+                fontSize: 14, fontWeight: FontWeight.w200, color: Colors.white),
           ),
         ],
       ),
@@ -421,7 +483,13 @@ class ChampionDetail extends StatelessWidget {
         Utilities.findPlayerChampion(playerChampions, champion.championId);
 
     if (playerChampion == null) {
-      return SizedBox();
+      return Padding(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'You have not played enough matches on this champion',
+          textAlign: TextAlign.center,
+        ),
+      );
     }
 
     final playTimeString =
@@ -518,13 +586,16 @@ class ChampionDetail extends StatelessWidget {
       // Use a delegate to build items as they're scrolled on screen.
       delegate: SliverChildListDelegate(
         [
-          buildChampionHeading(context),
+          this.buildChampionHeading(context),
+          this.buildChampionStats(context),
+          this.renderTitle(context, 'Lore'),
+          this.buildLore(context),
           this.renderTitle(context, 'Talents'),
-          buildTalents(context),
+          this.buildTalents(context),
           this.renderTitle(context, 'Abilities'),
-          buildAbilities(context),
+          this.buildAbilities(context),
           this.renderTitle(context, 'Your Stats'),
-          buildPlayerStats(context),
+          this.buildPlayerStats(context),
         ],
       ),
     );

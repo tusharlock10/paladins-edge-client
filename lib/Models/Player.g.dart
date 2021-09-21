@@ -201,3 +201,19 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'ranked': instance.ranked,
       'status': instance.status,
     };
+
+Friend _$FriendFromJson(Map<String, dynamic> json) {
+  return Friend(
+    playerId: json['playerId'] as String,
+    portalId: json['portalId'] as String,
+    portal: json['portal'] as String,
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$FriendToJson(Friend instance) => <String, dynamic>{
+      'playerId': instance.playerId,
+      'portalId': instance.portalId,
+      'portal': instance.portal,
+      'name': instance.name,
+    };

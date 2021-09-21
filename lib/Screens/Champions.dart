@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
@@ -40,10 +39,9 @@ class _ChampionsState extends State<Champions> {
   }
 
   Widget buildLoading() {
-    if (this._isLoading) return SizedBox();
     return Center(
-      child: SpinKitRing(
-        lineWidth: 4,
+      child: Widgets.LoadingIndicator(
+        size: 36,
         color: Constants.ThemeMaterialColor,
       ),
     );
