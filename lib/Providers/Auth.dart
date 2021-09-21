@@ -1,12 +1,13 @@
 import 'dart:convert';
+
+import 'package:crypto/crypto.dart' as Crypto;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:crypto/crypto.dart' as Crypto;
 
+import '../Constants.dart' as Constants;
 import '../Models/index.dart' as Models;
 import '../Utilities/index.dart' as Utilities;
-import '../Constants.dart' as Constants;
 
 // handles auth and user data
 class Auth with ChangeNotifier {

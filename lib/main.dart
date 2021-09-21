@@ -11,11 +11,13 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Messaging.Messaging.onMessage();
   Messaging.Messaging.onBackgroundMessage();
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return OverlaySupport.global(
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => Providers.Auth()),
           ChangeNotifierProvider(create: (_) => Providers.BountyStore()),
           ChangeNotifierProvider(create: (_) => Providers.Champions()),
+          ChangeNotifierProvider(create: (_) => Providers.Players()),
           ChangeNotifierProvider(create: (_) => Providers.Queue()),
           ChangeNotifierProvider(create: (_) => Providers.Search()),
         ],
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
           selector: (_, authProvider) => authProvider.settings.themeMode,
           builder: (_, themeMode, __) {
             return MaterialApp(
+              navigatorObservers: [],
               debugShowCheckedModeBanner: false,
               themeMode: themeMode,
               theme: Constants.lightTheme,

@@ -1,10 +1,10 @@
+export './BottomTabs.dart';
 export './ChampionDetail.dart';
 export './Champions.dart';
-export './Search.dart';
-export './BottomTabs.dart';
-export './PlayerDetail.dart';
-export './Login.dart';
 export './ConnectProfile.dart';
+export './Friends.dart';
 export './Home.dart';
-
-export './routes.dart';
+export './Login.dart';
+export './PlayerDetail.dart';
+export './Routes.dart';
+export './Search.dart';

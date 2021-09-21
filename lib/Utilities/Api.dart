@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:dio_firebase_performance/dio_firebase_performance.dart';
+
 import '../Constants.dart' as Constants;
 
 final api = Dio(
@@ -8,4 +10,5 @@ final api = Dio(
     receiveTimeout: Constants.ApiTimeout,
     connectTimeout: Constants.ApiTimeout,
   ),
-);
+)..interceptors.add(
+    Constants.IsDebug ? DioFirebasePerformanceInterceptor() : InterceptorsWrapper());

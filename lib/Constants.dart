@@ -20,7 +20,8 @@ abstract class Urls {
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
-  static const playerStatus = "/playerStatus"; // GET
+  static const playerStatus = "/players/playerStatus"; // GET
+  static const friendsList = "/players/friendsList"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
@@ -93,7 +94,6 @@ final lightTheme = ThemeData(
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
-  accentColor: DarkThemeMaterialColor.shade50,
   appBarTheme: AppBarTheme(
     elevation: 7,
     shadowColor: DarkThemeMaterialColor.withOpacity(0.75),
@@ -102,13 +102,11 @@ final lightTheme = ThemeData(
       color: Colors.white,
       size: 16,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-        fontWeight: FontWeight.bold,
-      ),
+    toolbarTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontWeight: FontWeight.bold,
     ),
   ),
   cardTheme: CardTheme(
@@ -121,7 +119,6 @@ final lightTheme = ThemeData(
     selectionColor: ThemeMaterialColor.shade100,
     cursorColor: ThemeMaterialColor.shade100,
   ),
-  primarySwatch: ThemeMaterialColor,
   brightness: Brightness.light,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -164,6 +161,10 @@ final lightTheme = ThemeData(
     selectedItemColor: ThemeMaterialColor.shade400,
     unselectedItemColor: ThemeMaterialColor.shade400,
   ),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: ThemeMaterialColor,
+    brightness: Brightness.light,
+  ).copyWith(secondary: DarkThemeMaterialColor.shade50),
 );
 
 final darkTheme = ThemeData(
@@ -172,7 +173,6 @@ final darkTheme = ThemeData(
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.dark,
   scaffoldBackgroundColor: DarkThemeMaterialColor,
-  accentColor: ThemeMaterialColor.shade50,
   appBarTheme: AppBarTheme(
     elevation: 7,
     shadowColor: DarkThemeMaterialColor.shade50,
@@ -182,13 +182,11 @@ final darkTheme = ThemeData(
       color: Colors.white,
       size: 16,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-        fontWeight: FontWeight.bold,
-      ),
+    toolbarTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontWeight: FontWeight.bold,
     ),
   ),
   cardTheme: CardTheme(
@@ -201,7 +199,6 @@ final darkTheme = ThemeData(
     selectionColor: Color(0xff4d5c63),
     cursorColor: Color(0xff4d5c63),
   ),
-  primarySwatch: DarkThemeMaterialColor,
   brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -244,6 +241,10 @@ final darkTheme = ThemeData(
     selectedItemColor: Color(0xff81b2c7),
     unselectedItemColor: Color(0xff658999),
   ),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: DarkThemeMaterialColor,
+    brightness: Brightness.dark,
+  ).copyWith(secondary: ThemeMaterialColor.shade50),
 );
 
 const Map<String, Map<String, dynamic>> ChampionDamageType = {

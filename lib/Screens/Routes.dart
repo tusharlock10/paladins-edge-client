@@ -9,4 +9,5 @@ final routes = {
   Screens.PlayerDetail.routeName: (_) => Screens.PlayerDetail(),
   Screens.ConnectProfile.routeName: (_) => Screens.ConnectProfile(),
   Screens.Home.routeName: (_) => Screens.Home(),
+  Screens.Friends.routeName: (_) => Screens.Friends(),
 };
