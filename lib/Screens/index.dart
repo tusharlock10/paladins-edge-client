@@ -6,5 +6,5 @@ export './Friends.dart';
 export './Home.dart';
 export './Login.dart';
 export './PlayerDetail.dart';
+export './Routes.dart';
 export './Search.dart';
-export './routes.dart';
