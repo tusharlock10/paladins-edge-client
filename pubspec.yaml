@@ -44,7 +44,6 @@ dependencies:
   hive_flutter: ^1.1.0
   crypto: ^3.0.1
   overlay_support: ^1.2.1
-  flutter_image: ^4.1.0
   expand_widget: ^2.1.0
   
 dev_dependencies:
