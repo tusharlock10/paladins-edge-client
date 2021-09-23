@@ -21,7 +21,11 @@ class AppDrawer extends StatelessWidget {
         TextButton(
           onPressed:
               Provider.of<Providers.Auth>(context, listen: false).toggleTheme,
-          child: Text('ChangeTheme'),
+          child: Text('Change Theme'),
+        ),
+        TextButton(
+          onPressed: ()=>Navigator.of(context).pushNamed(Screens.Friends.routeName),
+          child: Text('Friends'),
         ),
       ]),
     );

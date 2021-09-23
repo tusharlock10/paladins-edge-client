@@ -39,7 +39,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
     }
     super.didChangeDependencies();
   }
-  
+
   Widget buildLoading() {
     return Center(
       child: Widgets.LoadingIndicator(
@@ -51,18 +51,26 @@ class _PlayerDetailState extends State<PlayerDetail> {
   Widget buildObserve() {
     final authProvider = Provider.of<Providers.Auth>(context);
     final player = Provider.of<Providers.Search>(context).playerData;
+    final isObserving =
+        authProvider.user?.observeList.contains(player?.playerId) == true;
 
-    return IconButton(
-      icon: Icon(
-        authProvider.user?.observeList.contains(player?.playerId) == true
-            ? Icons.visibility_off_outlined
-            : Icons.visibility_outlined,
-      ),
+    final textTheme = Theme.of(context).textTheme.headline6?.copyWith(
+        fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
+    final buttonColor = isObserving ? Colors.red : Colors.green;
+
+    return ElevatedButton(
       onPressed: () => authProvider.observePlayer(player!.playerId),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(buttonColor),
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+      ),
+      child: Text(isObserving ? 'Stop Observing' : 'Start Observing',
+          style: textTheme),
     );
   }
 
   Widget buildPlayerDetail(Models.Player player) {
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.all(10),
       child: ListView(
@@ -73,7 +81,50 @@ class _PlayerDetailState extends State<PlayerDetail> {
                 size: 36,
                 imageUrl: player.avatarUrl!,
               ),
-              Text('${player.name}')
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${player.name}',
+                    style: theme.textTheme.headline3?.copyWith(fontSize: 22),
+                  ),
+                  Text(
+                    '${player.title}',
+                    style: theme.textTheme.bodyText1?.copyWith(fontSize: 14),
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      player.ranked.rankIconUrl != null
+                          ? Widgets.FastImage(
+                              imageUrl: player.ranked.rankIconUrl!,
+                              height: 42,
+                              width: 42,
+                            )
+                          : SizedBox(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${player.ranked.rankName}',
+                            style: theme.textTheme.bodyText2
+                                ?.copyWith(fontSize: 11),
+                          ),
+                          Text(
+                            '${player.ranked.points} TP',
+                            style: theme.textTheme.bodyText1
+                                ?.copyWith(fontSize: 11),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              )
             ],
           ),
           this.buildObserve(),

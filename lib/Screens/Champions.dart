@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../Widgets/index.dart' as Widgets;
-import '../Providers/index.dart' as Providers;
-import '../Models/index.dart' as Models;
 import './index.dart' as Screens;
 import '../Constants.dart' as Constants;
+import '../Models/index.dart' as Models;
+import '../Providers/index.dart' as Providers;
+import '../Utilities/index.dart' as Utilities;
+import '../Widgets/index.dart' as Widgets;
 
 class Champions extends StatefulWidget {
   static const routeName = '/champions';
@@ -19,27 +19,75 @@ class Champions extends StatefulWidget {
 class _ChampionsState extends State<Champions> {
   bool _init = true;
   bool _isLoading = true;
+  String search = '';
 
   @override
   void didChangeDependencies() {
     final championsProvider =
         Provider.of<Providers.Champions>(context, listen: false);
+    final authProvider = Provider.of<Providers.Auth>(context, listen: false);
     if (this._init) {
       this._init = false;
-      championsProvider.fetchChampions().then((_) {
+      Future.wait([
+        championsProvider.fetchChampions(),
+        championsProvider.fetchPlayerChampions(authProvider.player!.playerId)
+      ]).then((_) {
         this.setState(() => this._isLoading = false);
       });
     }
     super.didChangeDependencies();
   }
 
+  Widget buildLoading() {
+    return Center(
+      child: Widgets.LoadingIndicator(
+        size: 36,
+        color: Constants.ThemeMaterialColor,
+      ),
+    );
+  }
+
+  Widget buildSearchBar() {
+    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
+          color: Colors.white,
+          fontSize: 16,
+        );
+    return AppBar(
+      title: TextField(
+        maxLength: 16,
+        enableInteractiveSelection: true,
+        style: textStyle,
+        onChanged: (search) => this.setState(() => this.search = search),
+        decoration: InputDecoration(
+          hintText: 'Search champion',
+          counterText: "",
+          hintStyle: textStyle,
+          border: InputBorder.none,
+          suffixIcon: IconButton(
+            color: Colors.white,
+            iconSize: 18,
+            icon: Icon(Icons.clear),
+            onPressed: () => this.setState(() => this.search = ''),
+          ),
+        ),
+      ),
+      brightness: Theme.of(context).primaryColorBrightness,
+    );
+  }
+
   Widget buildChampionItem(
     BuildContext context,
     Models.Champion champion,
+    Models.PlayerChampion? playerChampion,
     double height,
     double width,
   ) {
     final theme = Theme.of(context);
+    MaterialColor levelColor = Colors.blueGrey;
+    if (playerChampion?.level != null && playerChampion!.level > 49) {
+      levelColor = Colors.orange;
+    }
+
     return Container(
       width: width,
       height: height,
@@ -89,6 +137,12 @@ class _ChampionsState extends State<Champions> {
                           ),
                           Widgets.TextChip(
                             spacing: 5,
+                            hidden: playerChampion?.level == null,
+                            text: 'Level ${playerChampion?.level.toString()}',
+                            color: levelColor,
+                          ),
+                          Widgets.TextChip(
+                            spacing: 5,
                             hidden: !champion.onFreeRotation,
                             text: 'Free',
                             icon: Icons.rotate_right,
@@ -115,7 +169,10 @@ class _ChampionsState extends State<Champions> {
   }
 
   Widget buildChampionsList(BuildContext context) {
-    final champions = Provider.of<Providers.Champions>(context).champions;
+    final championsProvider =
+        Provider.of<Providers.Champions>(context, listen: false);
+    final champions = championsProvider.champions;
+    final playerChampions = championsProvider.playerChampions;
     final size = MediaQuery.of(context).size;
     final itemHeight = 120.0;
     int crossAxisCount;
@@ -137,6 +194,18 @@ class _ChampionsState extends State<Champions> {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
+    // modify the champions list according to search
+    final newChampions = champions.where((champion) {
+      if (this.search == '') {
+        return true;
+      } else if (champion.name
+          .toUpperCase()
+          .contains(this.search.toUpperCase())) {
+        return true;
+      }
+      return false;
+    });
+
     return GridView.count(
       crossAxisCount: crossAxisCount,
       childAspectRatio: childAspectRatio,
@@ -144,11 +213,14 @@ class _ChampionsState extends State<Champions> {
       physics: BouncingScrollPhysics(),
       padding:
           EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20),
-      children: champions.map(
+      children: newChampions.map(
         (champion) {
+          final playerChampion = Utilities.findPlayerChampion(
+              playerChampions, champion.championId);
           return this.buildChampionItem(
             context,
             champion,
+            playerChampion,
             itemHeight,
             itemWidth,
           );
@@ -160,19 +232,12 @@ class _ChampionsState extends State<Champions> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      AppBar(
-        title: Text('Champions'),
-        brightness: Theme.of(context).primaryColorBrightness,
-      ),
+      this.buildSearchBar(),
       Expanded(
-          child: this._isLoading
-              ? Center(
-                  child: SpinKitRing(
-                    lineWidth: 4,
-                    color: Constants.ThemeMaterialColor,
-                  ),
-                )
-              : buildChampionsList(context))
+        child: this._isLoading
+            ? this.buildLoading()
+            : this.buildChampionsList(context),
+      )
     ]);
   }
 }

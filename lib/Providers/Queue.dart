@@ -9,8 +9,6 @@ import '../Constants.dart' as Constants;
 class Queue with ChangeNotifier {
   List<Models.Queue> queues = [];
 
-  Queue();
-
   Future<void> getQueueDetails() async {
     final response = await Utilities.api.get<List>(Constants.Urls.queueDetails);
     if (response.data == null) return;

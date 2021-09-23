@@ -34,6 +34,7 @@ class Ripple extends StatelessWidget {
       child: ClipRRect(
         borderRadius: this.borderRadius,
         child: Material(
+          color: Colors.transparent,
           child: InkWell(
             splashColor: this.splashColor,
             onTap: this.onTap,

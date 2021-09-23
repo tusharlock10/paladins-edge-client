@@ -1,7 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
-import "./Utilities/index.dart" as Utilities;
 
 abstract class Urls {
   // root
@@ -16,13 +15,19 @@ abstract class Urls {
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
+  static const playerChampionsData = "/champions/playerChampionsData"; // GET
 
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
+  static const playerStatus = "/players/playerStatus"; // GET
+  static const friendsList = "/players/friendsList"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
+
+  // bountyStore
+  static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
 }
 
 abstract class StorageKeys {
@@ -80,14 +85,15 @@ abstract class TypeIds {
   static const User = 6;
   static const Settings = 7;
   static const Champion_Tag = 8;
+  static const PlayerChampion = 9;
 }
 
 final lightTheme = ThemeData(
+  primaryColor: ThemeMaterialColor,
   primaryColorLight: ThemeMaterialColor,
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
-  accentColor: DarkThemeMaterialColor.shade50,
   appBarTheme: AppBarTheme(
     elevation: 7,
     shadowColor: DarkThemeMaterialColor.withOpacity(0.75),
@@ -96,13 +102,11 @@ final lightTheme = ThemeData(
       color: Colors.white,
       size: 16,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-        fontWeight: FontWeight.bold,
-      ),
+    toolbarTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontWeight: FontWeight.bold,
     ),
   ),
   cardTheme: CardTheme(
@@ -115,7 +119,6 @@ final lightTheme = ThemeData(
     selectionColor: ThemeMaterialColor.shade100,
     cursorColor: ThemeMaterialColor.shade100,
   ),
-  primarySwatch: ThemeMaterialColor,
   brightness: Brightness.light,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -134,9 +137,23 @@ final lightTheme = ThemeData(
       color: ThemeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
+    headline3: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: Colors.black54,
+    ),
     bodyText2: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.black,
+    ),
+    subtitle1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 12,
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -144,14 +161,18 @@ final lightTheme = ThemeData(
     selectedItemColor: ThemeMaterialColor.shade400,
     unselectedItemColor: ThemeMaterialColor.shade400,
   ),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: ThemeMaterialColor,
+    brightness: Brightness.light,
+  ).copyWith(secondary: DarkThemeMaterialColor.shade50),
 );
 
 final darkTheme = ThemeData(
+  primaryColor: DarkThemeMaterialColor,
   primaryColorLight: ThemeMaterialColor,
   primaryColorDark: DarkThemeMaterialColor,
   primaryColorBrightness: Brightness.dark,
   scaffoldBackgroundColor: DarkThemeMaterialColor,
-  accentColor: ThemeMaterialColor.shade50,
   appBarTheme: AppBarTheme(
     elevation: 7,
     shadowColor: DarkThemeMaterialColor.shade50,
@@ -161,13 +182,11 @@ final darkTheme = ThemeData(
       color: Colors.white,
       size: 16,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-        fontWeight: FontWeight.bold,
-      ),
+    toolbarTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontWeight: FontWeight.bold,
     ),
   ),
   cardTheme: CardTheme(
@@ -180,7 +199,6 @@ final darkTheme = ThemeData(
     selectionColor: Color(0xff4d5c63),
     cursorColor: Color(0xff4d5c63),
   ),
-  primarySwatch: DarkThemeMaterialColor,
   brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -199,9 +217,23 @@ final darkTheme = ThemeData(
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
+    headline3: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      color: Colors.white54,
+    ),
     bodyText2: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       color: Colors.white,
+    ),
+    subtitle1: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 12,
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -209,16 +241,23 @@ final darkTheme = ThemeData(
     selectedItemColor: Color(0xff81b2c7),
     unselectedItemColor: Color(0xff658999),
   ),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: DarkThemeMaterialColor,
+    brightness: Brightness.dark,
+  ).copyWith(secondary: ThemeMaterialColor.shade50),
 );
 
 const Map<String, Map<String, dynamic>> ChampionDamageType = {
+  'Amplification': {"name": "Amplification", "color": Colors.pink},
   'Area Damage': {"name": "Area Damage", "color": Colors.red},
-  'Crowd Control': {"name": "Crowd_Control", "color": Colors.teal},
+  'Crowd Control': {"name": "Crowd Control", "color": Colors.teal},
   'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
   'Heal': {"name": "Heal", "color": Colors.green},
   'Movement': {"name": "Movement", "color": Colors.amber},
   'Protective': {"name": "Protective", "color": Colors.lightBlue},
   'Reveal': {"name": "Reveal", "color": Colors.amber},
   'Shield': {"name": "Shield", "color": Colors.indigo},
+  'Stance Change': {"name": "Stance Change", "color": Colors.pink},
   'Stealth': {"name": "Stealth", "color": Colors.blue},
+  'Ultimate': {"name": "Ultimate", "color": Colors.orange},
 };

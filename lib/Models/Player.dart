@@ -1,5 +1,5 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../Constants.dart' show TypeIds;
 
@@ -97,4 +97,22 @@ class Player {
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerToJson(this);
+}
+
+@JsonSerializable()
+class Friend {
+  final String playerId;
+  final String portalId;
+  final String portal;
+  final String name;
+
+  Friend({
+    required this.playerId,
+    required this.portalId,
+    required this.portal,
+    required this.name,
+  });
+
+  factory Friend.fromJson(Map<String, dynamic> json) => _$FriendFromJson(json);
+  Map<String, dynamic> toJson() => _$FriendToJson(this);
 }

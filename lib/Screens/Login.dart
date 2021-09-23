@@ -1,15 +1,16 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
-import '../Providers/index.dart' as Providers;
 import '../Constants.dart' as Constants;
-import '../Widgets/index.dart' as Widgets;
+import '../Providers/index.dart' as Providers;
 import '../Utilities/index.dart' as Utilities;
+import '../Widgets/index.dart' as Widgets;
 
 class Login extends StatefulWidget {
   static const routeName = '/';
@@ -36,6 +37,9 @@ class _LoginState extends State<Login> {
   Future<void> initApp() async {
     await Utilities.Database.initDatabase();
     await Firebase.initializeApp();
+    await FirebasePerformance.instance
+        .setPerformanceCollectionEnabled(!Constants.IsDebug);
+    await FirebaseAnalytics().setAnalyticsCollectionEnabled(!Constants.IsDebug);
 
     this.setState(() => this._isInitialized = true);
 
@@ -67,6 +71,7 @@ class _LoginState extends State<Login> {
     if (this._isLoggingIn) {
       return;
     }
+
     final authProvider = Provider.of<Providers.Auth>(context, listen: false);
 
     this.setState(() => this._isLoggingIn = true);
@@ -137,22 +142,23 @@ class _LoginState extends State<Login> {
       margin: EdgeInsets.only(bottom: 25, left: 15, right: 15),
       width: width - 30,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF202020).withOpacity(0.25),
-              blurRadius: 5,
-              offset: Offset(0, 5),
-            )
-          ]),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF202020).withOpacity(0.25),
+            blurRadius: 5,
+            offset: Offset(0, 5),
+          )
+        ],
+      ),
       borderRadius: BorderRadius.circular(15),
       onTap: () => this.onGoogleSignIn(context),
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(
         children: [
           this._isLoggingIn
-              ? SpinKitRing(
+              ? Widgets.LoadingIndicator(
                   lineWidth: 3,
                   size: 36,
                   color: Constants.ThemeMaterialColor,
