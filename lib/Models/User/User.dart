@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'User.g.dart';
 
@@ -27,8 +27,7 @@ class User {
   final String uid; // uid provided by the oauth provider
 
   @HiveField(7)
-  List<String>
-      observeList; // the connected observe id for observing players
+  List<String> observeList; // the connected observe id for observing players
 
   User({
     required this.id,

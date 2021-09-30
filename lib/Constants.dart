@@ -46,11 +46,11 @@ abstract class TypeIds {
   // when adding another type id, add it in the
   // bottom with a unique id, do not change the value of the filds above it
   static const Champion = 0;
-  static const Champion_Ability = 1;
-  static const Champion_Talent = 2;
-  static const Champion_Card = 3;
+  static const ChampionAbility = 1;
+  static const ChampionTalent = 2;
+  static const ChampionCard = 3;
   static const Player = 4;
-  static const Player_Ranked = 5;
+  static const PlayerRanked = 5;
   static const User = 6;
   static const Settings = 7;
   static const Champion_Tag = 8;

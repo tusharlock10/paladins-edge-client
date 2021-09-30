@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../Api/index.dart' as Api;
 import '../Constants.dart' as Constants;
 import '../Models/index.dart' as Models;
 import '../Utilities/index.dart' as Utilities;
@@ -55,20 +56,19 @@ class Auth with ChangeNotifier {
     final firebaseUser =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    final response = await Utilities.api.post(Constants.Urls.login, data: {
+    final response = await Api.AuthRequests.login({
       'name': firebaseUser.user?.displayName,
       'email': firebaseUser.user?.email,
       'photoUrl': firebaseUser.user?.photoURL,
       'uid': firebaseUser.user?.uid,
     });
-    // response = {user, player}
     // user will have token
     // If player is null, navigate to ConnectProfile
 
-    this.user = Models.User.fromJson(response.data['user']);
+    this.user = response.user;
     Utilities.Database.setUser(this.user!);
-    if (response.data['player'] != null) {
-      this.player = Models.Player.fromJson(response.data['player']);
+    if (response.player != null) {
+      this.player = response.player;
       Utilities.Database.setPlayer(this.player!);
     }
 

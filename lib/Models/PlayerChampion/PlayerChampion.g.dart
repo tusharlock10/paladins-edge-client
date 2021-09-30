@@ -6,22 +6,21 @@ part of 'PlayerChampion.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PlayerChampion _$PlayerChampionFromJson(Map<String, dynamic> json) {
-  return PlayerChampion(
-    playerId: json['playerId'] as String,
-    championId: json['championId'] as String,
-    totalAssists: json['totalAssists'] as int,
-    totalDeaths: json['totalDeaths'] as int,
-    totalCredits: json['totalCredits'] as int,
-    totalKills: json['totalKills'] as int,
-    lastPlayed: DateTime.parse(json['lastPlayed'] as String),
-    losses: json['losses'] as int,
-    wins: json['wins'] as int,
-    playTime: json['playTime'] as int,
-    level: json['level'] as int,
-    totalXP: json['totalXP'] as int,
-  );
-}
+PlayerChampion _$PlayerChampionFromJson(Map<String, dynamic> json) =>
+    PlayerChampion(
+      playerId: json['playerId'] as String,
+      championId: json['championId'] as String,
+      totalAssists: json['totalAssists'] as int,
+      totalDeaths: json['totalDeaths'] as int,
+      totalCredits: json['totalCredits'] as int,
+      totalKills: json['totalKills'] as int,
+      lastPlayed: DateTime.parse(json['lastPlayed'] as String),
+      losses: json['losses'] as int,
+      wins: json['wins'] as int,
+      playTime: json['playTime'] as int,
+      level: json['level'] as int,
+      totalXP: json['totalXP'] as int,
+    );
 
 Map<String, dynamic> _$PlayerChampionToJson(PlayerChampion instance) =>
     <String, dynamic>{
