@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
-import './Constants.dart' as Constants;
 import './Providers/index.dart' as Providers;
 import './Screens/index.dart' as Screens;
 import './Utilities/Messaging.dart' as Messaging;
+import 'AppTheme.dart' as AppTheme;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
               navigatorObservers: [],
               debugShowCheckedModeBanner: false,
               themeMode: themeMode,
-              theme: Constants.lightTheme,
-              darkTheme: Constants.darkTheme,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
               routes: Screens.routes,
             );
           },

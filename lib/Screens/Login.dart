@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
+import '../AppTheme.dart' as AppTheme;
 import '../Constants.dart' as Constants;
 import '../Providers/index.dart' as Providers;
 import '../Utilities/index.dart' as Utilities;
@@ -161,7 +162,7 @@ class _LoginState extends State<Login> {
               ? Widgets.LoadingIndicator(
                   lineWidth: 3,
                   size: 36,
-                  color: Constants.ThemeMaterialColor,
+                  color: AppTheme.ThemeMaterialColor,
                 )
               : Image.asset(
                   'assets/icons/google-colored.png',

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
+import '../AppTheme.dart' as AppTheme;
 import '../Constants.dart' as Constants;
 import '../Models/index.dart' as Models;
 import '../Providers/index.dart' as Providers;
@@ -74,7 +75,7 @@ class ChampionDetail extends StatelessWidget {
       elevation: 7,
       floating: true,
       snap: true,
-      backgroundColor: Constants.DarkThemeMaterialColor,
+      backgroundColor: AppTheme.DarkThemeMaterialColor,
       leading: IconButton(
         iconSize: 20,
         hoverColor: Colors.blueGrey.shade100.withOpacity(0.5),

@@ -23,7 +23,7 @@ class LoadingIndicator extends StatelessWidget {
       padding: this.padding,
       child: SpinKitRing(
         lineWidth: this.lineWidth ?? 3,
-        color: this.color ?? Theme.of(context).primaryColor,
+        color: this.color ?? Theme.of(context).colorScheme.secondary,
         size: this.size,
       ),
     );

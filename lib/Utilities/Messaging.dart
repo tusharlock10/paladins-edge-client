@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-import '../Constants.dart' as Constants;
+import '../AppTheme.dart' as AppTheme;
 
 abstract class Messaging {
   static FirebaseMessaging? messaging;
@@ -39,7 +39,7 @@ abstract class Messaging {
         Text("${message.notification?.title}"),
         trailing: Image.network(message.notification!.android!.imageUrl!),
         duration: Duration(seconds: 6),
-        background: Constants.ThemeMaterialColor,
+        background: AppTheme.ThemeMaterialColor,
       );
       print('Foreground ${message.notification?.android?.imageUrl}');
     });

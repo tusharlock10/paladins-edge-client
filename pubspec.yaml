@@ -23,11 +23,11 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  flutter:
+    sdk: flutter
   dio: ^4.0.0
   dio_http2_adapter: ^2.0.0
   dio_firebase_performance: ^0.3.0
-  flutter:
-    sdk: flutter
   json_annotation: ^4.1.0
   provider: ^6.0.0
   google_fonts: ^2.1.0
@@ -45,7 +45,7 @@ dependencies:
   crypto: ^3.0.1
   overlay_support: ^1.2.1
   expand_widget: ^2.1.0
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
