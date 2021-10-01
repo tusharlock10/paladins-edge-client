@@ -34,7 +34,7 @@ workflows:
     scripts:
       - |
         # generate release notes
-        git log -1 --stat > release_notes.txt
+        git log -1 --pretty="- Commit %h%n- Date %cs%n- %s" > release_notes.txt
       - |
         # set up key.properties
         echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class FastImage extends StatelessWidget {
   final String imageUrl;
   final double? height;

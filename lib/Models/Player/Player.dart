@@ -1,13 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'Player.g.dart';
 
-@HiveType(typeId: TypeIds.Player_Ranked)
+@HiveType(typeId: TypeIds.PlayerRanked)
 @JsonSerializable()
-class _Ranked {
+class Ranked {
   @HiveField(0)
   final int? wins; // number of wins in ranked
   @HiveField(1)
@@ -22,7 +22,7 @@ class _Ranked {
   @HiveField(5)
   final int? points; // the tp of the player at the current ranks
 
-  _Ranked({
+  Ranked({
     required this.wins,
     required this.looses,
     required this.rank,
@@ -31,9 +31,8 @@ class _Ranked {
     required this.points,
   });
 
-  factory _Ranked.fromJson(Map<String, dynamic> json) =>
-      _$_RankedFromJson(json);
-  Map<String, dynamic> toJson() => _$_RankedToJson(this);
+  factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);
+  Map<String, dynamic> toJson() => _$RankedToJson(this);
 }
 
 @HiveType(typeId: TypeIds.Player)
@@ -72,7 +71,7 @@ class Player {
   final DateTime? lastLoginDate; // the date at which the user logged in last
 
   @HiveField(14)
-  final _Ranked ranked; // ranked details of the player
+  final Ranked ranked; // ranked details of the player
   @HiveField(15)
   final String? status;
 

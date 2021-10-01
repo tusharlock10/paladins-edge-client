@@ -26,7 +26,8 @@ class TextChip extends StatelessWidget {
     final color2 = isLightTheme ? this.color!.shade900 : this.color!.shade50;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: this.spacing! / 2, vertical: this.spacing! / 2),
+      margin: EdgeInsets.symmetric(
+          horizontal: this.spacing! / 2, vertical: this.spacing! / 2),
       padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),

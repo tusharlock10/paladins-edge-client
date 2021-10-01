@@ -22,9 +22,9 @@ MaterialColor createMaterialColor(Color color) {
   });
 
   swatch[50] = Color.fromRGBO(
-    r+((255-r)*0.75).round(),
-    g+((255-g)*0.75).round(),
-    b+((255-b)*0.75).round(),
+    r + ((255 - r) * 0.75).round(),
+    g + ((255 - g) * 0.75).round(),
+    b + ((255 - b) * 0.75).round(),
     1,
   );
 

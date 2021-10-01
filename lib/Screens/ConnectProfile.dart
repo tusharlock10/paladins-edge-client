@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
+import '../Api/index.dart' as Api;
 import '../Providers/index.dart' as Providers;
 import '../Widgets/index.dart' as Widgets;
 
@@ -19,7 +20,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   int _step = 0; // at which step of the proccess the user is at
   String _otp = "MAIN" // (Random().nextInt(899999) + 100000)
       .toString(); // generates a random otp for verification
-  Map<String, dynamic>? _selectedPlayer; // the player selected in search step
+  Api.LowerSearch? _selectedPlayer; // the player selected in search step
 
   void onSearch(BuildContext context, String playerName) async {
     // exactMatch will always be false
@@ -39,11 +40,12 @@ class _ConnectProfileState extends State<ConnectProfile> {
   }
 
   void onVerify(BuildContext context) async {
+    if (this._selectedPlayer == null) return;
     this.setState(() => this._isVerifying = true);
     final authProvider = Provider.of<Providers.Auth>(context, listen: false);
     final verified = await authProvider.claimPlayer(
       this._otp,
-      this._selectedPlayer?['playerId'],
+      this._selectedPlayer!.playerId,
     );
     if (verified) {
       this.setState(() {
@@ -147,7 +149,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   }
 
   Widget buildSearchItem(
-    Map<String, dynamic> searchItem,
+    Api.LowerSearch searchItem,
   ) {
     final themeData = Theme.of(context);
     return ListTile(
@@ -156,7 +158,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
         this._selectedPlayer = searchItem;
       }),
       title: Text(
-        '${searchItem['name']}',
+        '${searchItem.name}',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: themeData.primaryColor,
@@ -175,7 +177,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
             ),
           ),
           Text(
-            '${searchItem['playerId']}',
+            '${searchItem.playerId}',
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey.shade700,
@@ -223,7 +225,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
             ),
             children: [
               TextSpan(
-                  text: '${this._selectedPlayer?['name']}',
+                  text: '${this._selectedPlayer?.name}',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
