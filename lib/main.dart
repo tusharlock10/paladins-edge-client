@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
+import './AppTheme.dart' as AppTheme;
 import './Providers/index.dart' as Providers;
 import './Screens/index.dart' as Screens;
 import './Utilities/Messaging.dart' as Messaging;
-import 'AppTheme.dart' as AppTheme;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

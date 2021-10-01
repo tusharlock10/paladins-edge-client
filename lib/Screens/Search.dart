@@ -4,6 +4,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
+import '../Api/index.dart' as Api;
 import '../Models/index.dart' as Models;
 import '../Providers/index.dart' as Providers;
 
@@ -118,10 +119,10 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildLowerSearchItem(
-    Map<String, dynamic> searchItem,
+    Api.LowerSearch searchItem,
   ) {
     return ListTile(
-      title: Text('${searchItem['name']}',
+      title: Text('${searchItem.name}',
           style: Theme.of(context).primaryTextTheme.headline6),
     );
   }

@@ -1,3 +1,4 @@
+export './ActiveMatch/ActiveMatch.dart' show ActiveMatch;
 export './BountyStore/BountyStore.dart' show BountyStore;
 export './Champion/Champion.dart'
     show Champion, ChampionAdapter, TalentAdapter, AbilityAdapter, CardAdapter;

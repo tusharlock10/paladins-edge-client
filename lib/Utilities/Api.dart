@@ -3,6 +3,8 @@ import 'package:dio_firebase_performance/dio_firebase_performance.dart';
 
 import '../Constants.dart' as Constants;
 
+// api singleton
+// authourization header is set by authProvider
 final api = Dio(
   BaseOptions(
     baseUrl: Constants.BaseUrl,
@@ -11,4 +13,7 @@ final api = Dio(
     connectTimeout: Constants.ApiTimeout,
   ),
 )..interceptors.add(
-    Constants.IsDebug ? DioFirebasePerformanceInterceptor() : InterceptorsWrapper());
+    Constants.IsDebug
+        ? DioFirebasePerformanceInterceptor()
+        : InterceptorsWrapper(),
+  );

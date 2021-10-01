@@ -56,20 +56,24 @@ class Auth with ChangeNotifier {
     final firebaseUser =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    final response = await Api.AuthRequests.login({
-      'name': firebaseUser.user?.displayName,
-      'email': firebaseUser.user?.email,
-      'photoUrl': firebaseUser.user?.photoURL,
-      'uid': firebaseUser.user?.uid,
-    });
+    if (firebaseUser.user == null) {
+      return false;
+    }
+
+    final response = await Api.AuthRequests.login(
+      uid: firebaseUser.user!.uid,
+      email: firebaseUser.user!.email,
+      name: firebaseUser.user!.displayName,
+      photoUrl: firebaseUser.user!.photoURL,
+    );
     // user will have token
     // If player is null, navigate to ConnectProfile
 
     this.user = response.user;
-    Utilities.Database.setUser(this.user!);
+    Utilities.Database.setUser(response.user);
     if (response.player != null) {
       this.player = response.player;
-      Utilities.Database.setPlayer(this.player!);
+      Utilities.Database.setPlayer(response.player!);
     }
 
     Utilities.api.options.headers["authorization"] = this.user!.token;
@@ -83,11 +87,13 @@ class Auth with ChangeNotifier {
     // 2) Signout from google
     // 3) Notify backend about logout
     // 4) remove user from provider
+    // 5) remove player from provider
 
     Utilities.Database.clear();
     await GoogleSignIn().signOut();
-    await Utilities.api.post(Constants.Urls.logout);
+    await Api.AuthRequests.logout();
     this.user = null;
+    this.player = null;
   }
 
   void sendFcmToken(String fcmToken) async {
@@ -95,7 +101,7 @@ class Auth with ChangeNotifier {
     // for sending notification fcm token is use only
     // for the server, and not stored on the app/ browser
 
-    Utilities.api.post(Constants.Urls.fcmToken, data: {'fcmToken': fcmToken});
+    Api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
   Future<bool> claimPlayer(String otp, String playerId) async {
@@ -105,22 +111,19 @@ class Auth with ChangeNotifier {
     final otpHash =
         Crypto.sha1.convert(utf8.encode('${Constants.OtpSalt}$otp')).toString();
 
-    final response = await Utilities.api.post(Constants.Urls.claimPlayer,
-        data: {
-          'otpHash': otpHash,
-          'playerId': playerId
-        }); // response.data = {verified:bool, user:User, player:Player}
-    if (response.data['verified']) {
+    final response = await Api.AuthRequests.claimPlayer(
+        otpHash: otpHash, playerId: playerId);
+
+    if (response.verified) {
       // if verified, then save the user and player in the provider
 
-      response.data['user']['token'] = this.user!.token;
-      this.user = Models.User.fromJson(response.data['user']);
-      this.player = Models.Player.fromJson(response.data['player']);
+      this.user = response.user;
+      this.player = response.player;
       Utilities.Database.setUser(this.user!);
       Utilities.Database.setPlayer(this.player!);
     }
 
-    return response.data['verified'];
+    return response.verified;
   }
 
   Future<void> observePlayer(String playerId) async {
@@ -138,9 +141,9 @@ class Auth with ChangeNotifier {
     // after we update the UI, update the list in backend
     // update the UI for the latest changes
 
-    final response = await Utilities.api
-        .post(Constants.Urls.observePlayer, data: {'playerId': playerId});
-    this.user!.observeList = List<String>.from(response.data['observeList']);
+    final response = await Api.AuthRequests.observePlayer(playerId: playerId);
+    this.user!.observeList = response.user.observeList;
+
     notifyListeners();
   }
 
