@@ -1,4 +1,3 @@
-// Contains the response classes from players api
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../Models/index.dart' show Player, ActiveMatch, Friend;

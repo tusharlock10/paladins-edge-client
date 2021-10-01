@@ -1,4 +1,3 @@
-// Contains the resposne classes from auth api
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../Models/index.dart' show BountyStore;
