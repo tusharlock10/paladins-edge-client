@@ -55,10 +55,9 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
-      - flutter config --enable-web
-        |
+      - |
         # buld app bundle
-      - flutter build appbundle --release --no-shrink
+        flutter build appbundle --release --no-shrink
     artifacts:
       - build/**/outputs/bundle/**/*.aab
     publishing:
@@ -118,10 +117,9 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
-      - flutter config --enable-web
-        |
+      - |
         # build apk
-      - flutter build apk --release --no-shrink
+        flutter build apk --release --no-shrink
     artifacts:
       - build/**/outputs/apk/**/*.apk
     publishing:
