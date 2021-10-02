@@ -40,7 +40,7 @@ const AppType = String.fromEnvironment('APP_TYPE', defaultValue: 'development');
 const BaseUrl = AppType == "production"
     ? "https://api.paladinsedge.ml" // production
     : AppType == "staging"
-        ? "https://stage.paladinsedge.ml" // staging
+        ? "https://paladins-edge-backend.herokuapp.com" // staging
         : "http://192.168.0.103:8000"; // development
 const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;
 
