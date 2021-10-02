@@ -30,13 +30,11 @@ workflows:
       events:
         - push
         - pull_request
-      branch_patterns:
-        - pattern: 'main'
+      branch_patterns: 
+        - pattern: main
           include: true
-          source: true
-      tag_patterns:
-        - pattern: '*'
-          include: true
+      cancel_previous_builds: true
+
     scripts:
       - |
         # generate release notes
@@ -55,7 +53,7 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - |
-        # buld app bundle
+        # buld production appbundle
         flutter build appbundle --release --dart-define=APP_TYPE=production
     artifacts:
       - build/**/outputs/bundle/**/*.aab
@@ -91,7 +89,9 @@ workflows:
         - push
         - pull_request
       branch_patterns:
-        - pattern: '[!main]'
+        - pattern: main
+          include: false
+        - pattern: '*'
           include: true
           source: true
       tag_patterns:
@@ -116,7 +116,7 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - |
-        # build apk
+        # build staging apk
         flutter build apk --release --no-shrink --dart-define=APP_TYPE=staging
     artifacts:
       - build/**/outputs/apk/**/*.apk
