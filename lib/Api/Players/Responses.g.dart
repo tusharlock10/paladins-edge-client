@@ -69,7 +69,9 @@ PlayerStatusResponse _$PlayerStatusResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerStatusResponse(
       status: json['status'] as String,
-      match: ActiveMatch.fromJson(json['match'] as Map<String, dynamic>),
+      match: json['match'] == null
+          ? null
+          : ActiveMatch.fromJson(json['match'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PlayerStatusResponseToJson(

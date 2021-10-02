@@ -66,7 +66,7 @@ class PlayerDetailResponse {
 @JsonSerializable()
 class PlayerStatusResponse {
   final String status;
-  final ActiveMatch match;
+  final ActiveMatch? match;
 
   PlayerStatusResponse({required this.status, required this.match});
 

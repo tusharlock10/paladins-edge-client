@@ -38,10 +38,13 @@ class _PlayerDetailState extends State<Friends> {
     super.didChangeDependencies();
   }
 
-  onSelectFriend(Models.Friend selectedFriend) {
-    setState(() {
-      this.selectedFriend = selectedFriend;
-    });
+  onSelectFriend(BuildContext context, Models.Friend selectedFriend) {
+    // get the playerStatus from the provider
+
+    final playersProvider =
+        Provider.of<Providers.Players>(context, listen: false);
+    setState(() => this.selectedFriend = selectedFriend);
+    playersProvider.getPlayerStatus(selectedFriend.playerId);
   }
 
   Widget buildLoading() {
@@ -54,32 +57,51 @@ class _PlayerDetailState extends State<Friends> {
 
   Widget buildSelectedFriend() {
     final theme = Theme.of(context);
+    final playerStatus = Provider.of<Providers.Players>(context).playerStatus;
 
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          child: this.selectedFriend != null
-              ? Card(
-                  elevation: 7,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${this.selectedFriend!.name}',
-                          style: theme.textTheme.headline3,
-                        ),
-                        Text('${this.selectedFriend!.portal}',
-                            style: theme.textTheme.bodyText1),
-                      ],
-                    ),
+        this.selectedFriend != null
+            ? Card(
+                elevation: 7,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${this.selectedFriend!.name}',
+                            style: theme.textTheme.headline3,
+                          ),
+                          Text(
+                            '${this.selectedFriend!.portal}',
+                            style: theme.textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${playerStatus?.status}',
+                            style: theme.textTheme.headline3,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                )
-              : Text('*Select a friend to know his online status'),
+                ),
+              )
+            : Text('*Select a friend to know his online status'),
+        SizedBox(
+          height: 10,
         ),
-        Divider(),
+        Divider(
+          height: 1,
+          thickness: 1,
+        ),
       ],
     );
   }
@@ -88,41 +110,44 @@ class _PlayerDetailState extends State<Friends> {
     final friendsList = Provider.of<Providers.Players>(context).friendsList;
     final theme = Theme.of(context);
 
-    return ListView.builder(
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      itemCount: friendsList.length + 1,
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Total friends : ${friendsList.length}"),
-              this.buildSelectedFriend(),
-            ],
-          );
-        }
-        final friend = friendsList[index - 1];
-        return Widgets.Ripple(
-          onTap: () => this.onSelectFriend(friend),
-          child: Card(
-            elevation: 7,
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${friend.name}',
-                    style: theme.textTheme.headline3,
+      child: Column(
+        children: [
+          Text("Total friends : ${friendsList.length}"),
+          this.buildSelectedFriend(),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.only(top: 10),
+              itemCount: friendsList.length,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                final friend = friendsList[index];
+                return Widgets.Ripple(
+                  onTap: () => this.onSelectFriend(context, friend),
+                  child: Card(
+                    elevation: 7,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${friend.name}',
+                            style: theme.textTheme.headline3,
+                          ),
+                          Text('${friend.portal}',
+                              style: theme.textTheme.bodyText1),
+                        ],
+                      ),
+                    ),
                   ),
-                  Text('${friend.portal}', style: theme.textTheme.bodyText1),
-                ],
-              ),
+                );
+              },
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
