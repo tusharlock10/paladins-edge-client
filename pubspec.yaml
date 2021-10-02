@@ -45,6 +45,7 @@ dependencies:
   crypto: ^3.0.1
   overlay_support: ^1.2.1
   expand_widget: ^2.1.0
+  package_info_plus: "^1.0.6"
 
 dev_dependencies:
   flutter_test:

@@ -35,9 +35,13 @@ abstract class StorageKeys {
 
 const IsDebug = kDebugMode;
 
-const BaseUrl =
-    IsDebug ? "http://192.168.0.103:8000" : "https://api.paladinsedge.ml";
-
+// AppType can be development/staging/production
+const AppType = String.fromEnvironment('APP_TYPE', defaultValue: 'development');
+const BaseUrl = AppType == "production"
+    ? "https://api.paladinsedge.ml" // production
+    : AppType == "staging"
+        ? "https://stage.paladinsedge.ml" // staging
+        : "http://192.168.0.103:8000"; // development
 const ApiTimeout = IsDebug ? 10 * 1000 : 20 * 1000;
 
 const OtpSalt = "EszqnsYd";
