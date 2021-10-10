@@ -55,6 +55,30 @@ class _PlayerDetailState extends State<Friends> {
     );
   }
 
+  Widget buildStatusIndicator(String status) {
+    final theme = Theme.of(context);
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            '$status',
+            style: theme.textTheme.bodyText1,
+          ),
+          Container(
+            height: 10,
+            width: 10,
+            margin: EdgeInsets.only(left: 7),
+            decoration: BoxDecoration(
+              color: status == "Offline" ? Colors.red : Colors.green,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildSelectedFriend() {
     final theme = Theme.of(context);
     final playerStatus = Provider.of<Providers.Players>(context).playerStatus;
@@ -67,6 +91,7 @@ class _PlayerDetailState extends State<Friends> {
                 child: Padding(
                   padding: EdgeInsets.all(5),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,14 +106,18 @@ class _PlayerDetailState extends State<Friends> {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${playerStatus?.status}',
-                            style: theme.textTheme.headline3,
-                          ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Column(
+                          children: [
+                            playerStatus != null
+                                ? this.buildStatusIndicator(playerStatus.status)
+                                : Widgets.LoadingIndicator(
+                                    size: 16,
+                                    lineWidth: 1.5,
+                                  ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

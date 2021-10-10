@@ -16,6 +16,7 @@ class Players with ChangeNotifier {
   }
 
   Future<void> getPlayerStatus(String playerId) async {
+    this.playerStatus = null;
     final response = await Api.PlayersRequests.playerStatus(playerId: playerId);
     this.playerStatus = response;
     notifyListeners();
