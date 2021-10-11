@@ -40,11 +40,13 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
 ObservePlayerResponse _$ObservePlayerResponseFromJson(
         Map<String, dynamic> json) =>
     ObservePlayerResponse(
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      observeList: (json['observeList'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$ObservePlayerResponseToJson(
         ObservePlayerResponse instance) =>
     <String, dynamic>{
-      'user': instance.user,
+      'observeList': instance.observeList,
     };

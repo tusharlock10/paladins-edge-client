@@ -84,7 +84,7 @@ Map<String, dynamic> _$PlayerStatusResponseToJson(
 FriendsListResponse _$FriendsListResponseFromJson(Map<String, dynamic> json) =>
     FriendsListResponse(
       friends: (json['friends'] as List<dynamic>)
-          .map((e) => Friend.fromJson(e as Map<String, dynamic>))
+          .map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

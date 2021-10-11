@@ -44,7 +44,7 @@ abstract class AuthRequests {
   static Future<Responses.ObservePlayerResponse> observePlayer(
       {required String playerId}) async {
     final response = await Utilities.api
-        .post(Constants.Urls.observePlayer, data: {'playerId': playerId});
+        .put(Constants.Urls.observePlayer, data: {'playerId': playerId});
 
     return Responses.ObservePlayerResponse.fromJson(response.data);
   }

@@ -38,8 +38,8 @@ class ClaimPlayerResponse {
 
 @JsonSerializable()
 class ObservePlayerResponse {
-  final User user;
-  ObservePlayerResponse({required this.user});
+  final List<String> observeList;
+  ObservePlayerResponse({required this.observeList});
 
   factory ObservePlayerResponse.fromJson(Map<String, dynamic> json) =>
       _$ObservePlayerResponseFromJson(json);

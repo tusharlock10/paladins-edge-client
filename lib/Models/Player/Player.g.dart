@@ -82,13 +82,14 @@ class PlayerAdapter extends TypeAdapter<Player> {
       lastLoginDate: fields[13] as DateTime?,
       ranked: fields[14] as Ranked,
       status: fields[15] as String?,
+      friends: (fields[16] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Player obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.playerId)
       ..writeByte(1)
@@ -120,7 +121,9 @@ class PlayerAdapter extends TypeAdapter<Player> {
       ..writeByte(14)
       ..write(obj.ranked)
       ..writeByte(15)
-      ..write(obj.status);
+      ..write(obj.status)
+      ..writeByte(16)
+      ..write(obj.friends);
   }
 
   @override
@@ -177,6 +180,8 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
           : DateTime.parse(json['lastLoginDate'] as String),
       ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
       status: json['status'] as String?,
+      friends:
+          (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
@@ -196,18 +201,5 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'lastLoginDate': instance.lastLoginDate?.toIso8601String(),
       'ranked': instance.ranked,
       'status': instance.status,
-    };
-
-Friend _$FriendFromJson(Map<String, dynamic> json) => Friend(
-      playerId: json['playerId'] as String,
-      portalId: json['portalId'] as String,
-      portal: json['portal'] as String,
-      name: json['name'] as String,
-    );
-
-Map<String, dynamic> _$FriendToJson(Friend instance) => <String, dynamic>{
-      'playerId': instance.playerId,
-      'portalId': instance.portalId,
-      'portal': instance.portal,
-      'name': instance.name,
+      'friends': instance.friends,
     };

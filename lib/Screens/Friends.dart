@@ -16,7 +16,7 @@ class Friends extends StatefulWidget {
 class _PlayerDetailState extends State<Friends> {
   bool _init = true;
   bool _isLoading = true;
-  Models.Friend? selectedFriend;
+  Models.Player? selectedFriend;
 
   @override
   void deactivate() {
@@ -39,7 +39,7 @@ class _PlayerDetailState extends State<Friends> {
     super.didChangeDependencies();
   }
 
-  onSelectFriend(BuildContext context, Models.Friend selectedFriend) {
+  onSelectFriend(BuildContext context, Models.Player selectedFriend) {
     if (this.selectedFriend?.playerId == selectedFriend.playerId) {
       return;
     }
@@ -182,7 +182,7 @@ class _PlayerDetailState extends State<Friends> {
                                 style: theme.textTheme.headline3,
                               ),
                               Text(
-                                '${this.selectedFriend!.portal}',
+                                '${this.selectedFriend!.platform}',
                                 style: theme.textTheme.bodyText1,
                               ),
                             ],
@@ -221,7 +221,7 @@ class _PlayerDetailState extends State<Friends> {
   }
 
   Widget buildFriends() {
-    final friendsList = Provider.of<Providers.Players>(context).friendsList;
+    final friendsList = Provider.of<Providers.Players>(context).friends;
     final theme = Theme.of(context);
 
     return Padding(
@@ -250,7 +250,7 @@ class _PlayerDetailState extends State<Friends> {
                             '${friend.name}',
                             style: theme.textTheme.headline3,
                           ),
-                          Text('${friend.portal}',
+                          Text('${friend.platform}',
                               style: theme.textTheme.bodyText1),
                         ],
                       ),
