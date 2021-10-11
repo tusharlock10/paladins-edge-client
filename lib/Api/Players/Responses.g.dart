@@ -93,3 +93,17 @@ Map<String, dynamic> _$FriendsListResponseToJson(
     <String, dynamic>{
       'friends': instance.friends,
     };
+
+FavouriteFriendResponse _$FavouriteFriendResponseFromJson(
+        Map<String, dynamic> json) =>
+    FavouriteFriendResponse(
+      favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$FavouriteFriendResponseToJson(
+        FavouriteFriendResponse instance) =>
+    <String, dynamic>{
+      'favouriteFriends': instance.favouriteFriends,
+    };

@@ -126,15 +126,19 @@ class Auth with ChangeNotifier {
     return response.verified;
   }
 
-  Future<void> observePlayer(String playerId) async {
-    if (this.user == null) return;
+  Future<bool> observePlayer(String playerId) async {
+    // return true if a new playerId is added in observeList else false
+    bool newPlayedAdded = false;
+    if (this.user == null) return newPlayedAdded;
 
-    if (this.user!.observeList.contains(playerId) == false)
+    if (this.user!.observeList.contains(playerId) == false) {
       // player is not in the observe list, so we need to add him
       this.user!.observeList.add(playerId);
-    else
+      newPlayedAdded = true;
+    } else {
       // if he is in the observe list, then remove him
       this.user!.observeList.remove(playerId);
+    }
 
     notifyListeners();
 
@@ -145,6 +149,34 @@ class Auth with ChangeNotifier {
     this.user!.observeList = response.observeList;
 
     notifyListeners();
+    return newPlayedAdded;
+  }
+
+  Future<bool> favouriteFriend(String playerId) async {
+    // return true if a new playerId is added in favouriteFriends else false
+    bool newPlayedAdded = false;
+    if (this.user == null) return newPlayedAdded;
+
+    if (this.user!.favouriteFriends.contains(playerId) == false) {
+      // player is not in the favouriteFriends, so we need to add him
+      this.user!.favouriteFriends.add(playerId);
+      newPlayedAdded = true;
+    } else {
+      // if he is in the favouriteFriends, then remove him
+      this.user!.favouriteFriends.remove(playerId);
+    }
+
+    notifyListeners();
+
+    // after we update the UI, update the list in backend
+    // update the UI for the latest changes
+
+    final response =
+        await Api.PlayersRequests.favouriteFriend(playerId: playerId);
+    this.user!.favouriteFriends = response.favouriteFriends;
+
+    notifyListeners();
+    return newPlayedAdded;
   }
 
   void toggleTheme() {

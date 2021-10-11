@@ -16,6 +16,7 @@ class Friends extends StatefulWidget {
 class _PlayerDetailState extends State<Friends> {
   bool _init = true;
   bool _isLoading = true;
+  final _friendsListKey = GlobalKey<AnimatedListState>();
   Models.Player? selectedFriend;
 
   @override
@@ -31,7 +32,12 @@ class _PlayerDetailState extends State<Friends> {
       final playersProvider =
           Provider.of<Providers.Players>(context, listen: false);
       if (authProvider.player?.playerId != null) {
-        playersProvider.getFriendsList(authProvider.player!.playerId).then((_) {
+        playersProvider
+            .getFriendsList(
+          authProvider.player!.playerId,
+          authProvider.user?.favouriteFriends,
+        )
+            .then((_) {
           this.setState(() => this._isLoading = false);
         });
       }
@@ -39,7 +45,7 @@ class _PlayerDetailState extends State<Friends> {
     super.didChangeDependencies();
   }
 
-  onSelectFriend(BuildContext context, Models.Player selectedFriend) {
+  onSelectFriend(Models.Player selectedFriend) {
     if (this.selectedFriend?.playerId == selectedFriend.playerId) {
       return;
     }
@@ -49,6 +55,19 @@ class _PlayerDetailState extends State<Friends> {
         Provider.of<Providers.Players>(context, listen: false);
     setState(() => this.selectedFriend = selectedFriend);
     playersProvider.getPlayerStatus(selectedFriend.playerId);
+  }
+
+  onFavouriteFriend() async {
+    final authProvider = Provider.of<Providers.Auth>(context, listen: false);
+    final playersProvider =
+        Provider.of<Providers.Players>(context, listen: false);
+    final newPlayedAdded =
+        await authProvider.favouriteFriend(this.selectedFriend!.playerId);
+
+    if (newPlayedAdded) {
+      playersProvider.moveFriendToTop(this.selectedFriend!.playerId);
+      this._friendsListKey.currentState?.insertItem(0);
+    }
   }
 
   Widget buildLoading() {
@@ -161,6 +180,10 @@ class _PlayerDetailState extends State<Friends> {
   Widget buildSelectedFriend() {
     final theme = Theme.of(context);
     final playerStatus = Provider.of<Providers.Players>(context).playerStatus;
+    final favouriteFriends =
+        Provider.of<Providers.Auth>(context).user?.favouriteFriends;
+    final bool isFavourite =
+        favouriteFriends?.contains(this.selectedFriend?.playerId) ?? false;
 
     return Column(
       children: [
@@ -190,7 +213,21 @@ class _PlayerDetailState extends State<Friends> {
                           Padding(
                             padding: EdgeInsets.only(right: 10),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
+                                Widgets.Ripple(
+                                  margin: EdgeInsets.only(bottom: 5),
+                                  onTap: () => onFavouriteFriend(),
+                                  child: Icon(
+                                    isFavourite
+                                        ? Icons.star
+                                        : Icons.star_outline_outlined,
+                                    size: 20,
+                                    color: isFavourite
+                                        ? Colors.yellow
+                                        : theme.textTheme.bodyText1?.color,
+                                  ),
+                                ),
                                 playerStatus != null
                                     ? this.buildStatusIndicator(
                                         playerStatus.status)
@@ -208,7 +245,12 @@ class _PlayerDetailState extends State<Friends> {
                   ),
                 ),
               )
-            : Text('*Select a friend to know his online status'),
+            : Column(
+                children: [
+                  Text('* Select a friend to know his online status'),
+                  Text('* Slide the friend card left to mark favourite')
+                ],
+              ),
         SizedBox(
           height: 10,
         ),
@@ -220,9 +262,49 @@ class _PlayerDetailState extends State<Friends> {
     );
   }
 
+  Widget buildFriend(Models.Player friend) {
+    final theme = Theme.of(context);
+    final favouriteFriends =
+        Provider.of<Providers.Auth>(context).user?.favouriteFriends;
+    final bool isFavourite =
+        favouriteFriends?.contains(friend.playerId) ?? false;
+
+    return Widgets.Ripple(
+      onTap: () => this.onSelectFriend(friend),
+      height: 80,
+      child: Card(
+        elevation: 7,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${friend.name}',
+                    style: theme.textTheme.headline3,
+                  ),
+                  Text('${friend.platform}', style: theme.textTheme.bodyText1),
+                ],
+              ),
+            ),
+            isFavourite
+                ? Container(
+                    color: Colors.yellow,
+                    height: 80,
+                    width: 3,
+                  )
+                : SizedBox()
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildFriends() {
     final friendsList = Provider.of<Providers.Players>(context).friends;
-    final theme = Theme.of(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -231,31 +313,21 @@ class _PlayerDetailState extends State<Friends> {
           Text("Total friends : ${friendsList.length}"),
           this.buildSelectedFriend(),
           Expanded(
-            child: ListView.builder(
+            child: AnimatedList(
+              key: this._friendsListKey,
               padding: EdgeInsets.only(top: 10),
-              itemCount: friendsList.length,
+              initialItemCount: friendsList.length,
               physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
+              itemBuilder: (context, index, animation) {
                 final friend = friendsList[index];
-                return Widgets.Ripple(
-                  onTap: () => this.onSelectFriend(context, friend),
-                  child: Card(
-                    elevation: 7,
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${friend.name}',
-                            style: theme.textTheme.headline3,
-                          ),
-                          Text('${friend.platform}',
-                              style: theme.textTheme.bodyText1),
-                        ],
-                      ),
+                return SlideTransition(
+                  position: animation.drive(
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: const Offset(0, 0),
                     ),
                   ),
+                  child: this.buildFriend(friend),
                 );
               },
             ),
