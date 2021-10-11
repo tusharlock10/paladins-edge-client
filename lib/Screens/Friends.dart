@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../Models/index.dart' as Models;
 import '../Providers/index.dart' as Providers;
+import '../Utilities/index.dart' as Utilities;
 import '../Widgets/index.dart' as Widgets;
 
 class Friends extends StatefulWidget {
@@ -39,8 +40,11 @@ class _PlayerDetailState extends State<Friends> {
   }
 
   onSelectFriend(BuildContext context, Models.Friend selectedFriend) {
-    // get the playerStatus from the provider
+    if (this.selectedFriend?.playerId == selectedFriend.playerId) {
+      return;
+    }
 
+    // get the playerStatus from the provider
     final playersProvider =
         Provider.of<Providers.Players>(context, listen: false);
     setState(() => this.selectedFriend = selectedFriend);
@@ -79,6 +83,81 @@ class _PlayerDetailState extends State<Friends> {
     );
   }
 
+  Widget buildPlayerMatchComponent(Models.ActiveMatch match, int team) {
+    final teamInfo = match.playersInfo.where((player) => player.team == team);
+    final textTheme = Theme.of(context).textTheme;
+    final shouldReverse = team == 2;
+
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: teamInfo.map(
+          (player) {
+            return Row(
+              mainAxisAlignment: !shouldReverse
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
+              children: Utilities.reverseWidgets(
+                shouldReverse: shouldReverse,
+                children: [
+                  Widgets.ElevatedAvatar(
+                    size: 20,
+                    borderRadius: 20,
+                    imageUrl: player.championImageUrl,
+                  ),
+                  Column(
+                    crossAxisAlignment: !shouldReverse
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${player.player.playerId != "0" ? player.player.name : "Private Profile"}',
+                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      ),
+                      Row(
+                        children: Utilities.reverseWidgets(
+                          shouldReverse: shouldReverse,
+                          children: [
+                            Widgets.FastImage(
+                              imageUrl: player.player.rankIconUrl!,
+                              height: 16,
+                              width: 16,
+                            ),
+                            Text(
+                              '${player.player.rankName}',
+                              style:
+                                  textTheme.bodyText1?.copyWith(fontSize: 10),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        ).toList(),
+      ),
+    );
+  }
+
+  Widget buildActiveMatchCard(Models.ActiveMatch? match) {
+    if (match == null) {
+      return SizedBox();
+    }
+
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          this.buildPlayerMatchComponent(match, 1),
+          this.buildPlayerMatchComponent(match, 2),
+        ],
+      ),
+    );
+  }
+
   Widget buildSelectedFriend() {
     final theme = Theme.of(context);
     final playerStatus = Provider.of<Providers.Players>(context).playerStatus;
@@ -90,35 +169,41 @@ class _PlayerDetailState extends State<Friends> {
                 elevation: 7,
                 child: Padding(
                   padding: EdgeInsets.all(5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${this.selectedFriend!.name}',
-                            style: theme.textTheme.headline3,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${this.selectedFriend!.name}',
+                                style: theme.textTheme.headline3,
+                              ),
+                              Text(
+                                '${this.selectedFriend!.portal}',
+                                style: theme.textTheme.bodyText1,
+                              ),
+                            ],
                           ),
-                          Text(
-                            '${this.selectedFriend!.portal}',
-                            style: theme.textTheme.bodyText1,
+                          Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Column(
+                              children: [
+                                playerStatus != null
+                                    ? this.buildStatusIndicator(
+                                        playerStatus.status)
+                                    : Widgets.LoadingIndicator(
+                                        size: 16,
+                                        lineWidth: 1.5,
+                                      ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Column(
-                          children: [
-                            playerStatus != null
-                                ? this.buildStatusIndicator(playerStatus.status)
-                                : Widgets.LoadingIndicator(
-                                    size: 16,
-                                    lineWidth: 1.5,
-                                  ),
-                          ],
-                        ),
-                      ),
+                      this.buildActiveMatchCard(playerStatus?.match),
                     ],
                   ),
                 ),

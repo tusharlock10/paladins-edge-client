@@ -22,7 +22,7 @@ class ElevatedAvatar extends StatelessWidget {
     final borderRadius = this.borderRadius ?? this.size / 2;
     return Card(
       clipBehavior: Clip.antiAlias,
-      elevation: 5,
+      elevation: this.elevation ?? 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),

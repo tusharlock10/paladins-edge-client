@@ -34,6 +34,8 @@ ActiveMatchPlayersInfo _$ActiveMatchPlayersInfoFromJson(
       championId: json['championId'] as int,
       championLevel: json['championLevel'] as int,
       championName: json['championName'] as String,
+      championImageUrl: json['championImageUrl'] as String,
+      team: json['team'] as int,
     );
 
 Map<String, dynamic> _$ActiveMatchPlayersInfoToJson(
@@ -43,15 +45,20 @@ Map<String, dynamic> _$ActiveMatchPlayersInfoToJson(
       'championId': instance.championId,
       'championLevel': instance.championLevel,
       'championName': instance.championName,
+      'championImageUrl': instance.championImageUrl,
+      'team': instance.team,
     };
 
 ActiveMatchPlayerDetail _$ActiveMatchPlayerDetailFromJson(
         Map<String, dynamic> json) =>
     ActiveMatchPlayerDetail(
-      playerId: json['playerId'] as int,
+      playerId: json['playerId'] as String,
       name: json['name'] as String,
       platform: json['platform'] as String,
       level: json['level'] as int,
+      rank: json['rank'] as int,
+      rankName: json['rankName'] as String?,
+      rankIconUrl: json['rankIconUrl'] as String?,
     );
 
 Map<String, dynamic> _$ActiveMatchPlayerDetailToJson(
@@ -61,4 +68,7 @@ Map<String, dynamic> _$ActiveMatchPlayerDetailToJson(
       'name': instance.name,
       'platform': instance.platform,
       'level': instance.level,
+      'rank': instance.rank,
+      'rankName': instance.rankName,
+      'rankIconUrl': instance.rankIconUrl,
     };

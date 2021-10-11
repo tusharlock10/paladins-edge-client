@@ -30,12 +30,16 @@ class ActiveMatchPlayersInfo {
   int championId;
   int championLevel;
   String championName;
+  String championImageUrl;
+  int team;
 
   ActiveMatchPlayersInfo({
     required this.player,
     required this.championId,
     required this.championLevel,
     required this.championName,
+    required this.championImageUrl,
+    required this.team,
   });
 
   factory ActiveMatchPlayersInfo.fromJson(Map<String, dynamic> json) =>
@@ -45,16 +49,22 @@ class ActiveMatchPlayersInfo {
 
 @JsonSerializable()
 class ActiveMatchPlayerDetail {
-  int playerId;
+  String playerId;
   String name;
   String platform;
   int level;
+  int rank;
+  String? rankName;
+  String? rankIconUrl;
 
   ActiveMatchPlayerDetail({
     required this.playerId,
     required this.name,
     required this.platform,
     required this.level,
+    required this.rank,
+    required this.rankName,
+    required this.rankIconUrl,
   });
 
   factory ActiveMatchPlayerDetail.fromJson(Map<String, dynamic> json) =>
