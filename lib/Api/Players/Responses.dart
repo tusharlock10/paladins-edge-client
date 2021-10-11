@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../Models/index.dart' show Player, ActiveMatch, Friend;
+import '../../Models/index.dart' show Player, ActiveMatch;
 
 part 'Responses.g.dart';
 
@@ -77,7 +77,7 @@ class PlayerStatusResponse {
 
 @JsonSerializable()
 class FriendsListResponse {
-  final List<Friend> friends;
+  final List<Player> friends;
 
   FriendsListResponse({required this.friends});
 

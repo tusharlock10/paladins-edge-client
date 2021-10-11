@@ -28,6 +28,9 @@ class User {
 
   @HiveField(7)
   List<String> observeList; // the connected observe id for observing players
+  @HiveField(8)
+  List<String>
+      favouriteFriends; // list of playerId of the user's favourite friends
 
   User({
     required this.id,
@@ -38,6 +41,7 @@ class User {
     required this.uid,
     this.playerId,
     required this.observeList,
+    required this.favouriteFriends,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

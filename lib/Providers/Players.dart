@@ -6,12 +6,12 @@ import '../Models/index.dart' as Models;
 // Provider to handle players api response
 
 class Players with ChangeNotifier {
-  List<Models.Friend> friendsList = [];
+  List<Models.Player> friends = [];
   Api.PlayerStatusResponse? playerStatus;
 
   Future<void> getFriendsList(String playerId) async {
     final response = await Api.PlayersRequests.friendsList(playerId: playerId);
-    this.friendsList = response.friends;
+    this.friends = response.friends;
     notifyListeners();
   }
 

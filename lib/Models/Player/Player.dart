@@ -49,10 +49,10 @@ class Player {
   @HiveField(4)
   final String? avatarUrl; // image url of the avatar
   @HiveField(5)
-  final int? totalXP;
+  final int? totalXP; // total exp the player has
 
   @HiveField(6)
-  final int? hoursPlayed;
+  final int? hoursPlayed; // amount of hours the player has played
   @HiveField(7)
   final int? level; // Level of the player in the game
   @HiveField(8)
@@ -73,7 +73,10 @@ class Player {
   @HiveField(14)
   final Ranked ranked; // ranked details of the player
   @HiveField(15)
-  final String? status;
+  final String? status; // if the player is Offline, In Match, etc
+
+  @HiveField(16)
+  final List<String>? friends; // list of playerId of the friends
 
   Player({
     required this.playerId,
@@ -92,26 +95,9 @@ class Player {
     required this.lastLoginDate,
     required this.ranked,
     this.status,
+    this.friends,
   });
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerToJson(this);
-}
-
-@JsonSerializable()
-class Friend {
-  final String playerId;
-  final String portalId;
-  final String portal;
-  final String name;
-
-  Friend({
-    required this.playerId,
-    required this.portalId,
-    required this.portal,
-    required this.name,
-  });
-
-  factory Friend.fromJson(Map<String, dynamic> json) => _$FriendFromJson(json);
-  Map<String, dynamic> toJson() => _$FriendToJson(this);
 }

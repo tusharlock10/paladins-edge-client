@@ -142,7 +142,7 @@ class Auth with ChangeNotifier {
     // update the UI for the latest changes
 
     final response = await Api.AuthRequests.observePlayer(playerId: playerId);
-    this.user!.observeList = response.user.observeList;
+    this.user!.observeList = response.observeList;
 
     notifyListeners();
   }
