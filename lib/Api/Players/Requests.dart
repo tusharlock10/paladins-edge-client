@@ -47,4 +47,14 @@ abstract class PlayersRequests {
 
     return Responses.FriendsListResponse.fromJson(response.data);
   }
+
+  static Future<Responses.FavouriteFriendResponse> favouriteFriend(
+      {required String playerId}) async {
+    final response = await Utilities.api.put(
+      Constants.Urls.favouriteFriend,
+      data: {'playerId': playerId},
+    );
+
+    return Responses.FavouriteFriendResponse.fromJson(response.data);
+  }
 }

@@ -10,7 +10,7 @@ abstract class Urls {
   static const logout = "/auth/logout"; // POST
   static const fcmToken = "/auth/fcmToken"; // POST
   static const claimPlayer = "/auth/claimPlayer"; // POST
-  static const observePlayer = "/auth/observePlayer"; // POST
+  static const observePlayer = "/auth/observePlayer"; // PUT
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -21,6 +21,7 @@ abstract class Urls {
   static const playerDetail = "/players/playerDetail"; // GET
   static const playerStatus = "/players/playerStatus"; // GET
   static const friendsList = "/players/friendsList"; // GET
+  static const favouriteFriend = "/players/favouriteFriend"; // PUT
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
