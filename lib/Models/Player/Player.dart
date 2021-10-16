@@ -1,13 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'Player.g.dart';
 
-@HiveType(typeId: TypeIds.Player_Ranked)
+@HiveType(typeId: TypeIds.PlayerRanked)
 @JsonSerializable()
-class _Ranked {
+class Ranked {
   @HiveField(0)
   final int? wins; // number of wins in ranked
   @HiveField(1)
@@ -22,7 +22,7 @@ class _Ranked {
   @HiveField(5)
   final int? points; // the tp of the player at the current ranks
 
-  _Ranked({
+  Ranked({
     required this.wins,
     required this.looses,
     required this.rank,
@@ -31,9 +31,8 @@ class _Ranked {
     required this.points,
   });
 
-  factory _Ranked.fromJson(Map<String, dynamic> json) =>
-      _$_RankedFromJson(json);
-  Map<String, dynamic> toJson() => _$_RankedToJson(this);
+  factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);
+  Map<String, dynamic> toJson() => _$RankedToJson(this);
 }
 
 @HiveType(typeId: TypeIds.Player)
@@ -50,10 +49,10 @@ class Player {
   @HiveField(4)
   final String? avatarUrl; // image url of the avatar
   @HiveField(5)
-  final int? totalXP;
+  final int? totalXP; // total exp the player has
 
   @HiveField(6)
-  final int? hoursPlayed;
+  final int? hoursPlayed; // amount of hours the player has played
   @HiveField(7)
   final int? level; // Level of the player in the game
   @HiveField(8)
@@ -72,9 +71,12 @@ class Player {
   final DateTime? lastLoginDate; // the date at which the user logged in last
 
   @HiveField(14)
-  final _Ranked ranked; // ranked details of the player
+  final Ranked ranked; // ranked details of the player
   @HiveField(15)
-  final String? status;
+  final String? status; // if the player is Offline, In Match, etc
+
+  @HiveField(16)
+  final List<String>? friends; // list of playerId of the friends
 
   Player({
     required this.playerId,
@@ -93,26 +95,9 @@ class Player {
     required this.lastLoginDate,
     required this.ranked,
     this.status,
+    this.friends,
   });
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerToJson(this);
-}
-
-@JsonSerializable()
-class Friend {
-  final String playerId;
-  final String portalId;
-  final String portal;
-  final String name;
-
-  Friend({
-    required this.playerId,
-    required this.portalId,
-    required this.portal,
-    required this.name,
-  });
-
-  factory Friend.fromJson(Map<String, dynamic> json) => _$FriendFromJson(json);
-  Map<String, dynamic> toJson() => _$FriendToJson(this);
 }

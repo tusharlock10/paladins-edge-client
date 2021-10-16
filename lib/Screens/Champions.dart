@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
-import '../Constants.dart' as Constants;
+import '../AppTheme.dart' as AppTheme;
 import '../Models/index.dart' as Models;
 import '../Providers/index.dart' as Providers;
 import '../Utilities/index.dart' as Utilities;
@@ -42,7 +42,7 @@ class _ChampionsState extends State<Champions> {
     return Center(
       child: Widgets.LoadingIndicator(
         size: 36,
-        color: Constants.ThemeMaterialColor,
+        color: AppTheme.ThemeMaterialColor,
       ),
     );
   }
@@ -133,7 +133,7 @@ class _ChampionsState extends State<Champions> {
                           Widgets.TextChip(
                             spacing: 5,
                             text: champion.role,
-                            color: Constants.ThemeMaterialColor,
+                            color: AppTheme.ThemeMaterialColor,
                           ),
                           Widgets.TextChip(
                             spacing: 5,

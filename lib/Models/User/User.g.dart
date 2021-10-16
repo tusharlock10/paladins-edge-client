@@ -25,13 +25,14 @@ class UserAdapter extends TypeAdapter<User> {
       uid: fields[6] as String,
       playerId: fields[4] as String?,
       observeList: (fields[7] as List).cast<String>(),
+      favouriteFriends: (fields[8] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(6)
       ..write(obj.uid)
       ..writeByte(7)
-      ..write(obj.observeList);
+      ..write(obj.observeList)
+      ..writeByte(8)
+      ..write(obj.favouriteFriends);
   }
 
   @override
@@ -65,19 +68,21 @@ class UserAdapter extends TypeAdapter<User> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    id: json['_id'] as String,
-    name: json['name'] as String,
-    email: json['email'] as String,
-    token: json['token'] as String,
-    photoUrl: json['photoUrl'] as String,
-    uid: json['uid'] as String,
-    playerId: json['playerId'] as String?,
-    observeList:
-        (json['observeList'] as List<dynamic>).map((e) => e as String).toList(),
-  );
-}
+User _$UserFromJson(Map<String, dynamic> json) => User(
+      id: json['_id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      token: json['token'] as String,
+      photoUrl: json['photoUrl'] as String,
+      uid: json['uid'] as String,
+      playerId: json['playerId'] as String?,
+      observeList: (json['observeList'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       '_id': instance.id,
@@ -88,4 +93,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'photoUrl': instance.photoUrl,
       'uid': instance.uid,
       'observeList': instance.observeList,
+      'favouriteFriends': instance.favouriteFriends,
     };

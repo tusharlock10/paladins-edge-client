@@ -1,13 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'Champion.g.dart';
 
-@HiveType(typeId: TypeIds.Champion_Ability)
+@HiveType(typeId: TypeIds.ChampionAbility)
 @JsonSerializable()
-class _Ability {
+class Ability {
   @HiveField(0)
   final int abilityId; // Paladins ability id
   @HiveField(1)
@@ -19,9 +19,9 @@ class _Ability {
   @HiveField(4)
   final double cooldown; // Recharge time of the ability in seconds
   @HiveField(5)
-  final String description; // _Ability description
+  final String description; // Ability description
 
-  _Ability({
+  Ability({
     required this.abilityId,
     required this.name,
     required this.imageUrl,
@@ -30,14 +30,14 @@ class _Ability {
     required this.description,
   });
 
-  factory _Ability.fromJson(Map<String, dynamic> json) =>
-      _$_AbilityFromJson(json);
-  Map<String, dynamic> toJson() => _$_AbilityToJson(this);
+  factory Ability.fromJson(Map<String, dynamic> json) =>
+      _$AbilityFromJson(json);
+  Map<String, dynamic> toJson() => _$AbilityToJson(this);
 }
 
-@HiveType(typeId: TypeIds.Champion_Talent)
+@HiveType(typeId: TypeIds.ChampionTalent)
 @JsonSerializable()
-class _Talent {
+class Talent {
   @HiveField(0)
   final int talentId; // Paladins talent id
   @HiveField(1)
@@ -47,12 +47,12 @@ class _Talent {
   @HiveField(3)
   final double cooldown; // Recharge time of the talent in seconds
   @HiveField(4)
-  final String description; // _Talent description
+  final String description; // Talent description
   @HiveField(5)
   final String
       modifier; // The ability that the talent modifies eg. Weapon/Reversal
 
-  _Talent({
+  Talent({
     required this.talentId,
     required this.name,
     required this.imageUrl,
@@ -61,14 +61,13 @@ class _Talent {
     required this.modifier,
   });
 
-  factory _Talent.fromJson(Map<String, dynamic> json) =>
-      _$_TalentFromJson(json);
-  Map<String, dynamic> toJson() => _$_TalentToJson(this);
+  factory Talent.fromJson(Map<String, dynamic> json) => _$TalentFromJson(json);
+  Map<String, dynamic> toJson() => _$TalentToJson(this);
 }
 
-@HiveType(typeId: TypeIds.Champion_Card)
+@HiveType(typeId: TypeIds.ChampionCard)
 @JsonSerializable()
-class _Card {
+class Card {
   @HiveField(0)
   final int cardId; // Paladins card id
   @HiveField(1)
@@ -83,7 +82,7 @@ class _Card {
   final String
       modifier; // The ability that the card modifies eg. Nether Step/Reversal
 
-  _Card({
+  Card({
     required this.cardId,
     required this.name,
     required this.imageUrl,
@@ -92,25 +91,25 @@ class _Card {
     required this.modifier,
   });
 
-  factory _Card.fromJson(Map<String, dynamic> json) => _$_CardFromJson(json);
-  Map<String, dynamic> toJson() => _$_CardToJson(this);
+  factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
+  Map<String, dynamic> toJson() => _$CardToJson(this);
 }
 
 @HiveType(typeId: TypeIds.Champion_Tag)
 @JsonSerializable()
-class _Tag {
+class Tag {
   @HiveField(0)
   final String name; // name of the tag
   @HiveField(1)
   final String color; // color of tag in hex string
 
-  _Tag({
+  Tag({
     required this.name,
     required this.color,
   });
 
-  factory _Tag.fromJson(Map<String, dynamic> json) => _$_TagFromJson(json);
-  Map<String, dynamic> toJson() => _$_TagToJson(this);
+  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
+  Map<String, dynamic> toJson() => _$TagToJson(this);
 }
 
 @HiveType(typeId: TypeIds.Champion)
@@ -142,23 +141,23 @@ class Champion {
   @HiveField(11)
   final double weaponDamage; // damage of the champion eg. 520
   @HiveField(12)
-  final double fireRate; // fire rate of the champion in sec eg. 0.36 
+  final double fireRate; // fire rate of the champion in sec eg. 0.36
   @HiveField(13)
   final String? lore; // lore of that champion,
 
   @HiveField(14)
-  final List<_Ability>? abilities; // List of all the abilities of th champion
+  final List<Ability>? abilities; // List of all the abilities of th champion
   @HiveField(15)
-  final List<_Talent>? talents; // List of all the talents of th champion
+  final List<Talent>? talents; // List of all the talents of th champion
   @HiveField(16)
-  final List<_Card>? cards; // List of all the cards of th champion
+  final List<Card>? cards; // List of all the cards of th champion
 
   @HiveField(17)
   final bool latestChampion; // Whether the champion is newly added in the game
   @HiveField(18)
   final bool onFreeRotation; // Whether the champion is on free rotation
   @HiveField(19)
-  final List<_Tag> tags; // For showing extra champion info
+  final List<Tag> tags; // For showing extra champion info
 
   Champion({
     required this.championId,

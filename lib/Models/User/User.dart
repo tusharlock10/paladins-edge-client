@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'User.g.dart';
 
@@ -27,8 +27,10 @@ class User {
   final String uid; // uid provided by the oauth provider
 
   @HiveField(7)
+  List<String> observeList; // the connected observe id for observing players
+  @HiveField(8)
   List<String>
-      observeList; // the connected observe id for observing players
+      favouriteFriends; // list of playerId of the user's favourite friends
 
   User({
     required this.id,
@@ -39,6 +41,7 @@ class User {
     required this.uid,
     this.playerId,
     required this.observeList,
+    required this.favouriteFriends,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

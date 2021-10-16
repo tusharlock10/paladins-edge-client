@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import '../Constants.dart' show TypeIds;
+import '../../Constants.dart' show TypeIds;
 
 part 'Settings.g.dart';
 

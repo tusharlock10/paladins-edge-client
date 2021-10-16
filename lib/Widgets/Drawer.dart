@@ -10,24 +10,47 @@ class AppDrawer extends StatelessWidget {
     Navigator.pushReplacementNamed(context, Screens.Login.routeName);
   }
 
+  onFriends(BuildContext context) {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(Screens.Friends.routeName);
+  }
+
+  Widget buildDrawerButton(
+      BuildContext context, String label, void Function() onPressed) {
+    final theme = Theme.of(context);
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: theme.textTheme.headline3
+            ?.copyWith(color: theme.colorScheme.secondary),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        TextButton(
-          onPressed: () => this.onLogout(context),
-          child: Text('Logout'),
-        ),
-        TextButton(
-          onPressed:
-              Provider.of<Providers.Auth>(context, listen: false).toggleTheme,
-          child: Text('Change Theme'),
-        ),
-        TextButton(
-          onPressed: ()=>Navigator.of(context).pushNamed(Screens.Friends.routeName),
-          child: Text('Friends'),
-        ),
-      ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          this.buildDrawerButton(
+            context,
+            'Change Theme',
+            Provider.of<Providers.Auth>(context, listen: false).toggleTheme,
+          ),
+          this.buildDrawerButton(
+            context,
+            'Friends',
+            () => this.onFriends(context),
+          ),
+          this.buildDrawerButton(
+            context,
+            'Logout',
+            () => this.onLogout(context),
+          ),
+        ],
+      ),
     );
   }
 }

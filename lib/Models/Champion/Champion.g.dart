@@ -6,17 +6,17 @@ part of 'Champion.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AbilityAdapter extends TypeAdapter<_Ability> {
+class AbilityAdapter extends TypeAdapter<Ability> {
   @override
   final int typeId = 1;
 
   @override
-  _Ability read(BinaryReader reader) {
+  Ability read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _Ability(
+    return Ability(
       abilityId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
@@ -27,7 +27,7 @@ class AbilityAdapter extends TypeAdapter<_Ability> {
   }
 
   @override
-  void write(BinaryWriter writer, _Ability obj) {
+  void write(BinaryWriter writer, Ability obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -55,17 +55,17 @@ class AbilityAdapter extends TypeAdapter<_Ability> {
           typeId == other.typeId;
 }
 
-class TalentAdapter extends TypeAdapter<_Talent> {
+class TalentAdapter extends TypeAdapter<Talent> {
   @override
   final int typeId = 2;
 
   @override
-  _Talent read(BinaryReader reader) {
+  Talent read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _Talent(
+    return Talent(
       talentId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
@@ -76,7 +76,7 @@ class TalentAdapter extends TypeAdapter<_Talent> {
   }
 
   @override
-  void write(BinaryWriter writer, _Talent obj) {
+  void write(BinaryWriter writer, Talent obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -104,17 +104,17 @@ class TalentAdapter extends TypeAdapter<_Talent> {
           typeId == other.typeId;
 }
 
-class CardAdapter extends TypeAdapter<_Card> {
+class CardAdapter extends TypeAdapter<Card> {
   @override
   final int typeId = 3;
 
   @override
-  _Card read(BinaryReader reader) {
+  Card read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _Card(
+    return Card(
       cardId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
@@ -125,7 +125,7 @@ class CardAdapter extends TypeAdapter<_Card> {
   }
 
   @override
-  void write(BinaryWriter writer, _Card obj) {
+  void write(BinaryWriter writer, Card obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -153,24 +153,24 @@ class CardAdapter extends TypeAdapter<_Card> {
           typeId == other.typeId;
 }
 
-class TagAdapter extends TypeAdapter<_Tag> {
+class TagAdapter extends TypeAdapter<Tag> {
   @override
   final int typeId = 8;
 
   @override
-  _Tag read(BinaryReader reader) {
+  Tag read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _Tag(
+    return Tag(
       name: fields[0] as String,
       color: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, _Tag obj) {
+  void write(BinaryWriter writer, Tag obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -215,12 +215,12 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       weaponDamage: fields[11] as double,
       fireRate: fields[12] as double,
       lore: fields[13] as String?,
-      abilities: (fields[14] as List?)?.cast<_Ability>(),
-      talents: (fields[15] as List?)?.cast<_Talent>(),
-      cards: (fields[16] as List?)?.cast<_Card>(),
+      abilities: (fields[14] as List?)?.cast<Ability>(),
+      talents: (fields[15] as List?)?.cast<Talent>(),
+      cards: (fields[16] as List?)?.cast<Card>(),
       latestChampion: fields[17] as bool,
       onFreeRotation: fields[18] as bool,
-      tags: (fields[19] as List).cast<_Tag>(),
+      tags: (fields[19] as List).cast<Tag>(),
     );
   }
 
@@ -285,18 +285,16 @@ class ChampionAdapter extends TypeAdapter<Champion> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Ability _$_AbilityFromJson(Map<String, dynamic> json) {
-  return _Ability(
-    abilityId: json['abilityId'] as int,
-    name: json['name'] as String,
-    imageUrl: json['imageUrl'] as String,
-    damageType: json['damageType'] as String,
-    cooldown: (json['cooldown'] as num).toDouble(),
-    description: json['description'] as String,
-  );
-}
+Ability _$AbilityFromJson(Map<String, dynamic> json) => Ability(
+      abilityId: json['abilityId'] as int,
+      name: json['name'] as String,
+      imageUrl: json['imageUrl'] as String,
+      damageType: json['damageType'] as String,
+      cooldown: (json['cooldown'] as num).toDouble(),
+      description: json['description'] as String,
+    );
 
-Map<String, dynamic> _$_AbilityToJson(_Ability instance) => <String, dynamic>{
+Map<String, dynamic> _$AbilityToJson(Ability instance) => <String, dynamic>{
       'abilityId': instance.abilityId,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
@@ -305,18 +303,16 @@ Map<String, dynamic> _$_AbilityToJson(_Ability instance) => <String, dynamic>{
       'description': instance.description,
     };
 
-_Talent _$_TalentFromJson(Map<String, dynamic> json) {
-  return _Talent(
-    talentId: json['talentId'] as int,
-    name: json['name'] as String,
-    imageUrl: json['imageUrl'] as String,
-    cooldown: (json['cooldown'] as num).toDouble(),
-    description: json['description'] as String,
-    modifier: json['modifier'] as String,
-  );
-}
+Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
+      talentId: json['talentId'] as int,
+      name: json['name'] as String,
+      imageUrl: json['imageUrl'] as String,
+      cooldown: (json['cooldown'] as num).toDouble(),
+      description: json['description'] as String,
+      modifier: json['modifier'] as String,
+    );
 
-Map<String, dynamic> _$_TalentToJson(_Talent instance) => <String, dynamic>{
+Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
       'talentId': instance.talentId,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
@@ -325,18 +321,16 @@ Map<String, dynamic> _$_TalentToJson(_Talent instance) => <String, dynamic>{
       'modifier': instance.modifier,
     };
 
-_Card _$_CardFromJson(Map<String, dynamic> json) {
-  return _Card(
-    cardId: json['cardId'] as int,
-    name: json['name'] as String,
-    imageUrl: json['imageUrl'] as String,
-    cooldown: (json['cooldown'] as num).toDouble(),
-    description: json['description'] as String,
-    modifier: json['modifier'] as String,
-  );
-}
+Card _$CardFromJson(Map<String, dynamic> json) => Card(
+      cardId: json['cardId'] as int,
+      name: json['name'] as String,
+      imageUrl: json['imageUrl'] as String,
+      cooldown: (json['cooldown'] as num).toDouble(),
+      description: json['description'] as String,
+      modifier: json['modifier'] as String,
+    );
 
-Map<String, dynamic> _$_CardToJson(_Card instance) => <String, dynamic>{
+Map<String, dynamic> _$CardToJson(Card instance) => <String, dynamic>{
       'cardId': instance.cardId,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
@@ -345,50 +339,46 @@ Map<String, dynamic> _$_CardToJson(_Card instance) => <String, dynamic>{
       'modifier': instance.modifier,
     };
 
-_Tag _$_TagFromJson(Map<String, dynamic> json) {
-  return _Tag(
-    name: json['name'] as String,
-    color: json['color'] as String,
-  );
-}
+Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
+      name: json['name'] as String,
+      color: json['color'] as String,
+    );
 
-Map<String, dynamic> _$_TagToJson(_Tag instance) => <String, dynamic>{
+Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
       'name': instance.name,
       'color': instance.color,
     };
 
-Champion _$ChampionFromJson(Map<String, dynamic> json) {
-  return Champion(
-    championId: json['championId'] as String,
-    name: json['name'] as String,
-    iconUrl: json['iconUrl'] as String,
-    headerUrl: json['headerUrl'] as String,
-    splashUrl: json['splashUrl'] as String,
-    title: json['title'] as String,
-    role: json['role'] as String,
-    releaseDate: DateTime.parse(json['releaseDate'] as String),
-    health: (json['health'] as num).toDouble(),
-    movementSpeed: (json['movementSpeed'] as num).toDouble(),
-    damageFallOffRange: (json['damageFallOffRange'] as num).toDouble(),
-    weaponDamage: (json['weaponDamage'] as num).toDouble(),
-    fireRate: (json['fireRate'] as num).toDouble(),
-    lore: json['lore'] as String?,
-    abilities: (json['abilities'] as List<dynamic>?)
-        ?.map((e) => _Ability.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    talents: (json['talents'] as List<dynamic>?)
-        ?.map((e) => _Talent.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    cards: (json['cards'] as List<dynamic>?)
-        ?.map((e) => _Card.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    latestChampion: json['latestChampion'] as bool,
-    onFreeRotation: json['onFreeRotation'] as bool,
-    tags: (json['tags'] as List<dynamic>)
-        .map((e) => _Tag.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
+      championId: json['championId'] as String,
+      name: json['name'] as String,
+      iconUrl: json['iconUrl'] as String,
+      headerUrl: json['headerUrl'] as String,
+      splashUrl: json['splashUrl'] as String,
+      title: json['title'] as String,
+      role: json['role'] as String,
+      releaseDate: DateTime.parse(json['releaseDate'] as String),
+      health: (json['health'] as num).toDouble(),
+      movementSpeed: (json['movementSpeed'] as num).toDouble(),
+      damageFallOffRange: (json['damageFallOffRange'] as num).toDouble(),
+      weaponDamage: (json['weaponDamage'] as num).toDouble(),
+      fireRate: (json['fireRate'] as num).toDouble(),
+      lore: json['lore'] as String?,
+      abilities: (json['abilities'] as List<dynamic>?)
+          ?.map((e) => Ability.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      talents: (json['talents'] as List<dynamic>?)
+          ?.map((e) => Talent.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      cards: (json['cards'] as List<dynamic>?)
+          ?.map((e) => Card.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      latestChampion: json['latestChampion'] as bool,
+      onFreeRotation: json['onFreeRotation'] as bool,
+      tags: (json['tags'] as List<dynamic>)
+          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'championId': instance.championId,

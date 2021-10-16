@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import './index.dart' as Screens;
+import '../AppTheme.dart' as AppTheme;
 import '../Constants.dart' as Constants;
 import '../Providers/index.dart' as Providers;
 import '../Utilities/index.dart' as Utilities;
@@ -92,6 +93,10 @@ class _LoginState extends State<Login> {
     }
   }
 
+  void showInfoAlert(BuildContext context) {
+    showDialog(context: context, builder: (_) => Widgets.InfoAlert());
+  }
+
   Widget buildBigIcon(BuildContext context) {
     return Container(
       transform: Matrix4.translationValues(0, -50.0, 0.0),
@@ -124,11 +129,14 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-          Container(
-            transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
-            child: Image.asset(
-              'assets/icons/paladins.png',
-              width: 140,
+          GestureDetector(
+            onTap: () => this.showInfoAlert(context),
+            child: Container(
+              transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
+              child: Image.asset(
+                'assets/icons/paladins.png',
+                width: 140,
+              ),
             ),
           ),
         ],
@@ -161,7 +169,7 @@ class _LoginState extends State<Login> {
               ? Widgets.LoadingIndicator(
                   lineWidth: 3,
                   size: 36,
-                  color: Constants.ThemeMaterialColor,
+                  color: AppTheme.ThemeMaterialColor,
                 )
               : Image.asset(
                   'assets/icons/google-colored.png',
