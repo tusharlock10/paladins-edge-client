@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:paladinsedge/app_theme.dart' as app_theme;
+import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/messaging.dart' as messaging;
 import 'package:provider/provider.dart';
-
-import './AppTheme.dart' as AppTheme;
-import './Providers/index.dart' as Providers;
-import './Screens/index.dart' as Screens;
-import './Utilities/Messaging.dart' as Messaging;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Messaging.Messaging.onMessage();
-  Messaging.Messaging.onBackgroundMessage();
+  messaging.Messaging.onMessage();
+  messaging.Messaging.onBackgroundMessage();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
 
   @override
@@ -24,23 +24,23 @@ class MyApp extends StatelessWidget {
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => Providers.Auth()),
-          ChangeNotifierProvider(create: (_) => Providers.BountyStore()),
-          ChangeNotifierProvider(create: (_) => Providers.Champions()),
-          ChangeNotifierProvider(create: (_) => Providers.Players()),
-          ChangeNotifierProvider(create: (_) => Providers.Queue()),
-          ChangeNotifierProvider(create: (_) => Providers.Search()),
+          ChangeNotifierProvider(create: (_) => providers.Auth()),
+          ChangeNotifierProvider(create: (_) => providers.BountyStore()),
+          ChangeNotifierProvider(create: (_) => providers.Champions()),
+          ChangeNotifierProvider(create: (_) => providers.Players()),
+          ChangeNotifierProvider(create: (_) => providers.Queue()),
+          ChangeNotifierProvider(create: (_) => providers.Search()),
         ],
-        child: Selector<Providers.Auth, ThemeMode>(
+        child: Selector<providers.Auth, ThemeMode>(
           selector: (_, authProvider) => authProvider.settings.themeMode,
           builder: (_, themeMode, __) {
             return MaterialApp(
-              navigatorObservers: [],
+              navigatorObservers: const [],
               debugShowCheckedModeBanner: false,
               themeMode: themeMode,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              routes: Screens.routes,
+              theme: app_theme.lightTheme,
+              darkTheme: app_theme.darkTheme,
+              routes: screens.routes,
             );
           },
         ),
