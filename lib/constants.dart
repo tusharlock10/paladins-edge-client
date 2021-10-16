@@ -1,0 +1,78 @@
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+
+abstract class Urls {
+  // root
+  static const root = "/";
+
+  // auth
+  static const login = "/auth/login"; // POST
+  static const logout = "/auth/logout"; // POST
+  static const fcmToken = "/auth/fcmToken"; // POST
+  static const claimPlayer = "/auth/claimPlayer"; // POST
+  static const observePlayer = "/auth/observePlayer"; // PUT
+
+  // champions
+  static const allChampions = "/champions/allChampions"; // GET
+  static const playerChampions = "/champions/playerChampions"; // GET
+
+  // players
+  static const searchPlayers = "/players/searchPlayers"; // GET
+  static const playerDetail = "/players/playerDetail"; // GET
+  static const playerStatus = "/players/playerStatus"; // GET
+  static const friendsList = "/players/friendsList"; // GET
+  static const favouriteFriend = "/players/favouriteFriend"; // PUT
+
+  // queue
+  static const queueDetails = "/queue/queueDetails"; // GET
+
+  // bountyStore
+  static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
+}
+
+abstract class StorageKeys {
+  static const token = "token";
+}
+
+const isDebug = kDebugMode;
+
+// AppType can be development/staging/production
+const appType = String.fromEnvironment('APP_TYPE', defaultValue: 'development');
+const baseUrl = appType == "production"
+    ? "https://api.paladinsedge.ml" // production
+    : appType == "staging"
+        ? "https://paladins-edge-backend.herokuapp.com" // staging
+        : "http://192.168.0.103:8000"; // development
+const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
+
+const otpSalt = "EszqnsYd";
+
+abstract class TypeIds {
+  // when adding another type id, add it in the
+  // bottom with a unique id, do not change the value of the filds above it
+  static const champion = 0;
+  static const championAbility = 1;
+  static const championTalent = 2;
+  static const championCard = 3;
+  static const player = 4;
+  static const playerRanked = 5;
+  static const user = 6;
+  static const settings = 7;
+  static const championTag = 8;
+  static const playerChampion = 9;
+}
+
+const Map<String, Map<String, dynamic>> championDamageType = {
+  'Amplification': {"name": "Amplification", "color": Colors.pink},
+  'Area Damage': {"name": "Area Damage", "color": Colors.red},
+  'Crowd Control': {"name": "Crowd Control", "color": Colors.teal},
+  'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
+  'Heal': {"name": "Heal", "color": Colors.green},
+  'Movement': {"name": "Movement", "color": Colors.amber},
+  'Protective': {"name": "Protective", "color": Colors.lightBlue},
+  'Reveal': {"name": "Reveal", "color": Colors.amber},
+  'Shield': {"name": "Shield", "color": Colors.indigo},
+  'Stance Change': {"name": "Stance Change", "color": Colors.pink},
+  'Stealth': {"name": "Stealth", "color": Colors.blue},
+  'Ultimate': {"name": "Ultimate", "color": Colors.orange},
+};
