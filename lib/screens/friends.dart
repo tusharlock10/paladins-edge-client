@@ -45,16 +45,16 @@ class _PlayerDetailState extends State<Friends> {
     super.didChangeDependencies();
   }
 
-  onSelectFriend(models.Player selectedFriend) {
-    if (this.selectedFriend?.playerId == selectedFriend.playerId) {
+  onSelectFriend(models.Player friend) {
+    if (selectedFriend?.playerId == friend.playerId) {
       return;
     }
 
     // get the playerStatus from the provider
     final playersProvider =
         Provider.of<providers.Players>(context, listen: false);
-    setState(() => selectedFriend = selectedFriend);
-    playersProvider.getPlayerStatus(selectedFriend.playerId);
+    setState(() => selectedFriend = friend);
+    playersProvider.getPlayerStatus(friend.playerId);
   }
 
   onFavouriteFriend() async {
