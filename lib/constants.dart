@@ -1,6 +1,9 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
+const isDebug = kDebugMode;
+const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
+
 abstract class Urls {
   // root
   static const root = "/";
@@ -34,22 +37,29 @@ abstract class StorageKeys {
   static const token = "token";
 }
 
-const isDebug = kDebugMode;
+// Getters for environment variables
+abstract class Env {
+  static String get appType => _getEnv('APP_TYPE', 'development');
+  static String get baseUrl => _getEnv('BASE_URL', 'EszqnsYd');
+  static String get otpSalt => _getEnv('OTP_SALT', 'http://192.168.0.103:8000');
 
-// AppType can be development/staging/production
-const appType = String.fromEnvironment('APP_TYPE', defaultValue: 'development');
-const baseUrl = appType == "production"
-    ? "https://api.paladinsedge.ml" // production
-    : appType == "staging"
-        ? "https://paladins-edge-backend.herokuapp.com" // staging
-        : "http://192.168.0.103:8000"; // development
-const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
+  static String _getEnv(String envName, String debugValue) {
+    if (isDebug) return debugValue;
+    return String.fromEnvironment(envName);
+  }
 
-const otpSalt = "EszqnsYd";
+  static Future<String?> loadEnv() async {
+    if (appType == "") return 'APP_TYPE';
+    if (baseUrl == "") return 'BASE_URL';
+    if (otpSalt == "") return 'OTP_SALT';
+
+    return null;
+  }
+}
 
 abstract class TypeIds {
-  // when adding another type id, add it in the
-  // bottom with a unique id, do not change the value of the filds above it
+  // when adding another type id, add it at the bottom with a unique
+  // incremental id, do not change the value of the fields above it
   static const champion = 0;
   static const championAbility = 1;
   static const championTalent = 2;

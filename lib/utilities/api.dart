@@ -6,7 +6,7 @@ import 'package:paladinsedge/constants.dart' as constants;
 // authourization header is set by authProvider
 final api = Dio(
   BaseOptions(
-    baseUrl: constants.baseUrl,
+    baseUrl: constants.Env.baseUrl,
     sendTimeout: constants.apiTimeout,
     receiveTimeout: constants.apiTimeout,
     connectTimeout: constants.apiTimeout,
