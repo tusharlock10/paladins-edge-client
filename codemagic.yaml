@@ -55,6 +55,12 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - |
+        # generate environment config file
+        ./generate_env.sh
+      - |
+        # printing env
+        cat .env
+      - |
         # buld production appbundle
         flutter build appbundle --release
       - |
@@ -118,6 +124,12 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
+      - |
+        # generate environment config file
+        ./generate_env.sh
+      - |
+        # printing env
+        cat .env
       - |
         # build staging apk
         flutter build apk --release

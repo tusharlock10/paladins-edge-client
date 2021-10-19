@@ -1,5 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const isDebug = kDebugMode;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
@@ -39,21 +40,22 @@ abstract class StorageKeys {
 
 // environment variables
 abstract class Env {
-  static String get appType => _getEnv('APP_TYPE', 'development');
-  static String get baseUrl => _getEnv('BASE_URL', 'http://192.168.0.103:8000');
-  static String get otpSalt => _getEnv('OTP_SALT', 'EszqnsYd');
+  static String get appType => _getEnv('APP_TYPE');
+  static String get baseUrl => _getEnv('BASE_URL');
+  static String get otpSalt => _getEnv('OTP_SALT');
 
-  static String _getEnv(String envName, String debugValue) {
-    if (isDebug) return debugValue;
-    return String.fromEnvironment(envName);
+  static String _getEnv(String envName) {
+    return dotenv.env[envName] ?? '';
   }
 
-  static String? loadEnv() {
-    if (appType == '') return 'APP_TYPE';
-    if (baseUrl == '') return 'BASE_URL';
-    if (otpSalt == '') return 'OTP_SALT';
+  static Future<List<String>> loadEnv() async {
+    await dotenv.load(fileName: ".env");
+    final List<String> missingEnvs = [];
+    if (appType == '') missingEnvs.add('APP_TYPE');
+    if (baseUrl == '') missingEnvs.add('BASE_URL');
+    if (otpSalt == '') missingEnvs.add('OTP_SALT');
 
-    return null;
+    return missingEnvs;
   }
 }
 

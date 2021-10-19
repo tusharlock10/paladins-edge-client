@@ -1,0 +1,1 @@
+echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> .env
