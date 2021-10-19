@@ -109,10 +109,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void showInfoAlert(BuildContext context) {
-    showDialog(context: context, builder: (_) => const widgets.InfoAlert());
-  }
-
   Widget buildBigIcon(BuildContext context) {
     return Container(
       transform: Matrix4.translationValues(0, -50.0, 0.0),
@@ -146,7 +142,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           GestureDetector(
-            onTap: () => showInfoAlert(context),
+            onTap: () => widgets.showInfoAlert(context),
             child: Container(
               transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
               child: Image.asset(
