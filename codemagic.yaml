@@ -62,10 +62,10 @@ workflows:
         cat paladins-edge.env
       - |
         # buld production appbundle
-        flutter build appbundle --release
+        flutter build appbundle --release --build-number=$BUILD_NUMBER
       - |
         # build production apk
-        flutter build apk --release
+        flutter build apk --release --build-number=$BUILD_NUMBER
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
@@ -132,7 +132,7 @@ workflows:
         cat paladins-edge.env
       - |
         # build staging apk
-        flutter build apk --release
+        flutter build apk --release --build-number=$BUILD_NUMBER
     artifacts:
       - build/**/outputs/apk/**/*.apk
     publishing:
