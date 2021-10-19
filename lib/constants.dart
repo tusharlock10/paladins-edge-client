@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const isDebug = kDebugMode;
+const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
 
 abstract class Urls {
@@ -49,7 +50,7 @@ abstract class Env {
   }
 
   static Future<List<String>> loadEnv() async {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: "paladins-edge.env");
     final List<String> missingEnvs = [];
     if (appType == '') missingEnvs.add('APP_TYPE');
     if (baseUrl == '') missingEnvs.add('BASE_URL');

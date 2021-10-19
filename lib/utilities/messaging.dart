@@ -1,16 +1,16 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:paladinsedge/app_theme.dart' as app_theme;
+import 'package:paladinsedge/constants.dart' as constants;
 
 abstract class Messaging {
   static FirebaseMessaging? messaging;
   static NotificationSettings? settings;
 
   static Future<String?> initMessaging() async {
-    if (kIsWeb) return null; // don't run on web
+    if (constants.isWeb) return null; // don't run on web
 
     messaging = FirebaseMessaging.instance;
 

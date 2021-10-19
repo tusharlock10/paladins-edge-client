@@ -56,10 +56,10 @@ workflows:
       - flutter packages pub get
       - |
         # generate environment config file
-        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> .env
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> paladins-edge.env
       - |
         # printing env
-        cat .env
+        cat paladins-edge.env
       - |
         # buld production appbundle
         flutter build appbundle --release
@@ -126,10 +126,10 @@ workflows:
       - flutter packages pub get
       - |
         # generate environment config file
-        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> .env
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> paladins-edge.env
       - |
         # printing env
-        cat .env
+        cat paladins-edge.env
       - |
         # build staging apk
         flutter build apk --release
