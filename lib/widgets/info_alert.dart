@@ -3,6 +3,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/widgets/loading_indicator.dart';
 
+void showInfoAlert(BuildContext context) {
+  showDialog(context: context, builder: (_) => const InfoAlert());
+}
+
 class InfoAlert extends StatefulWidget {
   const InfoAlert({Key? key}) : super(key: key);
 
@@ -45,10 +49,10 @@ class _InfoAlertState extends State<InfoAlert> {
                     ),
                     const SizedBox(height: 20),
                     Text('App Name : ${packageInfo!.appName}'),
-                    const Text('App Type : ${constants.appType}'),
+                    Text('App Type : ${constants.Env.appType}'),
                     Text('Package Name : ${packageInfo!.packageName}'),
                     Text('Version: ${packageInfo!.version}'),
-                    const Text('API Url : ${constants.baseUrl}'),
+                    Text('API Url : ${constants.Env.baseUrl}'),
                   ],
                 ),
         ),

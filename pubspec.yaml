@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.3.0
+version: 0.3.1
 
 homepage: "https://paladinsedge.ml"
 
@@ -46,6 +46,7 @@ dependencies:
   overlay_support: ^1.2.1
   expand_widget: ^2.1.0
   package_info_plus: "^1.0.6"
+  flutter_dotenv: ^5.0.2
   
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - paladins-edge.env
     - assets/icons/
     - assets/splash/
     - assets/fonts/

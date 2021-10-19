@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 
-void showDebugAlert(BuildContext context, String message) {
+void showDebugAlert({
+  required BuildContext context,
+  required String message,
+  String title = "Alert",
+  bool isDismissable = true,
+  bool forceShow = false,
+}) {
   // shows a alert with the message for easy debugging :)
-  if (!constants.isDebug) return;
-  showDialog(context: context, builder: (_) => _DebugAlert(message: message));
+  if (!forceShow && !constants.isDebug) return;
+  showDialog(
+    barrierDismissible: isDismissable,
+    context: context,
+    builder: (_) => _DebugAlert(
+      message: message,
+      title: title,
+    ),
+  );
 }
 
 class _DebugAlert extends StatelessWidget {
   final String message;
-  const _DebugAlert({required this.message});
+  final String title;
+  const _DebugAlert({required this.message, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(message),
-      elevation: 10,
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text(message),
+      elevation: 5,
     );
   }
 }

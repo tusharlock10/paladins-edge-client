@@ -36,6 +36,23 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> initApp() async {
+    // first initialize all env variables and check
+    // if all the env variables are loaded properly
+    final missingEnvs = await constants.Env.loadEnv();
+    if (missingEnvs.isNotEmpty) {
+      // if some variables are missing then open up an alert
+      // and do not let the app proceed forward
+      WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => widgets.showDebugAlert(
+          context: context,
+          isDismissable: false,
+          message: 'Env variable ${missingEnvs.join(", ")} not found',
+          forceShow: true,
+        ),
+      );
+      return;
+    }
+
     await utilities.Database.initDatabase();
     await Firebase.initializeApp();
     await FirebasePerformance.instance
@@ -93,10 +110,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void showInfoAlert(BuildContext context) {
-    showDialog(context: context, builder: (_) => const widgets.InfoAlert());
-  }
-
   Widget buildBigIcon(BuildContext context) {
     return Container(
       transform: Matrix4.translationValues(0, -50.0, 0.0),
@@ -130,7 +143,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           GestureDetector(
-            onTap: () => showInfoAlert(context),
+            onTap: () => widgets.showInfoAlert(context),
             child: Container(
               transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
               child: Image.asset(
