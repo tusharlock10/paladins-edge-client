@@ -38,14 +38,16 @@ class _LoginState extends State<Login> {
   Future<void> initApp() async {
     // first initialize all env variables and check
     // if all the env variables are loaded properly
-    final missingEnv = await constants.Env.loadEnv();
+    final missingEnv = constants.Env.loadEnv();
     if (missingEnv != null) {
       // if some variables are missing then open up an alert
       // and do not let the app proceed forward
-      widgets.showDebugAlert(
-        context: context,
-        message: 'Env variable $missingEnv not found',
-        isDismissable: false,
+      WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => widgets.showDebugAlert(
+          context: context,
+          isDismissable: false,
+          message: 'Env variable $missingEnv not found',
+        ),
       );
       return;
     }

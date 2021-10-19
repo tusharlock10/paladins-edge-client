@@ -37,21 +37,21 @@ abstract class StorageKeys {
   static const token = "token";
 }
 
-// Getters for environment variables
+// environment variables
 abstract class Env {
   static String get appType => _getEnv('APP_TYPE', 'development');
-  static String get baseUrl => _getEnv('BASE_URL', 'EszqnsYd');
-  static String get otpSalt => _getEnv('OTP_SALT', 'http://192.168.0.103:8000');
+  static String get baseUrl => _getEnv('BASE_URL', 'http://192.168.0.103:8000');
+  static String get otpSalt => _getEnv('OTP_SALT', 'EszqnsYd');
 
   static String _getEnv(String envName, String debugValue) {
     if (isDebug) return debugValue;
     return String.fromEnvironment(envName);
   }
 
-  static Future<String?> loadEnv() async {
-    if (appType == "") return 'APP_TYPE';
-    if (baseUrl == "") return 'BASE_URL';
-    if (otpSalt == "") return 'OTP_SALT';
+  static String? loadEnv() {
+    if (appType == '') return 'APP_TYPE';
+    if (baseUrl == '') return 'BASE_URL';
+    if (otpSalt == '') return 'OTP_SALT';
 
     return null;
   }
