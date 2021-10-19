@@ -56,7 +56,7 @@ workflows:
       - flutter packages pub get
       - |
         # generate environment config file
-        ./generate_env.sh
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> .env
       - |
         # printing env
         cat .env
@@ -126,7 +126,7 @@ workflows:
       - flutter packages pub get
       - |
         # generate environment config file
-        ./generate_env.sh
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> .env
       - |
         # printing env
         cat .env
