@@ -109,8 +109,9 @@ class Auth with ChangeNotifier {
     // Sends an otp and playerId to server to check if a loadout exists with that otp
     // if it does, then player is verified
     //
-    final otpHash =
-        crypto.sha1.convert(utf8.encode('${constants.otpSalt}$otp')).toString();
+    final otpHash = crypto.sha1
+        .convert(utf8.encode('${constants.Env.otpSalt}$otp'))
+        .toString();
 
     final response = await api.AuthRequests.claimPlayer(
         otpHash: otpHash, playerId: playerId);

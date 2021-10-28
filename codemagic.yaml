@@ -12,6 +12,8 @@ workflows:
         excludes:
           - '**/*.md'
     environment:
+      groups:
+        - "production"
       vars:
         FIREBASE_TOKEN: Encrypted(Z0FBQUFBQmhTMlVjQUhUX1dSbk10SXh4TmVWLWZCN05JbnpWZ0ZZNFRNYUNublF3dUNrVG1iXzd4aGhybTlhM0lZSDNETzhldkFBR3FPbElMdUhRZ213XzhCMkpYV21QdlBYQXpTRlQ0bGNhNGR2OFlHTXRDclpFdkJyM0ROSERadHN1RTBmeWhUQUVaQWo4Ti1Da2l3MHA5LTVxWTBfd0lBUG1ESVltOVlid29HZUhDR2UxRVdpYk1QQTNDS1JOWEdsT3lVNDllUG9mMW5hY3g1X0dReUZ4dVN4UFd5NkE3QT09)
         FCI_KEYSTORE_PATH: /tmp/keystore.keystore
@@ -22,10 +24,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-    cache:
-      cache_paths:
-        - $HOME/.gradle/caches
-        - $FLUTTER_ROOT/.pub-cache
     triggering:
       events:
         - push
@@ -57,11 +55,17 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - |
+        # generate environment config file
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> paladins-edge.env
+      - |
+        # printing env
+        cat paladins-edge.env
+      - |
         # buld production appbundle
-        flutter build appbundle --release --dart-define=APP_TYPE=production
+        flutter build appbundle --release --build-number=$BUILD_NUMBER
       - |
         # build production apk
-        flutter build apk --release --no-shrink --dart-define=APP_TYPE=production
+        flutter build apk --release --build-number=$BUILD_NUMBER
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
@@ -79,6 +83,8 @@ workflows:
     name: Staging Workflow
     max_build_duration: 30
     environment:
+      groups:
+        - "staging"
       vars:
         FIREBASE_TOKEN: Encrypted(Z0FBQUFBQmhTMlVjQUhUX1dSbk10SXh4TmVWLWZCN05JbnpWZ0ZZNFRNYUNublF3dUNrVG1iXzd4aGhybTlhM0lZSDNETzhldkFBR3FPbElMdUhRZ213XzhCMkpYV21QdlBYQXpTRlQ0bGNhNGR2OFlHTXRDclpFdkJyM0ROSERadHN1RTBmeWhUQUVaQWo4Ti1Da2l3MHA5LTVxWTBfd0lBUG1ESVltOVlid29HZUhDR2UxRVdpYk1QQTNDS1JOWEdsT3lVNDllUG9mMW5hY3g1X0dReUZ4dVN4UFd5NkE3QT09)
         FCI_KEYSTORE_PATH: /tmp/keystore.keystore
@@ -89,10 +95,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-    cache:
-      cache_paths:
-        - $HOME/.gradle/caches
-        - $FLUTTER_ROOT/.pub-cache
     triggering:
       events:
         - push
@@ -123,8 +125,14 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - |
+        # generate environment config file
+        echo -e "APP_TYPE=$APP_TYPE\nBASE_URL=$BASE_URL\nOTP_SALT=$OTP_SALT" >> paladins-edge.env
+      - |
+        # printing env
+        cat paladins-edge.env
+      - |
         # build staging apk
-        flutter build apk --release --no-shrink --dart-define=APP_TYPE=staging
+        flutter build apk --release --build-number=$BUILD_NUMBER
     artifacts:
       - build/**/outputs/apk/**/*.apk
     publishing:
