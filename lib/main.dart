@@ -10,6 +10,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   messaging.Messaging.onMessage();
   messaging.Messaging.onBackgroundMessage();
+  messaging.Messaging.registerLocalNotification();
 
   runApp(const MyApp());
 }
