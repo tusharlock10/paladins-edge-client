@@ -75,6 +75,10 @@ abstract class TypeIds {
   static const playerChampion = 9;
 }
 
+abstract class NotificationChannels {
+  static const friends = 'friends';
+}
+
 const Map<String, Map<String, dynamic>> championDamageType = {
   'Amplification': {"name": "Amplification", "color": Colors.pink},
   'Area Damage': {"name": "Area Damage", "color": Colors.red},
