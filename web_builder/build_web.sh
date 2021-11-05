@@ -5,17 +5,13 @@ cd ..
 
 echo "Downloading credentials"
 node ./web_builder/index.js
-ls
 
 echo "Cloning flutter";
-git clone https://github.com/flutter/flutter.git -b stable > /dev/null;
+git clone https://github.com/flutter/flutter.git -b stable;
 export PATH="$PATH:`pwd`/flutter/bin";
 
-flutter --version > /dev/null;
+flutter --version;
 flutter --doctor;
-
-echo "Printing env file";
-cat paladins-edge.env;
 
 echo "Building web app";
 flutter packages pub get;
