@@ -1,0 +1,11 @@
+{
+  "name": "web_builder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.39.0"
+  }
+}
