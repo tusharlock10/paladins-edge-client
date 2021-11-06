@@ -35,7 +35,7 @@ workflows:
         # configure aws cli
         sudo pip3 install awscli --upgrade
         aws configure set aws_access_key_id $PE_PRIVATE_AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $PE_EBS_AWS_SECRET_ACCESS_KEY
+        aws configure set aws_secret_access_key $PE_PRIVATE_AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
       - |
         # download credentials from AWS
@@ -104,7 +104,7 @@ workflows:
         # configure aws cli
         sudo pip3 install awscli --upgrade
         aws configure set aws_access_key_id $PE_PRIVATE_AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $PE_EBS_AWS_SECRET_ACCESS_KEY
+        aws configure set aws_secret_access_key $PE_PRIVATE_AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
       - |
         # download credentials from AWS
