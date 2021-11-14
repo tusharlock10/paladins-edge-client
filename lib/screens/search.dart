@@ -26,7 +26,7 @@ class _SearchState extends State<Search> {
   void didChangeDependencies() {
     if (_init) {
       _init = false;
-      Provider.of<providers.Search>(context, listen: false).getSearchHistory();
+      Provider.of<providers.Players>(context, listen: false).getSearchHistory();
     }
     super.didChangeDependencies();
   }
@@ -39,7 +39,7 @@ class _SearchState extends State<Search> {
     setState(() => isLoading = true);
 
     final searchProvider =
-        Provider.of<providers.Search>(context, listen: false);
+        Provider.of<providers.Players>(context, listen: false);
     final exactMatch = await searchProvider.searchByName(playerName,
         addInSeachHistory: addInSeachHistory);
 
@@ -52,7 +52,7 @@ class _SearchState extends State<Search> {
   Widget buildSearchBar(BuildContext context) {
     final theme = Theme.of(context);
     final searchProvider =
-        Provider.of<providers.Search>(context, listen: false);
+        Provider.of<providers.Players>(context, listen: false);
     final textStyle = theme.textTheme.headline6?.copyWith(
       color: Colors.white,
       fontSize: 16,
@@ -131,7 +131,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildSearchList(BuildContext context) {
-    final searchProvider = Provider.of<providers.Search>(context);
+    final searchProvider = Provider.of<providers.Players>(context);
     final topSearchList = searchProvider.topSearchList;
     final lowerSearchList = searchProvider.lowerSearchList;
     final childCount = topSearchList.length + lowerSearchList.length;
@@ -153,7 +153,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildSearchHistory(BuildContext context) {
-    final searchProvider = Provider.of<providers.Search>(context);
+    final searchProvider = Provider.of<providers.Players>(context);
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
@@ -181,7 +181,7 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    final searchProvider = Provider.of<providers.Search>(context);
+    final searchProvider = Provider.of<providers.Players>(context);
 
     return CustomScrollView(
       slivers: [
