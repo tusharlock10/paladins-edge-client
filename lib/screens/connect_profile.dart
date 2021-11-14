@@ -30,7 +30,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
 
     setState(() => _isLoading = true);
     final searchProvider =
-        Provider.of<providers.Search>(context, listen: false);
+        Provider.of<providers.Players>(context, listen: false);
     await searchProvider.searchByName(
       playerName,
       simpleResults: true,
@@ -188,7 +188,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   }
 
   Widget buildSearchList() {
-    final searchProvider = Provider.of<providers.Search>(context);
+    final searchProvider = Provider.of<providers.Players>(context);
     final searchList = searchProvider.lowerSearchList;
     final itemCount = searchList.length;
 
