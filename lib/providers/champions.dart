@@ -10,6 +10,8 @@ class Champions with ChangeNotifier {
     final response = await api.ChampionsRequests.allChampions(allData: true);
     if (response == null) return;
     champions = response.champions;
+    champions
+        .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     notifyListeners();
   }
 

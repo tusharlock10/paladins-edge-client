@@ -35,14 +35,7 @@ abstract class Messaging {
   }
 
   static Future<void> _backgroundMessageHandler(RemoteMessage? message) async {
-    // http.get(Uri.parse(constants.Env.baseUrl));
-    if (message == null) {
-      createNewNotif(
-        title: "No message",
-        body: "getInitialMessage",
-      );
-      return;
-    }
+    if (message == null) return;
 
     final data =
         message.data.map((key, value) => MapEntry(key, value?.toString()));

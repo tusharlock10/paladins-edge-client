@@ -17,7 +17,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
 
   @override
   void deactivate() {
-    Provider.of<providers.Search>(context, listen: false).clearPlayerData();
+    Provider.of<providers.Players>(context, listen: false).clearPlayerData();
     super.deactivate();
   }
 
@@ -33,7 +33,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
       final playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
         // fetch data from server
-        Provider.of<providers.Search>(context, listen: false)
+        Provider.of<providers.Players>(context, listen: false)
             .getPlayerData(playerId);
       }
     }
@@ -50,7 +50,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
 
   Widget buildObserve() {
     final authProvider = Provider.of<providers.Auth>(context);
-    final player = Provider.of<providers.Search>(context).playerData;
+    final player = Provider.of<providers.Players>(context).playerData;
     final isObserving =
         authProvider.user?.observeList.contains(player?.playerId) == true;
 
@@ -136,7 +136,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final player = Provider.of<providers.Search>(context).playerData;
+    final player = Provider.of<providers.Players>(context).playerData;
 
     return Scaffold(
       appBar: AppBar(
