@@ -8,14 +8,14 @@ class ElevatedAvatar extends StatelessWidget {
   final double? borderWidth;
   final double? elevation;
 
-  const ElevatedAvatar(
-      {required this.imageUrl,
-      required this.size,
-      this.borderWidth,
-      this.elevation,
-      this.borderRadius,
-      Key? key})
-      : super(key: key);
+  const ElevatedAvatar({
+    required this.imageUrl,
+    required this.size,
+    this.borderWidth,
+    this.elevation,
+    this.borderRadius,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

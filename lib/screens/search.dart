@@ -113,8 +113,10 @@ class _SearchState extends State<Search> {
           arguments: player.playerId,
         );
       },
-      title: Text(player.name,
-          style: Theme.of(context).primaryTextTheme.headline6),
+      title: Text(
+        player.name,
+        style: Theme.of(context).primaryTextTheme.headline6,
+      ),
       trailing: player.ranked.rankIconUrl != ""
           ? Image.network(player.ranked.rankIconUrl!)
           : Container(),

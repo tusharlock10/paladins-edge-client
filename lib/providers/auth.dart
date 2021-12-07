@@ -14,14 +14,22 @@ class Auth with ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
-  models.Essentials? essentials;
 
   void loadSettings() {
-    final settings = utilities.Database.getSettings();
+    settings = utilities.Database.getSettings();
+    notifyListeners();
+  }
 
-    if (settings != null) {
-      // if settings are present, then replace the newly create settings with user's settings
-      this.settings = settings;
+  void loadEssentials() async {
+    // gets the essential data for the app
+
+    // getting the essential data from local untill the api call is completed
+    utilities.Global.essentials = utilities.Database.getEssentials();
+
+    // call essentials api to update its data
+    final response = await api.AuthRequests.essentials();
+    if (response != null) {
+      utilities.Global.essentials = response.data;
     }
     notifyListeners();
   }
@@ -113,15 +121,6 @@ class Auth with ChangeNotifier {
     // for the server, and not stored on the app/ browser
 
     api.AuthRequests.fcmToken(fcmToken: fcmToken);
-  }
-
-  void getEssentials() async {
-    // gets the essential data for some parts for the app
-
-    final response = await api.AuthRequests.essentials();
-    if (response != null) {
-      essentials = response.data;
-    }
   }
 
   Future<bool> claimPlayer(String otp, String playerId) async {

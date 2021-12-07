@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paladinsedge/constants.dart' show TypeIds;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 part 'player.g.dart';
 
@@ -26,9 +27,9 @@ class Ranked {
     required this.looses,
     required this.rank,
     required this.rankName,
-    required this.rankIconUrl,
+    required String? rankIconUrl,
     required this.points,
-  });
+  }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
 
   factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);
   Map<String, dynamic> toJson() => _$RankedToJson(this);
@@ -82,7 +83,7 @@ class Player {
     this.userId,
     required this.name,
     required this.title,
-    required this.avatarUrl,
+    required String? avatarUrl,
     required this.totalXP,
     required this.hoursPlayed,
     required this.level,
@@ -95,7 +96,7 @@ class Player {
     required this.ranked,
     this.status,
     this.friends,
-  });
+  }) : avatarUrl = utilities.getUrlFromKey(avatarUrl);
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerToJson(this);
