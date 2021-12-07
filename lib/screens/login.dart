@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
     final authProvider = Provider.of<providers.Auth>(context, listen: false);
     final loggedIn = await authProvider.login();
 
-    authProvider.getEssentials(); // get the essential data from server
+    authProvider.loadEssentials(); // load the essentials from hive
     authProvider.loadSettings(); // load the settings from hive
 
     if (loggedIn) {

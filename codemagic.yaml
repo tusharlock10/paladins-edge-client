@@ -39,9 +39,9 @@ workflows:
         aws configure set default.region $AWS_REGION
       - |
         # download credentials from AWS
-        aws s3 cp s3://paladinsedge-private/credentials/client/paladins-edge-prod.env ./paladins-edge.env
-        aws s3 cp s3://paladinsedge-private/credentials/client/google-services.json ./android/app/
-        aws s3 cp s3://paladinsedge-private/credentials/client/upload-keystore.jks ./android/app/
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/google-services.json ./android/app/
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/upload-keystore.jks ./android/app/
       - |
         # generate release notes
         git log -1 --pretty="PRODUCTION BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
@@ -108,9 +108,9 @@ workflows:
         aws configure set default.region $AWS_REGION
       - |
         # download credentials from AWS
-        aws s3 cp s3://paladinsedge-private/credentials/client/paladins-edge-stage.env ./paladins-edge.env
-        aws s3 cp s3://paladinsedge-private/credentials/client/google-services.json ./android/app/
-        aws s3 cp s3://paladinsedge-private/credentials/client/upload-keystore.jks ./android/app/
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/paladins-edge-stage.env ./paladins-edge.env
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/google-services.json ./android/app/
+        aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/upload-keystore.jks ./android/app/
       - |
         # generate release notes
         git log -1 --pretty="STAGING BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt

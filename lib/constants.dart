@@ -74,6 +74,7 @@ abstract class TypeIds {
   static const settings = 7;
   static const championTag = 8;
   static const playerChampion = 9;
+  static const essentials = 10;
 }
 
 abstract class NotificationChannels {

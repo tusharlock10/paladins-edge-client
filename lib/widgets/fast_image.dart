@@ -7,14 +7,14 @@ class FastImage extends StatelessWidget {
   final BorderRadius? borderRadius;
   final BoxFit? fit;
 
-  const FastImage(
-      {required this.imageUrl,
-      this.height,
-      this.width,
-      this.borderRadius = BorderRadius.zero,
-      this.fit = BoxFit.contain,
-      Key? key})
-      : super(key: key);
+  const FastImage({
+    required this.imageUrl,
+    this.height,
+    this.width,
+    this.borderRadius = BorderRadius.zero,
+    this.fit = BoxFit.contain,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

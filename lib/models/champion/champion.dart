@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paladinsedge/constants.dart' show TypeIds;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 part 'champion.g.dart';
 
@@ -23,11 +24,11 @@ class Ability {
   Ability({
     required this.abilityId,
     required this.name,
-    required this.imageUrl,
+    required String imageUrl,
     required this.damageType,
     required this.cooldown,
     required this.description,
-  });
+  }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
   factory Ability.fromJson(Map<String, dynamic> json) =>
       _$AbilityFromJson(json);
@@ -54,11 +55,11 @@ class Talent {
   Talent({
     required this.talentId,
     required this.name,
-    required this.imageUrl,
+    required String imageUrl,
     required this.cooldown,
     required this.description,
     required this.modifier,
-  });
+  }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
   factory Talent.fromJson(Map<String, dynamic> json) => _$TalentFromJson(json);
   Map<String, dynamic> toJson() => _$TalentToJson(this);
@@ -84,11 +85,11 @@ class Card {
   Card({
     required this.cardId,
     required this.name,
-    required this.imageUrl,
+    required String imageUrl,
     required this.cooldown,
     required this.description,
     required this.modifier,
-  });
+  }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
   factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
   Map<String, dynamic> toJson() => _$CardToJson(this);
@@ -161,9 +162,9 @@ class Champion {
   Champion({
     required this.championId,
     required this.name,
-    required this.iconUrl,
-    required this.headerUrl,
-    required this.splashUrl,
+    required String iconUrl,
+    required String headerUrl,
+    required String splashUrl,
     required this.title,
     required this.role,
     required this.releaseDate,
@@ -179,7 +180,9 @@ class Champion {
     required this.latestChampion,
     required this.onFreeRotation,
     required this.tags,
-  });
+  })  : iconUrl = utilities.getUrlFromKey(iconUrl),
+        headerUrl = utilities.getUrlFromKey(headerUrl),
+        splashUrl = utilities.getUrlFromKey(splashUrl);
 
   factory Champion.fromJson(Map<String, dynamic> json) =>
       _$ChampionFromJson(json);
