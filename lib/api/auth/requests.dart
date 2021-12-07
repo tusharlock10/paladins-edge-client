@@ -5,9 +5,9 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 abstract class AuthRequests {
   static Future<responses.LoginResponse?> login({
     required String uid,
-    String? email,
-    String? name,
-    String? photoUrl,
+    required String email,
+    required String name,
+    required String verification,
   }) async {
     final response = await utilities.api.post<Map<String, dynamic>>(
       constants.Urls.login,
@@ -15,7 +15,7 @@ abstract class AuthRequests {
         'uid': uid,
         'email': email,
         'name': name,
-        'photoUrl': photoUrl,
+        'verification': verification
       },
     );
     if (response.data != null) {
@@ -30,12 +30,12 @@ abstract class AuthRequests {
 
   static Future<responses.ClaimPlayerResponse?> claimPlayer({
     required String playerId,
-    required String otpHash,
+    required String verification,
   }) async {
     final response = await utilities.api.post<Map<String, dynamic>>(
       constants.Urls.claimPlayer,
       data: {
-        'otpHash': otpHash,
+        'verification': verification,
         'playerId': playerId,
       },
     );
@@ -58,5 +58,13 @@ abstract class AuthRequests {
     await utilities.api
         .post(constants.Urls.fcmToken, data: {'fcmToken': fcmToken});
     return;
+  }
+
+  static Future<responses.EssentialsResponse?> essentials() async {
+    final response = await utilities.api
+        .get<Map<String, dynamic>>(constants.Urls.essentials);
+    if (response.data != null) {
+      return responses.EssentialsResponse.fromJson(response.data!);
+    }
   }
 }

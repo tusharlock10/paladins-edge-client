@@ -13,9 +13,10 @@ abstract class Urls {
   // auth
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
-  static const fcmToken = "/auth/fcmToken"; // POST
   static const claimPlayer = "/auth/claimPlayer"; // POST
   static const observePlayer = "/auth/observePlayer"; // PUT
+  static const fcmToken = "/auth/fcmToken"; // POST
+  static const essentials = "/auth/essentials"; // GET
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -43,7 +44,7 @@ abstract class StorageKeys {
 abstract class Env {
   static String get appType => _getEnv('APP_TYPE');
   static String get baseUrl => _getEnv('BASE_URL');
-  static String get otpSalt => _getEnv('OTP_SALT');
+  static String get hashSalt => _getEnv('HASH_SALT');
 
   static String _getEnv(String envName) {
     return dotenv.env[envName] ?? '';
@@ -54,7 +55,7 @@ abstract class Env {
     final List<String> missingEnvs = [];
     if (appType == '') missingEnvs.add('APP_TYPE');
     if (baseUrl == '') missingEnvs.add('BASE_URL');
-    if (otpSalt == '') missingEnvs.add('OTP_SALT');
+    if (hashSalt == '') missingEnvs.add('HASH_SALT');
 
     return missingEnvs;
   }
