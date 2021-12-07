@@ -21,10 +21,9 @@ class UserAdapter extends TypeAdapter<User> {
       name: fields[1] as String,
       email: fields[2] as String,
       token: fields[3] as String,
-      photoUrl: fields[5] as String,
-      uid: fields[6] as String,
-      observeList: (fields[7] as List).cast<String>(),
-      favouriteFriends: (fields[8] as List).cast<String>(),
+      uid: fields[5] as String,
+      observeList: (fields[6] as List).cast<String>(),
+      favouriteFriends: (fields[7] as List).cast<String>(),
       playerId: fields[4] as String?,
     );
   }
@@ -32,7 +31,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,12 +43,10 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(4)
       ..write(obj.playerId)
       ..writeByte(5)
-      ..write(obj.photoUrl)
-      ..writeByte(6)
       ..write(obj.uid)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.observeList)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.favouriteFriends);
   }
 
@@ -73,7 +70,6 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       name: json['name'] as String,
       email: json['email'] as String,
       token: json['token'] as String,
-      photoUrl: json['photoUrl'] as String,
       uid: json['uid'] as String,
       observeList: (json['observeList'] as List<dynamic>)
           .map((e) => e as String)
@@ -90,7 +86,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'token': instance.token,
       'playerId': instance.playerId,
-      'photoUrl': instance.photoUrl,
       'uid': instance.uid,
       'observeList': instance.observeList,
       'favouriteFriends': instance.favouriteFriends,

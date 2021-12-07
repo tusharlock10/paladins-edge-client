@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/index.dart' show User, Player;
+import 'package:paladinsedge/models/index.dart' show User, Player, Essentials;
 
 part 'responses.g.dart';
 
@@ -43,4 +43,15 @@ class ObservePlayerResponse {
   factory ObservePlayerResponse.fromJson(Map<String, dynamic> json) =>
       _$ObservePlayerResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ObservePlayerResponseToJson(this);
+}
+
+@JsonSerializable()
+class EssentialsResponse {
+  final Essentials data;
+
+  EssentialsResponse({required this.data});
+
+  factory EssentialsResponse.fromJson(Map<String, dynamic> json) =>
+      _$EssentialsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$EssentialsResponseToJson(this);
 }
