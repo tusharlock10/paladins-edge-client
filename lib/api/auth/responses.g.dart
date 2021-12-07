@@ -50,3 +50,13 @@ Map<String, dynamic> _$ObservePlayerResponseToJson(
     <String, dynamic>{
       'observeList': instance.observeList,
     };
+
+EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>
+    EssentialsResponse(
+      data: Essentials.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$EssentialsResponseToJson(EssentialsResponse instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };

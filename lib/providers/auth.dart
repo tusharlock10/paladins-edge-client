@@ -14,6 +14,7 @@ class Auth with ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
+  models.Essentials? essentials;
 
   void loadSettings() {
     final settings = utilities.Database.getSettings();
@@ -55,15 +56,24 @@ class Auth with ChangeNotifier {
     final firebaseUser =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    if (firebaseUser.user == null) {
+    if (firebaseUser.user == null ||
+        firebaseUser.user?.email == null ||
+        firebaseUser.user?.displayName == null) {
       return false;
     }
 
+    final uid = firebaseUser.user!.uid;
+    final email = firebaseUser.user!.email!;
+    final name = firebaseUser.user!.displayName!;
+    final verification = crypto.sha512
+        .convert(utf8.encode('${constants.Env.hashSalt}$name$email$uid'))
+        .toString();
+
     final response = await api.AuthRequests.login(
-      uid: firebaseUser.user!.uid,
-      email: firebaseUser.user!.email,
-      name: firebaseUser.user!.displayName,
-      photoUrl: firebaseUser.user!.photoURL,
+      uid: uid,
+      email: email,
+      name: name,
+      verification: verification,
     );
     // user will have token
     // If player is null, navigate to ConnectProfile
@@ -105,16 +115,25 @@ class Auth with ChangeNotifier {
     api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
+  void getEssentials() async {
+    // gets the essential data for some parts for the app
+
+    final response = await api.AuthRequests.essentials();
+    if (response != null) {
+      essentials = response.data;
+    }
+  }
+
   Future<bool> claimPlayer(String otp, String playerId) async {
     // Sends an otp and playerId to server to check if a loadout exists with that otp
     // if it does, then player is verified
-    //
-    final otpHash = crypto.sha1
-        .convert(utf8.encode('${constants.Env.otpSalt}$otp'))
+
+    final verification = crypto.sha512
+        .convert(utf8.encode('${constants.Env.hashSalt}$otp'))
         .toString();
 
     final response = await api.AuthRequests.claimPlayer(
-        otpHash: otpHash, playerId: playerId);
+        verification: verification, playerId: playerId);
     if (response == null) {
       return false;
     }
