@@ -55,7 +55,8 @@ class _LoginState extends State<Login> {
     await utilities.Database.initDatabase();
     await FirebasePerformance.instance
         .setPerformanceCollectionEnabled(!constants.isDebug);
-    await FirebaseAnalytics().setAnalyticsCollectionEnabled(!constants.isDebug);
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(!constants.isDebug);
 
     setState(() => _isInitialized = true);
 

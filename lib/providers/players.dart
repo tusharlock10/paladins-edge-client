@@ -6,12 +6,12 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 // Provider to handle players api response
 
 class Players with ChangeNotifier {
-  List<models.Player> friends = [];
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
-  List<models.Player> topSearchList = [];
   List<api.LowerSearch> lowerSearchList = [];
-  List<Map<String, dynamic>> searchHistory = []; // [{playerName, time]}]
+  List<models.Player> friends = [];
+  List<models.Player> topSearchList = [];
+  List<models.SearchHistory> searchHistory = [];
 
   void moveFriendToTop(String playerId) {
     // the player to move to top of the friends list
@@ -58,7 +58,7 @@ class Players with ChangeNotifier {
 
   getSearchHistory() {
     // gets the search history from local db
-    searchHistory = utilities.Database.getSearchHistory();
+    searchHistory = utilities.Database.getSearchHistory() ?? [];
   }
 
   Future<bool> searchByName(
@@ -82,7 +82,7 @@ class Players with ChangeNotifier {
       topSearchList = response.searchData.topSearchList;
       lowerSearchList = response.searchData.lowerSearchList;
     }
-    final searchItem = {'playerName': playerName, 'time': DateTime.now()};
+    final searchItem = models.SearchHistory(playerName: playerName);
     if (addInSeachHistory) {
       searchHistory.insert(0, searchItem);
       utilities.Database.addSearchItem(searchItem);

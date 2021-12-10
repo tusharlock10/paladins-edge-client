@@ -7,5 +7,6 @@ export './match/match.dart';
 export './player/player.dart' show Player, PlayerAdapter, RankedAdapter;
 export './player_champion/player_champion.dart';
 export './queue/queue.dart';
+export './search_history/search_history.dart';
 export './settings/settings.dart';
 export './user/user.dart';

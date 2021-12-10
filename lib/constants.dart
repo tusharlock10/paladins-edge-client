@@ -79,6 +79,7 @@ abstract class TypeIds {
   static const championTag = 8;
   static const playerChampion = 9;
   static const essentials = 10;
+  static const searchHistory = 11;
 }
 
 abstract class NotificationChannels {
@@ -99,3 +100,12 @@ const Map<String, Map<String, dynamic>> championDamageType = {
   'Stealth': {"name": "Stealth", "color": Colors.blue},
   'Ultimate': {"name": "Ultimate", "color": Colors.orange},
 };
+
+abstract class HiveBoxes {
+  static const user = "user";
+  static const player = "player";
+  static const settings = "settings";
+  static const essentials = "essentials";
+  static const searchHistory = "searchHistory";
+  static const champions = "champions";
+}
