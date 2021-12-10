@@ -38,7 +38,7 @@ class Auth with ChangeNotifier {
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
-    if (user != null) {
+    if (user?.token != null) {
       utilities.api.options.headers["authorization"] = user!.token;
       return true;
     } else {
@@ -86,7 +86,7 @@ class Auth with ChangeNotifier {
     // user will have token
     // If player is null, navigate to ConnectProfile
 
-    if (response == null) return false;
+    if (response == null || response.player == null) return false;
 
     user = response.user;
     utilities.Database.setUser(response.user);
@@ -223,13 +223,8 @@ class Auth with ChangeNotifier {
     return newPlayedAdded;
   }
 
-  void toggleTheme() {
-    // toggles the theme
-    if (settings.themeMode == ThemeMode.dark) {
-      settings.themeMode = ThemeMode.light;
-    } else {
-      settings.themeMode = ThemeMode.dark;
-    }
+  void toggleTheme(ThemeMode themeMode) {
+    settings.themeMode = themeMode;
 
     // save the settings after changing the theme
     utilities.Database.setSettings(settings);

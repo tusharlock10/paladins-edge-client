@@ -12,6 +12,21 @@ class AppDrawer extends StatelessWidget {
     Navigator.pushReplacementNamed(context, screens.Login.routeName);
   }
 
+  onChangeTheme(BuildContext context) {
+    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+
+    if (authProvider.settings.themeMode == ThemeMode.dark) {
+      authProvider.toggleTheme(ThemeMode.light);
+    } else if (authProvider.settings.themeMode == ThemeMode.light) {
+      authProvider.toggleTheme(ThemeMode.dark);
+    } else {
+      final brightness = Theme.of(context).brightness;
+      authProvider.toggleTheme(
+        brightness == Brightness.dark ? ThemeMode.light : ThemeMode.dark,
+      );
+    }
+  }
+
   onFriends(BuildContext context) {
     Navigator.of(context).pop();
     Navigator.of(context).pushNamed(screens.Friends.routeName);
@@ -79,7 +94,7 @@ class AppDrawer extends StatelessWidget {
             buildDrawerButton(
               context,
               'Change Theme',
-              Provider.of<providers.Auth>(context, listen: false).toggleTheme,
+              () => onChangeTheme(context),
             ),
             buildDrawerButton(
               context,

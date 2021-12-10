@@ -60,10 +60,11 @@ class _LoginState extends State<Login> {
     setState(() => _isInitialized = true);
 
     final authProvider = Provider.of<providers.Auth>(context, listen: false);
-    final loggedIn = await authProvider.login();
 
     authProvider.loadEssentials(); // load the essentials from hive
     authProvider.loadSettings(); // load the settings from hive
+
+    final loggedIn = await authProvider.login();
 
     if (loggedIn) {
       // after the user is logged in, send the device fcm token to the server

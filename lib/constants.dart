@@ -34,6 +34,10 @@ abstract class Urls {
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
+
+  // match
+  static const matchDetails = "/match/matchDetails"; // GET
+  static const playerMatches = "/match/playerMatches"; // GET
 }
 
 abstract class StorageKeys {

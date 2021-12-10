@@ -3,7 +3,11 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 String getUrlFromKey(String? key) {
   // returns the full s3 asset url from its s3 key
 
-  if (key == null || utilities.Global.essentials?.imageBaseUrl == null) {
+  if (utilities.Global.essentials?.imageBaseUrl == null) {
+    return key ?? "";
+  }
+
+  if (key == null) {
     return "";
   }
 

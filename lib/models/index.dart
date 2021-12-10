@@ -1,10 +1,11 @@
 export './active_match/active_match.dart' show ActiveMatch;
-export './bounty_store/bounty_store.dart' show BountyStore;
+export './bounty_store/bounty_store.dart';
 export './champion/champion.dart'
     show Champion, ChampionAdapter, TalentAdapter, AbilityAdapter, CardAdapter;
-export './essentials/essentials.dart' show Essentials, EssentialsAdapter;
+export './essentials/essentials.dart';
+export './match/match.dart';
 export './player/player.dart' show Player, PlayerAdapter, RankedAdapter;
-export './player_champion/player_champion.dart' show PlayerChampion;
-export './queue/queue.dart' show Queue;
-export './settings/settings.dart' show Settings, SettingsAdapter;
-export './user/user.dart' show User, UserAdapter;
+export './player_champion/player_champion.dart';
+export './queue/queue.dart';
+export './settings/settings.dart';
+export './user/user.dart';
