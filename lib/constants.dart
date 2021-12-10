@@ -14,7 +14,6 @@ abstract class Urls {
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
   static const claimPlayer = "/auth/claimPlayer"; // POST
-  static const observePlayer = "/auth/observePlayer"; // PUT
   static const fcmToken = "/auth/fcmToken"; // POST
   static const essentials = "/auth/essentials"; // GET
 

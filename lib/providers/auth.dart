@@ -149,43 +149,6 @@ class Auth with ChangeNotifier {
     return response.verified;
   }
 
-  Future<bool> observePlayer(String playerId) async {
-    // return true if a new playerId is added in observeList else false
-    bool newPlayedAdded = false;
-    if (user == null) {
-      return newPlayedAdded;
-    }
-
-    final observeListClone = List<String>.from(user!.observeList);
-
-    if (user!.observeList.contains(playerId) == false) {
-      // player is not in the observe list, so we need to add him
-      user!.observeList.add(playerId);
-      newPlayedAdded = true;
-    } else {
-      // if he is in the observe list, then remove him
-      user!.observeList.remove(playerId);
-    }
-
-    notifyListeners();
-
-    // after we update the UI, update the list in backend
-    // update the UI for the latest changes
-
-    final response = await api.AuthRequests.observePlayer(playerId: playerId);
-    if (response == null) {
-      // if the response fails for some reason, revert back the change
-      // set newPlayerAdded to false
-      user!.observeList = observeListClone;
-      newPlayedAdded = false;
-    } else {
-      user!.observeList = response.observeList;
-    }
-
-    notifyListeners();
-    return newPlayedAdded;
-  }
-
   Future<bool> favouriteFriend(String playerId) async {
     // return true if a new playerId is added in favouriteFriends else false
     bool newPlayedAdded = false;

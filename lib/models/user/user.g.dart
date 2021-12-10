@@ -22,8 +22,7 @@ class UserAdapter extends TypeAdapter<User> {
       email: fields[2] as String,
       token: fields[3] as String,
       uid: fields[5] as String,
-      observeList: (fields[6] as List).cast<String>(),
-      favouriteFriends: (fields[7] as List).cast<String>(),
+      favouriteFriends: (fields[6] as List).cast<String>(),
       playerId: fields[4] as String?,
     );
   }
@@ -31,7 +30,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,8 +44,6 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(5)
       ..write(obj.uid)
       ..writeByte(6)
-      ..write(obj.observeList)
-      ..writeByte(7)
       ..write(obj.favouriteFriends);
   }
 
@@ -71,9 +68,6 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String,
       token: json['token'] as String,
       uid: json['uid'] as String,
-      observeList: (json['observeList'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
       favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -87,6 +81,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'token': instance.token,
       'playerId': instance.playerId,
       'uid': instance.uid,
-      'observeList': instance.observeList,
       'favouriteFriends': instance.favouriteFriends,
     };

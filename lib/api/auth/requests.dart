@@ -58,21 +58,6 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.ObservePlayerResponse?> observePlayer(
-      {required String playerId}) async {
-    try {
-      final response = await utilities.api.put<Map<String, dynamic>>(
-          constants.Urls.observePlayer,
-          data: {'playerId': playerId});
-      if (response.data != null) {
-        return responses.ObservePlayerResponse.fromJson(response.data!);
-      }
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
   static Future<bool> fcmToken({required String fcmToken}) async {
     try {
       await utilities.api

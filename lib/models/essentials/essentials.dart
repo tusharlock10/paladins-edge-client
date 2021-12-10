@@ -26,6 +26,9 @@ class Essentials extends HiveObject {
   @HiveField(5)
   final int
       forceUpdateChampionsDuration; // interval duration for player champions forced update
+  @HiveField(6)
+  final int
+      maxFavouriteFriends; // max number of favourite friends earch user can have
 
   Essentials({
     required this.version,
@@ -34,6 +37,7 @@ class Essentials extends HiveObject {
     required this.forceUpdateMatchesDuration,
     required this.forceUpdatePlayerDuration,
     required this.forceUpdateChampionsDuration,
+    required this.maxFavouriteFriends,
   });
 
   factory Essentials.fromJson(Map<String, dynamic> json) =>

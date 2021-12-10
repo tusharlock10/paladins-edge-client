@@ -9,7 +9,7 @@ part 'user.g.dart';
 class User {
   @JsonKey(name: '_id')
   @HiveField(0)
-  final String id;
+  final String id; // id of the user in db
   @HiveField(1)
   final String name; // name of the user
   @HiveField(2)
@@ -17,12 +17,10 @@ class User {
   @HiveField(3)
   final String token; // token used for authentication
   @HiveField(4)
-  final String? playerId; // id of the connected player model
+  final String? playerId; // paladins playerId of the connected player
   @HiveField(5)
   final String uid; // uid provided by the oauth provider
   @HiveField(6)
-  List<String> observeList; // the connected observe id for observing players
-  @HiveField(7)
   List<String>
       favouriteFriends; // list of playerId of the user's favourite friends
 
@@ -32,7 +30,6 @@ class User {
     required this.email,
     required this.token,
     required this.uid,
-    required this.observeList,
     required this.favouriteFriends,
     this.playerId,
   });

@@ -36,16 +36,6 @@ class ClaimPlayerResponse {
 }
 
 @JsonSerializable()
-class ObservePlayerResponse {
-  final List<String> observeList;
-  ObservePlayerResponse({required this.observeList});
-
-  factory ObservePlayerResponse.fromJson(Map<String, dynamic> json) =>
-      _$ObservePlayerResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ObservePlayerResponseToJson(this);
-}
-
-@JsonSerializable()
 class EssentialsResponse {
   final Essentials data;
 
