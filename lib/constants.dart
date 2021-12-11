@@ -79,6 +79,7 @@ abstract class TypeIds {
   static const playerChampion = 9;
   static const essentials = 10;
   static const searchHistory = 11;
+  static const recordExpiry = 12;
 }
 
 abstract class NotificationChannels {
@@ -106,5 +107,16 @@ abstract class HiveBoxes {
   static const settings = "settings";
   static const essentials = "essentials";
   static const searchHistory = "searchHistory";
-  static const champions = "champions";
+  static const champion = "champion";
+  static const recordExpiry = "recordExpiry";
+}
+
+abstract class RecordExpiryData {
+  static const champion = "champion";
+  static const searchHistory = "searchHistory";
+
+  static const championDuation =
+      Duration(days: 1); // expire saved champion records in 1 day
+  static const searchHistoryDuation =
+      Duration(days: 7); // expire saved searchHistory records in 7 days
 }

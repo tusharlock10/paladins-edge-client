@@ -58,7 +58,14 @@ class Players with ChangeNotifier {
 
   getSearchHistory() {
     // gets the search history from local db
-    searchHistory = utilities.Database.getSearchHistory() ?? [];
+    final _searchHistory = utilities.Database.getSearchHistory();
+    if (_searchHistory == null) {
+      // it could be either because searchHistory has expired
+      // or because there is no searchHistory
+      searchHistory = [];
+    } else {
+      searchHistory = _searchHistory;
+    }
   }
 
   Future<bool> searchByName(
@@ -85,7 +92,7 @@ class Players with ChangeNotifier {
     final searchItem = models.SearchHistory(playerName: playerName);
     if (addInSeachHistory) {
       searchHistory.insert(0, searchItem);
-      utilities.Database.addSearchItem(searchItem);
+      utilities.Database.saveSearchHistory(searchItem);
     }
     notifyListeners();
     return response.exactMatch;

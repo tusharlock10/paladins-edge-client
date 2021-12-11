@@ -1,18 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class Champions with ChangeNotifier {
   List<models.Champion> champions = [];
   List<models.PlayerChampion> playerChampions = [];
 
   Future<void> fetchChampions() async {
+    // try to load chhampions from db
+    final savedChampions = utilities.Database.getChampions();
+
+    if (savedChampions != null) {
+      champions = savedChampions;
+      return;
+    }
+
     final response = await api.ChampionsRequests.allChampions(allData: true);
     if (response == null) return;
     champions = response.champions;
+
+    // sort champions based on their name
     champions
         .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-    notifyListeners();
+
+    // save champion locally for future use
+    champions.forEach(utilities.Database.saveChampion);
   }
 
   Future<void> fetchPlayerChampions(String playerId) async {
