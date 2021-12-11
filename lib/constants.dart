@@ -115,8 +115,8 @@ abstract class RecordExpiryData {
   static const champion = "champion";
   static const searchHistory = "searchHistory";
 
-  static const championDuation =
+  static const championDuration =
       Duration(days: 1); // expire saved champion records in 1 day
-  static const searchHistoryDuation =
+  static const searchHistoryDuration =
       Duration(days: 7); // expire saved searchHistory records in 7 days
 }
