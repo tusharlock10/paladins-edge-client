@@ -48,7 +48,6 @@ dependencies:
   package_info_plus: "^1.0.6"
   flutter_dotenv: ^5.0.2
   flutter_local_notifications: ^9.0.1
-  firebase_remote_config: ^1.0.2
 
 dev_dependencies:
   flutter_test:

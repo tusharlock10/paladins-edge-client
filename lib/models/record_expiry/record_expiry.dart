@@ -14,9 +14,10 @@ class RecordExpiry extends HiveObject {
   DateTime _searchHistoryExpiry;
 
   RecordExpiry()
-      : _championsExpiry = DateTime.now().add(RecordExpiryData.championDuation),
+      : _championsExpiry =
+            DateTime.now().add(RecordExpiryData.championDuration),
         _searchHistoryExpiry =
-            DateTime.now().add(RecordExpiryData.searchHistoryDuation);
+            DateTime.now().add(RecordExpiryData.searchHistoryDuration);
 
   bool isRecordExpired(String recordName) {
     // checks if the provided record is expired
@@ -34,10 +35,10 @@ class RecordExpiry extends HiveObject {
   void renewRecordExpiry(String recordName) {
     // renews the expiry date of a record
     if (recordName == RecordExpiryData.champion) {
-      _championsExpiry = DateTime.now().add(RecordExpiryData.championDuation);
+      _championsExpiry = DateTime.now().add(RecordExpiryData.championDuration);
     } else if (recordName == RecordExpiryData.searchHistory) {
       _searchHistoryExpiry =
-          DateTime.now().add(RecordExpiryData.searchHistoryDuation);
+          DateTime.now().add(RecordExpiryData.searchHistoryDuration);
     }
   }
 }
