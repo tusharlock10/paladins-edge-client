@@ -61,10 +61,28 @@ class _PlayerDetailState extends State<Friends> {
     final authProvider = Provider.of<providers.Auth>(context, listen: false);
     final playersProvider =
         Provider.of<providers.Players>(context, listen: false);
-    final newPlayedAdded =
-        await authProvider.favouriteFriend(selectedFriend!.playerId);
 
-    if (newPlayedAdded) {
+    final result =
+        await authProvider.markFavouriteFriend(selectedFriend!.playerId);
+
+    if (result == 2) {
+      // user already has max number of friends
+      // show a toast displaying this info
+
+      return ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          elevation: 10,
+          content: Text(
+            "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (result == 1) {
+      // player is added in list
       playersProvider.moveFriendToTop(selectedFriend!.playerId);
       _friendsListKey.currentState?.insertItem(0);
     }

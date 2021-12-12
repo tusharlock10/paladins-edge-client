@@ -29,16 +29,16 @@ class Auth with ChangeNotifier {
     // call essentials api to update its data
     final response = await api.AuthRequests.essentials();
     if (response != null) {
+      utilities.Database.saveEssentials(response.data);
       utilities.Global.essentials = response.data;
     }
-    notifyListeners();
   }
 
   Future<bool> login() async {
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
-    if (user != null) {
+    if (user?.token != null) {
       utilities.api.options.headers["authorization"] = user!.token;
       return true;
     } else {
@@ -86,13 +86,13 @@ class Auth with ChangeNotifier {
     // user will have token
     // If player is null, navigate to ConnectProfile
 
-    if (response == null) return false;
+    if (response == null || response.player == null) return false;
 
     user = response.user;
-    utilities.Database.setUser(response.user);
+    utilities.Database.saveUser(response.user);
     if (response.player != null) {
       player = response.player;
-      utilities.Database.setPlayer(response.player!);
+      utilities.Database.savePlayer(response.player!);
     }
 
     utilities.api.options.headers["authorization"] = user!.token;
@@ -142,61 +142,33 @@ class Auth with ChangeNotifier {
 
       user = response.user;
       player = response.player;
-      utilities.Database.setUser(user!);
-      utilities.Database.setPlayer(player!);
+      utilities.Database.saveUser(user!);
+      utilities.Database.savePlayer(player!);
     }
 
     return response.verified;
   }
 
-  Future<bool> observePlayer(String playerId) async {
-    // return true if a new playerId is added in observeList else false
-    bool newPlayedAdded = false;
-    if (user == null) {
-      return newPlayedAdded;
-    }
+  Future<int> markFavouriteFriend(String playerId) async {
+    // returns 0,1 or 2 as response
+    // 0 -> player is removed from favouriteFriends
+    // 1 -> player is added in favouriteFriends
+    // 2 -> player is not added due to favouriteFriends limit reached
 
-    final observeListClone = List<String>.from(user!.observeList);
-
-    if (user!.observeList.contains(playerId) == false) {
-      // player is not in the observe list, so we need to add him
-      user!.observeList.add(playerId);
-      newPlayedAdded = true;
-    } else {
-      // if he is in the observe list, then remove him
-      user!.observeList.remove(playerId);
-    }
-
-    notifyListeners();
-
-    // after we update the UI, update the list in backend
-    // update the UI for the latest changes
-
-    final response = await api.AuthRequests.observePlayer(playerId: playerId);
-    if (response == null) {
-      // if the response fails for some reason, revert back the change
-      // set newPlayerAdded to false
-      user!.observeList = observeListClone;
-      newPlayedAdded = false;
-    } else {
-      user!.observeList = response.observeList;
-    }
-
-    notifyListeners();
-    return newPlayedAdded;
-  }
-
-  Future<bool> favouriteFriend(String playerId) async {
-    // return true if a new playerId is added in favouriteFriends else false
-    bool newPlayedAdded = false;
-    if (user == null) return newPlayedAdded;
+    if (user == null) return 0;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
 
     if (user!.favouriteFriends.contains(playerId) == false) {
       // player is not in the favouriteFriends, so we need to add him
+
+      // check if user already has max number of friends
+      if (user!.favouriteFriends.length >=
+          utilities.Global.essentials!.maxFavouriteFriends) {
+        return 2;
+      }
+
       user!.favouriteFriends.add(playerId);
-      newPlayedAdded = true;
     } else {
       // if he is in the favouriteFriends, then remove him
       user!.favouriteFriends.remove(playerId);
@@ -214,25 +186,19 @@ class Auth with ChangeNotifier {
       // if the response fails for some reason, revert back the change
       // set newPlayerAdded to false
       user!.favouriteFriends = favouriteFriendsClone;
-      newPlayedAdded = false;
     } else {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
     notifyListeners();
-    return newPlayedAdded;
+    return 1;
   }
 
-  void toggleTheme() {
-    // toggles the theme
-    if (settings.themeMode == ThemeMode.dark) {
-      settings.themeMode = ThemeMode.light;
-    } else {
-      settings.themeMode = ThemeMode.dark;
-    }
+  void toggleTheme(ThemeMode themeMode) {
+    settings.themeMode = themeMode;
 
     // save the settings after changing the theme
-    utilities.Database.setSettings(settings);
+    utilities.Database.saveSettings(settings);
     notifyListeners();
   }
 }

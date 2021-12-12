@@ -160,18 +160,18 @@ class _SearchState extends State<Search> {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           final search = searchProvider.searchHistory[index];
-          final String playerName = search['playerName'] as String;
-          final DateTime _time = search['time'] as DateTime;
-          final time = Jiffy(_time).fromNow();
+
           return ListTile(
             onTap: () {
-              textController.text = playerName;
+              textController.text = search.playerName;
               onSearch(context, textController.text, addInSeachHistory: false);
             },
-            title: Text(playerName,
-                style: Theme.of(context).primaryTextTheme.headline6),
+            title: Text(
+              search.playerName,
+              style: Theme.of(context).primaryTextTheme.headline6,
+            ),
             trailing: Text(
-              time,
+              Jiffy(search.date).fromNow(),
               style: Theme.of(context).primaryTextTheme.caption,
             ),
           );

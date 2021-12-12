@@ -37,20 +37,6 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
       'player': instance.player,
     };
 
-ObservePlayerResponse _$ObservePlayerResponseFromJson(
-        Map<String, dynamic> json) =>
-    ObservePlayerResponse(
-      observeList: (json['observeList'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-    );
-
-Map<String, dynamic> _$ObservePlayerResponseToJson(
-        ObservePlayerResponse instance) =>
-    <String, dynamic>{
-      'observeList': instance.observeList,
-    };
-
 EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>
     EssentialsResponse(
       data: Essentials.fromJson(json['data'] as Map<String, dynamic>),

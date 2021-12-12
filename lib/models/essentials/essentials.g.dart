@@ -23,13 +23,14 @@ class EssentialsAdapter extends TypeAdapter<Essentials> {
       forceUpdateMatchesDuration: fields[3] as int,
       forceUpdatePlayerDuration: fields[4] as int,
       forceUpdateChampionsDuration: fields[5] as int,
+      maxFavouriteFriends: fields[6] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Essentials obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.version)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class EssentialsAdapter extends TypeAdapter<Essentials> {
       ..writeByte(4)
       ..write(obj.forceUpdatePlayerDuration)
       ..writeByte(5)
-      ..write(obj.forceUpdateChampionsDuration);
+      ..write(obj.forceUpdateChampionsDuration)
+      ..writeByte(6)
+      ..write(obj.maxFavouriteFriends);
   }
 
   @override
@@ -66,6 +69,7 @@ Essentials _$EssentialsFromJson(Map<String, dynamic> json) => Essentials(
       forceUpdateMatchesDuration: json['forceUpdateMatchesDuration'] as int,
       forceUpdatePlayerDuration: json['forceUpdatePlayerDuration'] as int,
       forceUpdateChampionsDuration: json['forceUpdateChampionsDuration'] as int,
+      maxFavouriteFriends: json['maxFavouriteFriends'] as int,
     );
 
 Map<String, dynamic> _$EssentialsToJson(Essentials instance) =>
@@ -76,4 +80,5 @@ Map<String, dynamic> _$EssentialsToJson(Essentials instance) =>
       'forceUpdateMatchesDuration': instance.forceUpdateMatchesDuration,
       'forceUpdatePlayerDuration': instance.forceUpdatePlayerDuration,
       'forceUpdateChampionsDuration': instance.forceUpdateChampionsDuration,
+      'maxFavouriteFriends': instance.maxFavouriteFriends,
     };

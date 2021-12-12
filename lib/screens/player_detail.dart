@@ -48,27 +48,6 @@ class _PlayerDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget buildObserve() {
-    final authProvider = Provider.of<providers.Auth>(context);
-    final player = Provider.of<providers.Players>(context).playerData;
-    final isObserving =
-        authProvider.user?.observeList.contains(player?.playerId) == true;
-
-    final textTheme = Theme.of(context).textTheme.headline6?.copyWith(
-        fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
-    final buttonColor = isObserving ? Colors.red : Colors.green;
-
-    return ElevatedButton(
-      onPressed: () => authProvider.observePlayer(player!.playerId),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(buttonColor),
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-      ),
-      child: Text(isObserving ? 'Stop Observing' : 'Start Observing',
-          style: textTheme),
-    );
-  }
-
   Widget buildPlayerDetail(models.Player player) {
     final theme = Theme.of(context);
     return Padding(
@@ -128,7 +107,6 @@ class _PlayerDetailState extends State<PlayerDetail> {
               )
             ],
           ),
-          buildObserve(),
         ],
       ),
     );
