@@ -2,23 +2,44 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'player_champion.g.dart';
 
+/// Stores stats for a champion played by the player
 @JsonSerializable()
 class PlayerChampion {
-  final String playerId; // Paladins playerId to which this champion data belong
-  final String championId; // Paladins champion id
+  /// Paladins playerId to which this champion data belong
+  final String playerId;
 
-  final int totalAssists; // total number of eliminations
-  final int totalDeaths; // total death playing this champion
-  final int totalCredits; // total credits earned playing this champion
-  final int totalKills; // total number of kills
+  /// Paladins champion id
+  final String championId;
 
-  final DateTime lastPlayed; // date last played this champion
-  final int losses; // number of matches lost
-  final int wins; // number of matches won
-  final int playTime; // play time for that champion in minutes
+  /// total number of eliminations
+  final int totalAssists;
 
-  final int level; // level of that champion
-  final int totalXP; // total XP of the player with that champion
+  /// total death playing this champion
+  final int totalDeaths;
+
+  /// total credits earned playing this champion
+  final int totalCredits;
+
+  /// total number of kills
+  final int totalKills;
+
+  /// date last played this champion
+  final DateTime lastPlayed;
+
+  /// number of matches lost
+  final int losses;
+
+  /// number of matches won
+  final int wins;
+
+  /// play time for that champion in minutes
+  final int playTime;
+
+  /// level of that champion
+  final int level;
+
+  /// total XP of the player with that champion
+  final int totalXP;
 
   PlayerChampion({
     required this.playerId,

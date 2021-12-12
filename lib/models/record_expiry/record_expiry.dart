@@ -6,10 +6,11 @@ part 'record_expiry.g.dart';
 // model for storing the exipry date of saved champion, searchHistory, etc. in local db
 @HiveType(typeId: TypeIds.recordExpiry)
 class RecordExpiry extends HiveObject {
-  // date at which the saved champion record will expire
+  /// date at which the saved champion record will expire
   @HiveField(0)
   DateTime _championsExpiry;
-  // date at which the saved searchHistory record will expire
+
+  /// date at which the saved searchHistory record will expire
   @HiveField(1)
   DateTime _searchHistoryExpiry;
 

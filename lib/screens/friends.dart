@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class Friends extends StatefulWidget {
+class Friends extends ConsumerStatefulWidget {
   static const routeName = '/friends';
   const Friends({Key? key}) : super(key: key);
 
@@ -13,7 +13,7 @@ class Friends extends StatefulWidget {
   _PlayerDetailState createState() => _PlayerDetailState();
 }
 
-class _PlayerDetailState extends State<Friends> {
+class _PlayerDetailState extends ConsumerState<Friends> {
   bool _init = true;
   bool _isLoading = true;
   final _friendsListKey = GlobalKey<AnimatedListState>();
@@ -27,10 +27,11 @@ class _PlayerDetailState extends State<Friends> {
   @override
   void didChangeDependencies() {
     if (_init) {
+      final authProvider = ref.read(providers.auth);
+      final playersProvider = ref.read(providers.players);
+
       _init = false;
-      final authProvider = Provider.of<providers.Auth>(context, listen: false);
-      final playersProvider =
-          Provider.of<providers.Players>(context, listen: false);
+
       if (authProvider.player?.playerId != null) {
         playersProvider
             .getFriendsList(
@@ -51,16 +52,14 @@ class _PlayerDetailState extends State<Friends> {
     }
 
     // get the playerStatus from the provider
-    final playersProvider =
-        Provider.of<providers.Players>(context, listen: false);
+    final playersProvider = ref.read(providers.players);
     setState(() => selectedFriend = friend);
     playersProvider.getPlayerStatus(friend.playerId);
   }
 
   onFavouriteFriend() async {
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
-    final playersProvider =
-        Provider.of<providers.Players>(context, listen: false);
+    final authProvider = ref.read(providers.auth);
+    final playersProvider = ref.read(providers.players);
 
     final result =
         await authProvider.markFavouriteFriend(selectedFriend!.playerId);
@@ -195,9 +194,11 @@ class _PlayerDetailState extends State<Friends> {
 
   Widget buildSelectedFriend() {
     final theme = Theme.of(context);
-    final playerStatus = Provider.of<providers.Players>(context).playerStatus;
+    final playerStatus =
+        ref.watch(providers.players.select((_) => _.playerStatus));
     final favouriteFriends =
-        Provider.of<providers.Auth>(context).user?.favouriteFriends;
+        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+
     final bool isFavourite =
         favouriteFriends?.contains(selectedFriend?.playerId) ?? false;
 
@@ -282,7 +283,8 @@ class _PlayerDetailState extends State<Friends> {
   Widget buildFriend(models.Player friend) {
     final theme = Theme.of(context);
     final favouriteFriends =
-        Provider.of<providers.Auth>(context).user?.favouriteFriends;
+        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+
     final bool isFavourite =
         favouriteFriends?.contains(friend.playerId) ?? false;
 
@@ -348,7 +350,7 @@ class _PlayerDetailState extends State<Friends> {
   }
 
   Widget buildFriends() {
-    final friendsList = Provider.of<providers.Players>(context).friends;
+    final friendsList = ref.watch(providers.players.select((_) => _.friends));
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

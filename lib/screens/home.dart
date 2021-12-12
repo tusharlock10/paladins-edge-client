@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   static const routeName = '/home';
   const Home({Key? key}) : super(key: key);
 
@@ -14,7 +13,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   bool _init = true;
   bool _isLoading = true;
 
@@ -29,11 +28,12 @@ class _HomeState extends State<Home> {
   }
 
   void getHomeData(BuildContext context) async {
-    final queueProvider = Provider.of<providers.Queue>(context, listen: false);
-    final bountyStoreProvider =
-        Provider.of<providers.BountyStore>(context, listen: false);
+    final queueProvider = ref.read(providers.queue);
+    final bountyStoreProvider = ref.read(providers.bountyStore);
+
     await queueProvider.getQueueDetails();
-    await bountyStoreProvider.getBountyStoreDetails();
+    await bountyStoreProvider.loadBountyStore();
+
     setState(() => _isLoading = false);
   }
 
@@ -58,7 +58,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildQueueDetails() {
-    final queues = Provider.of<providers.Queue>(context).queues;
+    final queue = ref.watch(providers.queue.select((_) => _.queue));
+
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 
@@ -89,7 +90,7 @@ class _HomeState extends State<Home> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              children: queues.map(buildQueueCard).toList(),
+              children: queue.map(buildQueueCard).toList(),
             ),
           ],
         ));
@@ -133,7 +134,9 @@ class _HomeState extends State<Home> {
   Widget buildBountyStoreDetails() {
     const itemHeight = 100;
 
-    final bountyStore = Provider.of<providers.BountyStore>(context).bountyStore;
+    final bountyStore =
+        ref.watch(providers.bountyStore.select((_) => _.bountyStore));
+
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 

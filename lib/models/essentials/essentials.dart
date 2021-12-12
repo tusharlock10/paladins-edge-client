@@ -10,25 +10,33 @@ part 'essentials.g.dart';
 @HiveType(typeId: TypeIds.essentials)
 @JsonSerializable()
 class Essentials extends HiveObject {
+  /// version of the api
   @HiveField(0)
-  final String version; // version of the api
+  final String version;
+
+  /// base image url for getting images
   @HiveField(1)
-  final String imageBaseUrl; // base image url for getting images
+  final String imageBaseUrl;
+
+  /// interval duration for player friends forced update
   @HiveField(2)
-  final int
-      forceUpdateFriendsDuration; // interval duration for player friends forced update
+  final int forceUpdateFriendsDuration;
+
+  /// interval duration for player matches forced update
   @HiveField(3)
-  final int
-      forceUpdateMatchesDuration; // interval duration for player matches forced update
+  final int forceUpdateMatchesDuration;
+
+  /// interval duration for player profile forced update
   @HiveField(4)
-  final int
-      forceUpdatePlayerDuration; // interval duration for player profile forced update
+  final int forceUpdatePlayerDuration;
+
+  /// interval duration for player champions forced update
   @HiveField(5)
-  final int
-      forceUpdateChampionsDuration; // interval duration for player champions forced update
+  final int forceUpdateChampionsDuration;
+
+  /// max number of favourite friends earch user can have
   @HiveField(6)
-  final int
-      maxFavouriteFriends; // max number of favourite friends earch user can have
+  final int maxFavouriteFriends;
 
   Essentials({
     required this.version,

@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-// Provider to handle players api response
-
-class Players with ChangeNotifier {
+class _PlayersState {
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
   List<api.LowerSearch> lowerSearchList = [];
@@ -18,7 +16,6 @@ class Players with ChangeNotifier {
     final player = friends.firstWhere((friend) => friend.playerId == playerId);
     friends.removeWhere((friend) => friend.playerId == playerId);
     friends.insert(0, player);
-    notifyListeners();
   }
 
   Future<void> getFriendsList(
@@ -45,15 +42,12 @@ class Players with ChangeNotifier {
 
       friends = favouritePlayers + friends;
     }
-
-    notifyListeners();
   }
 
   Future<void> getPlayerStatus(String playerId) async {
     playerStatus = null;
     final response = await api.PlayersRequests.playerStatus(playerId: playerId);
     playerStatus = response;
-    notifyListeners();
   }
 
   getSearchHistory() {
@@ -94,14 +88,12 @@ class Players with ChangeNotifier {
       searchHistory.insert(0, searchItem);
       utilities.Database.saveSearchHistory(searchItem);
     }
-    notifyListeners();
     return response.exactMatch;
   }
 
   void clearSearchList() {
     topSearchList = [];
     lowerSearchList = [];
-    notifyListeners();
   }
 
   void clearPlayerData() {
@@ -112,6 +104,8 @@ class Players with ChangeNotifier {
     final response = await api.PlayersRequests.playerDetail(playerId: playerId);
     if (response == null) return;
     playerData = response.player;
-    notifyListeners();
   }
 }
+
+/// Provider to handle players
+final players = Provider((_) => _PlayersState());

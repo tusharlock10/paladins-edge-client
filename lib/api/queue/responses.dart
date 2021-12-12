@@ -5,9 +5,9 @@ part 'responses.g.dart';
 
 @JsonSerializable()
 class QueueDetailsResponse {
-  final List<Queue> queues;
+  final List<Queue> queue;
 
-  QueueDetailsResponse({required this.queues});
+  QueueDetailsResponse({required this.queue});
 
   factory QueueDetailsResponse.fromJson(Map<String, dynamic> json) =>
       _$QueueDetailsResponseFromJson(json);

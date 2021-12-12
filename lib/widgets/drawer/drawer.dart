@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
+import 'package:paladinsedge/widgets/drawer/player_profile.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends ConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
-  onLogout(BuildContext context) async {
-    await Provider.of<providers.Auth>(context, listen: false).logout();
+  onLogout(BuildContext context, WidgetRef ref) async {
+    await ref.read(providers.auth).logout();
     Navigator.pushReplacementNamed(context, screens.Login.routeName);
   }
 
-  onChangeTheme(BuildContext context) {
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+  onChangeTheme(BuildContext context, WidgetRef ref) {
+    final authProvider = ref.read(providers.auth);
 
     if (authProvider.settings.themeMode == ThemeMode.dark) {
       authProvider.toggleTheme(ThemeMode.light);
@@ -32,44 +32,6 @@ class AppDrawer extends StatelessWidget {
     Navigator.of(context).pushNamed(screens.Friends.routeName);
   }
 
-  Widget buildPlayerProfile(BuildContext context) {
-    final player = Provider.of<providers.Auth>(context).player;
-    final textTheme = Theme.of(context).textTheme;
-
-    if (player != null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          widgets.ElevatedAvatar(
-            size: 20,
-            borderRadius: 0,
-            elevation: 5,
-            imageUrl: player.avatarUrl!,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            children: [
-              Text(
-                player.name,
-                style: textTheme.headline1?.copyWith(fontSize: 18),
-              ),
-              player.title != null
-                  ? Text(
-                      player.title!,
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                    )
-                  : const SizedBox(),
-            ],
-          ),
-        ],
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
   Widget buildDrawerButton(
       BuildContext context, String label, void Function() onPressed) {
     final theme = Theme.of(context);
@@ -84,17 +46,17 @@ class AppDrawer extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 20),
-            buildPlayerProfile(context),
+            const PlayerProfile(),
             buildDrawerButton(
               context,
               'Change Theme',
-              () => onChangeTheme(context),
+              () => onChangeTheme(context, ref),
             ),
             buildDrawerButton(
               context,
@@ -104,7 +66,7 @@ class AppDrawer extends StatelessWidget {
             buildDrawerButton(
               context,
               'Logout',
-              () => onLogout(context),
+              () => onLogout(context, ref),
             ),
           ],
         ),

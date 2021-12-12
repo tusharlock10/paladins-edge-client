@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class ConnectProfile extends StatefulWidget {
+class ConnectProfile extends ConsumerStatefulWidget {
   static const routeName = '/connectProfile';
   const ConnectProfile({Key? key}) : super(key: key);
 
@@ -13,7 +13,7 @@ class ConnectProfile extends StatefulWidget {
   _ConnectProfileState createState() => _ConnectProfileState();
 }
 
-class _ConnectProfileState extends State<ConnectProfile> {
+class _ConnectProfileState extends ConsumerState<ConnectProfile> {
   final _textController = TextEditingController();
   bool _isLoading = false;
   bool _isVerifying = false;
@@ -29,8 +29,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
     // even for a single item
 
     setState(() => _isLoading = true);
-    final searchProvider =
-        Provider.of<providers.Players>(context, listen: false);
+    final searchProvider = ref.read(providers.players);
     await searchProvider.searchByName(
       playerName,
       simpleResults: true,
@@ -42,7 +41,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   void onVerify(BuildContext context) async {
     if (_selectedPlayer == null) return;
     setState(() => _isVerifying = true);
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+    final authProvider = ref.read(providers.auth);
     final verified = await authProvider.claimPlayer(
       _otp,
       _selectedPlayer!.playerId,
@@ -188,7 +187,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   }
 
   Widget buildSearchList() {
-    final searchProvider = Provider.of<providers.Players>(context);
+    final searchProvider = ref.watch(providers.players);
     final searchList = searchProvider.lowerSearchList;
     final itemCount = searchList.length;
 
@@ -262,7 +261,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
   }
 
   Widget buildVerifiedPlayer(BuildContext context) {
-    final player = Provider.of<providers.Auth>(context).player;
+    final player = ref.watch(providers.auth.select((_) => _.player));
     final themeData = Theme.of(context);
     if (player == null) {
       return Container();
@@ -315,7 +314,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<providers.Auth>(context);
+    final name = ref.watch(providers.auth.select((_) => _.user?.name));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Connect Profile'),
@@ -324,7 +323,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Text('Hi, ${authProvider.user?.name}'),
+            name != null ? Text('Hi, $name') : const SizedBox(),
             const Text(
               'In order to enjoy all the features of Paladins Edge, please connect your profile',
             ),

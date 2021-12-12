@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:paladinsedge/app_theme.dart' as app_theme;
@@ -9,9 +10,8 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   static const routeName = '/';
   const Login({Key? key}) : super(key: key);
 
@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   bool _isLoggingIn = false;
   bool _isCheckingLogin = true;
   bool _isInitialized = false;
@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
 
     setState(() => _isInitialized = true);
 
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+    final authProvider = ref.read(providers.auth);
 
     authProvider.loadEssentials(); // load the essentials from hive
     authProvider.loadSettings(); // load the settings from hive
@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+    final authProvider = ref.read(providers.auth);
 
     setState(() => _isLoggingIn = true);
     final loginSuccess = await authProvider.signInWithGoogle();

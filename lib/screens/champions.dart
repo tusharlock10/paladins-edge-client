@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/app_theme.dart' as app_theme;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class Champions extends StatefulWidget {
+class Champions extends ConsumerStatefulWidget {
   static const routeName = '/champions';
   const Champions({Key? key}) : super(key: key);
 
@@ -17,21 +16,20 @@ class Champions extends StatefulWidget {
   _ChampionsState createState() => _ChampionsState();
 }
 
-class _ChampionsState extends State<Champions> {
+class _ChampionsState extends ConsumerState<Champions> {
   bool _init = true;
   bool _isLoading = true;
   String search = '';
 
   @override
   void didChangeDependencies() {
-    final championsProvider =
-        Provider.of<providers.Champions>(context, listen: false);
-    final authProvider = Provider.of<providers.Auth>(context, listen: false);
+    final championsProvider = ref.read(providers.champions);
+    final authProvider = ref.read(providers.auth);
     if (_init) {
       _init = false;
       Future.wait([
-        championsProvider.fetchChampions(),
-        championsProvider.fetchPlayerChampions(authProvider.player!.playerId)
+        championsProvider.loadChampions(),
+        championsProvider.loadPlayerChampions(authProvider.player!.playerId)
       ]).then((_) {
         setState(() => _isLoading = false);
       });
@@ -171,8 +169,7 @@ class _ChampionsState extends State<Champions> {
   }
 
   Widget buildChampionsList(BuildContext context) {
-    final championsProvider =
-        Provider.of<providers.Champions>(context, listen: false);
+    final championsProvider = ref.read(providers.champions);
     final champions = championsProvider.champions;
     final playerChampions = championsProvider.playerChampions;
     final size = MediaQuery.of(context).size;

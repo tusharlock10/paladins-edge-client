@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class PlayerDetail extends StatefulWidget {
+class PlayerDetail extends ConsumerStatefulWidget {
   static const routeName = '/playerDetail';
   const PlayerDetail({Key? key}) : super(key: key);
 
@@ -12,12 +12,13 @@ class PlayerDetail extends StatefulWidget {
   _PlayerDetailState createState() => _PlayerDetailState();
 }
 
-class _PlayerDetailState extends State<PlayerDetail> {
+class _PlayerDetailState extends ConsumerState<PlayerDetail> {
   bool _init = true;
 
   @override
   void deactivate() {
-    Provider.of<providers.Players>(context, listen: false).clearPlayerData();
+    // remove the player data from provider when going back
+    ref.read(providers.players).clearPlayerData();
     super.deactivate();
   }
 
@@ -33,8 +34,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
       final playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
         // fetch data from server
-        Provider.of<providers.Players>(context, listen: false)
-            .getPlayerData(playerId);
+        ref.read(providers.players).getPlayerData(playerId);
       }
     }
     super.didChangeDependencies();
@@ -114,7 +114,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final player = Provider.of<providers.Players>(context).playerData;
+    final player = ref.watch(providers.players.select((_) => _.playerData));
 
     return Scaffold(
       appBar: AppBar(

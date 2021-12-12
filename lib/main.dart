@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:paladinsedge/app_theme.dart' as app_theme;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/messaging.dart' as messaging;
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,38 +15,26 @@ void main() async {
   messaging.Messaging.onBackgroundMessage();
   messaging.Messaging.registerLocalNotification();
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
-  // This widget is the root of your application.
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
+    final themeMode =
+        ref.watch(providers.auth.select((_) => _.settings.themeMode));
+
     return OverlaySupport.global(
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => providers.Auth()),
-          ChangeNotifierProvider(create: (_) => providers.BountyStore()),
-          ChangeNotifierProvider(create: (_) => providers.Champions()),
-          ChangeNotifierProvider(create: (_) => providers.Players()),
-          ChangeNotifierProvider(create: (_) => providers.Queue()),
-        ],
-        child: Selector<providers.Auth, ThemeMode>(
-          selector: (_, authProvider) => authProvider.settings.themeMode,
-          builder: (_, themeMode, __) {
-            return MaterialApp(
-              navigatorObservers: const [],
-              debugShowCheckedModeBanner: false,
-              themeMode: themeMode,
-              theme: app_theme.lightTheme,
-              darkTheme: app_theme.darkTheme,
-              routes: screens.routes,
-            );
-          },
-        ),
+      child: MaterialApp(
+        navigatorObservers: const [],
+        debugShowCheckedModeBanner: false,
+        themeMode: themeMode,
+        theme: app_theme.lightTheme,
+        darkTheme: app_theme.darkTheme,
+        routes: screens.routes,
       ),
     );
   }

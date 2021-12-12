@@ -1,7 +1,7 @@
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/app_theme.dart' as app_theme;
@@ -10,11 +10,115 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class ChampionDetail extends StatelessWidget {
-  static const routeName = '/champion';
-  const ChampionDetail({Key? key}) : super(key: key);
+class ChampionHeading extends ConsumerWidget {
+  const ChampionHeading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final champion =
+        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final textTheme = Theme.of(context).textTheme.headline1;
+    final isLightTheme =
+        ref.read(providers.auth).settings.themeMode == ThemeMode.light;
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Hero(
+            tag: '${champion.championId}Icon',
+            child: widgets.ElevatedAvatar(
+              imageUrl: champion.iconUrl,
+              size: 42,
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      champion.name.toUpperCase(),
+                      style: textTheme?.copyWith(
+                        fontSize: 28,
+                      ),
+                    ),
+                    Text(
+                      champion.title.toUpperCase(),
+                      style: textTheme?.copyWith(
+                        color: isLightTheme
+                            ? const Color(0xff5c5c5c)
+                            : const Color(0xffb4fb26),
+                        fontSize: 14,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Wrap(
+                        children: champion.tags.map(
+                          (tag) {
+                            return widgets.TextChip(
+                              text: tag.name,
+                              color: utilities.getMaterialColorFromHex(
+                                tag.color,
+                              ),
+                              spacing: 5,
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StatLabel extends StatelessWidget {
+  final String label;
+  final String text;
+
+  const StatLabel({
+    required this.label,
+    required this.text,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      color: theme.primaryColor.withOpacity(0.5),
+      margin: EdgeInsets.zero,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.headline1
+                ?.copyWith(fontSize: 18, color: Colors.white),
+          ),
+          Text(
+            text,
+            style: theme.textTheme.headline1?.copyWith(
+                fontSize: 14, fontWeight: FontWeight.w200, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PlayerStats extends ConsumerWidget {
+  const PlayerStats({Key? key}) : super(key: key);
 
   String getLastPlayedTime(DateTime lastPlayed) {
     // if difference in lastPlayed and now is greater than 1 day,
@@ -32,7 +136,9 @@ class ChampionDetail extends StatelessWidget {
   }
 
   Map<String, dynamic> getStatLabelGridProps(
-      BuildContext context, BoxConstraints constraints) {
+    BuildContext context,
+    BoxConstraints constraints,
+  ) {
     final size = MediaQuery.of(context).size;
     const itemHeight = 60.0;
     int crossAxisCount;
@@ -51,6 +157,115 @@ class ChampionDetail extends StatelessWidget {
       'crossAxisCount': crossAxisCount
     };
   }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final champion =
+        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final playerChampions = ref.read(providers.champions).playerChampions;
+    final playerChampion =
+        utilities.findPlayerChampion(playerChampions, champion.championId);
+
+    if (playerChampion == null) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'You have not played enough matches on this champion',
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    final playTimeString =
+        '${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min';
+
+    String kdr = ((playerChampion.totalKills + playerChampion.totalAssists) /
+            playerChampion.totalDeaths)
+        .toStringAsPrecision(2);
+
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final props = getStatLabelGridProps(context, constraints);
+
+            final double itemHeight = props['itemHeight'] as double;
+            final double itemWidth = props['itemWidth'] as double;
+            final int crossAxisCount = props['crossAxisCount'] as int;
+
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                height: itemHeight * 8 / crossAxisCount,
+                width: constraints.maxWidth,
+                child: GridView.count(
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio: (itemWidth - 5) / (itemHeight - 5),
+                  padding: EdgeInsets.zero,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    StatLabel(
+                      label: 'Wins',
+                      text: NumberFormat.compact()
+                          .format(playerChampion.wins)
+                          .toString(),
+                    ),
+                    StatLabel(
+                      label: 'Looses',
+                      text: NumberFormat.compact()
+                          .format(playerChampion.losses)
+                          .toString(),
+                    ),
+                    StatLabel(
+                      label: 'Kills',
+                      text: NumberFormat.compact()
+                          .format(playerChampion.totalKills)
+                          .toString(),
+                    ),
+                    StatLabel(
+                      label: 'Deaths',
+                      text: NumberFormat.compact()
+                          .format(playerChampion.totalDeaths)
+                          .toString(),
+                    ),
+                    StatLabel(
+                      label: 'Play Time',
+                      text: playTimeString,
+                    ),
+                    StatLabel(
+                      label: 'Last Played',
+                      text: getLastPlayedTime(playerChampion.lastPlayed),
+                    ),
+                    StatLabel(
+                      label: 'KD Ratio',
+                      text: kdr,
+                    ),
+                    StatLabel(
+                      label: 'Credits',
+                      text:
+                          '${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min',
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ChampionDetail extends ConsumerWidget {
+  static const routeName = '/champion';
+  const ChampionDetail({Key? key}) : super(key: key);
 
   Widget buildAppBar(BuildContext context) {
     final champion =
@@ -108,74 +323,6 @@ class ChampionDetail extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-      ),
-    );
-  }
-
-  Widget buildChampionHeading(BuildContext context) {
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
-    final textTheme = Theme.of(context).textTheme.headline1;
-    final isLightTheme = Provider.of<providers.Auth>(context, listen: false)
-            .settings
-            .themeMode ==
-        ThemeMode.light;
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          Hero(
-            tag: '${champion.championId}Icon',
-            child: widgets.ElevatedAvatar(
-              imageUrl: champion.iconUrl,
-              size: 42,
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      champion.name.toUpperCase(),
-                      style: textTheme?.copyWith(
-                        fontSize: 28,
-                      ),
-                    ),
-                    Text(
-                      champion.title.toUpperCase(),
-                      style: textTheme?.copyWith(
-                        color: isLightTheme
-                            ? const Color(0xff5c5c5c)
-                            : const Color(0xffb4fb26),
-                        fontSize: 14,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Wrap(
-                        children: champion.tags.map(
-                          (tag) {
-                            return widgets.TextChip(
-                              text: tag.name,
-                              color: utilities.getMaterialColorFromHex(
-                                tag.color,
-                              ),
-                              spacing: 5,
-                            );
-                          },
-                        ).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -452,147 +599,12 @@ class ChampionDetail extends StatelessWidget {
     );
   }
 
-  Widget buildStatLabel(
-    BuildContext context,
-    String label,
-    String text,
-  ) {
-    final theme = Theme.of(context);
-    return Card(
-      color: theme.primaryColor.withOpacity(0.5),
-      margin: EdgeInsets.zero,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: theme.textTheme.headline1
-                ?.copyWith(fontSize: 18, color: Colors.white),
-          ),
-          Text(
-            text,
-            style: theme.textTheme.headline1?.copyWith(
-                fontSize: 14, fontWeight: FontWeight.w200, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildPlayerStats(BuildContext context) {
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
-    final playerChampions =
-        Provider.of<providers.Champions>(context, listen: false)
-            .playerChampions;
-    final playerChampion =
-        utilities.findPlayerChampion(playerChampions, champion.championId);
-
-    if (playerChampion == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Text(
-          'You have not played enough matches on this champion',
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
-
-    final playTimeString =
-        '${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min';
-
-    String kdr = ((playerChampion.totalKills + playerChampion.totalAssists) /
-            playerChampion.totalDeaths)
-        .toStringAsPrecision(2);
-
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final props = getStatLabelGridProps(context, constraints);
-
-            final double itemHeight = props['itemHeight'] as double;
-            final double itemWidth = props['itemWidth'] as double;
-            final int crossAxisCount = props['crossAxisCount'] as int;
-
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SizedBox(
-                height: itemHeight * 8 / crossAxisCount,
-                width: constraints.maxWidth,
-                child: GridView.count(
-                  crossAxisCount: crossAxisCount,
-                  childAspectRatio: (itemWidth - 5) / (itemHeight - 5),
-                  padding: EdgeInsets.zero,
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 5,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    buildStatLabel(
-                      context,
-                      'Wins',
-                      NumberFormat.compact()
-                          .format(playerChampion.wins)
-                          .toString(),
-                    ),
-                    buildStatLabel(
-                      context,
-                      'Looses',
-                      NumberFormat.compact()
-                          .format(playerChampion.losses)
-                          .toString(),
-                    ),
-                    buildStatLabel(
-                      context,
-                      'Kills',
-                      NumberFormat.compact()
-                          .format(playerChampion.totalKills)
-                          .toString(),
-                    ),
-                    buildStatLabel(
-                      context,
-                      'Deaths',
-                      NumberFormat.compact()
-                          .format(playerChampion.totalDeaths)
-                          .toString(),
-                    ),
-                    buildStatLabel(context, 'Play Time', playTimeString),
-                    buildStatLabel(
-                      context,
-                      'Last Played',
-                      getLastPlayedTime(playerChampion.lastPlayed),
-                    ),
-                    buildStatLabel(
-                      context,
-                      'KD Ratio',
-                      kdr,
-                    ),
-                    buildStatLabel(
-                      context,
-                      'Credits',
-                      '${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min',
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   Widget buildList(BuildContext context) {
     return SliverList(
       // Use a delegate to build items as they're scrolled on screen.
       delegate: SliverChildListDelegate(
         [
-          buildChampionHeading(context),
+          const ChampionHeading(),
           buildChampionStats(context),
           renderTitle(context, 'Lore'),
           buildLore(context),
@@ -601,14 +613,14 @@ class ChampionDetail extends StatelessWidget {
           renderTitle(context, 'Abilities'),
           buildAbilities(context),
           renderTitle(context, 'Your Stats'),
-          buildPlayerStats(context),
+          const PlayerStats(),
         ],
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
