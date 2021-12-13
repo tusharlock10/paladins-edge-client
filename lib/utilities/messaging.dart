@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
-import 'package:paladinsedge/app_theme.dart' as app_theme;
 import 'package:paladinsedge/constants.dart' as constants;
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:path_provider/path_provider.dart';
 
@@ -80,7 +80,7 @@ abstract class Messaging {
           imageUrl: imageUrl,
         ),
         duration: const Duration(seconds: 5),
-        background: app_theme.themeMaterialColor,
+        background: theme.themeMaterialColor,
       );
     });
   }
