@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
@@ -22,8 +20,8 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
   bool _isVerifying = false;
   int _step = 0; // at which step of the proccess the user is at
 
-  final String _otp = (Random().nextInt(899999) + 100000)
-      .toString(); // generates a random otp for verification
+  // generates a random otp for verification
+  final String _otp = "MAIN"; // (Random().nextInt(899999) + 100000).toString();
   api.LowerSearch? _selectedPlayer; // the player selected in search step
 
   void onSearch(String playerName) async {
@@ -31,11 +29,11 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
     // topSearchList will be empty
     // lowerSeachList will contain all the search data
     // even for a single item
+    final searchProvider = ref.read(providers.players);
 
     setState(() => _isLoading = true);
-    final searchProvider = ref.read(providers.players);
     await searchProvider.searchByName(
-      playerName,
+      playerName: playerName,
       simpleResults: true,
       addInSeachHistory: false,
     );
@@ -44,8 +42,10 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
 
   void onVerify() async {
     if (_selectedPlayer == null) return;
-    setState(() => _isVerifying = true);
+
     final authProvider = ref.read(providers.auth);
+
+    setState(() => _isVerifying = true);
     final verified = await authProvider.claimPlayer(
       _otp,
       _selectedPlayer!.playerId,

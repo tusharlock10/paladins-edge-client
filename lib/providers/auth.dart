@@ -10,7 +10,7 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-class _AuthState {
+class _AuthNotifier extends ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
@@ -18,6 +18,7 @@ class _AuthState {
   /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
+    notifyListeners();
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
@@ -89,7 +90,7 @@ class _AuthState {
     // user will have token
     // If player is null, navigate to ConnectProfile
 
-    if (response == null || response.player == null) return false;
+    if (response == null) return false;
 
     user = response.user;
     utilities.Database.saveUser(response.user);
@@ -182,6 +183,8 @@ class _AuthState {
       user!.favouriteFriends.remove(playerId);
     }
 
+    notifyListeners();
+
     // after we update the UI, update the list in backend
     // update the UI for the latest changes
 
@@ -196,6 +199,8 @@ class _AuthState {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
+    notifyListeners();
+
     return 1;
   }
 
@@ -205,8 +210,9 @@ class _AuthState {
 
     // save the settings after changing the theme
     utilities.Database.saveSettings(settings);
+    notifyListeners();
   }
 }
 
 /// Provider to handle auth and user data
-final auth = Provider((_) => _AuthState());
+final auth = ChangeNotifierProvider((_) => _AuthNotifier());

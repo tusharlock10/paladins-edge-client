@@ -10,6 +10,7 @@ class VerifiedPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(providers.auth.select((_) => _.player));
+
     final themeData = Theme.of(context);
     if (player == null) {
       return Container();
@@ -43,9 +44,10 @@ class VerifiedPlayer extends ConsumerWidget {
           ],
         ),
         TextButton(
-            onPressed: () => Navigator.pushReplacementNamed(
-                context, screens.BottomTabs.routeName),
-            child: const Text('Continue'))
+          onPressed: () => Navigator.pushReplacementNamed(
+              context, screens.BottomTabs.routeName),
+          child: const Text('Continue'),
+        )
       ],
     );
   }

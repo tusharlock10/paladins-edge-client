@@ -22,7 +22,7 @@ class User {
 
   /// token used for authentication
   @HiveField(3)
-  final String token;
+  final String? token;
 
   /// paladins playerId of the connected player
   @HiveField(4)

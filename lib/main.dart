@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final themeMode =
         ref.watch(providers.auth.select((_) => _.settings.themeMode));
 

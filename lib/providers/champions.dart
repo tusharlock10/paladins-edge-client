@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-class _ChampionsState {
+class _ChampionsNotifier extends ChangeNotifier {
   List<models.Champion> champions = [];
   List<models.PlayerChampion> playerChampions = [];
 
@@ -35,8 +36,9 @@ class _ChampionsState {
         await api.ChampionsRequests.playerChampions(playerId: playerId);
     if (response == null) return;
     playerChampions = response.playerChampions;
+    notifyListeners();
   }
 }
 
 /// Provider to handle champions
-final champions = Provider((_) => _ChampionsState());
+final champions = ChangeNotifierProvider((_) => _ChampionsNotifier());

@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-class _PlayersState {
+class _PlayersNotifier extends ChangeNotifier {
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
   List<api.LowerSearch> lowerSearchList = [];
@@ -16,6 +17,7 @@ class _PlayersState {
     final player = friends.firstWhere((friend) => friend.playerId == playerId);
     friends.removeWhere((friend) => friend.playerId == playerId);
     friends.insert(0, player);
+    notifyListeners();
   }
 
   Future<void> getFriendsList(
@@ -42,12 +44,15 @@ class _PlayersState {
 
       friends = favouritePlayers + friends;
     }
+
+    notifyListeners();
   }
 
   Future<void> getPlayerStatus(String playerId) async {
     playerStatus = null;
     final response = await api.PlayersRequests.playerStatus(playerId: playerId);
     playerStatus = response;
+    notifyListeners();
   }
 
   getSearchHistory() {
@@ -62,9 +67,9 @@ class _PlayersState {
     }
   }
 
-  Future<bool> searchByName(
-    String playerName, {
-    bool simpleResults = false,
+  Future<bool> searchByName({
+    required String playerName,
+    required bool simpleResults,
     required bool addInSeachHistory,
   }) async {
     // makes a req. to api for search
@@ -72,10 +77,14 @@ class _PlayersState {
     // saves the searchItem in the local db
 
     final response = await api.PlayersRequests.searchPlayers(
-        playerName: playerName, simpleResults: false);
+      playerName: playerName,
+      simpleResults: simpleResults,
+    );
+
     if (response == null) {
-      return true;
-    } // return with simple results as true default value
+      // return false when api call is not successful
+      return false;
+    }
 
     if (response.exactMatch) {
       playerData = response.playerData;
@@ -88,12 +97,15 @@ class _PlayersState {
       searchHistory.insert(0, searchItem);
       utilities.Database.saveSearchHistory(searchItem);
     }
+
+    notifyListeners();
     return response.exactMatch;
   }
 
   void clearSearchList() {
     topSearchList = [];
     lowerSearchList = [];
+    notifyListeners();
   }
 
   void clearPlayerData() {
@@ -104,8 +116,9 @@ class _PlayersState {
     final response = await api.PlayersRequests.playerDetail(playerId: playerId);
     if (response == null) return;
     playerData = response.player;
+    notifyListeners();
   }
 }
 
 /// Provider to handle players
-final players = Provider((_) => _PlayersState());
+final players = ChangeNotifierProvider((_) => _PlayersNotifier());

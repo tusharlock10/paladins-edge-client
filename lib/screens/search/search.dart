@@ -36,8 +36,11 @@ class _SearchState extends ConsumerState<Search> {
     setState(() => isLoading = true);
 
     final searchProvider = ref.read(providers.players);
-    final exactMatch = await searchProvider.searchByName(playerName,
-        addInSeachHistory: addInSeachHistory);
+    final exactMatch = await searchProvider.searchByName(
+      playerName: playerName,
+      simpleResults: false,
+      addInSeachHistory: addInSeachHistory,
+    );
 
     setState(() => isLoading = false);
     if (exactMatch) {

@@ -20,7 +20,7 @@ class UserAdapter extends TypeAdapter<User> {
       id: fields[0] as String,
       name: fields[1] as String,
       email: fields[2] as String,
-      token: fields[3] as String,
+      token: fields[3] as String?,
       uid: fields[5] as String,
       favouriteFriends: (fields[6] as List).cast<String>(),
       playerId: fields[4] as String?,
@@ -66,7 +66,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       id: json['_id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      token: json['token'] as String,
+      token: json['token'] as String?,
       uid: json['uid'] as String,
       favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
           .map((e) => e as String)

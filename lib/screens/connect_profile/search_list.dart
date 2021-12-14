@@ -67,9 +67,10 @@ class SearchList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchProvider = ref.watch(providers.players);
-    final searchList = searchProvider.lowerSearchList;
-    final itemCount = searchList.length;
+    final lowerSearchList =
+        ref.watch(providers.players.select((_) => _.lowerSearchList));
+
+    print("LOWER SEARCH LIST IS : $lowerSearchList");
 
     return Column(
       children: [
@@ -80,9 +81,9 @@ class SearchList extends ConsumerWidget {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.only(top: 20),
-            itemCount: itemCount,
+            itemCount: lowerSearchList.length,
             itemBuilder: (context, index) {
-              final searchItem = searchList[index];
+              final searchItem = lowerSearchList[index];
 
               return Column(
                 children: [
