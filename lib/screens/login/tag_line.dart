@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:paladinsedge/gen/assets.gen.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class TagLine extends StatelessWidget {
@@ -32,10 +33,7 @@ class TagLine extends StatelessWidget {
             onTap: () => widgets.showInfoAlert(context),
             child: Container(
               transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
-              child: Image.asset(
-                'assets/icons/paladins.png',
-                width: 140,
-              ),
+              child: Assets.icons.paladins.image(width: 140),
             ),
           ),
         ],
