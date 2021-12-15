@@ -24,7 +24,7 @@ class _BottomTabsState extends State<BottomTabs> {
       'icon': Icons.search_outlined
     },
     {
-      'screen': screens.Champions(),
+      'screen': const screens.Champions(),
       'title': 'Champs',
       'icon': Icons.sports_esports_outlined
     },
