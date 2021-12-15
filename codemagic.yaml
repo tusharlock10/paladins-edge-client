@@ -43,6 +43,7 @@ workflows:
       - |
         # download credentials from AWS
         aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+        aws s3 cp s3://paladinsedge-private/credentials/client/google-services.json ./android/app/
         aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/upload-keystore.jks ./android/app/
       - |
         # generate release notes
@@ -114,6 +115,7 @@ workflows:
       - |
         # download credentials from AWS
         aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/paladins-edge-stage.env ./paladins-edge.env
+        aws s3 cp s3://paladinsedge-private/credentials/client/google-services.json ./android/app/
         aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/upload-keystore.jks ./android/app/
       - |
         # generate release notes

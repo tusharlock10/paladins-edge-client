@@ -190,13 +190,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.4"
-  dio_firebase_performance:
-    dependency: "direct main"
-    description:
-      name: dio_firebase_performance
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1-dev.3"
   dio_http2_adapter:
     dependency: "direct main"
     description:
@@ -329,21 +322,21 @@ packages:
       name: firebase_performance
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.1+5"
+    version: "0.8.0+2"
   firebase_performance_platform_interface:
     dependency: transitive
     description:
       name: firebase_performance_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+8"
+    version: "0.1.0+2"
   firebase_performance_web:
     dependency: transitive
     description:
       name: firebase_performance_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.3+1"
+    version: "0.1.0+2"
   fixnum:
     dependency: transitive
     description:

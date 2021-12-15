@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:paladinsedge/gen/assets.gen.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -41,8 +42,7 @@ class GoogleButton extends StatelessWidget {
                   size: 36,
                   color: theme.themeMaterialColor,
                 )
-              : Image.asset(
-                  'assets/icons/google-colored.png',
+              : Assets.icons.googleColored.image(
                   width: 36,
                   height: 36,
                 ),
