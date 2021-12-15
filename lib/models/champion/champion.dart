@@ -8,18 +8,29 @@ part 'champion.g.dart';
 @HiveType(typeId: TypeIds.championAbility)
 @JsonSerializable()
 class Ability {
+  /// Paladins ability id
   @HiveField(0)
-  final int abilityId; // Paladins ability id
+  final int abilityId;
+
+  /// name of the ability
   @HiveField(1)
-  final String name; // name of the ability
+  final String name;
+
+  /// Image of the ability
   @HiveField(2)
-  final String imageUrl; // Image of the ability
+  final String imageUrl;
+
+  /// Area or Direct damage
   @HiveField(3)
-  final String damageType; // Area or Direct damage
+  final String damageType;
+
+  /// Recharge time of the ability in seconds
   @HiveField(4)
-  final double cooldown; // Recharge time of the ability in seconds
+  final double cooldown;
+
+  /// Ability description
   @HiveField(5)
-  final String description; // Ability description
+  final String description;
 
   Ability({
     required this.abilityId,
@@ -38,19 +49,29 @@ class Ability {
 @HiveType(typeId: TypeIds.championTalent)
 @JsonSerializable()
 class Talent {
+  /// Paladins talent id
   @HiveField(0)
-  final int talentId; // Paladins talent id
+  final int talentId;
+
+  /// name of the talent
   @HiveField(1)
-  final String name; // name of the talent
+  final String name;
+
+  /// Image of the talent
   @HiveField(2)
-  final String imageUrl; // Image of the talent
+  final String imageUrl;
+
+  /// Recharge time of the talent in seconds
   @HiveField(3)
-  final double cooldown; // Recharge time of the talent in seconds
+  final double cooldown;
+
+  /// Talent description
   @HiveField(4)
-  final String description; // Talent description
+  final String description;
+
+  /// The ability that the talent modifies eg. Weapon/Reversal
   @HiveField(5)
-  final String
-      modifier; // The ability that the talent modifies eg. Weapon/Reversal
+  final String modifier;
 
   Talent({
     required this.talentId,
@@ -68,19 +89,29 @@ class Talent {
 @HiveType(typeId: TypeIds.championCard)
 @JsonSerializable()
 class Card {
+  /// Paladins card id
   @HiveField(0)
-  final int cardId; // Paladins card id
+  final int cardId;
+
+  /// name of the card
   @HiveField(1)
-  final String name; // name of the card
+  final String name;
+
+  /// Image of the card
   @HiveField(2)
-  final String imageUrl; // Image of the card
+  final String imageUrl;
+
+  /// Recharge time of the card in seconds
   @HiveField(3)
-  final double cooldown; // Recharge time of the card in seconds
+  final double cooldown;
+
+  /// card description
   @HiveField(4)
-  final String description; // card description
+  final String description;
+
+  /// The ability that the card modifies eg. Nether Step/Reversal
   @HiveField(5)
-  final String
-      modifier; // The ability that the card modifies eg. Nether Step/Reversal
+  final String modifier;
 
   Card({
     required this.cardId,
@@ -98,10 +129,13 @@ class Card {
 @HiveType(typeId: TypeIds.championTag)
 @JsonSerializable()
 class Tag {
+  /// name of the tag
   @HiveField(0)
-  final String name; // name of the tag
+  final String name;
+
+  /// color of tag in hex string
   @HiveField(1)
-  final String color; // color of tag in hex string
+  final String color;
 
   Tag({
     required this.name,
@@ -115,49 +149,85 @@ class Tag {
 @HiveType(typeId: TypeIds.champion)
 @JsonSerializable()
 class Champion {
+  /// Paladins champion id
   @HiveField(0)
-  final String championId; // Paladins champion id
-  @HiveField(1)
-  final String name; // eg. Androxus
-  @HiveField(2)
-  final String iconUrl; // Icon of the champion
-  @HiveField(3)
-  final String headerUrl; // Header image of the champion
-  @HiveField(4)
-  final String splashUrl; // Splash image of the champion
-  @HiveField(5)
-  final String title; // eg. The Godslayer
-  @HiveField(6)
-  final String role; // eg. Flank
+  final String championId;
 
+  /// eg. Androxus
+  @HiveField(1)
+  final String name;
+
+  /// Icon of the champion
+  @HiveField(2)
+  final String iconUrl;
+
+  /// Header image of the champion
+  @HiveField(3)
+  final String headerUrl;
+
+  /// Splash image of the champion
+  @HiveField(4)
+  final String splashUrl;
+
+  /// eg. The Godslayer
+  @HiveField(5)
+  final String title;
+
+  /// eg. Flank
+  @HiveField(6)
+  final String role;
+
+  /// release date of the champion
   @HiveField(7)
   final DateTime releaseDate;
+
+  /// eg. 2100
   @HiveField(8)
-  final double health; // eg. 2100
+  final double health;
+
+  /// eg. 370
   @HiveField(9)
-  final double movementSpeed; // eg. 370
+  final double movementSpeed;
+
+  /// eg. 50 (units)
   @HiveField(10)
-  final double damageFallOffRange; // eg. 50 (units)
+  final double damageFallOffRange;
+
+  /// damage of the champion eg. 520
   @HiveField(11)
-  final double weaponDamage; // damage of the champion eg. 520
+  final double weaponDamage;
+
+  /// fire rate of the champion in sec eg. 0.36
   @HiveField(12)
-  final double fireRate; // fire rate of the champion in sec eg. 0.36
+  final double fireRate;
+
+  /// lore of that champion,
   @HiveField(13)
-  final String? lore; // lore of that champion,
+  final String? lore;
 
+  /// List of all the abilities of th champion
   @HiveField(14)
-  final List<Ability>? abilities; // List of all the abilities of th champion
-  @HiveField(15)
-  final List<Talent>? talents; // List of all the talents of th champion
-  @HiveField(16)
-  final List<Card>? cards; // List of all the cards of th champion
+  final List<Ability>? abilities;
 
+  /// List of all the talents of th champion
+  @HiveField(15)
+  final List<Talent>? talents;
+
+  /// List of all the cards of th champion
+  @HiveField(16)
+  final List<Card>? cards;
+
+  /// Whether the champion is newly added in the game
   @HiveField(17)
-  final bool latestChampion; // Whether the champion is newly added in the game
+  final bool latestChampion;
+
+  /// Whether the champion is on free rotation
   @HiveField(18)
-  final bool onFreeRotation; // Whether the champion is on free rotation
+  final bool onFreeRotation;
+
+  /// For showing extra champion info
   @HiveField(19)
-  final List<Tag> tags; // For showing extra champion info
+  final List<Tag> tags;
 
   Champion({
     required this.championId,

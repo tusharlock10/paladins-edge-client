@@ -38,45 +38,73 @@ class Ranked {
 @HiveType(typeId: TypeIds.player)
 @JsonSerializable()
 class Player {
+  /// paladins player id
   @HiveField(0)
-  final String playerId; // paladins player id
+  final String playerId;
+
+  /// id of the connected user model
   @HiveField(1)
-  final String? userId; // id of the connected user model
+  final String? userId;
+
+  /// name of the player in the game eg. tusharlock10
   @HiveField(2)
-  final String name; // name of the player in the game eg. tusharlock10
+  final String name;
+
+  /// Paladins title that appears below name eg. The 1%
   @HiveField(3)
-  final String? title; // Paladins title that appears below name eg. The 1%
+  final String? title;
+
+  /// image url of the avatar
   @HiveField(4)
-  final String? avatarUrl; // image url of the avatar
+  final String? avatarUrl;
+
+  /// total exp the player has
   @HiveField(5)
-  final int? totalXP; // total exp the player has
+  final int? totalXP;
 
+  /// amount of hours the player has played
   @HiveField(6)
-  final int? hoursPlayed; // amount of hours the player has played
+  final int? hoursPlayed;
+
+  /// Level of the player in the game
   @HiveField(7)
-  final int? level; // Level of the player in the game
+  final int? level;
+
+  /// number of total wins in paladins
   @HiveField(8)
-  final int? totalWins; // number of total wins in paladins
+  final int? totalWins;
+
+  /// number of total losses in paladins
   @HiveField(9)
-  final int? totalLosses; // number of total losses in paladins
+  final int? totalLosses;
+
+  /// at which platform is he playing eg. Steam
   @HiveField(10)
-  final String? platform; // at which platform is he playing eg. Steam
+  final String? platform;
+
+  /// from which region the player is eg. Europe
   @HiveField(11)
-  final String? region; // from which region the player is eg. Europe
+  final String? region;
 
+  /// the date at which the user created his paladins account
   @HiveField(12)
-  final DateTime?
-      accountCreationDate; // the date at which the user created his paladins account
+  final DateTime? accountCreationDate;
+
+  /// the date at which the user logged in last
   @HiveField(13)
-  final DateTime? lastLoginDate; // the date at which the user logged in last
+  final DateTime? lastLoginDate;
 
+  /// ranked details of the player
   @HiveField(14)
-  final Ranked ranked; // ranked details of the player
-  @HiveField(15)
-  final String? status; // if the player is Offline, In Match, etc
+  final Ranked ranked;
 
+  /// if the player is Offline, In Match, etc
+  @HiveField(15)
+  final String? status;
+
+  /// list of playerId of the friends
   @HiveField(16)
-  final List<String>? friends; // list of playerId of the friends
+  final List<String>? friends;
 
   Player({
     required this.playerId,

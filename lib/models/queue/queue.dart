@@ -4,10 +4,14 @@ part 'queue.g.dart';
 
 @JsonSerializable()
 class Queue {
-  final String queueId; // Queue Id of the game mode provided by paladins API
-  final String name; // name of the queue/ game mode
-  final int
-      activeMatchCount; // Number of matches being played currently in this
+  /// Queue Id of the game mode provided by paladins API
+  final String queueId;
+
+  /// name of the queue/ game mode
+  final String name;
+
+  /// Number of matches being played currently in this
+  final int activeMatchCount;
 
   Queue({
     required this.queueId,

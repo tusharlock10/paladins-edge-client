@@ -1,0 +1,1 @@
+export './friends.dart';

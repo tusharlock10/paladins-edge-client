@@ -1,54 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:provider/provider.dart';
 
-class PlayerDetail extends StatefulWidget {
-  static const routeName = '/playerDetail';
-  const PlayerDetail({Key? key}) : super(key: key);
+class PlayerDetailComponent extends StatelessWidget {
+  final models.Player player;
 
-  @override
-  _PlayerDetailState createState() => _PlayerDetailState();
-}
-
-class _PlayerDetailState extends State<PlayerDetail> {
-  bool _init = true;
+  const PlayerDetailComponent({
+    required this.player,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  void deactivate() {
-    Provider.of<providers.Players>(context, listen: false).clearPlayerData();
-    super.deactivate();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_init) {
-      _init = false;
-      // check if the playerId is passed in arguments
-      // if passed set loading to true and fetch the
-      // data from server using playerId else show the player
-      // from the playerData in provider
-
-      final playerId = ModalRoute.of(context)?.settings.arguments as String?;
-      if (playerId != null) {
-        // fetch data from server
-        Provider.of<providers.Players>(context, listen: false)
-            .getPlayerData(playerId);
-      }
-    }
-    super.didChangeDependencies();
-  }
-
-  Widget buildLoading() {
-    return const Center(
-      child: widgets.LoadingIndicator(
-        size: 36,
-      ),
-    );
-  }
-
-  Widget buildPlayerDetail(models.Player player) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -109,18 +72,6 @@ class _PlayerDetailState extends State<PlayerDetail> {
           ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final player = Provider.of<providers.Players>(context).playerData;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Player Details'),
-      ),
-      body: player == null ? buildLoading() : buildPlayerDetail(player),
     );
   }
 }

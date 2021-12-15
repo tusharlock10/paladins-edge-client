@@ -4,14 +4,29 @@ part 'bounty_store.g.dart';
 
 @JsonSerializable()
 class BountyStore {
-  final String bountyStoreId; // id of the bounty item
-  final String skinName; // name of the champion skin
-  final String championId; // id of the champion the skin belongs to
-  final String championName; // name of the champion the skin belongs to
-  final String finalPrice; // final price of the skin in the bounty store
-  final String initialPrice; // initial price of the skin
-  final DateTime endDate; // end date of the skin sale
-  final String type; // increasing or decreasing sale type
+  /// id of the bounty item
+  final String bountyStoreId;
+
+  /// name of the champion skin
+  final String skinName;
+
+  /// id of the champion the skin belongs to
+  final String championId;
+
+  /// name of the champion the skin belongs to
+  final String championName;
+
+  /// final price of the skin in the bounty store
+  final String finalPrice;
+
+  /// initial price of the skin
+  final String initialPrice;
+
+  /// end date of the skin sale
+  final DateTime endDate;
+
+  /// increasing or decreasing sale type
+  final String type;
 
   BountyStore({
     required this.bountyStoreId,

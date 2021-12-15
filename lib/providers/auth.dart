@@ -3,23 +3,25 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-// handles auth and user data
-class Auth with ChangeNotifier {
+class _AuthNotifier extends ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
 
+  /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
     notifyListeners();
   }
 
+  /// Loads and the `essentials` from local db and syncs it with server
   void loadEssentials() async {
     // gets the essential data for the app
 
@@ -34,6 +36,7 @@ class Auth with ChangeNotifier {
     }
   }
 
+  /// Checks if the user is already logged in
   Future<bool> login() async {
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
@@ -46,6 +49,7 @@ class Auth with ChangeNotifier {
     }
   }
 
+  /// Signin the user with his/her `Google` account
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -86,7 +90,7 @@ class Auth with ChangeNotifier {
     // user will have token
     // If player is null, navigate to ConnectProfile
 
-    if (response == null || response.player == null) return false;
+    if (response == null) return false;
 
     user = response.user;
     utilities.Database.saveUser(response.user);
@@ -99,6 +103,7 @@ class Auth with ChangeNotifier {
     return true;
   }
 
+  /// Logs out the user, also sends this info to server
   Future<void> logout() async {
     // 1) Clear user's storage first so,
     //    if the logout fails in the steps below
@@ -115,16 +120,19 @@ class Auth with ChangeNotifier {
     player = null;
   }
 
+  /// Send the FCM token to server, only works on `Android`
   void sendFcmToken(String fcmToken) async {
     // send the fcm token of the devivce to the server
-    // for sending notification fcm token is use only
+    // for sending notification fcm token is used only
     // for the server, and not stored on the app/ browser
 
     api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
+  /// Claim a player profile and connect it to the user
   Future<bool> claimPlayer(String otp, String playerId) async {
-    // Sends an otp and playerId to server to check if a loadout exists with that otp
+    // Sends an otp and playerId to server to check
+    // if a loadout exists with that OTP
     // if it does, then player is verified
 
     final verification = crypto.sha512
@@ -149,6 +157,7 @@ class Auth with ChangeNotifier {
     return response.verified;
   }
 
+  /// Marks, unmarks a `friend` player as favourite
   Future<int> markFavouriteFriend(String playerId) async {
     // returns 0,1 or 2 as response
     // 0 -> player is removed from favouriteFriends
@@ -191,9 +200,11 @@ class Auth with ChangeNotifier {
     }
 
     notifyListeners();
+
     return 1;
   }
 
+  /// Toggle the theme from `light` to `dark` and vice versa
   void toggleTheme(ThemeMode themeMode) {
     settings.themeMode = themeMode;
 
@@ -202,3 +213,6 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 }
+
+/// Provider to handle auth and user data
+final auth = ChangeNotifierProvider((_) => _AuthNotifier());

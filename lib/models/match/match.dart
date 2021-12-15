@@ -133,22 +133,40 @@ class MatchPlayer {
 
 @JsonSerializable()
 class Match {
-  final String matchId; // id of the match
-  final List<String>
-      playerIds; // player ids stored in a list, for easier searching of the match in db
+  /// id of the match
+  final String matchId;
 
-  final int winningTeam; // team that won the match
-  final int team1Score; // score of team 1
-  final int team2Score; // score of team 2
+  /// player ids stored in a list, for easier searching of the match in db
+  final List<String> playerIds;
 
-  final DateTime matchStartTime; // time when the match started
-  final int matchDuration; // duration of the match
+  /// team that won the match
+  final int winningTeam;
 
-  final String queue; // queue of the match
-  final String map; // map of the match
-  final String region; // region of the match
+  /// score of team 1
+  final int team1Score;
 
-  final List<int> championBans; // id champion that were banned in the match
+  /// score of team 2
+  final int team2Score;
+
+  /// time when the match started
+  final DateTime matchStartTime;
+
+  /// duration of the match
+  final int matchDuration;
+
+  /// queue of the match
+  final String queue;
+
+  /// map of the match
+  final String map;
+
+  /// region of the match
+  final String region;
+
+  /// id champion that were banned in the match
+  final List<int> championBans;
+
+  /// If the match data is in complete or not
   // if the match has inComplete data, and needs a paladinsAPI call to fetch the complete data
   // most matches will be inComplete by default
   // and matchDetail api needs to be called to complete the data

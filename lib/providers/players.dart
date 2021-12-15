@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-// Provider to handle players api response
-
-class Players with ChangeNotifier {
+class _PlayersNotifier extends ChangeNotifier {
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
   List<api.LowerSearch> lowerSearchList = [];
@@ -68,9 +67,9 @@ class Players with ChangeNotifier {
     }
   }
 
-  Future<bool> searchByName(
-    String playerName, {
-    bool simpleResults = false,
+  Future<bool> searchByName({
+    required String playerName,
+    required bool simpleResults,
     required bool addInSeachHistory,
   }) async {
     // makes a req. to api for search
@@ -78,10 +77,14 @@ class Players with ChangeNotifier {
     // saves the searchItem in the local db
 
     final response = await api.PlayersRequests.searchPlayers(
-        playerName: playerName, simpleResults: false);
+      playerName: playerName,
+      simpleResults: simpleResults,
+    );
+
     if (response == null) {
-      return true;
-    } // return with simple results as true default value
+      // return false when api call is not successful
+      return false;
+    }
 
     if (response.exactMatch) {
       playerData = response.playerData;
@@ -94,6 +97,7 @@ class Players with ChangeNotifier {
       searchHistory.insert(0, searchItem);
       utilities.Database.saveSearchHistory(searchItem);
     }
+
     notifyListeners();
     return response.exactMatch;
   }
@@ -115,3 +119,6 @@ class Players with ChangeNotifier {
     notifyListeners();
   }
 }
+
+/// Provider to handle players
+final players = ChangeNotifierProvider((_) => _PlayersNotifier());
