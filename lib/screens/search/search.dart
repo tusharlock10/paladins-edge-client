@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/search/search_bar.dart';
 import 'package:paladinsedge/screens/search/search_history.dart';
 import 'package:paladinsedge/screens/search/search_list.dart';
+import 'package:paladinsedge/screens/search/top_search_bar.dart';
 
 class Search extends ConsumerStatefulWidget {
   static const routeName = '/search';

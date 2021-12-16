@@ -30,7 +30,6 @@ class TopSearchBar extends ConsumerWidget {
       title: TextField(
         controller: textController,
         maxLength: 30,
-        enableInteractiveSelection: true,
         style: textStyle,
         cursorColor: theme.primaryColor,
         decoration: InputDecoration(

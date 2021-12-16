@@ -47,6 +47,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_local_notifications: ^9.0.1
   flutter_riverpod: ^1.0.2
+  responsive_framework: ^0.1.5
 
 dev_dependencies:
   flutter_test:
