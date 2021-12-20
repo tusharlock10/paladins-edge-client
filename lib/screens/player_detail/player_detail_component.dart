@@ -15,12 +15,13 @@ class PlayerDetailComponent extends StatelessWidget {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: ListView(
+      child: Column(
         children: [
           Row(
             children: [
               widgets.ElevatedAvatar(
-                size: 36,
+                size: 48,
+                borderRadius: 10,
                 imageUrl: player.avatarUrl!,
               ),
               const SizedBox(width: 10),

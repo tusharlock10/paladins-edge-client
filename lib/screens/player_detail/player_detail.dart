@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/player_detail/player_detail_component.dart';
+import 'package:paladinsedge/screens/player_detail/player_matches.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class PlayerDetail extends ConsumerStatefulWidget {
@@ -31,11 +32,17 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
       // data from server using playerId else show the player
       // from the playerData in provider
 
-      final playerId = ModalRoute.of(context)?.settings.arguments as String?;
+      String? playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
-        // fetch data from server
+        // fetch playerData from server
         ref.read(providers.players).getPlayerData(playerId);
+      } else {
+        // get the playerId from playerData
+        playerId = ref.read(providers.players).playerData!.playerId;
       }
+
+      // get the playerMatches from server
+      ref.read(providers.matches).getPlayerMatches(playerId);
     }
     super.didChangeDependencies();
   }
@@ -54,7 +61,12 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
                 size: 36,
               ),
             )
-          : PlayerDetailComponent(player: player),
+          : Column(
+              children: [
+                PlayerDetailComponent(player: player),
+                const PlayerMatches(),
+              ],
+            ),
     );
   }
 }

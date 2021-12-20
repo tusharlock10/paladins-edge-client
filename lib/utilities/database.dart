@@ -27,6 +27,7 @@ abstract class Database {
     Hive.registerAdapter(models.UserAdapter());
     Hive.registerAdapter(models.SettingsAdapter());
     Hive.registerAdapter(models.EssentialsAdapter());
+    Hive.registerAdapter(models.SearchHistoryAdapter());
     Hive.registerAdapter(models.RecordExpiryAdapter());
 
     _init = true;

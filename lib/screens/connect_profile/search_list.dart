@@ -70,8 +70,6 @@ class SearchList extends ConsumerWidget {
     final lowerSearchList =
         ref.watch(providers.players.select((_) => _.lowerSearchList));
 
-    print("LOWER SEARCH LIST IS : $lowerSearchList");
-
     return Column(
       children: [
         PlayerInput(

@@ -20,11 +20,11 @@ class MatchDetailsResponse {
 
 @JsonSerializable()
 class PlayerMatchesResponse {
-  final Match match;
+  final List<Match> matches;
   final List<MatchPlayer> matchPlayers;
 
   PlayerMatchesResponse({
-    required this.match,
+    required this.matches,
     required this.matchPlayers,
   });
 

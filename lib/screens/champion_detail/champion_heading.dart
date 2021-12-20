@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionHeading extends ConsumerWidget {
@@ -56,9 +55,6 @@ class ChampionHeading extends ConsumerWidget {
                           (tag) {
                             return widgets.TextChip(
                               text: tag.name,
-                              color: utilities.getMaterialColorFromHex(
-                                tag.color,
-                              ),
                               spacing: 5,
                             );
                           },

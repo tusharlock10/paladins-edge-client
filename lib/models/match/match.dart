@@ -27,7 +27,7 @@ class MatchPlayerStats {
   final int totalMultiKills; // total number of multi kills of the player
 
   final int objectiveTime; // time spent on objective
-  final int creditsEarnedfinal; // credits earned by the player
+  final int creditsEarned; // credits earned by the player
 
   MatchPlayerStats({
     required this.kills,
@@ -46,7 +46,7 @@ class MatchPlayerStats {
     required this.pentaKills,
     required this.totalMultiKills,
     required this.objectiveTime,
-    required this.creditsEarnedfinal,
+    required this.creditsEarned,
   });
 
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>

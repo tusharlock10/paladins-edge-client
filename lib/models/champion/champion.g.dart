@@ -67,29 +67,32 @@ class TalentAdapter extends TypeAdapter<Talent> {
     };
     return Talent(
       talentId: fields[0] as int,
-      name: fields[1] as String,
-      imageUrl: fields[2] as String,
-      cooldown: fields[3] as double,
-      description: fields[4] as String,
-      modifier: fields[5] as String,
+      talentId2: fields[1] as int,
+      name: fields[2] as String,
+      imageUrl: fields[3] as String,
+      cooldown: fields[4] as double,
+      description: fields[5] as String,
+      modifier: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Talent obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.talentId)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.talentId2)
       ..writeByte(2)
-      ..write(obj.imageUrl)
+      ..write(obj.name)
       ..writeByte(3)
-      ..write(obj.cooldown)
+      ..write(obj.imageUrl)
       ..writeByte(4)
-      ..write(obj.description)
+      ..write(obj.cooldown)
       ..writeByte(5)
+      ..write(obj.description)
+      ..writeByte(6)
       ..write(obj.modifier);
   }
 
@@ -116,29 +119,32 @@ class CardAdapter extends TypeAdapter<Card> {
     };
     return Card(
       cardId: fields[0] as int,
-      name: fields[1] as String,
-      imageUrl: fields[2] as String,
-      cooldown: fields[3] as double,
-      description: fields[4] as String,
-      modifier: fields[5] as String,
+      cardId2: fields[1] as int,
+      name: fields[2] as String,
+      imageUrl: fields[3] as String,
+      cooldown: fields[4] as double,
+      description: fields[5] as String,
+      modifier: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Card obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.cardId)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.cardId2)
       ..writeByte(2)
-      ..write(obj.imageUrl)
+      ..write(obj.name)
       ..writeByte(3)
-      ..write(obj.cooldown)
+      ..write(obj.imageUrl)
       ..writeByte(4)
-      ..write(obj.description)
+      ..write(obj.cooldown)
       ..writeByte(5)
+      ..write(obj.description)
+      ..writeByte(6)
       ..write(obj.modifier);
   }
 
@@ -305,6 +311,7 @@ Map<String, dynamic> _$AbilityToJson(Ability instance) => <String, dynamic>{
 
 Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
       talentId: json['talentId'] as int,
+      talentId2: json['talentId2'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
       cooldown: (json['cooldown'] as num).toDouble(),
@@ -314,6 +321,7 @@ Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
 
 Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
       'talentId': instance.talentId,
+      'talentId2': instance.talentId2,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'cooldown': instance.cooldown,
@@ -323,6 +331,7 @@ Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
 
 Card _$CardFromJson(Map<String, dynamic> json) => Card(
       cardId: json['cardId'] as int,
+      cardId2: json['cardId2'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
       cooldown: (json['cooldown'] as num).toDouble(),
@@ -332,6 +341,7 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
 
 Map<String, dynamic> _$CardToJson(Card instance) => <String, dynamic>{
       'cardId': instance.cardId,
+      'cardId2': instance.cardId2,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'cooldown': instance.cooldown,
