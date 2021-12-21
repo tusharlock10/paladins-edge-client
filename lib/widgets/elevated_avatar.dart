@@ -20,7 +20,7 @@ class ElevatedAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderRadius = this.borderRadius ?? size / 2;
-    return Card(
+    return Material(
       clipBehavior: Clip.antiAlias,
       elevation: elevation ?? 5,
       shape: RoundedRectangleBorder(

@@ -50,6 +50,7 @@ dependencies:
   responsive_framework: ^0.1.5
   dartx: ^1.0.0
   timer_builder: ^2.0.0
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:
