@@ -39,7 +39,6 @@ abstract class Messaging {
 
     final data =
         message.data.map((key, value) => MapEntry(key, value?.toString()));
-    debugPrint(data.toString());
 
     createNewNotif(
       imageUrl: data['imageUrl'],
@@ -124,8 +123,6 @@ abstract class Messaging {
     const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (event) {
-      debugPrint('Event : $event');
-    });
+        onSelectNotification: (event) {});
   }
 }

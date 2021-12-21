@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:timer_builder/timer_builder.dart';
 
 class SearchHistory extends ConsumerWidget {
   final String playerName;
@@ -27,9 +28,14 @@ class SearchHistory extends ConsumerWidget {
               search.playerName,
               style: Theme.of(context).primaryTextTheme.headline6,
             ),
-            trailing: Text(
-              Jiffy(search.date).fromNow(),
-              style: Theme.of(context).primaryTextTheme.caption,
+            trailing: TimerBuilder.periodic(
+              const Duration(minutes: 1),
+              builder: (context) {
+                return Text(
+                  Jiffy(search.date).fromNow(),
+                  style: Theme.of(context).primaryTextTheme.caption,
+                );
+              },
             ),
           );
         },

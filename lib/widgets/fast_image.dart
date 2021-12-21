@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class FastImage extends StatelessWidget {
@@ -20,11 +21,12 @@ class FastImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: borderRadius,
-      child: Image.network(
-        imageUrl,
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
         height: height,
         width: width,
         fit: fit,
+        useOldImageOnUrlChange: true,
       ),
     );
   }

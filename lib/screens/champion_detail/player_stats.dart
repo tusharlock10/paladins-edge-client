@@ -6,6 +6,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champion_detail/stat_label.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:timer_builder/timer_builder.dart';
 
 class PlayerStats extends ConsumerWidget {
   const PlayerStats({Key? key}) : super(key: key);
@@ -129,9 +130,14 @@ class PlayerStats extends ConsumerWidget {
                       label: 'Play Time',
                       text: playTimeString,
                     ),
-                    StatLabel(
-                      label: 'Last Played',
-                      text: getLastPlayedTime(playerChampion.lastPlayed),
+                    TimerBuilder.periodic(
+                      const Duration(minutes: 1),
+                      builder: (_) {
+                        return StatLabel(
+                          label: 'Last Played',
+                          text: getLastPlayedTime(playerChampion.lastPlayed),
+                        );
+                      },
                     ),
                     StatLabel(
                       label: 'KD Ratio',

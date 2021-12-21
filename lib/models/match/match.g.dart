@@ -18,13 +18,9 @@ MatchPlayerStats _$MatchPlayerStatsFromJson(Map<String, dynamic> json) =>
       selfHealingDone: json['selfHealingDone'] as int,
       healingDone: json['healingDone'] as int,
       biggestKillStreak: json['biggestKillStreak'] as int,
-      doubleKills: json['doubleKills'] as int,
-      tripleKills: json['tripleKills'] as int,
-      quadraKills: json['quadraKills'] as int,
-      pentaKills: json['pentaKills'] as int,
       totalMultiKills: json['totalMultiKills'] as int,
       objectiveTime: json['objectiveTime'] as int,
-      creditsEarnedfinal: json['creditsEarnedfinal'] as int,
+      creditsEarned: json['creditsEarned'] as int,
     );
 
 Map<String, dynamic> _$MatchPlayerStatsToJson(MatchPlayerStats instance) =>
@@ -39,13 +35,9 @@ Map<String, dynamic> _$MatchPlayerStatsToJson(MatchPlayerStats instance) =>
       'selfHealingDone': instance.selfHealingDone,
       'healingDone': instance.healingDone,
       'biggestKillStreak': instance.biggestKillStreak,
-      'doubleKills': instance.doubleKills,
-      'tripleKills': instance.tripleKills,
-      'quadraKills': instance.quadraKills,
-      'pentaKills': instance.pentaKills,
       'totalMultiKills': instance.totalMultiKills,
       'objectiveTime': instance.objectiveTime,
-      'creditsEarnedfinal': instance.creditsEarnedfinal,
+      'creditsEarned': instance.creditsEarned,
     };
 
 MatchPlayerItems _$MatchPlayerItemsFromJson(Map<String, dynamic> json) =>

@@ -53,28 +53,33 @@ class Talent {
   @HiveField(0)
   final int talentId;
 
-  /// name of the talent
+  /// Paladins talent id to link with the getItems api
   @HiveField(1)
+  final int talentId2;
+
+  /// name of the talent
+  @HiveField(2)
   final String name;
 
   /// Image of the talent
-  @HiveField(2)
+  @HiveField(3)
   final String imageUrl;
 
   /// Recharge time of the talent in seconds
-  @HiveField(3)
+  @HiveField(4)
   final double cooldown;
 
   /// Talent description
-  @HiveField(4)
+  @HiveField(5)
   final String description;
 
   /// The ability that the talent modifies eg. Weapon/Reversal
-  @HiveField(5)
+  @HiveField(6)
   final String modifier;
 
   Talent({
     required this.talentId,
+    required this.talentId2,
     required this.name,
     required String imageUrl,
     required this.cooldown,
@@ -93,28 +98,33 @@ class Card {
   @HiveField(0)
   final int cardId;
 
-  /// name of the card
+  /// Paladins card id to link with the getItems api
   @HiveField(1)
+  final int cardId2;
+
+  /// name of the card
+  @HiveField(2)
   final String name;
 
   /// Image of the card
-  @HiveField(2)
+  @HiveField(3)
   final String imageUrl;
 
   /// Recharge time of the card in seconds
-  @HiveField(3)
+  @HiveField(4)
   final double cooldown;
 
   /// card description
-  @HiveField(4)
+  @HiveField(5)
   final String description;
 
   /// The ability that the card modifies eg. Nether Step/Reversal
-  @HiveField(5)
+  @HiveField(6)
   final String modifier;
 
   Card({
     required this.cardId,
+    required this.cardId2,
     required this.name,
     required String imageUrl,
     required this.cooldown,

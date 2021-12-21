@@ -25,7 +25,9 @@ Map<String, dynamic> _$MatchDetailsResponseToJson(
 PlayerMatchesResponse _$PlayerMatchesResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerMatchesResponse(
-      match: Match.fromJson(json['match'] as Map<String, dynamic>),
+      matches: (json['matches'] as List<dynamic>)
+          .map((e) => Match.fromJson(e as Map<String, dynamic>))
+          .toList(),
       matchPlayers: (json['matchPlayers'] as List<dynamic>)
           .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -34,6 +36,6 @@ PlayerMatchesResponse _$PlayerMatchesResponseFromJson(
 Map<String, dynamic> _$PlayerMatchesResponseToJson(
         PlayerMatchesResponse instance) =>
     <String, dynamic>{
-      'match': instance.match,
+      'matches': instance.matches,
       'matchPlayers': instance.matchPlayers,
     };

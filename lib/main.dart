@@ -19,11 +19,11 @@ void main() async {
   messaging.Messaging.onBackgroundMessage();
   messaging.Messaging.registerLocalNotification();
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+class PaladinsEdgeApp extends ConsumerWidget {
+  const PaladinsEdgeApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

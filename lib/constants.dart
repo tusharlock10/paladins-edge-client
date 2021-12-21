@@ -120,3 +120,18 @@ abstract class RecordExpiryData {
   static const searchHistoryDuration =
       Duration(days: 7); // expire saved searchHistory records in 7 days
 }
+
+abstract class ImageAspectRatios {
+  static const championCard = 1.3;
+  static const championAbility = 1;
+  static const championTalent = 1;
+  static const championIcon = 1;
+  static const championHeader = 1.96;
+  static const championSplash = 1.77;
+
+  static const avatar = 1;
+
+  static const itemIcon = 1.3;
+
+  static const rankIcon = 1;
+}

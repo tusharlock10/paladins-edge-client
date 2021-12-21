@@ -28,8 +28,8 @@ class Talents extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Image.network(
-                        talent.imageUrl,
+                      widgets.FastImage(
+                        imageUrl: talent.imageUrl,
                         height: 114,
                         width: 114,
                       ),

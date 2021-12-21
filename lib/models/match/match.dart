@@ -20,14 +20,10 @@ class MatchPlayerStats {
   final int healingDone; // healing done by the player on allies
 
   final int biggestKillStreak; // longest kill streak of the player
-  final int doubleKills; // number of double kills of the player
-  final int tripleKills; // number of triple kills of the player
-  final int quadraKills; // number of quadra kills of the player
-  final int pentaKills; // number of penta kills of the player
   final int totalMultiKills; // total number of multi kills of the player
 
   final int objectiveTime; // time spent on objective
-  final int creditsEarnedfinal; // credits earned by the player
+  final int creditsEarned; // credits earned by the player
 
   MatchPlayerStats({
     required this.kills,
@@ -40,13 +36,9 @@ class MatchPlayerStats {
     required this.selfHealingDone,
     required this.healingDone,
     required this.biggestKillStreak,
-    required this.doubleKills,
-    required this.tripleKills,
-    required this.quadraKills,
-    required this.pentaKills,
     required this.totalMultiKills,
     required this.objectiveTime,
-    required this.creditsEarnedfinal,
+    required this.creditsEarned,
   });
 
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>

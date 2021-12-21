@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class TopSearchItem extends StatelessWidget {
   final models.Player player;
@@ -25,7 +26,7 @@ class TopSearchItem extends StatelessWidget {
         style: Theme.of(context).primaryTextTheme.headline6,
       ),
       trailing: player.ranked.rankIconUrl != ""
-          ? Image.network(player.ranked.rankIconUrl!)
+          ? widgets.FastImage(imageUrl: player.ranked.rankIconUrl!)
           : Container(),
     );
   }
