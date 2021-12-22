@@ -12,20 +12,22 @@ abstract class PlayersRequests {
         constants.Urls.searchPlayers,
         queryParameters: {
           'playerName': playerName,
-          'simpleResults': simpleResults
+          'simpleResults': simpleResults,
         },
       );
       if (response.data != null) {
         return responses.SearchPlayersResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;
     }
   }
 
-  static Future<responses.PlayerDetailResponse?> playerDetail(
-      {required String playerId}) async {
+  static Future<responses.PlayerDetailResponse?> playerDetail({
+    required String playerId,
+  }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerDetail,
@@ -34,14 +36,16 @@ abstract class PlayersRequests {
       if (response.data != null) {
         return responses.PlayerDetailResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;
     }
   }
 
-  static Future<responses.PlayerStatusResponse?> playerStatus(
-      {required String playerId}) async {
+  static Future<responses.PlayerStatusResponse?> playerStatus({
+    required String playerId,
+  }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerStatus,
@@ -50,14 +54,16 @@ abstract class PlayersRequests {
       if (response.data != null) {
         return responses.PlayerStatusResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;
     }
   }
 
-  static Future<responses.FriendsListResponse?> friendsList(
-      {required String playerId}) async {
+  static Future<responses.FriendsListResponse?> friendsList({
+    required String playerId,
+  }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.friendsList,
@@ -66,14 +72,16 @@ abstract class PlayersRequests {
       if (response.data != null) {
         return responses.FriendsListResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;
     }
   }
 
-  static Future<responses.FavouriteFriendResponse?> favouriteFriend(
-      {required String playerId}) async {
+  static Future<responses.FavouriteFriendResponse?> favouriteFriend({
+    required String playerId,
+  }) async {
     try {
       final response = await utilities.api.put<Map<String, dynamic>>(
         constants.Urls.favouriteFriend,
@@ -82,6 +90,7 @@ abstract class PlayersRequests {
       if (response.data != null) {
         return responses.FavouriteFriendResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;

@@ -56,9 +56,10 @@ class FriendItem extends ConsumerWidget {
                                 ?.copyWith(fontSize: 12),
                           )
                         : const SizedBox(),
-                    Text('${friend.platform}',
-                        style:
-                            theme.textTheme.bodyText1?.copyWith(fontSize: 10)),
+                    Text(
+                      '${friend.platform}',
+                      style: theme.textTheme.bodyText1?.copyWith(fontSize: 10),
+                    ),
                   ],
                 ),
               ),
@@ -76,7 +77,7 @@ class FriendItem extends ConsumerWidget {
                 color: isFavourite ? Colors.yellow : Colors.transparent,
                 height: 80,
                 width: 3,
-              )
+              ),
             ],
           ),
         ),

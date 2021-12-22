@@ -31,29 +31,8 @@ abstract class Messaging {
       return null;
     }
     final token = await messaging!.getToken();
+
     return token;
-  }
-
-  static Future<void> _backgroundMessageHandler(RemoteMessage? message) async {
-    if (message == null) return;
-
-    final data =
-        message.data.map((key, value) => MapEntry(key, value?.toString()));
-
-    createNewNotif(
-      imageUrl: data['imageUrl'],
-      title: data['title'],
-      body: data['body'],
-    );
-  }
-
-  static Future<FilePathAndroidBitmap> _getFileAndroidBitmap(String url) async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final String filePath = '${directory.path}/notifLargeIcon';
-    final http.Response response = await http.get(Uri.parse(url));
-    final File file = File(filePath);
-    await file.writeAsBytes(response.bodyBytes);
-    return FilePathAndroidBitmap(filePath);
   }
 
   static void onMessage() {
@@ -122,7 +101,31 @@ abstract class Messaging {
         AndroidInitializationSettings('ic_stat_ic_notification');
     const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (event) {});
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+  }
+
+  static Future<void> _backgroundMessageHandler(RemoteMessage? message) async {
+    if (message == null) return;
+
+    final data =
+        message.data.map((key, value) => MapEntry(key, value?.toString()));
+
+    createNewNotif(
+      imageUrl: data['imageUrl'],
+      title: data['title'],
+      body: data['body'],
+    );
+  }
+
+  static Future<FilePathAndroidBitmap> _getFileAndroidBitmap(String url) async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final String filePath = '${directory.path}/notifLargeIcon';
+    final http.Response response = await http.get(Uri.parse(url));
+    final File file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+
+    return FilePathAndroidBitmap(filePath);
   }
 }

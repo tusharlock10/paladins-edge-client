@@ -39,11 +39,13 @@ abstract class Database {
     _essentialsBox =
         await Hive.openBox<models.Essentials>(constants.HiveBoxes.essentials);
     _searchHistoryBox = await Hive.openBox<models.SearchHistory>(
-        constants.HiveBoxes.searchHistory);
+      constants.HiveBoxes.searchHistory,
+    );
     _championBox =
         await Hive.openBox<models.Champion>(constants.HiveBoxes.champion);
     _recordExpiryBox = await Hive.openBox<models.RecordExpiry>(
-        constants.HiveBoxes.recordExpiry);
+      constants.HiveBoxes.recordExpiry,
+    );
 
     // check if recordExpiry contains any data
     _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
@@ -52,17 +54,6 @@ abstract class Database {
           .put(constants.HiveBoxes.recordExpiry, models.RecordExpiry());
       _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
     }
-  }
-
-  // record expiry methods
-
-  /// renews the expiry date on saved records.
-  ///
-  /// Should be called after api calls,
-  /// when data has been saved to the local db
-  static void _renewRecordExpiry(String recordName) {
-    _recordExpiry?.renewRecordExpiry(recordName);
-    _recordExpiry?.save();
   }
 
   // save methods
@@ -93,6 +84,7 @@ abstract class Database {
   static models.Settings getSettings() {
     final settings = _settingsBox?.get(constants.HiveBoxes.settings);
     if (settings == null) return models.Settings();
+
     return settings;
   }
 
@@ -111,11 +103,9 @@ abstract class Database {
 
     final searchHistory = _searchHistoryBox?.values.toList().reversed.toList();
 
-    if (searchHistory == null || searchHistory.isEmpty) {
-      return null;
-    } else {
-      return searchHistory;
-    }
+    return searchHistory == null || searchHistory.isEmpty
+        ? null
+        : searchHistory;
   }
 
   static List<models.Champion>? getChampions() {
@@ -129,11 +119,7 @@ abstract class Database {
 
     final champions = _championBox?.values.toList();
 
-    if (champions == null || champions.isEmpty) {
-      return null;
-    } else {
-      return champions;
-    }
+    return champions == null || champions.isEmpty ? null : champions;
   }
 
   static void clear() {
@@ -143,5 +129,14 @@ abstract class Database {
     _essentialsBox?.clear();
     _searchHistoryBox?.clear();
     _championBox?.clear();
+  }
+
+  /// renews the expiry date on saved records.
+  ///
+  /// Should be called after api calls,
+  /// when data has been saved to the local db
+  static void _renewRecordExpiry(String recordName) {
+    _recordExpiry?.renewRecordExpiry(recordName);
+    _recordExpiry?.save();
   }
 }

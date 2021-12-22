@@ -41,6 +41,7 @@ class _PlayerMatchCard extends ConsumerWidget {
       // find the card from that champion
       final card = champion.cards
           ?.firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
+
       return _LoadoutItem(card: card, cardLevel: playerChampionCard.cardLevel);
     });
 
@@ -100,20 +101,22 @@ class _PlayerMatchCard extends ConsumerWidget {
                       (loadoutItem) {
                         final cardImageUrl = loadoutItem.card?.imageUrl;
                         if (cardImageUrl == null) return const SizedBox();
+
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: widgets.FastImage(
                             imageUrl: cardImageUrl,
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                             height: 24,
                             width:
                                 24 * constants.ImageAspectRatios.championCard,
                           ),
                         );
                       },
-                    ).toList()
+                    ).toList(),
                   ],
-                )
+                ),
               ],
             ),
             Expanded(
@@ -164,11 +167,11 @@ class _PlayerMatchCard extends ConsumerWidget {
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
                             ),
-                          )
+                          ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -201,7 +204,8 @@ class PlayerMatches extends ConsumerWidget {
 
           // champion that this player played in the match
           final champion = champions.firstWhere(
-              (_) => _.championId == matchPlayer.championId.toString());
+            (_) => _.championId == matchPlayer.championId.toString(),
+          );
 
           return _PlayerMatchCard(
             matchPlayer: matchPlayer,

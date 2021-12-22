@@ -21,6 +21,7 @@ class CreateLoadout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
+
     return Column(
       children: [
         RichText(
@@ -32,8 +33,9 @@ class CreateLoadout extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                  text: '${selectedPlayer?.name}',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+                text: '${selectedPlayer?.name}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ),
@@ -46,8 +48,9 @@ class CreateLoadout extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                  text: otp,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+                text: otp,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ),
@@ -64,7 +67,7 @@ class CreateLoadout extends StatelessWidget {
         TextButton(
           onPressed: onChangeName,
           child: const Text('Change name'),
-        )
+        ),
       ],
     );
   }

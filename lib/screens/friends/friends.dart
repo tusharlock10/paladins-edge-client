@@ -15,10 +15,10 @@ class Friends extends ConsumerStatefulWidget {
 }
 
 class _PlayerDetailState extends ConsumerState<Friends> {
+  models.Player? selectedFriend;
   bool _init = true;
   bool _isLoading = true;
   final _friendsListKey = GlobalKey<AnimatedListState>();
-  models.Player? selectedFriend;
 
   @override
   void deactivate() {

@@ -13,6 +13,7 @@ class Abilities extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
+
     return Column(
       children: champion.abilities?.map(
             (ability) {
@@ -22,8 +23,8 @@ class Abilities extends StatelessWidget {
               });
 
               return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
@@ -40,7 +41,8 @@ class Abilities extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 10),
                             child: widgets.FastImage(
                               imageUrl: ability.imageUrl,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
                               height: 72,
                               width: 72,
                             ),
@@ -80,10 +82,10 @@ class Abilities extends StatelessWidget {
                                     color: Colors.blueGrey,
                                     icon: Icons.timelapse,
                                   ),
-                                ])
+                                ]),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Padding(
@@ -105,7 +107,7 @@ class Abilities extends StatelessWidget {
                                         ?.withOpacity(0.8),
                                   ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -16,8 +16,8 @@ class Lore extends StatelessWidget {
     }
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
       elevation: 3,

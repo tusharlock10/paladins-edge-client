@@ -17,6 +17,7 @@ class SearchHistory extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchProvider = ref.watch(providers.players);
+
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {

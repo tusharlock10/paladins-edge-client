@@ -10,5 +10,6 @@ models.PlayerChampion? findPlayerChampion(
   if (playerChampion.isEmpty) {
     return null;
   }
-  return playerChampion[0];
+
+  return playerChampion.first;
 }

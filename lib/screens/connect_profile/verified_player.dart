@@ -15,11 +15,13 @@ class VerifiedPlayer extends ConsumerWidget {
     if (player == null) {
       return Container();
     }
+
     return Column(
       children: [
         const Text('Congrats, Profile connected'),
         const Text(
-            'Now you can enjoy all of the amazing features of paladins edge'),
+          'Now you can enjoy all of the amazing features of paladins edge',
+        ),
         Row(
           children: [
             widgets.ElevatedAvatar(
@@ -40,14 +42,16 @@ class VerifiedPlayer extends ConsumerWidget {
                 ),
                 player.title != null ? Text(player.title!) : const SizedBox(),
               ],
-            )
+            ),
           ],
         ),
         TextButton(
           onPressed: () => Navigator.pushReplacementNamed(
-              context, screens.BottomTabs.routeName),
+            context,
+            screens.BottomTabs.routeName,
+          ),
           child: const Text('Continue'),
-        )
+        ),
       ],
     );
   }

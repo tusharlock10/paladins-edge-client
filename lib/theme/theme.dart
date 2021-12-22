@@ -7,7 +7,7 @@ final lightTheme = ThemeData(
   primaryColorLight: themeMaterialColor,
   primaryColorDark: darkthemeMaterialColor,
   primaryColorBrightness: Brightness.light,
-  scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
+  scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
     elevation: 7,
     shadowColor: darkthemeMaterialColor.withOpacity(0.75),
@@ -151,7 +151,7 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: darkthemeMaterialColor.shade200,
+    backgroundColor: darkthemeMaterialColor.shade400,
     selectedItemColor: const Color(0xff81b2c7),
     unselectedItemColor: const Color(0xff658999),
   ),
@@ -159,4 +159,6 @@ final darkTheme = ThemeData(
     primarySwatch: darkthemeMaterialColor,
     brightness: Brightness.dark,
   ).copyWith(secondary: themeMaterialColor.shade50),
+  drawerTheme:
+      DrawerThemeData(backgroundColor: darkthemeMaterialColor.shade100),
 );

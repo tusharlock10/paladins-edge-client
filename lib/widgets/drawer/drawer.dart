@@ -32,19 +32,6 @@ class AppDrawer extends ConsumerWidget {
     Navigator.of(context).pushNamed(screens.Friends.routeName);
   }
 
-  Widget buildDrawerButton(
-      BuildContext context, String label, void Function() onPressed) {
-    final theme = Theme.of(context);
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(
-        label,
-        style: theme.textTheme.headline3
-            ?.copyWith(color: theme.colorScheme.secondary),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
@@ -53,23 +40,50 @@ class AppDrawer extends ConsumerWidget {
           children: [
             const SizedBox(height: 20),
             const PlayerProfile(),
-            buildDrawerButton(
-              context,
-              'Change Theme',
-              () => onChangeTheme(context, ref),
+            _DrawerButton(
+              context: context,
+              label: 'Change Theme',
+              onPressed: () => onChangeTheme(context, ref),
             ),
-            buildDrawerButton(
-              context,
-              'Friends',
-              () => onFriends(context),
+            _DrawerButton(
+              context: context,
+              label: 'Friends',
+              onPressed: () => onFriends(context),
             ),
-            buildDrawerButton(
-              context,
-              'Logout',
-              () => onLogout(context, ref),
+            _DrawerButton(
+              context: context,
+              label: 'Logout',
+              onPressed: () => onLogout(context, ref),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DrawerButton extends StatelessWidget {
+  final BuildContext context;
+  final String label;
+  final void Function() onPressed;
+
+  const _DrawerButton({
+    Key? key,
+    required this.context,
+    required this.label,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: theme.textTheme.headline3
+            ?.copyWith(color: theme.colorScheme.secondary),
       ),
     );
   }

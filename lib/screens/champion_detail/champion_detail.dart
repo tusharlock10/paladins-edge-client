@@ -35,7 +35,7 @@ class ChampionDetail extends ConsumerWidget {
                 const PlayerStats(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

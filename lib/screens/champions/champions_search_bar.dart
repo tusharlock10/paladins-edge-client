@@ -17,9 +17,11 @@ class ChampionsSearchBar extends StatelessWidget {
           color: Colors.white,
           fontSize: 16,
         );
+
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).primaryColorBrightness),
+        statusBarBrightness: Theme.of(context).primaryColorBrightness,
+      ),
       title: TextField(
         maxLength: 16,
         enableInteractiveSelection: true,

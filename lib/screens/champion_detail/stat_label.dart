@@ -13,6 +13,7 @@ class StatLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Card(
       color: theme.primaryColor.withOpacity(0.5),
       margin: EdgeInsets.zero,
@@ -27,7 +28,10 @@ class StatLabel extends StatelessWidget {
           Text(
             text,
             style: theme.textTheme.headline1?.copyWith(
-                fontSize: 14, fontWeight: FontWeight.w200, color: Colors.white),
+              fontSize: 14,
+              fontWeight: FontWeight.w200,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

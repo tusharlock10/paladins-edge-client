@@ -48,7 +48,7 @@ class _StatusIndicatorItem extends StatelessWidget {
           color: Colors.grey,
           fontSize: 12,
         ),
-      )
+      ),
     ]);
   }
 }

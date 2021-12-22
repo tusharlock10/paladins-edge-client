@@ -4,7 +4,6 @@ import 'package:paladinsedge/constants.dart' as constants;
 void showDebugAlert({
   required BuildContext context,
   required String message,
-  String title = "Alert",
   bool isDismissable = true,
   bool forceShow = false,
 }) {
@@ -15,7 +14,7 @@ void showDebugAlert({
     context: context,
     builder: (_) => _DebugAlert(
       message: message,
-      title: title,
+      title: "Debug Alert",
     ),
   );
 }
