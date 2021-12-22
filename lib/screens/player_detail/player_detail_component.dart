@@ -13,6 +13,7 @@ class PlayerDetailComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -62,13 +63,13 @@ class PlayerDetailComponent extends StatelessWidget {
                             '${player.ranked.points} TP',
                             style: theme.textTheme.bodyText1
                                 ?.copyWith(fontSize: 11),
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ],

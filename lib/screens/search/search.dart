@@ -63,7 +63,7 @@ class _SearchState extends ConsumerState<Search> {
                   playerName = _playerName;
                   onSearch(playerName, addInSeachHistory: false);
                 },
-              )
+              ),
       ],
     );
   }

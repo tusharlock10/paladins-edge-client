@@ -22,13 +22,13 @@ class _HomeState extends ConsumerState<Home> {
   void didChangeDependencies() {
     if (_init) {
       _init = false;
-      getHomeData(context);
+      getHomeData();
     }
 
     super.didChangeDependencies();
   }
 
-  void getHomeData(BuildContext context) async {
+  void getHomeData() async {
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);
 
@@ -57,7 +57,7 @@ class _HomeState extends ConsumerState<Home> {
                     BountyStoreDetails(),
                   ],
                 ),
-        )
+        ),
       ],
     );
   }

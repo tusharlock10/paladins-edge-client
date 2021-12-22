@@ -14,6 +14,7 @@ abstract class MatchRequests {
       if (response.data != null) {
         return responses.MatchDetailsResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;
@@ -31,6 +32,7 @@ abstract class MatchRequests {
       if (response.data != null) {
         return responses.PlayerMatchesResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;

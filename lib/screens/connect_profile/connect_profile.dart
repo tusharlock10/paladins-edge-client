@@ -79,6 +79,7 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
   @override
   Widget build(BuildContext context) {
     final name = ref.watch(providers.auth.select((_) => _.user?.name));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Connect Profile'),

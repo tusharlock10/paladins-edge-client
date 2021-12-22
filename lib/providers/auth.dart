@@ -43,6 +43,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     if (user?.token != null) {
       utilities.api.options.headers["authorization"] = user!.token;
+
       return true;
     } else {
       return false;
@@ -100,6 +101,7 @@ class _AuthNotifier extends ChangeNotifier {
     }
 
     utilities.api.options.headers["authorization"] = user!.token;
+
     return true;
   }
 
@@ -140,7 +142,9 @@ class _AuthNotifier extends ChangeNotifier {
         .toString();
 
     final response = await api.AuthRequests.claimPlayer(
-        verification: verification, playerId: playerId);
+      verification: verification,
+      playerId: playerId,
+    );
     if (response == null) {
       return false;
     }
@@ -168,7 +172,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
 
-    if (user!.favouriteFriends.contains(playerId) == false) {
+    if (!user!.favouriteFriends.contains(playerId)) {
       // player is not in the favouriteFriends, so we need to add him
 
       // check if user already has max number of friends

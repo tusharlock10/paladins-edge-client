@@ -19,6 +19,7 @@ class _SearchItem extends StatelessWidget {
     BuildContext context,
   ) {
     final themeData = Theme.of(context);
+
     return ListTile(
       onTap: () => onTap(searchItem),
       title: Text(

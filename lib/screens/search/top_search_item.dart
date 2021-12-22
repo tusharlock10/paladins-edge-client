@@ -14,13 +14,11 @@ class TopSearchItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          screens.PlayerDetail.routeName,
-          arguments: player.playerId,
-        );
-      },
+      onTap: () => Navigator.pushNamed(
+        context,
+        screens.PlayerDetail.routeName,
+        arguments: player.playerId,
+      ),
       title: Text(
         player.name,
         style: Theme.of(context).primaryTextTheme.headline6,

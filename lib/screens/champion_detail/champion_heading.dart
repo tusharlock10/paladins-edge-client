@@ -14,6 +14,7 @@ class ChampionHeading extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme.headline1;
     final isLightTheme =
         ref.read(providers.auth).settings.themeMode == ThemeMode.light;
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -60,7 +61,7 @@ class ChampionHeading extends ConsumerWidget {
                           },
                         ).toList(),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -11,6 +11,7 @@ abstract class BountyStoreRequests {
       if (response.data != null) {
         return responses.BountyStoreDetailsResponse.fromJson(response.data!);
       }
+
       return null;
     } catch (_) {
       return null;

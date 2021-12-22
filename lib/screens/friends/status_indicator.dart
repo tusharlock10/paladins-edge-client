@@ -10,6 +10,7 @@ class StatusIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -23,7 +24,7 @@ class StatusIndicator extends StatelessWidget {
           margin: const EdgeInsets.only(left: 7),
           decoration: BoxDecoration(
             color: status == "Offline" ? Colors.red : Colors.green,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
         ),
       ],

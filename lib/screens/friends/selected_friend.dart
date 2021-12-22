@@ -95,7 +95,7 @@ class SelectedFriend extends ConsumerWidget {
             : Column(
                 children: const [
                   Text('* Select a friend to know his online status'),
-                  Text('* Slide the friend card left to mark favourite')
+                  Text('* Slide the friend card left to mark favourite'),
                 ],
               ),
         const SizedBox(height: 10),

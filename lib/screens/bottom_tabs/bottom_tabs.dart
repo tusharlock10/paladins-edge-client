@@ -21,26 +21,21 @@ class _BottomTabsState extends State<BottomTabs> {
     {
       'screen': const screens.Search(),
       'title': 'Search',
-      'icon': Icons.search_outlined
+      'icon': Icons.search_outlined,
     },
     {
       'screen': const screens.Champions(),
       'title': 'Champs',
-      'icon': Icons.sports_esports_outlined
+      'icon': Icons.sports_esports_outlined,
     },
   ];
 
   int _selectedPageIndex = 0;
 
-  void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final bottomNavigationBarTheme = Theme.of(context).bottomNavigationBarTheme;
+
     return Scaffold(
       drawer: const widgets.AppDrawer(),
       drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
@@ -51,11 +46,10 @@ class _BottomTabsState extends State<BottomTabs> {
       bottomNavigationBar: BottomNavyBar(
         backgroundColor: bottomNavigationBarTheme.backgroundColor,
         selectedIndex: _selectedPageIndex,
-        showElevation: true,
         onItemSelected: _selectPage,
-        curve: Curves.fastOutSlowIn,
+        curve: Curves.easeIn,
         iconSize: 20,
-        animationDuration: const Duration(milliseconds: 300),
+        animationDuration: const Duration(milliseconds: 350),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         items: _pages
             .map(
@@ -69,5 +63,11 @@ class _BottomTabsState extends State<BottomTabs> {
             .toList(),
       ),
     );
+  }
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
   }
 }

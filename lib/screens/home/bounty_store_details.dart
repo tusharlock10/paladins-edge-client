@@ -19,11 +19,8 @@ class _BountyStoreCard extends StatelessWidget {
     final endDays = timeDiff.inDays;
     String timeRemaining;
 
-    if (endDays == 0) {
-      timeRemaining = '$endTime remaining';
-    } else {
-      timeRemaining = '$endDays days remaining';
-    }
+    timeRemaining =
+        endDays == 0 ? '$endTime remaining' : '$endDays days remaining';
 
     return timeRemaining;
   }

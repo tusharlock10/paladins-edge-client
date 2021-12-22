@@ -4,5 +4,7 @@ export './elevated_avatar.dart';
 export './fast_image.dart';
 export './info_alert.dart' show showInfoAlert;
 export './loading_indicator.dart';
+export './reversable_column.dart';
+export './reversable_row.dart';
 export './ripple.dart';
 export './text_chip.dart';

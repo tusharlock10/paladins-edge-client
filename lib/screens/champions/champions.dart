@@ -15,9 +15,9 @@ class Champions extends ConsumerStatefulWidget {
 }
 
 class _ChampionsState extends ConsumerState<Champions> {
+  String search = '';
   bool _init = true;
   bool _isLoading = true;
-  String search = '';
 
   @override
   void didChangeDependencies() {
@@ -27,7 +27,7 @@ class _ChampionsState extends ConsumerState<Champions> {
       _init = false;
       Future.wait([
         championsProvider.loadChampions(),
-        championsProvider.loadPlayerChampions(authProvider.player!.playerId)
+        championsProvider.loadPlayerChampions(authProvider.player!.playerId),
       ]).then((_) {
         setState(() => _isLoading = false);
       });
@@ -51,7 +51,7 @@ class _ChampionsState extends ConsumerState<Champions> {
                 ),
               )
             : ChampionsList(search: search),
-      )
+      ),
     ]);
   }
 }

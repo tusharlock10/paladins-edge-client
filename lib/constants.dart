@@ -49,10 +49,6 @@ abstract class Env {
   static String get baseUrl => _getEnv('BASE_URL');
   static String get hashSalt => _getEnv('HASH_SALT');
 
-  static String _getEnv(String envName) {
-    return dotenv.env[envName] ?? '';
-  }
-
   static Future<List<String>> loadEnv() async {
     await dotenv.load(fileName: "paladins-edge.env");
     final List<String> missingEnvs = [];
@@ -61,6 +57,10 @@ abstract class Env {
     if (hashSalt == '') missingEnvs.add('HASH_SALT');
 
     return missingEnvs;
+  }
+
+  static String _getEnv(String envName) {
+    return dotenv.env[envName] ?? '';
   }
 }
 

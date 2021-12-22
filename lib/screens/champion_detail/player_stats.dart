@@ -17,11 +17,9 @@ class PlayerStats extends ConsumerWidget {
     // else from the from now duration
     var lastPlayedTime = '';
     final duration = DateTime.now().difference(lastPlayed);
-    if (const Duration(days: 1).compareTo(duration) < 0) {
-      lastPlayedTime = Jiffy(lastPlayed).fromNow();
-    } else {
-      lastPlayedTime = Jiffy(lastPlayed).format('do MMM [at] HH:mm');
-    }
+    lastPlayedTime = const Duration(days: 1).compareTo(duration) < 0
+        ? Jiffy(lastPlayed).fromNow()
+        : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
 
     return lastPlayedTime;
   }
@@ -34,18 +32,13 @@ class PlayerStats extends ConsumerWidget {
     const itemHeight = 60.0;
     int crossAxisCount;
 
-    if (size.height < size.width) {
-      // for landscape mode
-      crossAxisCount = 4;
-    } else {
-      // for portrait mode
-      crossAxisCount = 2;
-    }
+    crossAxisCount = size.height < size.width ? 4 : 2;
     final itemWidth = constraints.maxWidth / crossAxisCount;
+
     return {
       'itemHeight': itemHeight,
       'itemWidth': itemWidth,
-      'crossAxisCount': crossAxisCount
+      'crossAxisCount': crossAxisCount,
     };
   }
 
@@ -75,8 +68,8 @@ class PlayerStats extends ConsumerWidget {
         .toStringAsPrecision(2);
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
       child: Padding(
@@ -90,7 +83,7 @@ class PlayerStats extends ConsumerWidget {
             final int crossAxisCount = props['crossAxisCount'] as int;
 
             return ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: SizedBox(
                 height: itemHeight * 8 / crossAxisCount,
                 width: constraints.maxWidth,
@@ -147,7 +140,7 @@ class PlayerStats extends ConsumerWidget {
                       label: 'Credits',
                       text:
                           '${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min',
-                    )
+                    ),
                   ],
                 ),
               ),
