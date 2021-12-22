@@ -9,7 +9,7 @@ part of 'responses.dart';
 LowerSearch _$LowerSearchFromJson(Map<String, dynamic> json) => LowerSearch(
       name: json['name'] as String,
       playerId: json['playerId'] as String,
-      isPrivate: json['isPrivate'] as String,
+      isPrivate: json['isPrivate'] as bool,
       platform: json['platform'] as String,
     );
 
@@ -42,7 +42,9 @@ SearchPlayersResponse _$SearchPlayersResponseFromJson(
       searchData:
           SearchData.fromJson(json['searchData'] as Map<String, dynamic>),
       exactMatch: json['exactMatch'] as bool,
-      playerData: Player.fromJson(json['playerData'] as Map<String, dynamic>),
+      playerData: json['playerData'] == null
+          ? null
+          : Player.fromJson(json['playerData'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SearchPlayersResponseToJson(

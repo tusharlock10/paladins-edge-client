@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-// Provider to handle players api response
-
-class Players with ChangeNotifier {
-  List<models.Player> friends = [];
+class _PlayersNotifier extends ChangeNotifier {
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
-  List<models.Player> topSearchList = [];
   List<api.LowerSearch> lowerSearchList = [];
-  List<Map<String, dynamic>> searchHistory = []; // [{playerName, time]}]
+  List<models.Player> friends = [];
+  List<models.Player> topSearchList = [];
+  List<models.SearchHistory> searchHistory = [];
 
   void moveFriendToTop(String playerId) {
     // the player to move to top of the friends list
@@ -58,12 +57,19 @@ class Players with ChangeNotifier {
 
   getSearchHistory() {
     // gets the search history from local db
-    searchHistory = utilities.Database.getSearchHistory();
+    final _searchHistory = utilities.Database.getSearchHistory();
+    if (_searchHistory == null) {
+      // it could be either because searchHistory has expired
+      // or because there is no searchHistory
+      searchHistory = [];
+    } else {
+      searchHistory = _searchHistory;
+    }
   }
 
-  Future<bool> searchByName(
-    String playerName, {
-    bool simpleResults = false,
+  Future<bool> searchByName({
+    required String playerName,
+    required bool simpleResults,
     required bool addInSeachHistory,
   }) async {
     // makes a req. to api for search
@@ -71,10 +77,14 @@ class Players with ChangeNotifier {
     // saves the searchItem in the local db
 
     final response = await api.PlayersRequests.searchPlayers(
-        playerName: playerName, simpleResults: false);
+      playerName: playerName,
+      simpleResults: simpleResults,
+    );
+
     if (response == null) {
-      return true;
-    } // return with simple results as true default value
+      // return false when api call is not successful
+      return false;
+    }
 
     if (response.exactMatch) {
       playerData = response.playerData;
@@ -82,11 +92,12 @@ class Players with ChangeNotifier {
       topSearchList = response.searchData.topSearchList;
       lowerSearchList = response.searchData.lowerSearchList;
     }
-    final searchItem = {'playerName': playerName, 'time': DateTime.now()};
+    final searchItem = models.SearchHistory(playerName: playerName);
     if (addInSeachHistory) {
       searchHistory.insert(0, searchItem);
-      utilities.Database.addSearchItem(searchItem);
+      utilities.Database.saveSearchHistory(searchItem);
     }
+
     notifyListeners();
     return response.exactMatch;
   }
@@ -108,3 +119,6 @@ class Players with ChangeNotifier {
     notifyListeners();
   }
 }
+
+/// Provider to handle players
+final players = ChangeNotifierProvider((_) => _PlayersNotifier());

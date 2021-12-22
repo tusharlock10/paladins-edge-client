@@ -1,6 +1,7 @@
 // The match that is currently live
 // different from a completed match
 import 'package:json_annotation/json_annotation.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 part 'active_match.g.dart';
 
@@ -38,9 +39,9 @@ class ActiveMatchPlayersInfo {
     required this.championId,
     required this.championLevel,
     required this.championName,
-    required this.championImageUrl,
+    required String championImageUrl,
     required this.team,
-  });
+  }) : championImageUrl = utilities.getUrlFromKey(championImageUrl);
 
   factory ActiveMatchPlayersInfo.fromJson(Map<String, dynamic> json) =>
       _$ActiveMatchPlayersInfoFromJson(json);
@@ -64,8 +65,8 @@ class ActiveMatchPlayerDetail {
     required this.level,
     required this.rank,
     required this.rankName,
-    required this.rankIconUrl,
-  });
+    required String? rankIconUrl,
+  }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
 
   factory ActiveMatchPlayerDetail.fromJson(Map<String, dynamic> json) =>
       _$ActiveMatchPlayerDetailFromJson(json);

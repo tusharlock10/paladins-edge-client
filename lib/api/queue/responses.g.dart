@@ -9,7 +9,7 @@ part of 'responses.dart';
 QueueDetailsResponse _$QueueDetailsResponseFromJson(
         Map<String, dynamic> json) =>
     QueueDetailsResponse(
-      queues: (json['queues'] as List<dynamic>)
+      queue: (json['queue'] as List<dynamic>)
           .map((e) => Queue.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -17,5 +17,5 @@ QueueDetailsResponse _$QueueDetailsResponseFromJson(
 Map<String, dynamic> _$QueueDetailsResponseToJson(
         QueueDetailsResponse instance) =>
     <String, dynamic>{
-      'queues': instance.queues,
+      'queue': instance.queue,
     };

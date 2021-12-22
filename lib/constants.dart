@@ -14,7 +14,6 @@ abstract class Urls {
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
   static const claimPlayer = "/auth/claimPlayer"; // POST
-  static const observePlayer = "/auth/observePlayer"; // PUT
   static const fcmToken = "/auth/fcmToken"; // POST
   static const essentials = "/auth/essentials"; // GET
 
@@ -34,6 +33,10 @@ abstract class Urls {
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
+
+  // match
+  static const matchDetails = "/match/matchDetails"; // GET
+  static const playerMatches = "/match/playerMatches"; // GET
 }
 
 abstract class StorageKeys {
@@ -74,6 +77,9 @@ abstract class TypeIds {
   static const settings = 7;
   static const championTag = 8;
   static const playerChampion = 9;
+  static const essentials = 10;
+  static const searchHistory = 11;
+  static const recordExpiry = 12;
 }
 
 abstract class NotificationChannels {
@@ -94,3 +100,38 @@ const Map<String, Map<String, dynamic>> championDamageType = {
   'Stealth': {"name": "Stealth", "color": Colors.blue},
   'Ultimate': {"name": "Ultimate", "color": Colors.orange},
 };
+
+abstract class HiveBoxes {
+  static const user = "user";
+  static const player = "player";
+  static const settings = "settings";
+  static const essentials = "essentials";
+  static const searchHistory = "searchHistory";
+  static const champion = "champion";
+  static const recordExpiry = "recordExpiry";
+}
+
+abstract class RecordExpiryData {
+  static const champion = "champion";
+  static const searchHistory = "searchHistory";
+
+  static const championDuration =
+      Duration(days: 1); // expire saved champion records in 1 day
+  static const searchHistoryDuration =
+      Duration(days: 7); // expire saved searchHistory records in 7 days
+}
+
+abstract class ImageAspectRatios {
+  static const championCard = 1.3;
+  static const championAbility = 1;
+  static const championTalent = 1;
+  static const championIcon = 1;
+  static const championHeader = 1.96;
+  static const championSplash = 1.77;
+
+  static const avatar = 1;
+
+  static const itemIcon = 1.3;
+
+  static const rankIcon = 1;
+}

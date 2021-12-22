@@ -7,7 +7,7 @@ part 'responses.g.dart';
 class LowerSearch {
   final String name;
   final String playerId;
-  final String isPrivate;
+  final bool isPrivate;
   final String platform;
 
   LowerSearch({
@@ -38,12 +38,12 @@ class SearchData {
 class SearchPlayersResponse {
   final SearchData searchData;
   final bool exactMatch;
-  final Player playerData;
+  final Player? playerData;
 
   SearchPlayersResponse({
     required this.searchData,
     required this.exactMatch,
-    required this.playerData,
+    this.playerData,
   });
 
   factory SearchPlayersResponse.fromJson(Map<String, dynamic> json) =>

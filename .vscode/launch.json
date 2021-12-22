@@ -5,15 +5,21 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "paladins-edge-client-web",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "chrome",
+        "--web-port",
+        "9000"
+      ],
+    },
+    {
       "name": "paladins-edge-client",
       "request": "launch",
       "type": "dart"
     },
-    {
-      "name": "paladins-edge-client-web",
-      "request": "launch",
-      "type": "dart",
-      "deviceId": "chrome"
-    }
   ]
 }

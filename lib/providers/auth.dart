@@ -3,34 +3,45 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-// handles auth and user data
-class Auth with ChangeNotifier {
+class _AuthNotifier extends ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
-  models.Essentials? essentials;
 
+  /// Loads the `settings` from local db
   void loadSettings() {
-    final settings = utilities.Database.getSettings();
-
-    if (settings != null) {
-      // if settings are present, then replace the newly create settings with user's settings
-      this.settings = settings;
-    }
+    settings = utilities.Database.getSettings();
     notifyListeners();
   }
 
+  /// Loads and the `essentials` from local db and syncs it with server
+  void loadEssentials() async {
+    // gets the essential data for the app
+
+    // getting the essential data from local untill the api call is completed
+    utilities.Global.essentials = utilities.Database.getEssentials();
+
+    // call essentials api to update its data
+    final response = await api.AuthRequests.essentials();
+    if (response != null) {
+      utilities.Database.saveEssentials(response.data);
+      utilities.Global.essentials = response.data;
+    }
+  }
+
+  /// Checks if the user is already logged in
   Future<bool> login() async {
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
-    if (user != null) {
+    if (user?.token != null) {
       utilities.api.options.headers["authorization"] = user!.token;
       return true;
     } else {
@@ -38,6 +49,7 @@ class Auth with ChangeNotifier {
     }
   }
 
+  /// Signin the user with his/her `Google` account
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -81,16 +93,17 @@ class Auth with ChangeNotifier {
     if (response == null) return false;
 
     user = response.user;
-    utilities.Database.setUser(response.user);
+    utilities.Database.saveUser(response.user);
     if (response.player != null) {
       player = response.player;
-      utilities.Database.setPlayer(response.player!);
+      utilities.Database.savePlayer(response.player!);
     }
 
     utilities.api.options.headers["authorization"] = user!.token;
     return true;
   }
 
+  /// Logs out the user, also sends this info to server
   Future<void> logout() async {
     // 1) Clear user's storage first so,
     //    if the logout fails in the steps below
@@ -107,25 +120,19 @@ class Auth with ChangeNotifier {
     player = null;
   }
 
+  /// Send the FCM token to server, only works on `Android`
   void sendFcmToken(String fcmToken) async {
     // send the fcm token of the devivce to the server
-    // for sending notification fcm token is use only
+    // for sending notification fcm token is used only
     // for the server, and not stored on the app/ browser
 
     api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
-  void getEssentials() async {
-    // gets the essential data for some parts for the app
-
-    final response = await api.AuthRequests.essentials();
-    if (response != null) {
-      essentials = response.data;
-    }
-  }
-
+  /// Claim a player profile and connect it to the user
   Future<bool> claimPlayer(String otp, String playerId) async {
-    // Sends an otp and playerId to server to check if a loadout exists with that otp
+    // Sends an otp and playerId to server to check
+    // if a loadout exists with that OTP
     // if it does, then player is verified
 
     final verification = crypto.sha512
@@ -143,61 +150,34 @@ class Auth with ChangeNotifier {
 
       user = response.user;
       player = response.player;
-      utilities.Database.setUser(user!);
-      utilities.Database.setPlayer(player!);
+      utilities.Database.saveUser(user!);
+      utilities.Database.savePlayer(player!);
     }
 
     return response.verified;
   }
 
-  Future<bool> observePlayer(String playerId) async {
-    // return true if a new playerId is added in observeList else false
-    bool newPlayedAdded = false;
-    if (user == null) {
-      return newPlayedAdded;
-    }
+  /// Marks, unmarks a `friend` player as favourite
+  Future<int> markFavouriteFriend(String playerId) async {
+    // returns 0,1 or 2 as response
+    // 0 -> player is removed from favouriteFriends
+    // 1 -> player is added in favouriteFriends
+    // 2 -> player is not added due to favouriteFriends limit reached
 
-    final observeListClone = List<String>.from(user!.observeList);
-
-    if (user!.observeList.contains(playerId) == false) {
-      // player is not in the observe list, so we need to add him
-      user!.observeList.add(playerId);
-      newPlayedAdded = true;
-    } else {
-      // if he is in the observe list, then remove him
-      user!.observeList.remove(playerId);
-    }
-
-    notifyListeners();
-
-    // after we update the UI, update the list in backend
-    // update the UI for the latest changes
-
-    final response = await api.AuthRequests.observePlayer(playerId: playerId);
-    if (response == null) {
-      // if the response fails for some reason, revert back the change
-      // set newPlayerAdded to false
-      user!.observeList = observeListClone;
-      newPlayedAdded = false;
-    } else {
-      user!.observeList = response.observeList;
-    }
-
-    notifyListeners();
-    return newPlayedAdded;
-  }
-
-  Future<bool> favouriteFriend(String playerId) async {
-    // return true if a new playerId is added in favouriteFriends else false
-    bool newPlayedAdded = false;
-    if (user == null) return newPlayedAdded;
+    if (user == null) return 0;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
 
     if (user!.favouriteFriends.contains(playerId) == false) {
       // player is not in the favouriteFriends, so we need to add him
+
+      // check if user already has max number of friends
+      if (user!.favouriteFriends.length >=
+          utilities.Global.essentials!.maxFavouriteFriends) {
+        return 2;
+      }
+
       user!.favouriteFriends.add(playerId);
-      newPlayedAdded = true;
     } else {
       // if he is in the favouriteFriends, then remove him
       user!.favouriteFriends.remove(playerId);
@@ -215,25 +195,24 @@ class Auth with ChangeNotifier {
       // if the response fails for some reason, revert back the change
       // set newPlayerAdded to false
       user!.favouriteFriends = favouriteFriendsClone;
-      newPlayedAdded = false;
     } else {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
     notifyListeners();
-    return newPlayedAdded;
+
+    return 1;
   }
 
-  void toggleTheme() {
-    // toggles the theme
-    if (settings.themeMode == ThemeMode.dark) {
-      settings.themeMode = ThemeMode.light;
-    } else {
-      settings.themeMode = ThemeMode.dark;
-    }
+  /// Toggle the theme from `light` to `dark` and vice versa
+  void toggleTheme(ThemeMode themeMode) {
+    settings.themeMode = themeMode;
 
     // save the settings after changing the theme
-    utilities.Database.setSettings(settings);
+    utilities.Database.saveSettings(settings);
     notifyListeners();
   }
 }
+
+/// Provider to handle auth and user data
+final auth = ChangeNotifierProvider((_) => _AuthNotifier());
