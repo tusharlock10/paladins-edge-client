@@ -17,21 +17,22 @@ class GoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
     return widgets.Ripple(
       margin: const EdgeInsets.only(bottom: 25, left: 15, right: 15),
       width: width - 30,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202020).withOpacity(0.25),
             blurRadius: 5,
             offset: const Offset(0, 5),
-          )
+          ),
         ],
       ),
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
       onTap: onGoogleSignIn,
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(

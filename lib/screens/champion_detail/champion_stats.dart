@@ -15,7 +15,11 @@ class ChampionStats extends StatelessWidget {
     }
 
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+      ),
       child: Column(
         children: [
           Text('Damage : ${champion.weaponDamage.toInt()}'),

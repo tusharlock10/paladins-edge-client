@@ -17,13 +17,11 @@ class SearchList extends ConsumerWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          if (index < topSearchList.length) {
-            return TopSearchItem(player: topSearchList[index]);
-          } else {
-            return LowerSearchItem(
-              lowerSearch: lowerSearchList[index - topSearchList.length],
-            );
-          }
+          return index < topSearchList.length
+              ? TopSearchItem(player: topSearchList[index])
+              : LowerSearchItem(
+                  lowerSearch: lowerSearchList[index - topSearchList.length],
+                );
         },
         childCount: childCount,
       ),

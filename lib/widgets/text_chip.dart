@@ -28,10 +28,12 @@ class TextChip extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-          horizontal: spacing! / 2, vertical: spacing! / 2),
+        horizontal: spacing! / 2,
+        vertical: spacing! / 2,
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: color1,
       ),
       child: Row(

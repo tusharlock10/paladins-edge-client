@@ -9,10 +9,13 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
-analyzer: 
+analyzer:
   exclude:
     - lib/**.g.dart
-  strong-mode: 
+    - lib/**.gen.dart
+  plugins:
+    - dart_code_metrics
+  strong-mode:
     implicit-casts: false
 
 linter:
@@ -34,3 +37,39 @@ linter:
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    maximum-nesting-level: 5
+    number-of-parameters: 4
+    source-lines-of-code: 50
+  metrics-exclude:
+    - test/**
+  rules-exclude:
+    - lib/firebase_options.dart
+  rules:
+    - always-remove-listener
+    - avoid-returning-widgets
+    - avoid-unnecessary-setstate
+    - avoid-unnecessary-type-casts
+    - avoid-unused-parameters
+    - avoid-wrapping-in-padding
+    - member-ordering
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-object-declaration
+    - prefer-conditional-expressions
+    - prefer-const-border-radius
+    - prefer-correct-identifier-length:
+        exceptions: ["id"]
+    - prefer-extracting-callbacks
+    - prefer-first
+    - prefer-last
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+    - prefer-trailing-comma

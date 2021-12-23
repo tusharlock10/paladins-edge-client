@@ -21,7 +21,9 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   Future<void> getFriendsList(
-      String playerId, List<String>? favouriteFriends) async {
+    String playerId,
+    List<String>? favouriteFriends,
+  ) async {
     final response = await api.PlayersRequests.friendsList(playerId: playerId);
     if (response == null) return;
     friends = response.friends;
@@ -37,8 +39,10 @@ class _PlayersNotifier extends ChangeNotifier {
       friends.removeWhere((friend) {
         if (favouriteFriends.contains(friend.playerId)) {
           favouritePlayers.add(friend);
+
           return true;
         }
+
         return false;
       });
 
@@ -58,13 +62,7 @@ class _PlayersNotifier extends ChangeNotifier {
   getSearchHistory() {
     // gets the search history from local db
     final _searchHistory = utilities.Database.getSearchHistory();
-    if (_searchHistory == null) {
-      // it could be either because searchHistory has expired
-      // or because there is no searchHistory
-      searchHistory = [];
-    } else {
-      searchHistory = _searchHistory;
-    }
+    searchHistory = _searchHistory ?? [];
   }
 
   Future<bool> searchByName({
@@ -99,6 +97,7 @@ class _PlayersNotifier extends ChangeNotifier {
     }
 
     notifyListeners();
+
     return response.exactMatch;
   }
 

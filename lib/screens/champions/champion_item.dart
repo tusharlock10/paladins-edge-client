@@ -31,11 +31,11 @@ class ChampionItem extends StatelessWidget {
       width: width,
       height: height,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           onTap: () => Navigator.of(context)
               .pushNamed(screens.ChampionDetail.routeName, arguments: champion),
           child: Padding(
@@ -93,7 +93,7 @@ class ChampionItem extends StatelessWidget {
                             text: 'New',
                             icon: Icons.star,
                             color: Colors.orange,
-                          )
+                          ),
                         ],
                       ),
                     ],

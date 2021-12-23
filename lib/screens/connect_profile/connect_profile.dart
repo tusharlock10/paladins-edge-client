@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
@@ -21,7 +23,7 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
   int _step = 0; // at which step of the proccess the user is at
 
   // generates a random otp for verification
-  final String _otp = "MAIN"; // (Random().nextInt(899999) + 100000).toString();
+  final String _otp = (Random().nextInt(899999) + 100000).toString();
   api.LowerSearch? _selectedPlayer; // the player selected in search step
 
   void onSearch(String playerName) async {
@@ -79,6 +81,7 @@ class _ConnectProfileState extends ConsumerState<ConnectProfile> {
   @override
   Widget build(BuildContext context) {
     final name = ref.watch(providers.auth.select((_) => _.user?.name));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Connect Profile'),

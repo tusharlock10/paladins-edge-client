@@ -15,6 +15,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     if (savedChampions != null) {
       champions = savedChampions;
+
       return;
     }
 

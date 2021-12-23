@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class _PlayerMatch extends StatelessWidget {
@@ -24,50 +23,45 @@ class _PlayerMatch extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: teamInfo.map(
           (player) {
-            return Row(
+            return widgets.ReversableRow(
               mainAxisAlignment: !shouldReverse
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
-              children: utilities.reverseWidgets(
-                shouldReverse: shouldReverse,
-                children: [
-                  widgets.ElevatedAvatar(
-                    size: 20,
-                    borderRadius: 20,
-                    imageUrl: player.championImageUrl,
-                  ),
-                  Column(
-                    crossAxisAlignment: !shouldReverse
-                        ? CrossAxisAlignment.start
-                        : CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        player.player.playerId != "0"
-                            ? player.player.name
-                            : "Private Profile",
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                      ),
-                      Row(
-                        children: utilities.reverseWidgets(
-                          shouldReverse: shouldReverse,
-                          children: [
-                            widgets.FastImage(
-                              imageUrl: player.player.rankIconUrl!,
-                              height: 16,
-                              width: 16,
-                            ),
-                            Text(
-                              '${player.player.rankName}',
-                              style:
-                                  textTheme.bodyText1?.copyWith(fontSize: 10),
-                            )
-                          ],
+              shouldReverse: shouldReverse,
+              children: [
+                widgets.ElevatedAvatar(
+                  size: 20,
+                  borderRadius: 20,
+                  imageUrl: player.championImageUrl,
+                ),
+                Column(
+                  crossAxisAlignment: !shouldReverse
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      player.player.playerId != "0"
+                          ? player.player.name
+                          : "Private Profile",
+                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    ),
+                    widgets.ReversableRow(
+                      shouldReverse: shouldReverse,
+                      children: [
+                        widgets.FastImage(
+                          imageUrl: player.player.rankIconUrl!,
+                          height: 16,
+                          width: 16,
                         ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                        Text(
+                          '${player.player.rankName}',
+                          style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             );
           },
         ).toList(),

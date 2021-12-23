@@ -12,7 +12,9 @@ const replaceList = {
 String convertAbilityDescription(String description) {
   replaceList.map((key, value) {
     description = description.replaceAll(key, value);
+
     return MapEntry(key, value);
   });
+
   return description;
 }

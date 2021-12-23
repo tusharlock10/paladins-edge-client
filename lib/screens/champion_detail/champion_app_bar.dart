@@ -39,9 +39,9 @@ class ChampionAppBar extends StatelessWidget {
         hoverColor: Colors.blueGrey.shade100.withOpacity(0.5),
         icon: Container(
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white38,
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
           child: const Icon(
             Icons.close,

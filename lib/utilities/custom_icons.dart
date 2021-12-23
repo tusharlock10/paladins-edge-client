@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomIcons {
-  CustomIcons._();
-
-  static const _kFontFam = 'CustomIcons';
-  static const String? _kFontPkg = null;
-
   static const IconData movement =
       IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData directDamage =
@@ -22,4 +17,9 @@ class CustomIcons {
       IconData(0xf38e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData protective =
       IconData(0xf621, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+
+  static const String? _kFontPkg = null;
+  static const _kFontFam = 'CustomIcons';
+
+  CustomIcons._();
 }

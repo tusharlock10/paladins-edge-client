@@ -44,6 +44,7 @@ class ChampionsList extends ConsumerWidget {
       } else if (champion.name.toUpperCase().contains(search.toUpperCase())) {
         return true;
       }
+
       return false;
     });
 
@@ -57,7 +58,10 @@ class ChampionsList extends ConsumerWidget {
       children: newChampions.map(
         (champion) {
           final playerChampion = utilities.findPlayerChampion(
-              playerChampions, champion.championId);
+            playerChampions,
+            champion.championId,
+          );
+
           return ChampionItem(
             champion: champion,
             playerChampion: playerChampion,

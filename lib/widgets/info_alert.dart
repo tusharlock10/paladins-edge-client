@@ -27,9 +27,14 @@ class _InfoAlertState extends State<InfoAlert> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Dialog(
       elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.0),
+        ),
+      ),
       child: Container(
         constraints: const BoxConstraints(maxHeight: 350),
         child: Padding(

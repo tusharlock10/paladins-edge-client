@@ -11,12 +11,13 @@ class Talents extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
+
     return Column(
       children: champion.talents?.map(
             (talent) {
               return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
@@ -52,12 +53,13 @@ class Talents extends StatelessWidget {
                                     color: Colors.teal,
                                   ),
                                   widgets.TextChip(
-                                      hidden: talent.cooldown == 0,
-                                      spacing: 5,
-                                      text:
-                                          '${talent.cooldown.toInt().toString()} sec',
-                                      color: Colors.blueGrey,
-                                      icon: Icons.timelapse),
+                                    hidden: talent.cooldown == 0,
+                                    spacing: 5,
+                                    text:
+                                        '${talent.cooldown.toInt().toString()} sec',
+                                    color: Colors.blueGrey,
+                                    icon: Icons.timelapse,
+                                  ),
                                 ],
                               ),
                             ),
@@ -76,10 +78,10 @@ class Talents extends StatelessWidget {
                                           ?.withOpacity(0.8),
                                     ),
                               ),
-                            )
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

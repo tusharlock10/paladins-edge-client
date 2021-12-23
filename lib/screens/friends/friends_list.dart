@@ -40,6 +40,7 @@ class FriendsList extends ConsumerWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index, animation) {
                 final friend = friendsList[index];
+
                 return SlideTransition(
                   position: animation.drive(
                     Tween<Offset>(

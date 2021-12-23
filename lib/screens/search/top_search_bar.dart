@@ -23,6 +23,7 @@ class TopSearchBar extends ConsumerWidget {
       color: Colors.white,
       fontSize: 16,
     );
+
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: theme.primaryColorBrightness,
