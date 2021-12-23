@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart' as crypto;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
@@ -78,9 +74,8 @@ class _AuthNotifier extends ChangeNotifier {
     final uid = firebaseUser.user!.uid;
     final email = firebaseUser.user!.email!;
     final name = firebaseUser.user!.displayName!;
-    final verification = crypto.sha512
-        .convert(utf8.encode('${constants.Env.hashSalt}$name$email$uid'))
-        .toString();
+
+    final verification = utilities.RSACrypto.encryptRSA('$name$email$uid');
 
     final response = await api.AuthRequests.login(
       uid: uid,
@@ -137,9 +132,7 @@ class _AuthNotifier extends ChangeNotifier {
     // if a loadout exists with that OTP
     // if it does, then player is verified
 
-    final verification = crypto.sha512
-        .convert(utf8.encode('${constants.Env.hashSalt}$otp'))
-        .toString();
+    final verification = utilities.RSACrypto.encryptRSA(otp);
 
     final response = await api.AuthRequests.claimPlayer(
       verification: verification,

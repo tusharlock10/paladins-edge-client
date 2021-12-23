@@ -52,6 +52,7 @@ class _LoginState extends ConsumerState<Login> {
       return;
     }
 
+    await utilities.RSACrypto.setupRSAPublicKey();
     await utilities.Database.initDatabase();
     await FirebasePerformance.instance
         .setPerformanceCollectionEnabled(!constants.isDebug);

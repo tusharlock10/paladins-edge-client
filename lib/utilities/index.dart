@@ -1,5 +1,6 @@
 export './api.dart';
 export './asset_urls.dart';
+export './crypto.dart';
 export './custom_icons.dart';
 export './data_conversion.dart';
 export './database.dart';

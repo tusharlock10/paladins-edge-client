@@ -47,14 +47,14 @@ abstract class StorageKeys {
 abstract class Env {
   static String get appType => _getEnv('APP_TYPE');
   static String get baseUrl => _getEnv('BASE_URL');
-  static String get hashSalt => _getEnv('HASH_SALT');
+  static String get saltString => _getEnv('SALT_STRING');
 
   static Future<List<String>> loadEnv() async {
     await dotenv.load(fileName: "paladins-edge.env");
     final List<String> missingEnvs = [];
     if (appType == '') missingEnvs.add('APP_TYPE');
     if (baseUrl == '') missingEnvs.add('BASE_URL');
-    if (hashSalt == '') missingEnvs.add('HASH_SALT');
+    if (saltString == '') missingEnvs.add('SALT_STRING');
 
     return missingEnvs;
   }
