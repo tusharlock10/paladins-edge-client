@@ -52,19 +52,12 @@ class _LoginState extends ConsumerState<Login> {
       return;
     }
 
-    try {
-      await utilities.RSACrypto.setupRSAPublicKey();
-      await utilities.Database.initDatabase();
-      await FirebasePerformance.instance
-          .setPerformanceCollectionEnabled(!constants.isDebug);
-      await FirebaseAnalytics.instance
-          .setAnalyticsCollectionEnabled(!constants.isDebug);
-    } catch (error) {
-      widgets.showDebugAlert(
-        context: context,
-        message: "$error",
-      );
-    }
+    await utilities.RSACrypto.setupRSAPublicKey();
+    await utilities.Database.initDatabase();
+    await FirebasePerformance.instance
+        .setPerformanceCollectionEnabled(!constants.isDebug);
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(!constants.isDebug);
 
     setState(() => _isInitialized = true);
 
