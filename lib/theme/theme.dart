@@ -71,14 +71,17 @@ final lightTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: Colors.white,
-    selectedItemColor: themeMaterialColor.shade400,
-    unselectedItemColor: themeMaterialColor.shade400,
+    backgroundColor: themeMaterialColor.shade400,
+    selectedItemColor: Colors.white,
+    unselectedItemColor: Colors.white70,
   ),
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: themeMaterialColor,
     brightness: Brightness.light,
   ).copyWith(secondary: darkthemeMaterialColor.shade50),
+  drawerTheme: const DrawerThemeData(
+    backgroundColor: Colors.white,
+  ),
 );
 
 final darkTheme = ThemeData(
@@ -151,7 +154,7 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: darkthemeMaterialColor.shade400,
+    backgroundColor: darkthemeMaterialColor.shade100,
     selectedItemColor: const Color(0xff81b2c7),
     unselectedItemColor: const Color(0xff658999),
   ),
@@ -159,6 +162,7 @@ final darkTheme = ThemeData(
     primarySwatch: darkthemeMaterialColor,
     brightness: Brightness.dark,
   ).copyWith(secondary: themeMaterialColor.shade50),
-  drawerTheme:
-      DrawerThemeData(backgroundColor: darkthemeMaterialColor.shade100),
+  drawerTheme: DrawerThemeData(
+    backgroundColor: darkthemeMaterialColor.shade100,
+  ),
 );
