@@ -116,6 +116,7 @@ class _LoginState extends ConsumerState<Login> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: Container(
@@ -131,19 +132,33 @@ class _LoginState extends ConsumerState<Login> {
             ],
           ),
         ),
-        child: height > width
-            ? LoginPortrait(
-                isInitialized: _isInitialized,
-                isCheckingLogin: _isCheckingLogin,
-                isLoggingIn: _isLoggingIn,
-                onGoogleSignIn: onGoogleSignIn,
+        child: (_isCheckingLogin || !_isInitialized)
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const widgets.LoadingIndicator(
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    _isCheckingLogin ? 'Please Wait' : 'Initializing',
+                    style: textTheme.bodyText1?.copyWith(
+                      fontSize: 16,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                  ),
+                ],
               )
-            : LoginLandscape(
-                isInitialized: _isInitialized,
-                isCheckingLogin: _isCheckingLogin,
-                isLoggingIn: _isLoggingIn,
-                onGoogleSignIn: onGoogleSignIn,
-              ),
+            : height > width
+                ? LoginPortrait(
+                    isLoggingIn: _isLoggingIn,
+                    onGoogleSignIn: onGoogleSignIn,
+                  )
+                : LoginLandscape(
+                    isLoggingIn: _isLoggingIn,
+                    onGoogleSignIn: onGoogleSignIn,
+                  ),
       ),
     );
   }
