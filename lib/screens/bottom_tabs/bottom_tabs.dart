@@ -46,10 +46,11 @@ class _BottomTabsState extends State<BottomTabs> {
       bottomNavigationBar: BottomNavyBar(
         backgroundColor: bottomNavigationBarTheme.backgroundColor,
         selectedIndex: _selectedPageIndex,
+        showElevation: true,
         onItemSelected: _selectPage,
-        curve: Curves.easeIn,
+        curve: Curves.fastOutSlowIn,
         iconSize: 20,
-        animationDuration: const Duration(milliseconds: 350),
+        animationDuration: const Duration(milliseconds: 300),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         items: _pages
             .map(

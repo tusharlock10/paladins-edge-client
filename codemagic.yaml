@@ -84,6 +84,10 @@ workflows:
   staging-workflow:
     name: Staging Workflow
     max_build_duration: 30
+    when:
+      changeset:
+        excludes:
+          - "**/*.md"
     environment:
       groups:
         - "common"
@@ -137,11 +141,7 @@ workflows:
       - |
         # build production appbundle
         flutter build appbundle --release --build-number=$BUILD_NUMBER
-      - |
-        # build production apk
-        flutter build apk --release --build-number=$BUILD_NUMBER
     artifacts:
-      - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
     publishing:
       firebase:
