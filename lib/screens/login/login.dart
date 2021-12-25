@@ -142,7 +142,7 @@ class _LoginState extends ConsumerState<Login> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    _isCheckingLogin ? 'Checking Login' : 'Initializing',
+                    _isCheckingLogin ? 'Please Wait' : 'Initializing',
                     style: textTheme.bodyText1?.copyWith(
                       fontSize: 16,
                       color: Colors.white.withOpacity(0.8),
