@@ -22,6 +22,7 @@ class ElevatedAvatar extends StatelessWidget {
     final borderRadius = this.borderRadius ?? size / 2;
 
     return Material(
+      color: Theme.of(context).cardTheme.color,
       clipBehavior: Clip.antiAlias,
       elevation: elevation ?? 5,
       shape: RoundedRectangleBorder(

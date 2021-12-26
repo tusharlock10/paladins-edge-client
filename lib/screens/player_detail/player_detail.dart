@@ -35,7 +35,9 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
       String? playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
         // fetch playerData from server
-        ref.read(providers.players).getPlayerData(playerId);
+        ref
+            .read(providers.players)
+            .getPlayerData(playerId: playerId, forceUpdate: false);
       } else {
         // get the playerId from playerData
         playerId = ref.read(providers.players).playerData!.playerId;
@@ -45,6 +47,16 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
       ref.read(providers.matches).getPlayerMatches(playerId);
     }
     super.didChangeDependencies();
+  }
+
+  void onForceUpdate() {
+    final players = ref.read(providers.players);
+    if (players.playerData?.playerId != null) {
+      players.getPlayerData(
+        playerId: players.playerData!.playerId,
+        forceUpdate: true,
+      );
+    }
   }
 
   @override
@@ -63,7 +75,10 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
             )
           : Column(
               children: [
-                PlayerDetailComponent(player: player),
+                PlayerDetailComponent(
+                  player: player,
+                  onForceUpdate: onForceUpdate,
+                ),
                 const PlayerMatches(),
               ],
             ),

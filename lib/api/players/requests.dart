@@ -27,11 +27,12 @@ abstract class PlayersRequests {
 
   static Future<responses.PlayerDetailResponse?> playerDetail({
     required String playerId,
+    required bool forceUpdate,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerDetail,
-        queryParameters: {'playerId': playerId},
+        queryParameters: {'playerId': playerId, 'forceUpdate': forceUpdate},
       );
       if (response.data != null) {
         return responses.PlayerDetailResponse.fromJson(response.data!);

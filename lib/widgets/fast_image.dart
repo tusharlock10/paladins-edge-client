@@ -26,7 +26,6 @@ class FastImage extends StatelessWidget {
         height: height,
         width: width,
         fit: fit,
-        useOldImageOnUrlChange: true,
       ),
     );
   }
