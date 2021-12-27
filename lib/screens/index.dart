@@ -5,6 +5,7 @@ export './connect_profile/index.dart';
 export './friends/index.dart';
 export './home/index.dart';
 export './login/login.dart';
+export './match_detail/index.dart';
 export './player_detail/index.dart';
 export './routes.dart';
 export './search/index.dart';

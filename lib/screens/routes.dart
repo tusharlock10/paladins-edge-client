@@ -10,4 +10,5 @@ final routes = {
   screens.ConnectProfile.routeName: (_) => const screens.ConnectProfile(),
   screens.Home.routeName: (_) => const screens.Home(),
   screens.Friends.routeName: (_) => const screens.Friends(),
+  screens.MatchDetail.routeName: (_) => const screens.MatchDetail(),
 };
