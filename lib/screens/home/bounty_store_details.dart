@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:timer_builder/timer_builder.dart';
 
 class _BountyStoreCard extends StatelessWidget {
@@ -12,18 +12,6 @@ class _BountyStoreCard extends StatelessWidget {
     required this.bountyStore,
     Key? key,
   }) : super(key: key);
-
-  String getTimeRemaining() {
-    final timeDiff = bountyStore.endDate.difference(DateTime.now());
-    final endTime = Jiffy({"seconds": timeDiff.inSeconds}).Hms;
-    final endDays = timeDiff.inDays;
-    String timeRemaining;
-
-    timeRemaining =
-        endDays == 0 ? '$endTime remaining' : '$endDays days remaining';
-
-    return timeRemaining;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +33,21 @@ class _BountyStoreCard extends StatelessWidget {
           TimerBuilder.periodic(
             const Duration(seconds: 1),
             builder: (_) {
+              final timeRemaining = utilities.getTimeRemaining(
+                fromDate: DateTime.now(),
+                toDate: bountyStore.endDate,
+              );
+
+              if (timeRemaining == null) {
+                return Text(
+                  'Expired',
+                  style: textTheme.bodyText2?.copyWith(fontSize: 12),
+                );
+              }
+
               return Text(
-                getTimeRemaining(),
-                style: textTheme.bodyText2?.copyWith(fontSize: 14),
+                "$timeRemaining remaining",
+                style: textTheme.bodyText2?.copyWith(fontSize: 12),
               );
             },
           ),

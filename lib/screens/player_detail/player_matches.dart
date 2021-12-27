@@ -192,28 +192,27 @@ class PlayerMatches extends ConsumerWidget {
       return const widgets.LoadingIndicator(size: 36);
     }
 
-    return Expanded(
-      child: ListView.builder(
-        itemCount: playerMatches.matchPlayers.length,
-        itemBuilder: (context, index) {
-          final matchPlayer = playerMatches.matchPlayers[index];
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: playerMatches.matchPlayers.length,
+      itemBuilder: (context, index) {
+        final matchPlayer = playerMatches.matchPlayers[index];
 
-          // find the match that is associated with that matchPlayer
-          final match = playerMatches.matches
-              .firstWhere((_) => _.matchId == matchPlayer.matchId);
+        // find the match that is associated with that matchPlayer
+        final match = playerMatches.matches
+            .firstWhere((_) => _.matchId == matchPlayer.matchId);
 
-          // champion that this player played in the match
-          final champion = champions.firstWhere(
-            (_) => _.championId == matchPlayer.championId.toString(),
-          );
+        // champion that this player played in the match
+        final champion = champions.firstWhere(
+          (_) => _.championId == matchPlayer.championId.toString(),
+        );
 
-          return _PlayerMatchCard(
-            matchPlayer: matchPlayer,
-            champion: champion,
-            match: match,
-          );
-        },
-      ),
+        return _PlayerMatchCard(
+          matchPlayer: matchPlayer,
+          champion: champion,
+          match: match,
+        );
+      },
     );
   }
 }

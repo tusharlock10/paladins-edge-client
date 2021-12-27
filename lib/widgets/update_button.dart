@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:timer_builder/timer_builder.dart';
 
@@ -19,7 +18,15 @@ class UpdateButton extends StatelessWidget {
       const Duration(seconds: 1),
       builder: (context) {
         final textTheme = Theme.of(context).textTheme;
-        final remainingTime = _getTimeRemaining();
+        final remainingTime = utilities.getTimeRemaining(
+          toDate: lastUpdated!.add(
+            Duration(
+              milliseconds:
+                  utilities.Global.essentials!.forceUpdatePlayerDuration,
+            ),
+          ),
+          fromDate: DateTime.now().toUtc(),
+        );
 
         if (lastUpdated == null ||
             utilities.Global.essentials?.forceUpdatePlayerDuration == null) {
@@ -81,35 +88,5 @@ class UpdateButton extends StatelessWidget {
         );
       },
     );
-  }
-
-  String _getFormat(Duration diff) {
-    if (diff.inHours != 0) return "H:m:s";
-    if (diff.inMinutes != 0) return "m[m] s[s]";
-
-    return "s[s]";
-  }
-
-  String? _getTimeRemaining() {
-    final diff = lastUpdated!
-        .add(
-          Duration(
-            milliseconds:
-                utilities.Global.essentials!.forceUpdatePlayerDuration,
-          ),
-        )
-        .difference(DateTime.now());
-
-    if (diff.isNegative) return null;
-
-    final endTime = Jiffy(
-      {
-        "seconds": diff.inSeconds,
-        "minutes": diff.inMinutes,
-        "hours": diff.inHours,
-      },
-    ).format(_getFormat(diff));
-
-    return endTime;
   }
 }

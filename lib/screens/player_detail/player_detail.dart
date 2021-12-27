@@ -63,25 +63,42 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
   Widget build(BuildContext context) {
     final player = ref.watch(providers.players.select((_) => _.playerData));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Player Details'),
-      ),
-      body: player == null
-          ? const Center(
-              child: widgets.LoadingIndicator(
-                size: 36,
-              ),
-            )
-          : Column(
-              children: [
-                PlayerDetailComponent(
-                  player: player,
-                  onForceUpdate: onForceUpdate,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Player Details'),
+        ),
+        body: player == null
+            ? const Center(
+                child: widgets.LoadingIndicator(
+                  size: 36,
                 ),
-                const PlayerMatches(),
-              ],
-            ),
+              )
+            : Column(
+                children: [
+                  PlayerDetailComponent(
+                    player: player,
+                    onForceUpdate: onForceUpdate,
+                  ),
+                  const TabBar(
+                    tabs: [
+                      Tab(text: "Matches"),
+                      Tab(text: "Champions"),
+                    ],
+                  ),
+                  const Expanded(
+                    child: TabBarView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        PlayerMatches(),
+                        Text("Champions"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

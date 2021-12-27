@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import 'package:paladinsedge/theme/colors.dart';
 
+/// ThemeData for light theme
 final lightTheme = ThemeData(
   primaryColor: themeMaterialColor,
   primaryColorLight: themeMaterialColor,
@@ -82,8 +83,22 @@ final lightTheme = ThemeData(
   drawerTheme: const DrawerThemeData(
     backgroundColor: Colors.white,
   ),
+  tabBarTheme: TabBarTheme(
+    labelStyle: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    ),
+    labelColor: themeMaterialColor,
+    unselectedLabelStyle: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 14,
+    ),
+    unselectedLabelColor: Colors.grey,
+  ),
 );
 
+/// ThemeData for dark theme
 final darkTheme = ThemeData(
   primaryColor: darkthemeMaterialColor,
   primaryColorLight: themeMaterialColor,
@@ -164,5 +179,17 @@ final darkTheme = ThemeData(
   ).copyWith(secondary: themeMaterialColor.shade50),
   drawerTheme: DrawerThemeData(
     backgroundColor: darkthemeMaterialColor.shade100,
+  ),
+  tabBarTheme: TabBarTheme(
+    labelStyle: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 14,
+    ),
+    labelColor: Colors.white,
+    unselectedLabelStyle: TextStyle(
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontSize: 14,
+    ),
+    unselectedLabelColor: Colors.white60,
   ),
 );
