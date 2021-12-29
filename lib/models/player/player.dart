@@ -106,9 +106,24 @@ class Player {
   @HiveField(16)
   final List<String>? friends;
 
+  /// last update date of friends
+  @HiveField(17)
+  final DateTime? lastUpdatedFriends;
+
+  /// last update date of player profile
+  @HiveField(18)
+  final DateTime? lastUpdatedPlayer;
+
+  /// last update date of player's matches
+  @HiveField(19)
+  final DateTime? lastUpdatedMatches;
+
+  /// last update date of player's champion stats
+  @HiveField(20)
+  final DateTime? lastUpdatedChampions;
+
   Player({
     required this.playerId,
-    this.userId,
     required this.name,
     required this.title,
     required String? avatarUrl,
@@ -122,8 +137,13 @@ class Player {
     required this.accountCreationDate,
     required this.lastLoginDate,
     required this.ranked,
+    this.userId,
     this.status,
     this.friends,
+    this.lastUpdatedFriends,
+    this.lastUpdatedPlayer,
+    this.lastUpdatedMatches,
+    this.lastUpdatedChampions,
   }) : avatarUrl = utilities.getUrlFromKey(avatarUrl);
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);

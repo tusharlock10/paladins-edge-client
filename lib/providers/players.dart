@@ -111,8 +111,14 @@ class _PlayersNotifier extends ChangeNotifier {
     playerData = null;
   }
 
-  void getPlayerData(String playerId) async {
-    final response = await api.PlayersRequests.playerDetail(playerId: playerId);
+  void getPlayerData({
+    required String playerId,
+    required bool forceUpdate,
+  }) async {
+    final response = await api.PlayersRequests.playerDetail(
+      playerId: playerId,
+      forceUpdate: forceUpdate,
+    );
     if (response == null) return;
     playerData = response.player;
     notifyListeners();

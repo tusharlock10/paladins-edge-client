@@ -79,6 +79,7 @@ class MatchPlayerChampionCard {
 @JsonSerializable()
 class MatchPlayer {
   final String playerId; // player id as per paladins api
+  final String playerName; // name of the player
   final String matchId; // id of the match it is connected to
 
   final int championId; // champion id as per paladins api
@@ -105,6 +106,7 @@ class MatchPlayer {
 
   MatchPlayer({
     required this.playerId,
+    required this.playerName,
     required this.matchId,
     required this.championId,
     required this.talentId2,

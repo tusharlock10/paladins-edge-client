@@ -35,7 +35,9 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
       String? playerId = ModalRoute.of(context)?.settings.arguments as String?;
       if (playerId != null) {
         // fetch playerData from server
-        ref.read(providers.players).getPlayerData(playerId);
+        ref
+            .read(providers.players)
+            .getPlayerData(playerId: playerId, forceUpdate: false);
       } else {
         // get the playerId from playerData
         playerId = ref.read(providers.players).playerData!.playerId;
@@ -47,26 +49,56 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
     super.didChangeDependencies();
   }
 
+  void onForceUpdate() {
+    final players = ref.read(providers.players);
+    if (players.playerData?.playerId != null) {
+      players.getPlayerData(
+        playerId: players.playerData!.playerId,
+        forceUpdate: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final player = ref.watch(providers.players.select((_) => _.playerData));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Player Details'),
-      ),
-      body: player == null
-          ? const Center(
-              child: widgets.LoadingIndicator(
-                size: 36,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Player Details'),
+        ),
+        body: player == null
+            ? const Center(
+                child: widgets.LoadingIndicator(
+                  size: 36,
+                ),
+              )
+            : Column(
+                children: [
+                  PlayerDetailComponent(
+                    player: player,
+                    onForceUpdate: onForceUpdate,
+                  ),
+                  const TabBar(
+                    tabs: [
+                      Tab(text: "Matches"),
+                      Tab(text: "Champions"),
+                    ],
+                  ),
+                  const Expanded(
+                    child: TabBarView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        PlayerMatches(),
+                        Text("Champions"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            )
-          : Column(
-              children: [
-                PlayerDetailComponent(player: player),
-                const PlayerMatches(),
-              ],
-            ),
+      ),
     );
   }
 }
