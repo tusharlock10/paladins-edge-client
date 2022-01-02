@@ -1,6 +1,7 @@
 // The match that is completed
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:paladinsedge/models/player/player.dart' show Ranked;
 
 part 'match.g.dart';
 
@@ -92,6 +93,7 @@ class MatchPlayer {
   final int partyId; // party the player belongs to
   final int team; // team of the player
 
+  final Ranked? playerRanked; // ranked details of the player for this match
   final MatchPlayerStats playerStats; // stats of the player
   final List<MatchPlayerItems> playerItems; // items bought by the player
   final List<MatchPlayerChampionCard>
@@ -114,6 +116,7 @@ class MatchPlayer {
     required this.skinId,
     required this.partyId,
     required this.team,
+    this.playerRanked,
     required this.playerStats,
     required this.playerItems,
     required this.playerChampionCards,
@@ -157,6 +160,9 @@ class Match {
   /// region of the match
   final String region;
 
+  /// is this match a Ranked match
+  final bool isRankedMatch;
+
   /// id champion that were banned in the match
   final List<int> championBans;
 
@@ -178,6 +184,7 @@ class Match {
     required this.queue,
     required this.map,
     required this.region,
+    required this.isRankedMatch,
     required this.championBans,
     required this.isInComplete,
   });

@@ -76,6 +76,9 @@ MatchPlayer _$MatchPlayerFromJson(Map<String, dynamic> json) => MatchPlayer(
       skinId: json['skinId'] as int,
       partyId: json['partyId'] as int,
       team: json['team'] as int,
+      playerRanked: json['playerRanked'] == null
+          ? null
+          : Ranked.fromJson(json['playerRanked'] as Map<String, dynamic>),
       playerStats: MatchPlayerStats.fromJson(
           json['playerStats'] as Map<String, dynamic>),
       playerItems: (json['playerItems'] as List<dynamic>)
@@ -99,6 +102,7 @@ Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
       'skinId': instance.skinId,
       'partyId': instance.partyId,
       'team': instance.team,
+      'playerRanked': instance.playerRanked,
       'playerStats': instance.playerStats,
       'playerItems': instance.playerItems,
       'playerChampionCards': instance.playerChampionCards,
@@ -117,6 +121,7 @@ Match _$MatchFromJson(Map<String, dynamic> json) => Match(
       queue: json['queue'] as String,
       map: json['map'] as String,
       region: json['region'] as String,
+      isRankedMatch: json['isRankedMatch'] as bool,
       championBans:
           (json['championBans'] as List<dynamic>).map((e) => e as int).toList(),
       isInComplete: json['isInComplete'] as bool,
@@ -133,6 +138,7 @@ Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
       'queue': instance.queue,
       'map': instance.map,
       'region': instance.region,
+      'isRankedMatch': instance.isRankedMatch,
       'championBans': instance.championBans,
       'isInComplete': instance.isInComplete,
     };
