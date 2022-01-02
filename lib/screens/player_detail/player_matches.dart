@@ -136,24 +136,18 @@ class _PlayerMatchCard extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            match.queue,
-                            style: textTheme.headline2?.copyWith(fontSize: 14),
-                          ),
-                          const SizedBox(width: 10),
-                          TimerBuilder.periodic(
-                            const Duration(minutes: 1),
-                            builder: (_) {
-                              return Text(
-                                Jiffy(match.matchStartTime).fromNow(),
-                                style:
-                                    textTheme.bodyText1?.copyWith(fontSize: 12),
-                              );
-                            },
-                          ),
-                        ],
+                      Text(
+                        match.queue,
+                        style: textTheme.headline2?.copyWith(fontSize: 14),
+                      ),
+                      TimerBuilder.periodic(
+                        const Duration(minutes: 1),
+                        builder: (_) {
+                          return Text(
+                            Jiffy(match.matchStartTime).fromNow(),
+                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                          );
+                        },
                       ),
                       matchPlayer.playerStats.biggestKillStreak > 5
                           ? Text(

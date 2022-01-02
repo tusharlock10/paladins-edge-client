@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constsnts;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class _MatchPlayer extends ConsumerWidget {
+  // TODO: Send this widget in another file
   final models.MatchPlayer matchPlayer;
   const _MatchPlayer({
     required this.matchPlayer,
@@ -15,12 +15,15 @@ class _MatchPlayer extends ConsumerWidget {
   }) : super(key: key);
 
   String shortRankName(String rankName) {
+    // TODO: Send this function in a utility file
+
+    if (rankName.toLowerCase().contains("gran")) return "GM"; // Grandmaster
+    if (rankName.toLowerCase().contains("mast")) return "MS"; // Master
+    if (rankName.toLowerCase().contains("qual")) return "QL"; // Qualifying
+
     final temp = rankName.split(" ");
     final shortTier = temp.first[0];
     String tierLevel = "";
-
-    if (shortTier.contains("Grand")) return "GM";
-    if (shortTier == "M") return "M";
 
     if (temp[1] == "I") tierLevel = "1";
     if (temp[1] == "II") tierLevel = "2";
@@ -35,15 +38,13 @@ class _MatchPlayer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final champions = ref.watch(providers.champions.select((_) => _.champions));
-    final players = ref.watch(providers.matches.select((_) => _.players));
+
     final champion = champions.firstWhere(
       (champion) => champion.championId == matchPlayer.championId.toString(),
     );
+
     final talentUsed = champion.talents
         ?.firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
-
-    api.PlayerDetailResponse? player;
-    bool isPrivatePlayer = false;
 
     final kills = matchPlayer.playerStats.kills;
     final deaths = matchPlayer.playerStats.deaths;
@@ -52,17 +53,7 @@ class _MatchPlayer extends ConsumerWidget {
         ? "Perfect"
         : ((kills + assists) / deaths).toStringAsFixed(2);
 
-    try {
-      player = players.firstWhere(
-        (player) => player?.player.playerId == matchPlayer.playerId,
-      );
-    } catch (_) {
-      isPrivatePlayer = true;
-    }
-
-    if (player?.player == null) {
-      isPrivatePlayer = true;
-    }
+    final isPrivatePlayer = matchPlayer.playerId == "0";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
@@ -74,22 +65,22 @@ class _MatchPlayer extends ConsumerWidget {
             width: 52,
             borderRadius: const BorderRadius.all(Radius.circular(12.5)),
           ),
-          isPrivatePlayer || player!.player.ranked.rank == 0
+          matchPlayer.playerRanked == null
               ? const SizedBox(width: 20)
               : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     children: [
                       widgets.FastImage(
-                        imageUrl: player.player.ranked.rankIconUrl!,
-                        height: 16,
-                        width: 16,
+                        imageUrl: matchPlayer.playerRanked!.rankIconUrl!,
+                        height: 20,
+                        width: 20,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        shortRankName(player.player.ranked.rankName!),
+                        shortRankName(matchPlayer.playerRanked!.rankName!),
                         style: textTheme.bodyText1?.copyWith(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -100,7 +91,7 @@ class _MatchPlayer extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isPrivatePlayer ? 'Private Profile' : player!.player.name,
+                isPrivatePlayer ? 'Private Profile' : matchPlayer.playerName,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight:
@@ -218,6 +209,7 @@ class MatchDetail extends HookConsumerWidget {
     final matchDetails = ref.watch(
       providers.matches.select((_) => _.matchDetails),
     );
+
     // sort players based on their team
     matchDetails?.matchPlayers.sort((a, b) => a.team - b.team);
 
@@ -229,16 +221,6 @@ class MatchDetail extends HookConsumerWidget {
         return matchesProvider.resetMatchDetails;
       },
       [],
-    );
-
-    useEffect(
-      () {
-        // get details for all players in this match
-        if (matchDetails?.match.playerIds != null) {
-          matchesProvider.getPlayers(matchDetails!.match.playerIds);
-        }
-      },
-      [matchDetails],
     );
 
     final List<Widget> matchPlayerWidgets = [];
