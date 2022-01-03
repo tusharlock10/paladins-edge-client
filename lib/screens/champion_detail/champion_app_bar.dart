@@ -33,7 +33,7 @@ class ChampionAppBar extends StatelessWidget {
       elevation: 7,
       floating: true,
       snap: true,
-      backgroundColor: theme.darkthemeMaterialColor,
+      backgroundColor: theme.darkThemeMaterialColor,
       leading: IconButton(
         iconSize: 20,
         hoverColor: Colors.blueGrey.shade100.withOpacity(0.5),

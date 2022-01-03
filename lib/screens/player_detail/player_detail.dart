@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/player_detail/player_champions.dart';
 import 'package:paladinsedge/screens/player_detail/player_detail_component.dart';
 import 'package:paladinsedge/screens/player_detail/player_matches.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -43,8 +44,9 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
         playerId = ref.read(providers.players).playerData!.playerId;
       }
 
-      // get the playerMatches from server
+      // get the playerMatches and plaerChampions from server
       ref.read(providers.matches).getPlayerMatches(playerId);
+      ref.read(providers.champions).getPlayerChampions(playerId);
     }
     super.didChangeDependencies();
   }
@@ -89,10 +91,10 @@ class _PlayerDetailState extends ConsumerState<PlayerDetail> {
                   ),
                   const Expanded(
                     child: TabBarView(
-                      physics: BouncingScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       children: [
                         PlayerMatches(),
-                        Text("Champions"),
+                        PlayerChampions(),
                       ],
                     ),
                   ),

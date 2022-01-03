@@ -27,7 +27,7 @@ class _ChampionsState extends ConsumerState<Champions> {
       _init = false;
       Future.wait([
         championsProvider.loadChampions(),
-        championsProvider.loadPlayerChampions(authProvider.player!.playerId),
+        championsProvider.getPlayerChampions(authProvider.player!.playerId),
       ]).then((_) {
         setState(() => _isLoading = false);
       });
