@@ -6,12 +6,12 @@ import 'package:paladinsedge/theme/colors.dart';
 final lightTheme = ThemeData(
   primaryColor: themeMaterialColor,
   primaryColorLight: themeMaterialColor,
-  primaryColorDark: darkthemeMaterialColor,
+  primaryColorDark: darkThemeMaterialColor,
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
     elevation: 7,
-    shadowColor: darkthemeMaterialColor.withOpacity(0.75),
+    shadowColor: darkThemeMaterialColor.withOpacity(0.75),
     centerTitle: true,
     iconTheme: const IconThemeData(
       color: Colors.white,
@@ -26,7 +26,7 @@ final lightTheme = ThemeData(
   ),
   cardTheme: CardTheme(
     elevation: 4,
-    shadowColor: darkthemeMaterialColor.withOpacity(0.25),
+    shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     color: Colors.white,
   ),
   textSelectionTheme: TextSelectionThemeData(
@@ -79,7 +79,7 @@ final lightTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: themeMaterialColor,
     brightness: Brightness.light,
-  ).copyWith(secondary: darkthemeMaterialColor.shade50),
+  ).copyWith(secondary: darkThemeMaterialColor.shade50),
   drawerTheme: const DrawerThemeData(
     backgroundColor: Colors.white,
   ),
@@ -96,19 +96,32 @@ final lightTheme = ThemeData(
     ),
     unselectedLabelColor: Colors.grey,
   ),
+  dataTableTheme: DataTableThemeData(
+    columnSpacing: 32,
+    headingRowColor: MaterialStateProperty.all(themeMaterialColor.shade100),
+    dataTextStyle: TextStyle(
+      fontSize: 14,
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+    ),
+    headingTextStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      fontFamily: GoogleFonts.poppins().fontFamily,
+    ),
+  ),
 );
 
 /// ThemeData for dark theme
 final darkTheme = ThemeData(
-  primaryColor: darkthemeMaterialColor,
+  primaryColor: darkThemeMaterialColor,
   primaryColorLight: themeMaterialColor,
-  primaryColorDark: darkthemeMaterialColor,
+  primaryColorDark: darkThemeMaterialColor,
   primaryColorBrightness: Brightness.dark,
-  scaffoldBackgroundColor: darkthemeMaterialColor,
+  scaffoldBackgroundColor: darkThemeMaterialColor,
   appBarTheme: AppBarTheme(
     elevation: 7,
-    shadowColor: darkthemeMaterialColor.shade50,
-    backgroundColor: darkthemeMaterialColor.shade50,
+    shadowColor: darkThemeMaterialColor.shade50,
+    backgroundColor: darkThemeMaterialColor.shade50,
     centerTitle: true,
     iconTheme: const IconThemeData(
       color: Colors.white,
@@ -123,8 +136,8 @@ final darkTheme = ThemeData(
   ),
   cardTheme: CardTheme(
     elevation: 4,
-    shadowColor: darkthemeMaterialColor.shade50,
-    color: darkthemeMaterialColor.shade300,
+    shadowColor: darkThemeMaterialColor.shade50,
+    color: darkThemeMaterialColor.shade300,
   ),
   textSelectionTheme: const TextSelectionThemeData(
     selectionHandleColor: Color(0xff4d5c63),
@@ -135,7 +148,7 @@ final darkTheme = ThemeData(
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(darkthemeMaterialColor),
+      backgroundColor: MaterialStateProperty.all(darkThemeMaterialColor),
     ),
   ),
   textTheme: TextTheme(
@@ -169,16 +182,16 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: darkthemeMaterialColor.shade100,
+    backgroundColor: darkThemeMaterialColor.shade100,
     selectedItemColor: const Color(0xff81b2c7),
     unselectedItemColor: const Color(0xff658999),
   ),
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: darkthemeMaterialColor,
+    primarySwatch: darkThemeMaterialColor,
     brightness: Brightness.dark,
   ).copyWith(secondary: themeMaterialColor.shade50),
   drawerTheme: DrawerThemeData(
-    backgroundColor: darkthemeMaterialColor.shade100,
+    backgroundColor: darkThemeMaterialColor.shade100,
   ),
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
@@ -191,5 +204,18 @@ final darkTheme = ThemeData(
       fontSize: 14,
     ),
     unselectedLabelColor: Colors.white60,
+  ),
+  dataTableTheme: DataTableThemeData(
+    columnSpacing: 32,
+    headingRowColor: MaterialStateProperty.all(darkThemeMaterialColor.shade100),
+    dataTextStyle: TextStyle(
+      fontSize: 14,
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+    ),
+    headingTextStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      fontFamily: GoogleFonts.poppins().fontFamily,
+    ),
   ),
 );

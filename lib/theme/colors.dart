@@ -27,4 +27,4 @@ const Map<int, Color> _darkColorValues = {
 };
 
 const themeMaterialColor = MaterialColor(0xFF19a5cf, _colorValues);
-const darkthemeMaterialColor = MaterialColor(0xFF04161c, _darkColorValues);
+const darkThemeMaterialColor = MaterialColor(0xFF04161c, _darkColorValues);
