@@ -82,10 +82,6 @@ class BountyStoreDetails extends ConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    if (bountyStore.isEmpty) {
-      return const SizedBox();
-    }
-
     return SizedBox(
       width: width,
       child: Column(
@@ -94,18 +90,33 @@ class BountyStoreDetails extends ConsumerWidget {
             'Bounty Store Updates',
             style: textTheme.headline3,
           ),
-          GridView.count(
-            childAspectRatio: childAspectRatio,
-            crossAxisCount: crossAxisCount,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            children: bountyStore
-                .map(
-                  (_bountyStore) => _BountyStoreCard(bountyStore: _bountyStore),
+          bountyStore.isEmpty
+              ? const Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Center(
+                      child: Text(
+                        'Sorry we were unable to fetch the bounty store',
+                      ),
+                    ),
+                  ),
                 )
-                .toList(),
-          ),
+              : GridView.count(
+                  childAspectRatio: childAspectRatio,
+                  crossAxisCount: crossAxisCount,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  children: bountyStore
+                      .map(
+                        (_bountyStore) =>
+                            _BountyStoreCard(bountyStore: _bountyStore),
+                      )
+                      .toList(),
+                ),
         ],
       ),
     );

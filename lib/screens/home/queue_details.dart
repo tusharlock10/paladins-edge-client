@@ -62,20 +62,34 @@ class QueueDetails extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            'Live Queue Details',
+            'Live Queue Numbers',
             style: textTheme.headline3,
           ),
-          GridView.count(
-            childAspectRatio: childAspectRatio,
-            crossAxisCount: crossAxisCount,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            children: queue
-                .where((_queue) => _queue.queueId != "0")
-                .map((_queue) => _QueueCard(queue: _queue))
-                .toList(),
-          ),
+          queue.isEmpty
+              ? const Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Center(
+                      child: Text(
+                        'Sorry we were unable to fetch the queue details',
+                      ),
+                    ),
+                  ),
+                )
+              : GridView.count(
+                  childAspectRatio: childAspectRatio,
+                  crossAxisCount: crossAxisCount,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  children: queue
+                      .where((_queue) => _queue.queueId != "0")
+                      .map((_queue) => _QueueCard(queue: _queue))
+                      .toList(),
+                ),
         ],
       ),
     );
