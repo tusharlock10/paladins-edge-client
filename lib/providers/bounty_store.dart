@@ -6,6 +6,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 class _BountyStoreNotifier extends ChangeNotifier {
   List<models.BountyStore> bountyStore = [];
 
+  // TODO: Create db entry of bounty store
   /// Loads the `bountyStore` data from local db and syncs it with server
   Future<void> loadBountyStore() async {
     final response = await api.BountyStoreRequests.bountyStoreDetails();

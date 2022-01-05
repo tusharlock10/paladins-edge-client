@@ -76,6 +76,7 @@ MatchPlayer _$MatchPlayerFromJson(Map<String, dynamic> json) => MatchPlayer(
       skinId: json['skinId'] as int,
       partyId: json['partyId'] as int,
       team: json['team'] as int,
+      matchPosition: json['matchPosition'] as int?,
       playerRanked: json['playerRanked'] == null
           ? null
           : Ranked.fromJson(json['playerRanked'] as Map<String, dynamic>),
@@ -102,6 +103,7 @@ Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
       'skinId': instance.skinId,
       'partyId': instance.partyId,
       'team': instance.team,
+      'matchPosition': instance.matchPosition,
       'playerRanked': instance.playerRanked,
       'playerStats': instance.playerStats,
       'playerItems': instance.playerItems,

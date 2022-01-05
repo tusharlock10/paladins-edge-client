@@ -9,6 +9,7 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 class _MatchPlayer extends ConsumerWidget {
   // TODO: Send this widget in another file
   final models.MatchPlayer matchPlayer;
+
   const _MatchPlayer({
     required this.matchPlayer,
     Key? key,
@@ -55,14 +56,20 @@ class _MatchPlayer extends ConsumerWidget {
 
     final isPrivatePlayer = matchPlayer.playerId == "0";
 
+    String matchPosition = ' ${matchPlayer.matchPosition}th ';
+
+    if (matchPlayer.matchPosition == 1) matchPosition = "MVP";
+    if (matchPlayer.matchPosition == 2) matchPosition = " 2nd ";
+    if (matchPlayer.matchPosition == 3) matchPosition = " 3rd ";
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
       child: Row(
         children: [
           widgets.FastImage(
             imageUrl: champion.iconUrl,
-            height: 52,
-            width: 52,
+            height: 50,
+            width: 50,
             borderRadius: const BorderRadius.all(Radius.circular(12.5)),
           ),
           matchPlayer.playerRanked == null
@@ -93,7 +100,7 @@ class _MatchPlayer extends ConsumerWidget {
               Text(
                 isPrivatePlayer ? 'Private Profile' : matchPlayer.playerName,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight:
                       isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
                   fontStyle:
@@ -125,6 +132,11 @@ class _MatchPlayer extends ConsumerWidget {
                         style: textTheme.bodyText1?.copyWith(fontSize: 12),
                       ),
                     ],
+                  ),
+                  const SizedBox(width: 5),
+                  widgets.TextChip(
+                    text: matchPosition,
+                    color: matchPosition == "MVP" ? Colors.orange : Colors.cyan,
                   ),
                 ],
               ),

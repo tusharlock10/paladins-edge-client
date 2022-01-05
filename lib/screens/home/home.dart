@@ -32,8 +32,10 @@ class _HomeState extends ConsumerState<Home> {
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);
 
-    await queueProvider.getQueueDetails();
-    await bountyStoreProvider.loadBountyStore();
+    await Future.wait([
+      queueProvider.getQueueDetails(),
+      bountyStoreProvider.loadBountyStore(),
+    ]);
 
     setState(() => _isLoading = false);
   }
