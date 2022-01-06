@@ -13,6 +13,7 @@ abstract class Database {
   static Box<models.SearchHistory>? _searchHistoryBox;
   static Box<models.Champion>? _championBox;
   static Box<models.RecordExpiry>? _recordExpiryBox;
+  static Box<models.BountyStore>? _bountyStoreBox;
 
   static Future<void> initDatabase() async {
     if (_init) return;
@@ -29,6 +30,7 @@ abstract class Database {
     Hive.registerAdapter(models.EssentialsAdapter());
     Hive.registerAdapter(models.SearchHistoryAdapter());
     Hive.registerAdapter(models.RecordExpiryAdapter());
+    Hive.registerAdapter(models.BountyStoreAdapter());
 
     _init = true;
 
@@ -45,6 +47,9 @@ abstract class Database {
         await Hive.openBox<models.Champion>(constants.HiveBoxes.champion);
     _recordExpiryBox = await Hive.openBox<models.RecordExpiry>(
       constants.HiveBoxes.recordExpiry,
+    );
+    _bountyStoreBox = await Hive.openBox<models.BountyStore>(
+      constants.HiveBoxes.bountyStore,
     );
 
     // check if recordExpiry contains any data
@@ -74,6 +79,9 @@ abstract class Database {
 
   static void saveChampion(models.Champion champion) =>
       _championBox?.add(champion);
+
+  static void saveBountyStore(models.BountyStore bountyStore) =>
+      _bountyStoreBox?.add(bountyStore);
 
   // get methods
   static models.User? getUser() => _userBox?.get(constants.HiveBoxes.user);
@@ -120,6 +128,21 @@ abstract class Database {
     final champions = _championBox?.values.toList();
 
     return champions == null || champions.isEmpty ? null : champions;
+  }
+
+  static List<models.BountyStore>? getBountyStore() {
+    // check if bounty store records have expired
+    if (_recordExpiry!
+        .isRecordExpired(constants.RecordExpiryData.bountyStore)) {
+      // if the data is expired, then clear bountyStore box
+      // and renew the recordExpiry for bountyStore records
+      _bountyStoreBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryData.bountyStore);
+    }
+
+    final bountyStore = _bountyStoreBox?.values.toList();
+
+    return bountyStore == null || bountyStore.isEmpty ? null : bountyStore;
   }
 
   static void clear() {

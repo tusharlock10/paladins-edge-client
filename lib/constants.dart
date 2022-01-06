@@ -80,6 +80,7 @@ abstract class TypeIds {
   static const essentials = 10;
   static const searchHistory = 11;
   static const recordExpiry = 12;
+  static const bountyStore = 13;
 }
 
 abstract class NotificationChannels {
@@ -109,16 +110,20 @@ abstract class HiveBoxes {
   static const searchHistory = "searchHistory";
   static const champion = "champion";
   static const recordExpiry = "recordExpiry";
+  static const bountyStore = "bountyStore";
 }
 
 abstract class RecordExpiryData {
   static const champion = "champion";
   static const searchHistory = "searchHistory";
+  static const bountyStore = "bountyStore";
 
   static const championDuration =
       Duration(days: 1); // expire saved champion records in 1 day
   static const searchHistoryDuration =
       Duration(days: 7); // expire saved searchHistory records in 7 days
+  static const bountyStoreDuration =
+      Duration(days: 1); // expire saved bountyStore records in 1 day
 }
 
 abstract class ImageAspectRatios {

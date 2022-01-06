@@ -10,6 +10,7 @@ class _QueueState extends ChangeNotifier {
     final response = await api.QueueRequests.queueDetails();
     if (response == null) return;
     queue = response.queue;
+
     notifyListeners();
   }
 }
