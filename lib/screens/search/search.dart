@@ -1,68 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/search/search_history.dart';
 import 'package:paladinsedge/screens/search/search_list.dart';
 import 'package:paladinsedge/screens/search/top_search_bar.dart';
 
-class Search extends ConsumerStatefulWidget {
+class Search extends HookConsumerWidget {
   static const routeName = '/search';
 
   const Search({Key? key}) : super(key: key);
 
   @override
-  _SearchState createState() => _SearchState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final searchProvider = ref.watch(providers.players);
+    final playersProvider = ref.read(providers.players);
 
-class _SearchState extends ConsumerState<Search> {
-  String playerName = '';
-  bool isLoading = false;
-  bool _init = true;
+    // State
+    final isLoading = useState(false);
+    final playerName = useState('');
 
-  @override
-  void didChangeDependencies() {
-    if (_init) {
-      _init = false;
-      ref.read(providers.players).getSearchHistory();
-    }
-    super.didChangeDependencies();
-  }
+    // Methods
+    final onSearch = useCallback(
+      (
+        String playerName, {
+        bool addInSeachHistory = true,
+      }) async {
+        isLoading.value = true;
 
-  void onSearch(
-    String playerName, {
-    bool addInSeachHistory = true,
-  }) async {
-    setState(() => isLoading = true);
+        final searchProvider = ref.read(providers.players);
+        final exactMatch = await searchProvider.searchByName(
+          playerName: playerName,
+          simpleResults: false,
+          addInSeachHistory: addInSeachHistory,
+        );
 
-    final searchProvider = ref.read(providers.players);
-    final exactMatch = await searchProvider.searchByName(
-      playerName: playerName,
-      simpleResults: false,
-      addInSeachHistory: addInSeachHistory,
+        isLoading.value = false;
+
+        if (exactMatch) {
+          Navigator.pushNamed(context, screens.PlayerDetail.routeName);
+        }
+      },
+      [],
     );
 
-    setState(() => isLoading = false);
-    if (exactMatch) {
-      Navigator.pushNamed(context, screens.PlayerDetail.routeName);
-    }
-  }
+    final onTapSearchHistory = useCallback(
+      (String _playerName) {
+        playerName.value = _playerName;
+        onSearch(playerName.value, addInSeachHistory: false);
+      },
+      [],
+    );
 
-  @override
-  Widget build(BuildContext context) {
-    final searchProvider = ref.watch(providers.players);
+    // Effects
+    useEffect(
+      () {
+        playersProvider.getSearchHistory();
+      },
+      [],
+    );
 
     return CustomScrollView(
       slivers: [
-        TopSearchBar(isLoading: isLoading, onSearch: onSearch),
+        TopSearchBar(isLoading: isLoading.value, onSearch: onSearch),
         searchProvider.topSearchList.isNotEmpty
             ? const SearchList()
             : SearchHistory(
-                playerName: playerName,
-                onTap: (_playerName) {
-                  playerName = _playerName;
-                  onSearch(playerName, addInSeachHistory: false);
-                },
+                playerName: playerName.value,
+                onTap: onTapSearchHistory,
               ),
       ],
     );

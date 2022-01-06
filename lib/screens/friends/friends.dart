@@ -1,100 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friends_list.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class Friends extends ConsumerStatefulWidget {
+class Friends extends HookConsumerWidget {
   static const routeName = '/friends';
-  const Friends({Key? key}) : super(key: key);
-
-  @override
-  _PlayerDetailState createState() => _PlayerDetailState();
-}
-
-class _PlayerDetailState extends ConsumerState<Friends> {
-  models.Player? selectedFriend;
-  bool _init = true;
-  bool _isLoading = true;
   final _friendsListKey = GlobalKey<AnimatedListState>();
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
+  Friends({Key? key}) : super(key: key);
 
   @override
-  void didChangeDependencies() {
-    if (_init) {
-      final authProvider = ref.read(providers.auth);
-      final playersProvider = ref.read(providers.players);
-
-      _init = false;
-
-      if (authProvider.player?.playerId != null) {
-        playersProvider
-            .getFriendsList(
-          authProvider.player!.playerId,
-          authProvider.user?.favouriteFriends,
-        )
-            .then((_) {
-          setState(() => _isLoading = false);
-        });
-      }
-    }
-    super.didChangeDependencies();
-  }
-
-  onSelectFriend(models.Player friend) {
-    if (selectedFriend?.playerId == friend.playerId) {
-      return;
-    }
-
-    // get the playerStatus from the provider
-    final playersProvider = ref.read(providers.players);
-    setState(() => selectedFriend = friend);
-    playersProvider.getPlayerStatus(friend.playerId);
-  }
-
-  onFavouriteFriend() async {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final authProvider = ref.read(providers.auth);
     final playersProvider = ref.read(providers.players);
 
-    final result =
-        await authProvider.markFavouriteFriend(selectedFriend!.playerId);
+    // State
+    final isLoading = useState(true);
+    final selectedFriend = useState<models.Player?>(null);
 
-    if (result == 2) {
-      // user already has max number of friends
-      // show a toast displaying this info
+    // Effects
+    useEffect(
+      () {
+        if (authProvider.player?.playerId != null) {
+          playersProvider
+              .getFriendsList(
+                authProvider.player!.playerId,
+                authProvider.user?.favouriteFriends,
+              )
+              .then((_) => isLoading.value = false);
+        }
+      },
+      [],
+    );
 
-      return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          elevation: 10,
-          content: Text(
-            "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+    // Methods
+    final onSelectFriend = useCallback(
+      (models.Player friend) {
+        if (selectedFriend.value?.playerId == friend.playerId) return;
+        // get the playerStatus from the provider
+        selectedFriend.value = friend;
 
-    if (result == 1) {
-      // player is added in list
-      playersProvider.moveFriendToTop(selectedFriend!.playerId);
-      _friendsListKey.currentState?.insertItem(0);
-    }
-  }
+        playersProvider.getPlayerStatus(friend.playerId);
+      },
+      [],
+    );
 
-  @override
-  Widget build(BuildContext context) {
+    final onFavouriteFriend = useCallback(
+      () async {
+        if (selectedFriend.value == null) return;
+
+        final result = await authProvider
+            .markFavouriteFriend(selectedFriend.value!.playerId);
+
+        // TODO: Change result to be an enum
+        if (result == 2) {
+          // user already has max number of friends
+          // show a toast displaying this info
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              elevation: 10,
+              content: Text(
+                "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        } else if (result == 1) {
+          // player is added in list
+          playersProvider.moveFriendToTop(selectedFriend.value!.playerId);
+          _friendsListKey.currentState?.insertItem(0);
+        }
+      },
+      [],
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Friends'),
       ),
-      body: _isLoading
+      body: isLoading.value
           ? const Center(
               child: widgets.LoadingIndicator(
                 size: 36,
@@ -102,7 +94,7 @@ class _PlayerDetailState extends ConsumerState<Friends> {
             )
           : FriendsList(
               friendsListKey: _friendsListKey,
-              selectedFriend: selectedFriend,
+              selectedFriend: selectedFriend.value,
               onFavouriteFriend: onFavouriteFriend,
               onSelectFriend: onSelectFriend,
             ),
