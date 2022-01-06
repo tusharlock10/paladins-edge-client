@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
 
 class _BountyStoreCard extends StatelessWidget {
@@ -57,15 +59,25 @@ class _BountyStoreCard extends StatelessWidget {
   }
 }
 
-class BountyStoreDetails extends ConsumerWidget {
+class BountyStoreDetails extends HookConsumerWidget {
   const BountyStoreDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const itemHeight = 100;
+    final bountyStoreProvider = ref.watch(providers.bountyStore);
 
-    final bountyStore =
-        ref.watch(providers.bountyStore.select((_) => _.bountyStore));
+    final isLoading = useState(true);
+
+    useEffect(
+      () {
+        bountyStoreProvider
+            .loadBountyStore()
+            .then((_) => isLoading.value = false);
+      },
+      [],
+    );
+
+    const itemHeight = 100;
 
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
@@ -82,6 +94,16 @@ class BountyStoreDetails extends ConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
+    if (isLoading.value) {
+      return const widgets.LoadingIndicator(
+        size: 20,
+        lineWidth: 2,
+        center: true,
+        margin: EdgeInsets.all(20),
+        label: Text('Loading Bounty Store'),
+      );
+    }
+
     return SizedBox(
       width: width,
       child: Column(
@@ -90,7 +112,7 @@ class BountyStoreDetails extends ConsumerWidget {
             'Bounty Store Updates',
             style: textTheme.headline3,
           ),
-          bountyStore.isEmpty
+          bountyStoreProvider.bountyStore.isEmpty
               ? const Card(
                   elevation: 4,
                   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -110,7 +132,7 @@ class BountyStoreDetails extends ConsumerWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  children: bountyStore
+                  children: bountyStoreProvider.bountyStore
                       .map(
                         (_bountyStore) =>
                             _BountyStoreCard(bountyStore: _bountyStore),
