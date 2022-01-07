@@ -1,3 +1,4 @@
+export './active_match/index.dart';
 export './bottom_tabs/index.dart';
 export './champion_detail/index.dart';
 export './champions/index.dart';

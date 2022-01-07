@@ -17,11 +17,11 @@ class RankedAdapter extends TypeAdapter<Ranked> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Ranked(
-      wins: fields[0] as int?,
-      looses: fields[1] as int?,
-      rank: fields[2] as int?,
-      rankName: fields[3] as String?,
-      rankIconUrl: fields[4] as String?,
+      wins: fields[0] as int,
+      looses: fields[1] as int,
+      rank: fields[2] as int,
+      rankName: fields[3] as String,
+      rankIconUrl: fields[4] as String,
       points: fields[5] as int?,
     );
   }
@@ -154,11 +154,11 @@ class PlayerAdapter extends TypeAdapter<Player> {
 // **************************************************************************
 
 Ranked _$RankedFromJson(Map<String, dynamic> json) => Ranked(
-      wins: json['wins'] as int?,
-      looses: json['looses'] as int?,
-      rank: json['rank'] as int?,
-      rankName: json['rankName'] as String?,
-      rankIconUrl: json['rankIconUrl'] as String?,
+      wins: json['wins'] as int,
+      looses: json['looses'] as int,
+      rank: json['rank'] as int,
+      rankName: json['rankName'] as String,
+      rankIconUrl: json['rankIconUrl'] as String,
       points: json['points'] as int?,
     );
 

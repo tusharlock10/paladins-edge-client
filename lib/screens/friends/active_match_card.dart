@@ -41,24 +41,27 @@ class _PlayerMatch extends StatelessWidget {
                   children: [
                     Text(
                       player.player.playerId != "0"
-                          ? player.player.name
+                          ? player.player.playerName
                           : "Private Profile",
                       style: textTheme.bodyText1?.copyWith(fontSize: 12),
                     ),
-                    widgets.ReversableRow(
-                      shouldReverse: shouldReverse,
-                      children: [
-                        widgets.FastImage(
-                          imageUrl: player.player.rankIconUrl!,
-                          height: 16,
-                          width: 16,
-                        ),
-                        Text(
-                          '${player.player.rankName}',
-                          style: textTheme.bodyText1?.copyWith(fontSize: 10),
-                        ),
-                      ],
-                    ),
+                    player.ranked != null
+                        ? widgets.ReversableRow(
+                            shouldReverse: shouldReverse,
+                            children: [
+                              widgets.FastImage(
+                                imageUrl: player.ranked!.rankIconUrl,
+                                height: 16,
+                                width: 16,
+                              ),
+                              Text(
+                                player.ranked!.rankName,
+                                style:
+                                    textTheme.bodyText1?.copyWith(fontSize: 10),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ],

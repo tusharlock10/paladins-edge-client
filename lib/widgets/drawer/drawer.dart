@@ -32,6 +32,11 @@ class AppDrawer extends ConsumerWidget {
     Navigator.of(context).pushNamed(screens.Friends.routeName);
   }
 
+  onActiveMatch(BuildContext context) {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(screens.ActiveMatch.routeName);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
@@ -49,6 +54,11 @@ class AppDrawer extends ConsumerWidget {
               context: context,
               label: 'Friends',
               onPressed: () => onFriends(context),
+            ),
+            _DrawerButton(
+              context: context,
+              label: 'Active Match',
+              onPressed: () => onActiveMatch(context),
             ),
             _DrawerButton(
               context: context,

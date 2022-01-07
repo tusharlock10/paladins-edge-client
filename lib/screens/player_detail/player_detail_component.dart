@@ -52,18 +52,16 @@ class PlayerDetailComponent extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        player.ranked.rankIconUrl != null
-                            ? widgets.FastImage(
-                                imageUrl: player.ranked.rankIconUrl!,
-                                height: 46,
-                                width: 46,
-                              )
-                            : const SizedBox(),
+                        widgets.FastImage(
+                          imageUrl: player.ranked.rankIconUrl,
+                          height: 46,
+                          width: 46,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${player.ranked.rankName}',
+                              player.ranked.rankName,
                               style:
                                   textTheme.bodyText2?.copyWith(fontSize: 14),
                             ),
