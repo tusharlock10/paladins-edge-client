@@ -17,11 +17,11 @@ class RankedAdapter extends TypeAdapter<Ranked> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Ranked(
-      wins: fields[0] as int?,
-      looses: fields[1] as int?,
-      rank: fields[2] as int?,
-      rankName: fields[3] as String?,
-      rankIconUrl: fields[4] as String?,
+      wins: fields[0] as int,
+      looses: fields[1] as int,
+      rank: fields[2] as int,
+      rankName: fields[3] as String,
+      rankIconUrl: fields[4] as String,
       points: fields[5] as int?,
     );
   }
@@ -67,7 +67,6 @@ class PlayerAdapter extends TypeAdapter<Player> {
     };
     return Player(
       playerId: fields[0] as String,
-      userId: fields[1] as String?,
       name: fields[2] as String,
       title: fields[3] as String?,
       avatarUrl: fields[4] as String?,
@@ -81,15 +80,20 @@ class PlayerAdapter extends TypeAdapter<Player> {
       accountCreationDate: fields[12] as DateTime?,
       lastLoginDate: fields[13] as DateTime?,
       ranked: fields[14] as Ranked,
+      userId: fields[1] as String?,
       status: fields[15] as String?,
       friends: (fields[16] as List?)?.cast<String>(),
+      lastUpdatedFriends: fields[17] as DateTime?,
+      lastUpdatedPlayer: fields[18] as DateTime?,
+      lastUpdatedMatches: fields[19] as DateTime?,
+      lastUpdatedChampions: fields[20] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Player obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(21)
       ..writeByte(0)
       ..write(obj.playerId)
       ..writeByte(1)
@@ -123,7 +127,15 @@ class PlayerAdapter extends TypeAdapter<Player> {
       ..writeByte(15)
       ..write(obj.status)
       ..writeByte(16)
-      ..write(obj.friends);
+      ..write(obj.friends)
+      ..writeByte(17)
+      ..write(obj.lastUpdatedFriends)
+      ..writeByte(18)
+      ..write(obj.lastUpdatedPlayer)
+      ..writeByte(19)
+      ..write(obj.lastUpdatedMatches)
+      ..writeByte(20)
+      ..write(obj.lastUpdatedChampions);
   }
 
   @override
@@ -142,11 +154,11 @@ class PlayerAdapter extends TypeAdapter<Player> {
 // **************************************************************************
 
 Ranked _$RankedFromJson(Map<String, dynamic> json) => Ranked(
-      wins: json['wins'] as int?,
-      looses: json['looses'] as int?,
-      rank: json['rank'] as int?,
-      rankName: json['rankName'] as String?,
-      rankIconUrl: json['rankIconUrl'] as String?,
+      wins: json['wins'] as int,
+      looses: json['looses'] as int,
+      rank: json['rank'] as int,
+      rankName: json['rankName'] as String,
+      rankIconUrl: json['rankIconUrl'] as String,
       points: json['points'] as int?,
     );
 
@@ -161,7 +173,6 @@ Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
 
 Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
       playerId: json['playerId'] as String,
-      userId: json['userId'] as String?,
       name: json['name'] as String,
       title: json['title'] as String?,
       avatarUrl: json['avatarUrl'] as String?,
@@ -179,9 +190,22 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
           ? null
           : DateTime.parse(json['lastLoginDate'] as String),
       ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
+      userId: json['userId'] as String?,
       status: json['status'] as String?,
       friends:
           (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      lastUpdatedFriends: json['lastUpdatedFriends'] == null
+          ? null
+          : DateTime.parse(json['lastUpdatedFriends'] as String),
+      lastUpdatedPlayer: json['lastUpdatedPlayer'] == null
+          ? null
+          : DateTime.parse(json['lastUpdatedPlayer'] as String),
+      lastUpdatedMatches: json['lastUpdatedMatches'] == null
+          ? null
+          : DateTime.parse(json['lastUpdatedMatches'] as String),
+      lastUpdatedChampions: json['lastUpdatedChampions'] == null
+          ? null
+          : DateTime.parse(json['lastUpdatedChampions'] as String),
     );
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
@@ -202,4 +226,8 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'ranked': instance.ranked,
       'status': instance.status,
       'friends': instance.friends,
+      'lastUpdatedFriends': instance.lastUpdatedFriends?.toIso8601String(),
+      'lastUpdatedPlayer': instance.lastUpdatedPlayer?.toIso8601String(),
+      'lastUpdatedMatches': instance.lastUpdatedMatches?.toIso8601String(),
+      'lastUpdatedChampions': instance.lastUpdatedChampions?.toIso8601String(),
     };

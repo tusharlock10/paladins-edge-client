@@ -4,15 +4,17 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class PlayerDetailComponent extends StatelessWidget {
   final models.Player player;
+  final void Function() onForceUpdate;
 
   const PlayerDetailComponent({
     required this.player,
+    required this.onForceUpdate,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -21,54 +23,64 @@ class PlayerDetailComponent extends StatelessWidget {
           Row(
             children: [
               widgets.ElevatedAvatar(
-                size: 48,
+                size: 54,
                 borderRadius: 10,
                 imageUrl: player.avatarUrl!,
               ),
               const SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    player.name,
-                    style: theme.textTheme.headline3?.copyWith(fontSize: 22),
-                  ),
-                  player.title != null
-                      ? Text(
-                          player.title!,
-                          style:
-                              theme.textTheme.bodyText1?.copyWith(fontSize: 14),
-                        )
-                      : const SizedBox(),
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      player.ranked.rankIconUrl != null
-                          ? widgets.FastImage(
-                              imageUrl: player.ranked.rankIconUrl!,
-                              height: 42,
-                              width: 42,
-                            )
-                          : const SizedBox(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${player.ranked.rankName}',
-                            style: theme.textTheme.bodyText2
-                                ?.copyWith(fontSize: 11),
-                          ),
-                          Text(
-                            '${player.ranked.points} TP',
-                            style: theme.textTheme.bodyText1
-                                ?.copyWith(fontSize: 11),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+              SizedBox(
+                height: 54 * 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          player.name,
+                          style: textTheme.headline3?.copyWith(fontSize: 20),
+                        ),
+                        player.title != null
+                            ? Text(
+                                player.title!,
+                                style:
+                                    textTheme.bodyText1?.copyWith(fontSize: 14),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        widgets.FastImage(
+                          imageUrl: player.ranked.rankIconUrl,
+                          height: 46,
+                          width: 46,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              player.ranked.rankName,
+                              style:
+                                  textTheme.bodyText2?.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              '${player.ranked.points} TP',
+                              style:
+                                  textTheme.bodyText1?.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        widgets.UpdateButton(
+                          lastUpdated: player.lastUpdatedPlayer,
+                          onPressed: onForceUpdate,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

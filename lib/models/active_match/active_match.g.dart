@@ -31,6 +31,9 @@ ActiveMatchPlayersInfo _$ActiveMatchPlayersInfoFromJson(
     ActiveMatchPlayersInfo(
       player: ActiveMatchPlayerDetail.fromJson(
           json['player'] as Map<String, dynamic>),
+      ranked: json['ranked'] == null
+          ? null
+          : Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
       championId: json['championId'] as int,
       championLevel: json['championLevel'] as int,
       championName: json['championName'] as String,
@@ -42,6 +45,7 @@ Map<String, dynamic> _$ActiveMatchPlayersInfoToJson(
         ActiveMatchPlayersInfo instance) =>
     <String, dynamic>{
       'player': instance.player,
+      'ranked': instance.ranked,
       'championId': instance.championId,
       'championLevel': instance.championLevel,
       'championName': instance.championName,
@@ -53,22 +57,16 @@ ActiveMatchPlayerDetail _$ActiveMatchPlayerDetailFromJson(
         Map<String, dynamic> json) =>
     ActiveMatchPlayerDetail(
       playerId: json['playerId'] as String,
-      name: json['name'] as String,
+      playerName: json['playerName'] as String,
       platform: json['platform'] as String,
       level: json['level'] as int,
-      rank: json['rank'] as int,
-      rankName: json['rankName'] as String?,
-      rankIconUrl: json['rankIconUrl'] as String?,
     );
 
 Map<String, dynamic> _$ActiveMatchPlayerDetailToJson(
         ActiveMatchPlayerDetail instance) =>
     <String, dynamic>{
       'playerId': instance.playerId,
-      'name': instance.name,
+      'playerName': instance.playerName,
       'platform': instance.platform,
       'level': instance.level,
-      'rank': instance.rank,
-      'rankName': instance.rankName,
-      'rankIconUrl': instance.rankIconUrl,
     };

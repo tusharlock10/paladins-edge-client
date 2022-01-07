@@ -1,29 +1,50 @@
 // The match that is completed
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:paladinsedge/models/player/player.dart' show Ranked;
 
 part 'match.g.dart';
 
 @JsonSerializable()
 class MatchPlayerStats {
-  final int kills; // number of kills the player got in match
-  final int assists; // number of assists the player got in match
-  final int deaths; // number of deaths the player got in match
+  /// number of kills the player got in match
+  final int kills;
 
-  final int weaponDamageDealt; // damage dealt by the player with weapon
-  final int totalDamageDealt; // total damage dealt by the player
+  /// number of assists the player got in match
+  final int assists;
 
-  final int damageShielded; // damage blocked by the player through shields
-  final int totalDamageTaken; // total damage taken by the player
+  /// number of deaths the player got in match
+  final int deaths;
 
-  final int selfHealingDone; // healing done by the player for himself
-  final int healingDone; // healing done by the player on allies
+  /// damage dealt by the player with weapon
+  final int weaponDamageDealt;
 
-  final int biggestKillStreak; // longest kill streak of the player
-  final int totalMultiKills; // total number of multi kills of the player
+  /// total damage dealt by the player
+  final int totalDamageDealt;
 
-  final int objectiveTime; // time spent on objective
-  final int creditsEarned; // credits earned by the player
+  /// damage blocked by the player through shields
+  final int damageShielded;
+
+  /// total damage taken by the player
+  final int totalDamageTaken;
+
+  /// healing done by the player for himself
+  final int selfHealingDone;
+
+  /// healing done by the player on allies
+  final int healingDone;
+
+  /// longest kill streak of the player
+  final int biggestKillStreak;
+
+  /// total number of multi kills of the player
+  final int totalMultiKills;
+
+  /// time spent on objective
+  final int objectiveTime;
+
+  /// credits earned by the player
+  final int creditsEarned;
 
   MatchPlayerStats({
     required this.kills,
@@ -78,24 +99,49 @@ class MatchPlayerChampionCard {
 
 @JsonSerializable()
 class MatchPlayer {
-  final String playerId; // player id as per paladins api
-  final String matchId; // id of the match it is connected to
+  /// player id as per paladins api
+  final String playerId;
 
-  final int championId; // champion id as per paladins api
-  final int
-      talentId2; // talent used for the champion, id as per paladins getItems api
+  /// name of the player
+  final String playerName;
 
-  final String skin; // skin of the champion
-  final int skinId; // skin id as per paladins api
+  /// id of the match it is connected to
+  final String matchId;
 
-  final int partyId; // party the player belongs to
-  final int team; // team of the player
+  /// champion id as per paladins api
+  final int championId;
 
-  final MatchPlayerStats playerStats; // stats of the player
-  final List<MatchPlayerItems> playerItems; // items bought by the player
-  final List<MatchPlayerChampionCard>
-      playerChampionCards; // champion cards used by the player
+  /// talent used for the champion, id as per paladins getItems api
+  final int talentId2;
 
+  /// skin of the champion
+  final String skin;
+
+  /// skin id as per paladins api
+  final int skinId;
+
+  /// party the player belongs to
+  final int partyId;
+
+  /// team of the player
+  final int team;
+
+  /// ranking of the player among other 9 players in that match
+  final int? matchPosition;
+
+  /// ranked details of the player for this match
+  final Ranked? playerRanked;
+
+  /// stats of the player
+  final MatchPlayerStats playerStats;
+
+  /// items bought by the player
+  final List<MatchPlayerItems> playerItems;
+
+  /// champion cards used by the player
+  final List<MatchPlayerChampionCard> playerChampionCards;
+
+  /// If the matchPlayer data is in complete or not
   // needs a paladinsAPI call to fetch the complete data
   // most matchPlayers will be inComplete by default
   // and matchDetail api needs to be called to complete the data
@@ -105,6 +151,7 @@ class MatchPlayer {
 
   MatchPlayer({
     required this.playerId,
+    required this.playerName,
     required this.matchId,
     required this.championId,
     required this.talentId2,
@@ -112,6 +159,8 @@ class MatchPlayer {
     required this.skinId,
     required this.partyId,
     required this.team,
+    this.matchPosition,
+    this.playerRanked,
     required this.playerStats,
     required this.playerItems,
     required this.playerChampionCards,
@@ -155,6 +204,9 @@ class Match {
   /// region of the match
   final String region;
 
+  /// is this match a Ranked match
+  final bool isRankedMatch;
+
   /// id champion that were banned in the match
   final List<int> championBans;
 
@@ -176,6 +228,7 @@ class Match {
     required this.queue,
     required this.map,
     required this.region,
+    required this.isRankedMatch,
     required this.championBans,
     required this.isInComplete,
   });

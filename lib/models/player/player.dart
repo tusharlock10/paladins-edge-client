@@ -9,16 +9,16 @@ part 'player.g.dart';
 @JsonSerializable()
 class Ranked {
   @HiveField(0)
-  final int? wins; // number of wins in ranked
+  final int wins; // number of wins in ranked
   @HiveField(1)
-  final int? looses; // number of losses in ranked
+  final int looses; // number of losses in ranked
   @HiveField(2)
-  final int?
+  final int
       rank; // the rank of the player in number in numbers eg. 1 if bronze 5
   @HiveField(3)
-  final String? rankName; // the rank of the player in string eg. Master
+  final String rankName; // the rank of the player in string eg. Master
   @HiveField(4)
-  final String? rankIconUrl; // image url of the rank icon
+  final String rankIconUrl; // image url of the rank icon
   @HiveField(5)
   final int? points; // the tp of the player at the current ranks
 
@@ -27,8 +27,8 @@ class Ranked {
     required this.looses,
     required this.rank,
     required this.rankName,
-    required String? rankIconUrl,
-    required this.points,
+    required String rankIconUrl,
+    this.points,
   }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
 
   factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);
@@ -106,9 +106,24 @@ class Player {
   @HiveField(16)
   final List<String>? friends;
 
+  /// last update date of friends
+  @HiveField(17)
+  final DateTime? lastUpdatedFriends;
+
+  /// last update date of player profile
+  @HiveField(18)
+  final DateTime? lastUpdatedPlayer;
+
+  /// last update date of player's matches
+  @HiveField(19)
+  final DateTime? lastUpdatedMatches;
+
+  /// last update date of player's champion stats
+  @HiveField(20)
+  final DateTime? lastUpdatedChampions;
+
   Player({
     required this.playerId,
-    this.userId,
     required this.name,
     required this.title,
     required String? avatarUrl,
@@ -122,8 +137,13 @@ class Player {
     required this.accountCreationDate,
     required this.lastLoginDate,
     required this.ranked,
+    this.userId,
     this.status,
     this.friends,
+    this.lastUpdatedFriends,
+    this.lastUpdatedPlayer,
+    this.lastUpdatedMatches,
+    this.lastUpdatedChampions,
   }) : avatarUrl = utilities.getUrlFromKey(avatarUrl);
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);

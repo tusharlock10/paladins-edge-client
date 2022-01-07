@@ -1,6 +1,7 @@
 // The match that is currently live
 // different from a completed match
 import 'package:json_annotation/json_annotation.dart';
+import 'package:paladinsedge/models/player/player.dart' show Ranked;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 part 'active_match.g.dart';
@@ -28,6 +29,7 @@ class ActiveMatch {
 @JsonSerializable()
 class ActiveMatchPlayersInfo {
   ActiveMatchPlayerDetail player;
+  Ranked? ranked;
   int championId;
   int championLevel;
   String championName;
@@ -36,6 +38,7 @@ class ActiveMatchPlayersInfo {
 
   ActiveMatchPlayersInfo({
     required this.player,
+    this.ranked,
     required this.championId,
     required this.championLevel,
     required this.championName,
@@ -51,22 +54,16 @@ class ActiveMatchPlayersInfo {
 @JsonSerializable()
 class ActiveMatchPlayerDetail {
   String playerId;
-  String name;
+  String playerName;
   String platform;
   int level;
-  int rank;
-  String? rankName;
-  String? rankIconUrl;
 
   ActiveMatchPlayerDetail({
     required this.playerId,
-    required this.name,
+    required this.playerName,
     required this.platform,
     required this.level,
-    required this.rank,
-    required this.rankName,
-    required String? rankIconUrl,
-  }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
+  });
 
   factory ActiveMatchPlayerDetail.fromJson(Map<String, dynamic> json) =>
       _$ActiveMatchPlayerDetailFromJson(json);

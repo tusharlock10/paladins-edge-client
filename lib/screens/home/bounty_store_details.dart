@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
 
 class _BountyStoreCard extends StatelessWidget {
@@ -12,18 +14,6 @@ class _BountyStoreCard extends StatelessWidget {
     required this.bountyStore,
     Key? key,
   }) : super(key: key);
-
-  String getTimeRemaining() {
-    final timeDiff = bountyStore.endDate.difference(DateTime.now());
-    final endTime = Jiffy({"seconds": timeDiff.inSeconds}).Hms;
-    final endDays = timeDiff.inDays;
-    String timeRemaining;
-
-    timeRemaining =
-        endDays == 0 ? '$endTime remaining' : '$endDays days remaining';
-
-    return timeRemaining;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +35,21 @@ class _BountyStoreCard extends StatelessWidget {
           TimerBuilder.periodic(
             const Duration(seconds: 1),
             builder: (_) {
+              final timeRemaining = utilities.getTimeRemaining(
+                fromDate: DateTime.now(),
+                toDate: bountyStore.endDate,
+              );
+
+              if (timeRemaining == null) {
+                return Text(
+                  'Expired',
+                  style: textTheme.bodyText2?.copyWith(fontSize: 12),
+                );
+              }
+
               return Text(
-                getTimeRemaining(),
-                style: textTheme.bodyText2?.copyWith(fontSize: 14),
+                "$timeRemaining remaining",
+                style: textTheme.bodyText2?.copyWith(fontSize: 12),
               );
             },
           ),
@@ -57,15 +59,25 @@ class _BountyStoreCard extends StatelessWidget {
   }
 }
 
-class BountyStoreDetails extends ConsumerWidget {
+class BountyStoreDetails extends HookConsumerWidget {
   const BountyStoreDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const itemHeight = 100;
+    final bountyStoreProvider = ref.watch(providers.bountyStore);
 
-    final bountyStore =
-        ref.watch(providers.bountyStore.select((_) => _.bountyStore));
+    final isLoading = useState(true);
+
+    useEffect(
+      () {
+        bountyStoreProvider
+            .loadBountyStore()
+            .then((_) => isLoading.value = false);
+      },
+      [],
+    );
+
+    const itemHeight = 100;
 
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
@@ -82,8 +94,14 @@ class BountyStoreDetails extends ConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    if (bountyStore.isEmpty) {
-      return const SizedBox();
+    if (isLoading.value) {
+      return const widgets.LoadingIndicator(
+        size: 20,
+        lineWidth: 2,
+        center: true,
+        margin: EdgeInsets.all(20),
+        label: Text('Loading Bounty Store'),
+      );
     }
 
     return SizedBox(
@@ -94,18 +112,33 @@ class BountyStoreDetails extends ConsumerWidget {
             'Bounty Store Updates',
             style: textTheme.headline3,
           ),
-          GridView.count(
-            childAspectRatio: childAspectRatio,
-            crossAxisCount: crossAxisCount,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            children: bountyStore
-                .map(
-                  (_bountyStore) => _BountyStoreCard(bountyStore: _bountyStore),
+          bountyStoreProvider.bountyStore.isEmpty
+              ? const Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Center(
+                      child: Text(
+                        'Sorry we were unable to fetch the bounty store',
+                      ),
+                    ),
+                  ),
                 )
-                .toList(),
-          ),
+              : GridView.count(
+                  childAspectRatio: childAspectRatio,
+                  crossAxisCount: crossAxisCount,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  children: bountyStoreProvider.bountyStore
+                      .map(
+                        (_bountyStore) =>
+                            _BountyStoreCard(bountyStore: _bountyStore),
+                      )
+                      .toList(),
+                ),
         ],
       ),
     );

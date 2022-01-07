@@ -13,6 +13,22 @@ class _MatchesNotifier extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void resetPlayerMatches() {
+    playerMatches = null;
+  }
+
+  Future<void> getMatchDetails(String matchId) async {
+    final response = await api.MatchRequests.matchDetails(matchId: matchId);
+    if (response == null) return;
+    matchDetails = response;
+
+    notifyListeners();
+  }
+
+  void resetMatchDetails() {
+    matchDetails = null;
+  }
 }
 
 /// Provider to handle matches
