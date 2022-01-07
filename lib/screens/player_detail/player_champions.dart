@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class PlayerChampions extends HookConsumerWidget {
@@ -49,19 +49,6 @@ class PlayerChampions extends HookConsumerWidget {
     }
   }
 
-  String getLastPlayedTime(DateTime lastPlayed) {
-    // if difference in lastPlayed and now is greater than 1 day,
-    // show the full date
-    // else from the from now duration
-    var lastPlayedTime = '';
-    final duration = DateTime.now().difference(lastPlayed);
-    lastPlayedTime = const Duration(days: 1).compareTo(duration) < 0
-        ? Jiffy(lastPlayed).fromNow()
-        : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
-
-    return lastPlayedTime;
-  }
-
   DataRow getDataRow(
     models.Champion champion,
     models.PlayerChampion playerChampion,
@@ -73,7 +60,7 @@ class PlayerChampions extends HookConsumerWidget {
     final playTime = playerChampion.playTime / 60;
     final kda = (kills + playerChampion.totalAssists) / deaths;
     final level = playerChampion.level;
-    final lastPlayed = getLastPlayedTime(playerChampion.lastPlayed);
+    final lastPlayed = utilities.getLastPlayedTime(playerChampion.lastPlayed);
 
     return DataRow(
       cells: [

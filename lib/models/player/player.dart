@@ -9,16 +9,16 @@ part 'player.g.dart';
 @JsonSerializable()
 class Ranked {
   @HiveField(0)
-  final int? wins; // number of wins in ranked
+  final int wins; // number of wins in ranked
   @HiveField(1)
-  final int? looses; // number of losses in ranked
+  final int looses; // number of losses in ranked
   @HiveField(2)
-  final int?
+  final int
       rank; // the rank of the player in number in numbers eg. 1 if bronze 5
   @HiveField(3)
-  final String? rankName; // the rank of the player in string eg. Master
+  final String rankName; // the rank of the player in string eg. Master
   @HiveField(4)
-  final String? rankIconUrl; // image url of the rank icon
+  final String rankIconUrl; // image url of the rank icon
   @HiveField(5)
   final int? points; // the tp of the player at the current ranks
 
@@ -27,8 +27,8 @@ class Ranked {
     required this.looses,
     required this.rank,
     required this.rankName,
-    required String? rankIconUrl,
-    required this.points,
+    required String rankIconUrl,
+    this.points,
   }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
 
   factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);

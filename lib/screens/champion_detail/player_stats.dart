@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champion_detail/stat_label.dart';
@@ -10,19 +9,6 @@ import 'package:timer_builder/timer_builder.dart';
 
 class PlayerStats extends ConsumerWidget {
   const PlayerStats({Key? key}) : super(key: key);
-
-  String getLastPlayedTime(DateTime lastPlayed) {
-    // if difference in lastPlayed and now is greater than 1 day,
-    // show the full date
-    // else from the from now duration
-    var lastPlayedTime = '';
-    final duration = DateTime.now().difference(lastPlayed);
-    lastPlayedTime = const Duration(days: 1).compareTo(duration) < 0
-        ? Jiffy(lastPlayed).fromNow()
-        : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
-
-    return lastPlayedTime;
-  }
 
   Map<String, dynamic> getStatLabelGridProps(
     BuildContext context,
@@ -128,7 +114,8 @@ class PlayerStats extends ConsumerWidget {
                       builder: (_) {
                         return StatLabel(
                           label: 'Last Played',
-                          text: getLastPlayedTime(playerChampion.lastPlayed),
+                          text: utilities
+                              .getLastPlayedTime(playerChampion.lastPlayed),
                         );
                       },
                     ),

@@ -33,3 +33,16 @@ String _getFormat(Duration diff) {
 
   return "s[s]";
 }
+
+String getLastPlayedTime(DateTime lastPlayed) {
+  // if difference in lastPlayed and now is greater than 1 day,
+  // show the full date
+  // else from the from now duration
+  var lastPlayedTime = '';
+  final duration = DateTime.now().difference(lastPlayed);
+  lastPlayedTime = const Duration(days: 1).compareTo(duration) < 0
+      ? Jiffy(lastPlayed).fromNow()
+      : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
+
+  return lastPlayedTime;
+}

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constsnts;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class _MatchPlayer extends ConsumerWidget {
@@ -14,26 +15,6 @@ class _MatchPlayer extends ConsumerWidget {
     required this.matchPlayer,
     Key? key,
   }) : super(key: key);
-
-  String shortRankName(String rankName) {
-    // TODO: Send this function in a utility file
-
-    if (rankName.toLowerCase().contains("gran")) return "GM"; // Grandmaster
-    if (rankName.toLowerCase().contains("mast")) return "MS"; // Master
-    if (rankName.toLowerCase().contains("qual")) return "QL"; // Qualifying
-
-    final temp = rankName.split(" ");
-    final shortTier = temp.first[0];
-    String tierLevel = "";
-
-    if (temp[1] == "I") tierLevel = "1";
-    if (temp[1] == "II") tierLevel = "2";
-    if (temp[1] == "III") tierLevel = "3";
-    if (temp[1] == "IV") tierLevel = "4";
-    if (temp[1] == "V") tierLevel = "5";
-
-    return '$shortTier$tierLevel';
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,13 +60,14 @@ class _MatchPlayer extends ConsumerWidget {
                   child: Column(
                     children: [
                       widgets.FastImage(
-                        imageUrl: matchPlayer.playerRanked!.rankIconUrl!,
+                        imageUrl: matchPlayer.playerRanked!.rankIconUrl,
                         height: 20,
                         width: 20,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        shortRankName(matchPlayer.playerRanked!.rankName!),
+                        utilities
+                            .shortRankName(matchPlayer.playerRanked!.rankName),
                         style: textTheme.bodyText1?.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
