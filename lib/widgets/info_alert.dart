@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/widgets/loading_indicator.dart';
@@ -7,26 +8,25 @@ void showInfoAlert(BuildContext context) {
   showDialog(context: context, builder: (_) => const InfoAlert());
 }
 
-class InfoAlert extends StatefulWidget {
+class InfoAlert extends HookWidget {
   const InfoAlert({Key? key}) : super(key: key);
 
   @override
-  _InfoAlertState createState() => _InfoAlertState();
-}
-
-class _InfoAlertState extends State<InfoAlert> {
-  PackageInfo? packageInfo;
-
-  @override
-  void initState() {
-    PackageInfo.fromPlatform()
-        .then((value) => setState(() => packageInfo = value));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Variables
     final textTheme = Theme.of(context).textTheme;
+
+    // State
+    final packageInfo = useState<PackageInfo?>(null);
+
+    // Effects
+    useEffect(
+      () {
+        PackageInfo.fromPlatform()
+            .then((_packageInfo) => packageInfo.value = _packageInfo);
+      },
+      [],
+    );
 
     return Dialog(
       elevation: 5,
@@ -39,7 +39,7 @@ class _InfoAlertState extends State<InfoAlert> {
         constraints: const BoxConstraints(maxHeight: 350),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: packageInfo == null
+          child: packageInfo.value == null
               ? const Center(
                   child: LoadingIndicator(
                     size: 36,
@@ -53,10 +53,10 @@ class _InfoAlertState extends State<InfoAlert> {
                       style: textTheme.headline1?.copyWith(fontSize: 24),
                     ),
                     const SizedBox(height: 20),
-                    Text('App Name : ${packageInfo!.appName}'),
+                    Text('App Name : ${packageInfo.value!.appName}'),
                     Text('App Type : ${constants.Env.appType}'),
-                    Text('Package Name : ${packageInfo!.packageName}'),
-                    Text('Version: ${packageInfo!.version}'),
+                    Text('Package Name : ${packageInfo.value!.packageName}'),
+                    Text('Version: ${packageInfo.value!.version}'),
                     Text('API Url : ${constants.Env.baseUrl}'),
                   ],
                 ),

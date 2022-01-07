@@ -1,57 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champions_list.dart';
 import 'package:paladinsedge/screens/champions/champions_search_bar.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class Champions extends ConsumerStatefulWidget {
+class Champions extends HookConsumerWidget {
   static const routeName = '/champions';
+
   const Champions({Key? key}) : super(key: key);
 
   @override
-  _ChampionsState createState() => _ChampionsState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final search = useState('');
+    final isLoading = useState(true);
 
-class _ChampionsState extends ConsumerState<Champions> {
-  String search = '';
-  bool _init = true;
-  bool _isLoading = true;
+    useEffect(
+      () {
+        final championsProvider = ref.read(providers.champions);
+        final authProvider = ref.read(providers.auth);
 
-  @override
-  void didChangeDependencies() {
-    final championsProvider = ref.read(providers.champions);
-    final authProvider = ref.read(providers.auth);
-    if (_init) {
-      _init = false;
-      Future.wait([
-        championsProvider.loadChampions(),
-        championsProvider.getPlayerChampions(authProvider.player!.playerId),
-      ]).then((_) {
-        setState(() => _isLoading = false);
-      });
-    }
-    super.didChangeDependencies();
-  }
+        Future.wait([
+          championsProvider.loadChampions(),
+          championsProvider.getPlayerChampions(authProvider.player!.playerId),
+        ]).then((_) {
+          isLoading.value = false;
+        });
+      },
+      [],
+    );
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      ChampionsSearchBar(
-        onChanged: (search) => setState(() => this.search = search),
-        onPressed: () => setState(() => search = ''),
-      ),
-      Expanded(
-        child: _isLoading
-            ? const Center(
-                child: widgets.LoadingIndicator(
-                  size: 36,
-                  color: theme.themeMaterialColor,
-                ),
-              )
-            : ChampionsList(search: search),
-      ),
-    ]);
+    return Column(
+      children: [
+        ChampionsSearchBar(
+          onChanged: (_search) => search.value = _search,
+          onPressed: () => search.value = '',
+        ),
+        Expanded(
+          child: isLoading.value
+              ? const Center(
+                  child: widgets.LoadingIndicator(
+                    size: 36,
+                    color: theme.themeMaterialColor,
+                  ),
+                )
+              : ChampionsList(search: search.value),
+        ),
+      ],
+    );
   }
 }
