@@ -33,8 +33,7 @@ class ActiveMatch extends HookConsumerWidget {
       () {
         if (playerId != null) {
           playersProvider
-              // .getPlayerStatus(playerId)
-              .getPlayerStatus("716964946")
+              .getPlayerStatus(playerId)
               .then((_) => isLoading.value = false);
         }
       },
