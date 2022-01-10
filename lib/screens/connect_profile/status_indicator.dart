@@ -21,7 +21,6 @@ class _StatusIndicatorItem extends StatelessWidget {
       Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-        elevation: 3,
         child: Container(
           height: radius * 2,
           width: radius * 2,
