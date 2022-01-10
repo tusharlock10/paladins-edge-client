@@ -28,7 +28,6 @@ class Abilities extends StatelessWidget {
                 ),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-                elevation: 3,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -39,12 +38,10 @@ class Abilities extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 10),
-                            child: widgets.FastImage(
+                            child: widgets.ElevatedAvatar(
                               imageUrl: ability.imageUrl,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              height: 72,
-                              width: 72,
+                              size: 36,
+                              borderRadius: 10,
                             ),
                           ),
                           Expanded(

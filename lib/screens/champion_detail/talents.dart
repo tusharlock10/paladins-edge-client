@@ -21,7 +21,6 @@ class Talents extends StatelessWidget {
                 ),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-                elevation: 3,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10,

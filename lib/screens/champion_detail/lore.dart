@@ -20,7 +20,6 @@ class Lore extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-      elevation: 3,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10,

@@ -109,6 +109,21 @@ final lightTheme = ThemeData(
       fontFamily: GoogleFonts.poppins().fontFamily,
     ),
   ),
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: themeMaterialColor.shade50,
+  ),
+  sliderTheme: SliderThemeData(
+    valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+    trackShape: const RoundedRectSliderTrackShape(),
+    activeTrackColor: themeMaterialColor.shade100,
+    trackHeight: 20,
+    thumbColor: Colors.white,
+    thumbShape: const RoundSliderThumbShape(
+      enabledThumbRadius: 16,
+      elevation: 7,
+    ),
+    showValueIndicator: ShowValueIndicator.never,
+  ),
 );
 
 /// ThemeData for dark theme
@@ -217,5 +232,19 @@ final darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontFamily: GoogleFonts.poppins().fontFamily,
     ),
+  ),
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: darkThemeMaterialColor.shade50,
+  ),
+  sliderTheme: const SliderThemeData(
+    valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+    trackShape: RoundedRectSliderTrackShape(),
+    trackHeight: 20,
+    thumbColor: Colors.white,
+    thumbShape: RoundSliderThumbShape(
+      enabledThumbRadius: 16,
+      elevation: 7,
+    ),
+    showValueIndicator: ShowValueIndicator.never,
   ),
 );

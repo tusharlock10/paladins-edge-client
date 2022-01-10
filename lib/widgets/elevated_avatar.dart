@@ -7,6 +7,7 @@ class ElevatedAvatar extends StatelessWidget {
   final double? borderRadius;
   final double? borderWidth;
   final double? elevation;
+  final BoxFit? fit;
 
   const ElevatedAvatar({
     required this.imageUrl,
@@ -14,6 +15,7 @@ class ElevatedAvatar extends StatelessWidget {
     this.borderWidth,
     this.elevation,
     this.borderRadius,
+    this.fit,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +35,7 @@ class ElevatedAvatar extends StatelessWidget {
         width: size * 2,
         child: widgets.FastImage(
           imageUrl: imageUrl,
+          fit: fit,
         ),
       ),
     );
