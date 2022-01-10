@@ -67,23 +67,7 @@ class LoadoutCards extends HookWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                        ),
-                      ),
-                      context: context,
-                      builder: (_context) {
-                        return LoadoutCardDetail(
-                          card: card,
-                          champion: champion,
-                        );
-                      },
-                    );
-                  },
+                  onTap: () => onPressCard(card),
                   child: Column(
                     children: [
                       Align(
