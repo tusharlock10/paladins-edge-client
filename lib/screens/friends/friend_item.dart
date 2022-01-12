@@ -32,13 +32,11 @@ class FriendItem extends ConsumerWidget {
           padding: const EdgeInsets.only(left: 15),
           child: Row(
             children: [
-              friend.avatarUrl != null
-                  ? widgets.ElevatedAvatar(
-                      size: 24,
-                      borderRadius: 5,
-                      imageUrl: friend.avatarUrl!,
-                    )
-                  : const SizedBox(),
+              widgets.ElevatedAvatar(
+                size: 24,
+                borderRadius: 5,
+                imageUrl: friend.avatarUrl,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Column(
@@ -57,7 +55,7 @@ class FriendItem extends ConsumerWidget {
                           )
                         : const SizedBox(),
                     Text(
-                      '${friend.platform}',
+                      friend.platform,
                       style: theme.textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                   ],
@@ -66,11 +64,11 @@ class FriendItem extends ConsumerWidget {
               const Expanded(
                 child: SizedBox(),
               ),
-              friend.ranked.rank != 0
+              friend.ranked?.rank != 0
                   ? widgets.FastImage(
                       height: 36,
                       width: 36,
-                      imageUrl: friend.ranked.rankIconUrl,
+                      imageUrl: friend.ranked!.rankIconUrl,
                     )
                   : const SizedBox(),
               Container(

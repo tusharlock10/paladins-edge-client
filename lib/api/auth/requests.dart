@@ -56,24 +56,20 @@ abstract class AuthRequests {
     required String name,
     required String verification,
   }) async {
-    try {
-      final response = await utilities.api.post<Map<String, dynamic>>(
-        constants.Urls.login,
-        data: {
-          'uid': uid,
-          'email': email,
-          'name': name,
-          'verification': verification,
-        },
-      );
-      if (response.data != null) {
-        return responses.LoginResponse.fromJson(response.data!);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
+    final response = await utilities.api.post<Map<String, dynamic>>(
+      constants.Urls.login,
+      data: {
+        'uid': uid,
+        'email': email,
+        'name': name,
+        'verification': verification,
+      },
+    );
+    if (response.data != null) {
+      return responses.LoginResponse.fromJson(response.data!);
     }
+
+    return null;
   }
 
   static Future<bool> logout() async {

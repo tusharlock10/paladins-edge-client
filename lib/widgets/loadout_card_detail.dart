@@ -5,13 +5,39 @@ import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class LoadoutCardDetail extends HookWidget {
+void showLoadoutCardDetailSheet({
+  required BuildContext context,
+  required models.Champion champion,
+  required models.Card card,
+  int? cardPoints,
+}) {
+  showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(15),
+        topRight: Radius.circular(15),
+      ),
+    ),
+    context: context,
+    builder: (_) {
+      return _LoadoutCardDetail(
+        card: card,
+        champion: champion,
+        cardPoints: cardPoints,
+      );
+    },
+  );
+}
+
+class _LoadoutCardDetail extends HookWidget {
   final models.Card card;
   final models.Champion champion;
+  final int? cardPoints;
 
-  const LoadoutCardDetail({
+  const _LoadoutCardDetail({
     required this.card,
     required this.champion,
+    this.cardPoints,
     Key? key,
   }) : super(key: key);
 
@@ -21,7 +47,7 @@ class LoadoutCardDetail extends HookWidget {
     final textTheme = Theme.of(context).textTheme;
 
     // State
-    final amount = useState(2);
+    final amount = useState(cardPoints ?? 1);
 
     // Methods
     final getDescriptionParts =
@@ -99,22 +125,37 @@ class LoadoutCardDetail extends HookWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-          child: Text(
-            getParsedDescription(),
-            textAlign: TextAlign.center,
-            style: textTheme.bodyText2?.copyWith(fontSize: 16),
-          ),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Slider(
-            value: amount.value.toDouble(),
-            divisions: 4,
-            min: 1,
-            max: 5,
-            label: '${amount.value}',
-            onChanged: (value) => amount.value = value.toInt(),
+          child: Column(
+            children: [
+              Text(
+                getParsedDescription(),
+                textAlign: TextAlign.center,
+                style: textTheme.bodyText2?.copyWith(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              AbsorbPointer(
+                absorbing: cardPoints != null,
+                child: Slider(
+                  value: amount.value.toDouble(),
+                  divisions: 4,
+                  min: 1,
+                  max: 5,
+                  label: '${amount.value}',
+                  onChanged: (value) => amount.value = value.toInt(),
+                ),
+              ),
+              cardPoints != null
+                  ? const SizedBox()
+                  : const SizedBox(height: 10),
+              cardPoints != null
+                  ? const SizedBox()
+                  : Text(
+                      '*Change slider to view the card with different points',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    ),
+            ],
           ),
         ),
         const SizedBox(height: 30),

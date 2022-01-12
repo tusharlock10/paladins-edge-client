@@ -9,6 +9,7 @@ part of 'responses.dart';
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
       user: User.fromJson(json['user'] as Map<String, dynamic>),
+      token: json['token'] as String,
       player: json['player'] == null
           ? null
           : Player.fromJson(json['player'] as Map<String, dynamic>),
@@ -17,6 +18,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
       'user': instance.user,
+      'token': instance.token,
       'player': instance.player,
     };
 
@@ -39,10 +41,11 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
 
 EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>
     EssentialsResponse(
-      data: Essentials.fromJson(json['data'] as Map<String, dynamic>),
+      essentials:
+          Essentials.fromJson(json['essentials'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EssentialsResponseToJson(EssentialsResponse instance) =>
     <String, dynamic>{
-      'data': instance.data,
+      'essentials': instance.essentials,
     };

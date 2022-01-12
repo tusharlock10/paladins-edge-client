@@ -220,10 +220,10 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       damageFallOffRange: fields[10] as double,
       weaponDamage: fields[11] as double,
       fireRate: fields[12] as double,
-      lore: fields[13] as String?,
-      abilities: (fields[14] as List?)?.cast<Ability>(),
-      talents: (fields[15] as List?)?.cast<Talent>(),
-      cards: (fields[16] as List?)?.cast<Card>(),
+      lore: fields[13] as String,
+      abilities: (fields[14] as List).cast<Ability>(),
+      talents: (fields[15] as List).cast<Talent>(),
+      cards: (fields[16] as List).cast<Card>(),
       latestChampion: fields[17] as bool,
       onFreeRotation: fields[18] as bool,
       tags: (fields[19] as List).cast<Tag>(),
@@ -373,15 +373,15 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
       damageFallOffRange: (json['damageFallOffRange'] as num).toDouble(),
       weaponDamage: (json['weaponDamage'] as num).toDouble(),
       fireRate: (json['fireRate'] as num).toDouble(),
-      lore: json['lore'] as String?,
-      abilities: (json['abilities'] as List<dynamic>?)
-          ?.map((e) => Ability.fromJson(e as Map<String, dynamic>))
+      lore: json['lore'] as String,
+      abilities: (json['abilities'] as List<dynamic>)
+          .map((e) => Ability.fromJson(e as Map<String, dynamic>))
           .toList(),
-      talents: (json['talents'] as List<dynamic>?)
-          ?.map((e) => Talent.fromJson(e as Map<String, dynamic>))
+      talents: (json['talents'] as List<dynamic>)
+          .map((e) => Talent.fromJson(e as Map<String, dynamic>))
           .toList(),
-      cards: (json['cards'] as List<dynamic>?)
-          ?.map((e) => Card.fromJson(e as Map<String, dynamic>))
+      cards: (json['cards'] as List<dynamic>)
+          .map((e) => Card.fromJson(e as Map<String, dynamic>))
           .toList(),
       latestChampion: json['latestChampion'] as bool,
       onFreeRotation: json['onFreeRotation'] as bool,

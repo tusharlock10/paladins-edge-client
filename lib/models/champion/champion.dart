@@ -213,19 +213,19 @@ class Champion {
 
   /// lore of that champion,
   @HiveField(13)
-  final String? lore;
+  final String lore;
 
   /// List of all the abilities of th champion
   @HiveField(14)
-  final List<Ability>? abilities;
+  final List<Ability> abilities;
 
   /// List of all the talents of th champion
   @HiveField(15)
-  final List<Talent>? talents;
+  final List<Talent> talents;
 
   /// List of all the cards of th champion
   @HiveField(16)
-  final List<Card>? cards;
+  final List<Card> cards;
 
   /// Whether the champion is newly added in the game
   @HiveField(17)
