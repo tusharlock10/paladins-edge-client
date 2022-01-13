@@ -6,10 +6,12 @@ part 'responses.g.dart';
 @JsonSerializable()
 class LoginResponse {
   final User user;
+  final String token;
   final Player? player;
 
   LoginResponse({
     required this.user,
+    required this.token,
     this.player,
   });
 
@@ -37,9 +39,11 @@ class ClaimPlayerResponse {
 
 @JsonSerializable()
 class EssentialsResponse {
-  final Essentials data;
+  final Essentials essentials;
 
-  EssentialsResponse({required this.data});
+  EssentialsResponse({
+    required this.essentials,
+  });
 
   factory EssentialsResponse.fromJson(Map<String, dynamic> json) =>
       _$EssentialsResponseFromJson(json);

@@ -27,7 +27,7 @@ class VerifiedPlayer extends ConsumerWidget {
             widgets.ElevatedAvatar(
               size: 28,
               borderRadius: 10,
-              imageUrl: player.avatarUrl!,
+              imageUrl: player.avatarUrl,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,

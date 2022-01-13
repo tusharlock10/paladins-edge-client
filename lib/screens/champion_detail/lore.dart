@@ -11,23 +11,18 @@ class Lore extends StatelessWidget {
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
 
-    if (champion.lore == null) {
-      return const SizedBox();
-    }
-
     return Card(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
-      elevation: 3,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 5,
         ),
         child: ExpandText(
-          champion.lore!,
+          champion.lore,
           maxLines: 8,
           textAlign: TextAlign.justify,
           style: Theme.of(context).textTheme.bodyText2?.copyWith(

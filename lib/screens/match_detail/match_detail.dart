@@ -26,7 +26,7 @@ class _MatchPlayer extends ConsumerWidget {
     );
 
     final talentUsed = champion.talents
-        ?.firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
+        .firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
 
     final kills = matchPlayer.playerStats.kills;
     final deaths = matchPlayer.playerStats.deaths;
@@ -91,13 +91,11 @@ class _MatchPlayer extends ConsumerWidget {
               ),
               Row(
                 children: [
-                  talentUsed?.imageUrl != null
-                      ? widgets.FastImage(
-                          imageUrl: talentUsed!.imageUrl,
-                          height: 32,
-                          width: 32,
-                        )
-                      : const SizedBox(),
+                  widgets.FastImage(
+                    imageUrl: talentUsed.imageUrl,
+                    height: 32,
+                    width: 32,
+                  ),
                   const SizedBox(width: 5),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,19 +138,27 @@ class _MatchPlayer extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: matchPlayer.playerChampionCards.map(
                     (playerChampionCard) {
-                      final card = champion.cards?.firstWhere(
+                      final card = champion.cards.firstWhere(
                         (_) => _.cardId2 == playerChampionCard.cardId2,
                       );
-                      if (card == null) return const SizedBox();
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: widgets.FastImage(
-                          imageUrl: card.imageUrl,
-                          width: 32,
-                          height: 32 / constsnts.ImageAspectRatios.championCard,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(5),
+                      return GestureDetector(
+                        onTap: () => widgets.showLoadoutCardDetailSheet(
+                          context: context,
+                          champion: champion,
+                          card: card,
+                          cardPoints: playerChampionCard.cardLevel,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          child: widgets.FastImage(
+                            imageUrl: card.imageUrl,
+                            width: 32,
+                            height:
+                                32 / constsnts.ImageAspectRatios.championCard,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
                           ),
                         ),
                       );

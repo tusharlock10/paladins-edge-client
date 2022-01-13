@@ -23,9 +23,11 @@ class TopSearchItem extends StatelessWidget {
         player.name,
         style: Theme.of(context).primaryTextTheme.headline6,
       ),
-      trailing: widgets.FastImage(
-        imageUrl: player.ranked.rankIconUrl,
-      ),
+      trailing: player.ranked != null
+          ? widgets.FastImage(
+              imageUrl: player.ranked!.rankIconUrl,
+            )
+          : const SizedBox(),
     );
   }
 }

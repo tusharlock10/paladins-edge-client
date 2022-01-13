@@ -68,32 +68,31 @@ class PlayerAdapter extends TypeAdapter<Player> {
     return Player(
       playerId: fields[0] as String,
       name: fields[2] as String,
-      title: fields[3] as String?,
-      avatarUrl: fields[4] as String?,
-      totalXP: fields[5] as int?,
-      hoursPlayed: fields[6] as int?,
-      level: fields[7] as int?,
-      totalWins: fields[8] as int?,
-      totalLosses: fields[9] as int?,
-      platform: fields[10] as String?,
-      region: fields[11] as String?,
-      accountCreationDate: fields[12] as DateTime?,
-      lastLoginDate: fields[13] as DateTime?,
-      ranked: fields[14] as Ranked,
+      avatarUrl: fields[4] as String,
+      totalXP: fields[5] as int,
+      hoursPlayed: fields[6] as int,
+      level: fields[7] as int,
+      totalWins: fields[8] as int,
+      totalLosses: fields[9] as int,
+      platform: fields[10] as String,
+      region: fields[11] as String,
+      accountCreationDate: fields[12] as DateTime,
+      lastLoginDate: fields[13] as DateTime,
+      ranked: fields[14] as Ranked?,
       userId: fields[1] as String?,
-      status: fields[15] as String?,
-      friends: (fields[16] as List?)?.cast<String>(),
-      lastUpdatedFriends: fields[17] as DateTime?,
-      lastUpdatedPlayer: fields[18] as DateTime?,
-      lastUpdatedMatches: fields[19] as DateTime?,
-      lastUpdatedChampions: fields[20] as DateTime?,
+      title: fields[3] as String?,
+      lastUpdatedFriends: fields[15] as DateTime?,
+      lastUpdatedPlayer: fields[16] as DateTime?,
+      lastUpdatedMatches: fields[17] as DateTime?,
+      lastUpdatedChampions: fields[18] as DateTime?,
+      lastUpdatedLoadouts: fields[19] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Player obj) {
     writer
-      ..writeByte(21)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.playerId)
       ..writeByte(1)
@@ -125,17 +124,15 @@ class PlayerAdapter extends TypeAdapter<Player> {
       ..writeByte(14)
       ..write(obj.ranked)
       ..writeByte(15)
-      ..write(obj.status)
-      ..writeByte(16)
-      ..write(obj.friends)
-      ..writeByte(17)
       ..write(obj.lastUpdatedFriends)
-      ..writeByte(18)
+      ..writeByte(16)
       ..write(obj.lastUpdatedPlayer)
-      ..writeByte(19)
+      ..writeByte(17)
       ..write(obj.lastUpdatedMatches)
-      ..writeByte(20)
-      ..write(obj.lastUpdatedChampions);
+      ..writeByte(18)
+      ..write(obj.lastUpdatedChampions)
+      ..writeByte(19)
+      ..write(obj.lastUpdatedLoadouts);
   }
 
   @override
@@ -174,26 +171,22 @@ Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
 Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
       playerId: json['playerId'] as String,
       name: json['name'] as String,
-      title: json['title'] as String?,
-      avatarUrl: json['avatarUrl'] as String?,
-      totalXP: json['totalXP'] as int?,
-      hoursPlayed: json['hoursPlayed'] as int?,
-      level: json['level'] as int?,
-      totalWins: json['totalWins'] as int?,
-      totalLosses: json['totalLosses'] as int?,
-      platform: json['platform'] as String?,
-      region: json['region'] as String?,
-      accountCreationDate: json['accountCreationDate'] == null
+      avatarUrl: json['avatarUrl'] as String,
+      totalXP: json['totalXP'] as int,
+      hoursPlayed: json['hoursPlayed'] as int,
+      level: json['level'] as int,
+      totalWins: json['totalWins'] as int,
+      totalLosses: json['totalLosses'] as int,
+      platform: json['platform'] as String,
+      region: json['region'] as String,
+      accountCreationDate:
+          DateTime.parse(json['accountCreationDate'] as String),
+      lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
+      ranked: json['ranked'] == null
           ? null
-          : DateTime.parse(json['accountCreationDate'] as String),
-      lastLoginDate: json['lastLoginDate'] == null
-          ? null
-          : DateTime.parse(json['lastLoginDate'] as String),
-      ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
+          : Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
       userId: json['userId'] as String?,
-      status: json['status'] as String?,
-      friends:
-          (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      title: json['title'] as String?,
       lastUpdatedFriends: json['lastUpdatedFriends'] == null
           ? null
           : DateTime.parse(json['lastUpdatedFriends'] as String),
@@ -206,6 +199,9 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
       lastUpdatedChampions: json['lastUpdatedChampions'] == null
           ? null
           : DateTime.parse(json['lastUpdatedChampions'] as String),
+      lastUpdatedLoadouts: json['lastUpdatedLoadouts'] == null
+          ? null
+          : DateTime.parse(json['lastUpdatedLoadouts'] as String),
     );
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
@@ -221,13 +217,28 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'totalLosses': instance.totalLosses,
       'platform': instance.platform,
       'region': instance.region,
-      'accountCreationDate': instance.accountCreationDate?.toIso8601String(),
-      'lastLoginDate': instance.lastLoginDate?.toIso8601String(),
+      'accountCreationDate': instance.accountCreationDate.toIso8601String(),
+      'lastLoginDate': instance.lastLoginDate.toIso8601String(),
       'ranked': instance.ranked,
-      'status': instance.status,
-      'friends': instance.friends,
       'lastUpdatedFriends': instance.lastUpdatedFriends?.toIso8601String(),
       'lastUpdatedPlayer': instance.lastUpdatedPlayer?.toIso8601String(),
       'lastUpdatedMatches': instance.lastUpdatedMatches?.toIso8601String(),
       'lastUpdatedChampions': instance.lastUpdatedChampions?.toIso8601String(),
+      'lastUpdatedLoadouts': instance.lastUpdatedLoadouts?.toIso8601String(),
+    };
+
+LowerSearchPlayer _$LowerSearchPlayerFromJson(Map<String, dynamic> json) =>
+    LowerSearchPlayer(
+      playerId: json['playerId'] as String,
+      name: json['name'] as String,
+      isPrivate: json['isPrivate'] as bool,
+      platform: json['platform'] as String,
+    );
+
+Map<String, dynamic> _$LowerSearchPlayerToJson(LowerSearchPlayer instance) =>
+    <String, dynamic>{
+      'playerId': instance.playerId,
+      'name': instance.name,
+      'isPrivate': instance.isPrivate,
+      'platform': instance.platform,
     };
