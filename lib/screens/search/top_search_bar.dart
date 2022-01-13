@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 
-class TopSearchBar extends ConsumerWidget {
+class TopSearchBar extends HookConsumerWidget {
   final textController = TextEditingController();
   final bool isLoading;
   final void Function(String) onSearch;
@@ -17,11 +18,22 @@ class TopSearchBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    // Providers
     final searchProvider = ref.read(providers.players);
+
+    // Variables
+    final theme = Theme.of(context);
     final textStyle = theme.textTheme.headline6?.copyWith(
       color: Colors.white,
       fontSize: 16,
+    );
+
+    final onClear = useCallback(
+      () {
+        searchProvider.clearSearchList();
+        textController.clear();
+      },
+      [],
     );
 
     return SliverAppBar(
@@ -42,10 +54,7 @@ class TopSearchBar extends ConsumerWidget {
             color: Colors.white,
             iconSize: 18,
             icon: const Icon(Icons.clear),
-            onPressed: () {
-              searchProvider.clearSearchList();
-              textController.clear();
-            },
+            onPressed: onClear,
           ),
         ),
       ),
