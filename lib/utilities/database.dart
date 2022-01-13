@@ -153,6 +153,7 @@ abstract class Database {
   }
 
   static void clear() {
+    _tokenBox?.clear();
     _userBox?.clear();
     _playerBox?.clear();
     _settingsBox?.clear();
