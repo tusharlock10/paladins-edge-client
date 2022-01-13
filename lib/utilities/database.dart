@@ -6,6 +6,7 @@ abstract class Database {
   static bool _init = false;
 
   static models.RecordExpiry? _recordExpiry;
+  static Box<String>? _tokenBox;
   static Box<models.User>? _userBox;
   static Box<models.Player>? _playerBox;
   static Box<models.Settings>? _settingsBox;
@@ -34,6 +35,7 @@ abstract class Database {
 
     _init = true;
 
+    _tokenBox = await Hive.openBox<String>(constants.HiveBoxes.token);
     _userBox = await Hive.openBox<models.User>(constants.HiveBoxes.user);
     _playerBox = await Hive.openBox<models.Player>(constants.HiveBoxes.player);
     _settingsBox =
@@ -62,6 +64,9 @@ abstract class Database {
   }
 
   // save methods
+  static void saveToken(String token) =>
+      _tokenBox?.put(constants.HiveBoxes.token, token);
+
   static void saveUser(models.User user) =>
       _userBox?.put(constants.HiveBoxes.user, user);
 
@@ -84,6 +89,8 @@ abstract class Database {
       _bountyStoreBox?.add(bountyStore);
 
   // get methods
+  static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
+
   static models.User? getUser() => _userBox?.get(constants.HiveBoxes.user);
 
   static models.Player? getPlayer() =>

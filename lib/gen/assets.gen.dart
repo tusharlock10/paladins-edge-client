@@ -17,15 +17,6 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/credits.png
-  AssetGenImage get credits => const AssetGenImage('assets/icons/credits.png');
-
-  /// File path: assets/icons/damage.png
-  AssetGenImage get damage => const AssetGenImage('assets/icons/damage.png');
-
-  /// File path: assets/icons/flank.png
-  AssetGenImage get flank => const AssetGenImage('assets/icons/flank.png');
-
   /// File path: assets/icons/google-colored.png
   AssetGenImage get googleColored =>
       const AssetGenImage('assets/icons/google-colored.png');
@@ -36,12 +27,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/paladins.png
   AssetGenImage get paladins =>
       const AssetGenImage('assets/icons/paladins.png');
-
-  /// File path: assets/icons/support.png
-  AssetGenImage get support => const AssetGenImage('assets/icons/support.png');
-
-  /// File path: assets/icons/tank.png
-  AssetGenImage get tank => const AssetGenImage('assets/icons/tank.png');
 }
 
 class $AssetsKeysGen {

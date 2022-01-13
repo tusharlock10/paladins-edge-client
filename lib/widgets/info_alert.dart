@@ -5,11 +5,11 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/widgets/loading_indicator.dart';
 
 void showInfoAlert(BuildContext context) {
-  showDialog(context: context, builder: (_) => const InfoAlert());
+  showDialog(context: context, builder: (_) => const _InfoAlert());
 }
 
-class InfoAlert extends HookWidget {
-  const InfoAlert({Key? key}) : super(key: key);
+class _InfoAlert extends HookWidget {
+  const _InfoAlert({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

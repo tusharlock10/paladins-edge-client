@@ -7,6 +7,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _AuthNotifier extends ChangeNotifier {
+  String? token;
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
@@ -27,18 +28,19 @@ class _AuthNotifier extends ChangeNotifier {
     // call essentials api to update its data
     final response = await api.AuthRequests.essentials();
     if (response != null) {
-      utilities.Database.saveEssentials(response.data);
-      utilities.Global.essentials = response.data;
+      utilities.Database.saveEssentials(response.essentials);
+      utilities.Global.essentials = response.essentials;
     }
   }
 
   /// Checks if the user is already logged in
   Future<bool> login() async {
+    token = utilities.Database.getToken();
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
-    if (user?.token != null) {
-      utilities.api.options.headers["authorization"] = user!.token;
+    if (token != null) {
+      utilities.api.options.headers["authorization"] = token;
 
       return true;
     } else {
@@ -83,19 +85,20 @@ class _AuthNotifier extends ChangeNotifier {
       name: name,
       verification: verification,
     );
-    // user will have token
-    // If player is null, navigate to ConnectProfile
 
+    // If player is null, navigate to ConnectProfile
     if (response == null) return false;
 
     user = response.user;
+    token = response.token;
+    utilities.Database.saveToken(response.token);
     utilities.Database.saveUser(response.user);
     if (response.player != null) {
       player = response.player;
       utilities.Database.savePlayer(response.player!);
     }
 
-    utilities.api.options.headers["authorization"] = user!.token;
+    utilities.api.options.headers["authorization"] = token;
 
     return true;
   }

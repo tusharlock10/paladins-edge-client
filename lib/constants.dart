@@ -103,6 +103,7 @@ const Map<String, Map<String, dynamic>> championDamageType = {
 };
 
 abstract class HiveBoxes {
+  static const token = "token";
   static const user = "user";
   static const player = "player";
   static const settings = "settings";

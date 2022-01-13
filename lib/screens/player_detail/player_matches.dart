@@ -45,11 +45,11 @@ class _PlayerMatchCard extends ConsumerWidget {
     final playerStats = matchPlayer.playerStats;
 
     final talentUsed = champion.talents
-        ?.firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
+        .firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
     final loadout = matchPlayer.playerChampionCards.map((playerChampionCard) {
       // find the card from that champion
       final card = champion.cards
-          ?.firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
+          .firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
 
       return _LoadoutItem(card: card, cardLevel: playerChampionCard.cardLevel);
     });
@@ -101,13 +101,11 @@ class _PlayerMatchCard extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      talentUsed != null
-                          ? widgets.FastImage(
-                              imageUrl: talentUsed.imageUrl,
-                              height: 48,
-                              width: 48,
-                            )
-                          : const SizedBox(),
+                      widgets.FastImage(
+                        imageUrl: talentUsed.imageUrl,
+                        height: 48,
+                        width: 48,
+                      ),
                       ...loadout.map(
                         (loadoutItem) {
                           final cardImageUrl = loadoutItem.card?.imageUrl;

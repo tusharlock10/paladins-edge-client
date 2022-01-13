@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/screens/champion_detail/abilities.dart';
 import 'package:paladinsedge/screens/champion_detail/champion_app_bar.dart';
 import 'package:paladinsedge/screens/champion_detail/champion_heading.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_stats.dart';
 import 'package:paladinsedge/screens/champion_detail/loadout_cards.dart';
 import 'package:paladinsedge/screens/champion_detail/lore.dart';
 import 'package:paladinsedge/screens/champion_detail/player_stats.dart';
@@ -25,7 +24,6 @@ class ChampionDetail extends ConsumerWidget {
             delegate: SliverChildListDelegate(
               [
                 const ChampionHeading(),
-                const ChampionStats(),
                 const TitleLabel(label: 'Lore'),
                 const Lore(),
                 const TitleLabel(label: 'Talents'),
