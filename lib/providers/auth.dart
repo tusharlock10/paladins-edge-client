@@ -110,14 +110,16 @@ class _AuthNotifier extends ChangeNotifier {
     //    he can still login
     // 2) Signout from google
     // 3) Notify backend about logout
-    // 4) remove user from provider
-    // 5) remove player from provider
+    // 4) remove user, player, token from provider
 
-    utilities.Database.clear();
     await GoogleSignIn().signOut();
     await api.AuthRequests.logout();
+
+    // clear values from the database and provider
+    utilities.Database.clear();
     user = null;
     player = null;
+    token = null;
   }
 
   /// Send the FCM token to server, only works on `Android`
