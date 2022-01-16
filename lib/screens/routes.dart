@@ -12,4 +12,5 @@ final routes = {
   screens.Friends.routeName: (_) => screens.Friends(),
   screens.MatchDetail.routeName: (_) => const screens.MatchDetail(),
   screens.ActiveMatch.routeName: (_) => const screens.ActiveMatch(),
+  screens.Loadouts.routeName: (_) => const screens.Loadouts(),
 };

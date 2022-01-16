@@ -34,6 +34,7 @@ class Talents extends StatelessWidget {
                   ),
                   Expanded(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           talent.name.toUpperCase(),

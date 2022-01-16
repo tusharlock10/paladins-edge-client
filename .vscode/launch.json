@@ -21,5 +21,10 @@
       "request": "launch",
       "type": "dart"
     },
+    {
+      "name": "Flutter: Attach",
+      "request": "attach",
+      "type": "dart",
+    }
   ]
 }
