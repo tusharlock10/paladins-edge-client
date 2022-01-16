@@ -49,7 +49,7 @@ class PlayerStats extends ConsumerWidget {
     final playTimeString =
         '${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min';
 
-    String kdr = ((playerChampion.totalKills + playerChampion.totalAssists) /
+    String kda = ((playerChampion.totalKills + playerChampion.totalAssists) /
             playerChampion.totalDeaths)
         .toStringAsPrecision(2);
 
@@ -82,15 +82,14 @@ class PlayerStats extends ConsumerWidget {
                   physics: const ClampingScrollPhysics(),
                   children: [
                     StatLabel(
-                      label: 'Wins',
-                      text: NumberFormat.compact()
-                          .format(playerChampion.wins)
-                          .toString(),
+                      label: 'W / L',
+                      text:
+                          '${NumberFormat.compact().format(playerChampion.wins).toString()} / ${NumberFormat.compact().format(playerChampion.losses).toString()}',
                     ),
                     StatLabel(
-                      label: 'Looses',
+                      label: 'Level',
                       text: NumberFormat.compact()
-                          .format(playerChampion.losses)
+                          .format(playerChampion.level)
                           .toString(),
                     ),
                     StatLabel(
@@ -120,8 +119,8 @@ class PlayerStats extends ConsumerWidget {
                       },
                     ),
                     StatLabel(
-                      label: 'KD Ratio',
-                      text: kdr,
+                      label: 'KDA',
+                      text: kda,
                     ),
                     StatLabel(
                       label: 'Credits',
