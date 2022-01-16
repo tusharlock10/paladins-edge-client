@@ -33,89 +33,92 @@ class LoadoutCards extends HookWidget {
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,
         }),
-        child: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemCount: champion.cards.length,
-          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          itemBuilder: (context, index) {
-            final card = champion.cards[index];
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (_) => true,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: champion.cards.length,
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            itemBuilder: (context, index) {
+              final card = champion.cards[index];
 
-            return SizedBox(
-              width: cardWidth,
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Card(
-                  margin: const EdgeInsets.all(0),
-                  clipBehavior: Clip.hardEdge,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: InkWell(
-                    onTap: () => widgets.showLoadoutCardDetailSheet(
-                      card: card,
-                      champion: champion,
-                      context: context,
+              return SizedBox(
+                width: cardWidth,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Card(
+                    margin: const EdgeInsets.all(0),
+                    clipBehavior: Clip.hardEdge,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: widgets.FastImage(
-                            imageUrl: card.imageUrl,
-                            width: imageWidth,
-                            height: imageHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 70,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Column(
-                              children: [
-                                Text(
-                                  card.name,
-                                  maxLines: 1,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: textTheme.bodyText2?.copyWith(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      widgets.TextChip(
-                                        hidden: card.cooldown == 0,
-                                        spacing: 5,
-                                        text:
-                                            '${card.cooldown.toInt().toString()} sec',
-                                        color: Colors.blueGrey,
-                                        icon: Icons.timelapse,
-                                      ),
-                                      widgets.TextChip(
-                                        hidden: card.modifier == "None",
-                                        spacing: 5,
-                                        text: card.modifier,
-                                        color: Colors.teal,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                    child: InkWell(
+                      onTap: () => widgets.showLoadoutCardDetailSheet(
+                        card: card,
+                        champion: champion,
+                        context: context,
+                      ),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: widgets.FastImage(
+                              imageUrl: card.imageUrl,
+                              width: imageWidth,
+                              height: imageHeight,
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    card.name,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textTheme.bodyText2?.copyWith(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        widgets.TextChip(
+                                          hidden: card.cooldown == 0,
+                                          spacing: 5,
+                                          text:
+                                              '${card.cooldown.toInt().toString()} sec',
+                                          color: Colors.blueGrey,
+                                          icon: Icons.timelapse,
+                                        ),
+                                        widgets.TextChip(
+                                          hidden: card.modifier == "None",
+                                          spacing: 5,
+                                          text: card.modifier,
+                                          color: Colors.teal,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -37,6 +37,10 @@ abstract class Urls {
   // match
   static const matchDetails = "/match/matchDetails"; // GET
   static const playerMatches = "/match/playerMatches"; // GET
+
+  // loadout
+  static const playerLoadouts = "/loadout/playerLoadouts"; // GET
+  static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
 }
 
 abstract class StorageKeys {
@@ -128,16 +132,18 @@ abstract class RecordExpiryData {
 }
 
 abstract class ImageAspectRatios {
-  static const championCard = 1.3;
+  static const championCard = 4 / 3;
   static const championAbility = 1;
   static const championTalent = 1;
   static const championIcon = 1;
-  static const championHeader = 1.96;
-  static const championSplash = 1.77;
+  static const championHeader = 2;
+  static const championSplash = 16 / 9;
 
   static const avatar = 1;
 
-  static const itemIcon = 1.3;
+  static const itemIcon = 4 / 3;
 
   static const rankIcon = 1;
+
+  static const loadoutCard = 1 / 2;
 }
