@@ -56,7 +56,8 @@ abstract class AuthRequests {
     required String name,
     required String verification,
   }) async {
-    final response = await utilities.api.post<Map<String, dynamic>>(
+    try{
+      final response = await utilities.api.post<Map<String, dynamic>>(
       constants.Urls.login,
       data: {
         'uid': uid,
@@ -70,6 +71,9 @@ abstract class AuthRequests {
     }
 
     return null;
+    } catch(_){
+      return null;
+    }
   }
 
   static Future<bool> logout() async {

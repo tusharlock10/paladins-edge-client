@@ -19,7 +19,6 @@ class LoadoutCard {
 
 @JsonSerializable()
 class Loadout {
-  final String loadoutHash;
   final String championId;
   final String playerId;
   final String name;
@@ -27,7 +26,6 @@ class Loadout {
   final bool isImported;
 
   Loadout({
-    required this.loadoutHash,
     required this.championId,
     required this.playerId,
     required this.name,
@@ -38,4 +36,36 @@ class Loadout {
   factory Loadout.fromJson(Map<String, dynamic> json) =>
       _$LoadoutFromJson(json);
   Map<String, dynamic> toJson() => _$LoadoutToJson(this);
+}
+
+class DraftLoadout {
+  final String championId;
+  final String playerId;
+  final String name;
+  final List<LoadoutCard?> loadoutCards;
+  final bool isImported;
+
+  const DraftLoadout({
+    required this.championId,
+    required this.playerId,
+    required this.name,
+    required this.loadoutCards,
+    this.isImported = false,
+  });
+
+  DraftLoadout copyWith({
+    String? championId,
+    String? playerId,
+    String? name,
+    List<LoadoutCard?>? loadoutCards,
+    bool? isImported,
+  }) {
+    return DraftLoadout(
+      championId: championId ?? this.championId,
+      playerId: playerId ?? this.playerId,
+      name: name ?? this.name,
+      loadoutCards: loadoutCards ?? this.loadoutCards,
+      isImported: isImported ?? this.isImported,
+    );
+  }
 }
