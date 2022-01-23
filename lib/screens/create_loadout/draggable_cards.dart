@@ -1,16 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class DraggableCards extends HookWidget {
+class DraggableCards extends HookConsumerWidget {
   const DraggableCards({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final draftLoadout =
+        ref.watch(providers.loadout.select((_) => _.draftLoadout));
+
     // Variables
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
@@ -18,22 +23,11 @@ class DraggableCards extends HookWidget {
     final imageWidth = min(width * 0.4, 156).toDouble();
     final imageHeight = (imageWidth / constants.ImageAspectRatios.championCard);
     final cardHeight = 80 + imageHeight;
-
-    // State
-    final usedCards = useState<List<String>>([]);
+    final usedCards = draftLoadout.loadoutCards.map((_) => _?.cardId2);
 
     if (champion.cards.isEmpty) {
       return const SizedBox();
     }
-
-    // Methods
-    final onDragCard = useCallback(
-      (models.Card card) {
-        usedCards.value = List.from(usedCards.value)
-          ..add(card.cardId.toString());
-      },
-      [],
-    );
 
     return SizedBox(
       height: cardHeight + 10,
@@ -45,7 +39,7 @@ class DraggableCards extends HookWidget {
         itemBuilder: (context, index) {
           final card = champion.cards[index];
 
-          if (usedCards.value.contains(card.cardId.toString())) {
+          if (usedCards.contains(card.cardId2)) {
             return widgets.ChampionLoadoutCard(
               imageWidth: imageWidth,
               imageHeight: imageHeight,
@@ -55,7 +49,6 @@ class DraggableCards extends HookWidget {
           return Draggable<models.Card>(
             affinity: Axis.vertical,
             data: card,
-            onDragCompleted: () => onDragCard(card),
             feedback: widgets.ChampionLoadoutCard(
               card: card,
               champion: champion,

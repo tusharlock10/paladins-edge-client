@@ -1,5 +1,6 @@
 import 'package:paladinsedge/api/loadout/responses.dart' as responses;
 import 'package:paladinsedge/constants.dart' as constants;
+import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 abstract class LoadoutRequests {
@@ -23,5 +24,19 @@ abstract class LoadoutRequests {
     } catch (_) {
       return null;
     }
+  }
+
+  static Future<responses.SavePlayerLoadoutResponse?> savePlayerLoadout({
+    required models.Loadout loadout,
+  }) async {
+    final response = await utilities.api.post<Map<String, dynamic>>(
+      constants.Urls.savePlayerLoadout,
+      data: {'loadout': loadout},
+    );
+    if (response.data != null) {
+      return responses.SavePlayerLoadoutResponse.fromJson(response.data!);
+    }
+
+    return null;
   }
 }

@@ -19,11 +19,24 @@ class LoadoutCard {
 
 @JsonSerializable()
 class Loadout {
+  /// id of the champion that this belongs to
   final String championId;
+
+  /// if of the player that loadout belongs to
   final String playerId;
+
+  /// name of the loadout
   final String name;
+
+  /// list of cards used in the loadout
   final List<LoadoutCard> loadoutCards;
+
+  /// is the loadout imported from paladins api ro created by user from the app
   final bool isImported;
+
+  /// hash of deckId if imported from paladins api
+  /// else its a hash using uuid of is created
+  final String? loadoutHash;
 
   Loadout({
     required this.championId,
@@ -31,6 +44,7 @@ class Loadout {
     required this.name,
     required this.loadoutCards,
     required this.isImported,
+    this.loadoutHash,
   });
 
   factory Loadout.fromJson(Map<String, dynamic> json) =>
@@ -52,6 +66,16 @@ class DraftLoadout {
     required this.loadoutCards,
     this.isImported = false,
   });
+
+  factory DraftLoadout.empty() {
+    return DraftLoadout(
+      championId: '',
+      playerId: '',
+      name: '',
+      loadoutCards: List<LoadoutCard?>.filled(5, null),
+      isImported: false,
+    );
+  }
 
   DraftLoadout copyWith({
     String? championId,

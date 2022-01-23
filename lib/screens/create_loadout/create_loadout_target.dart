@@ -1,27 +1,62 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class CreateLoadoutTarget extends StatelessWidget {
-  final models.DraftLoadout draftLoadout;
-  final models.Champion champion;
-  final bool Function(models.Card?) onWillAcceptCard;
-  final void Function(models.Card, int) onAcceptDragCard;
-  final void Function(models.LoadoutCard, int) onSliderChange;
-
-  const CreateLoadoutTarget({
-    required this.draftLoadout,
-    required this.champion,
-    required this.onWillAcceptCard,
-    required this.onAcceptDragCard,
-    required this.onSliderChange,
-    Key? key,
-  }) : super(key: key);
+class CreateLoadoutTarget extends HookConsumerWidget {
+  const CreateLoadoutTarget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final loadoutProvider = ref.read(providers.loadout);
+    final draftLoadout =
+        ref.watch(providers.loadout.select((_) => _.draftLoadout));
+
+    // Variables
+    final champion =
+        ModalRoute.of(context)?.settings.arguments as models.Champion;
+
+    // State
+    final loadoutNameError = useState(false);
+
+    // Hooks
+    final loadoutNameController =
+        useTextEditingController(text: draftLoadout.name);
+
+    // Methods
+    final getLoadoutPoints = useCallback(
+      () {
+        int points = 0;
+        Color color = Colors.orange;
+
+        for (var _ in draftLoadout.loadoutCards) {
+          points += _?.level ?? 0;
+        }
+
+        if (points == 15) color = Colors.green;
+        if (points > 15) color = Colors.red;
+
+        return {
+          'points': points,
+          'color': color,
+        };
+      },
+      [draftLoadout],
+    );
+
+    final onChangeLoadoutName = useCallback(
+      (String name) =>
+          loadoutNameError.value = loadoutProvider.onChangeLoadoutName(name),
+      [],
+    );
+
+    final loadoutPoints = getLoadoutPoints();
+
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       clipBehavior: Clip.hardEdge,
@@ -34,14 +69,44 @@ class CreateLoadoutTarget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 72,
+                    child: RichText(
+                      text: TextSpan(
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
+                          const TextSpan(text: '('),
+                          TextSpan(
+                            text: loadoutPoints['points'].toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: loadoutPoints['color'] as Color,
+                            ),
+                          ),
+                          const TextSpan(text: '/15)'),
+                        ],
+                      ),
+                    ),
                   ),
-                  Text(
-                    draftLoadout.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.name,
+                      autocorrect: false,
+                      controller: loadoutNameController,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        errorText: loadoutNameError.value
+                            ? 'Please enter a loadout name'
+                            : null,
+                      ),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      enableSuggestions: false,
+                      maxLength: 20,
+                      onChanged: onChangeLoadoutName,
                     ),
                   ),
                   SizedBox(
@@ -80,65 +145,68 @@ class CreateLoadoutTarget extends StatelessWidget {
                       (index) {
                         final loadoutCard = draftLoadout.loadoutCards[index];
 
-                        if (loadoutCard == null) {
-                          return DragTarget<models.Card>(
-                            onWillAccept: (card) => onWillAcceptCard(card),
-                            onAccept: (card) => onAcceptDragCard(card, index),
-                            builder: (_, candidateData, __) {
-                              final card = candidateData.isNotEmpty
-                                  ? candidateData.first
-                                  : null;
+                        return DragTarget<models.Card>(
+                          onWillAccept: (_) => true,
+                          onAccept: (card) =>
+                              loadoutProvider.onAcceptDragCard(card, index),
+                          builder: (_, candidateData, __) {
+                            final card = candidateData.isNotEmpty
+                                ? candidateData.first
+                                : null;
 
-                              if (card != null) {
-                                final loadoutCard = models.LoadoutCard(
-                                  cardId2: card.cardId2,
-                                  level: 0,
-                                );
+                            if (card != null) {
+                              final loadoutCard = models.LoadoutCard(
+                                cardId2: card.cardId2,
+                                level: 0,
+                              );
 
-                                return Opacity(
-                                  opacity: 0.3,
-                                  child: widgets.LoadoutDeckCard(
-                                    imageHeight: imageHeight,
-                                    imageWidth: imageWidth,
-                                    card: card,
-                                    champion: champion,
-                                    loadoutCard: loadoutCard,
-                                    sliderFixed: false,
-                                  ),
-                                );
-                              }
-
-                              return Container(
-                                width: imageWidth,
-                                height: imageHeight,
-                                padding: const EdgeInsets.all(5),
-                                child: DottedBorder(
-                                  child: const Center(
-                                    child: Icon(Icons.add),
-                                  ),
-                                  strokeWidth: 1,
-                                  radius: const Radius.circular(5),
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
+                              return Opacity(
+                                opacity: 0.3,
+                                child: widgets.LoadoutDeckCard(
+                                  imageHeight: imageHeight,
+                                  imageWidth: imageWidth,
+                                  card: card,
+                                  champion: champion,
+                                  loadoutCard: loadoutCard,
+                                  sliderFixed: false,
                                 ),
                               );
-                            },
-                          );
-                        }
+                            }
 
-                        final card = champion.cards.firstWhere(
-                          (_) => _.cardId2 == loadoutCard.cardId2,
-                        );
+                            final _index = champion.cards.indexWhere(
+                              (_) => _.cardId2 == loadoutCard?.cardId2,
+                            );
 
-                        return widgets.LoadoutDeckCard(
-                          imageHeight: imageHeight,
-                          imageWidth: imageWidth,
-                          card: card,
-                          champion: champion,
-                          loadoutCard: loadoutCard,
-                          sliderFixed: false,
-                          onSliderChange: (cardPoints) =>
-                              onSliderChange(loadoutCard, cardPoints),
+                            if (_index != -1) {
+                              final _card = champion.cards[_index];
+
+                              return widgets.LoadoutDeckCard(
+                                imageHeight: imageHeight,
+                                imageWidth: imageWidth,
+                                card: _card,
+                                champion: champion,
+                                loadoutCard: loadoutCard!,
+                                sliderFixed: false,
+                                onSliderChange: (cardPoints) => loadoutProvider
+                                    .onSliderChange(loadoutCard, cardPoints),
+                              );
+                            }
+
+                            return Container(
+                              width: imageWidth,
+                              height: imageHeight,
+                              padding: const EdgeInsets.all(5),
+                              child: DottedBorder(
+                                child: const Center(
+                                  child: Icon(Icons.add),
+                                ),
+                                strokeWidth: 1,
+                                radius: const Radius.circular(5),
+                                color: Colors.grey,
+                                borderType: BorderType.RRect,
+                              ),
+                            );
+                          },
                         );
                       },
                     ).toList(),

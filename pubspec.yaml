@@ -55,6 +55,7 @@ dependencies:
   flutter_hooks: ^0.18.1
   hooks_riverpod: ^1.0.3
   dotted_border: ^2.0.0+2
+  flash: ^2.0.3+2
 
 dev_dependencies:
   flutter_test:

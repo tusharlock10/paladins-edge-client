@@ -5,6 +5,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
 import 'package:paladinsedge/screens/create_loadout/draggable_cards.dart';
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
   static const routeName = '/createLoadout';
@@ -15,62 +16,41 @@ class CreateLoadout extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final loadoutProvider = ref.read(providers.loadout);
+    final isSavingLoadout =
+        ref.watch(providers.loadout.select((_) => _.isSavingLoadout));
 
     // Variables
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
 
-    // State
-    final draftLoadout = useState<models.DraftLoadout>(
-      models.DraftLoadout(
-        championId: champion.championId,
-        loadoutCards: List<models.LoadoutCard?>.filled(5, null),
-        name: 'New Loadout',
-        playerId: authProvider.player!.playerId,
-      ),
+    // Effects
+    useEffect(
+      () {
+        loadoutProvider.createDraftLoadout(
+          championId: champion.championId,
+          playerId: authProvider.player!.playerId,
+        );
+
+        return loadoutProvider.resetDraftLoadout;
+      },
+      [],
     );
 
     // Methods
-    final onWillAcceptCard = useCallback(
-      (models.Card? card) {
-        // if this card is already present in draftLoadout.value.loadoutCards
-        // then do not accept it
-        final exists = draftLoadout.value.loadoutCards
-            .indexWhere((_) => _?.cardId2 == card?.cardId2);
-
-        // return true if not exists
-        return exists == -1;
-      },
-      [],
-    );
-
-    final onAcceptDragCard = useCallback(
-      (models.Card card, int index) {
-        final loadoutCardsClone = draftLoadout.value.loadoutCards;
-        loadoutCardsClone[index] = models.LoadoutCard(
-          cardId2: card.cardId2,
-          level: 1,
-        );
-        draftLoadout.value =
-            draftLoadout.value.copyWith(loadoutCards: loadoutCardsClone);
-      },
-      [],
-    );
-
-    final onSliderChange = useCallback(
-      (models.LoadoutCard loadoutCard, int cardPoints) {
-        // 1) find the index of loadoutCard in draftLoadout
-        // 2) replace the loadoutCard with the new cardPoints value
-
-        final loadoutCardsClone = draftLoadout.value.loadoutCards;
-        final index = loadoutCardsClone
-            .indexWhere((_) => _?.cardId2 == loadoutCard.cardId2);
-        loadoutCardsClone[index] = models.LoadoutCard(
-          cardId2: loadoutCard.cardId2,
-          level: cardPoints,
-        );
-        draftLoadout.value =
-            draftLoadout.value.copyWith(loadoutCards: loadoutCardsClone);
+    final onSave = useCallback(
+      () async {
+        final canSave = loadoutProvider.validateLoadout();
+        if (canSave['result'] as bool) {
+          await loadoutProvider.saveLoadout();
+          Navigator.of(context).pop();
+        } else {
+          widgets.showToast(
+            context: context,
+            text: canSave['error'] as String,
+            type: widgets.ToastType.error,
+          );
+        }
       },
       [],
     );
@@ -78,18 +58,47 @@ class CreateLoadout extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Loadout'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: InkWell(
+              onTap: isSavingLoadout ? null : onSave,
+              child: Center(
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isSavingLoadout
+                          ? const widgets.LoadingIndicator(
+                              size: 16,
+                              lineWidth: 1.5,
+                              color: Colors.white,
+                            )
+                          : const SizedBox(),
+                      isSavingLoadout
+                          ? const SizedBox(width: 10)
+                          : const SizedBox(),
+                      Text(
+                        isSavingLoadout ? 'Saving' : 'Save',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
+      resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CreateLoadoutTarget(
-            draftLoadout: draftLoadout.value,
-            champion: champion,
-            onWillAcceptCard: onWillAcceptCard,
-            onAcceptDragCard: onAcceptDragCard,
-            onSliderChange: onSliderChange,
-          ),
-          const DraggableCards(),
+        children: const [
+          CreateLoadoutTarget(),
+          DraggableCards(),
         ],
       ),
     );
