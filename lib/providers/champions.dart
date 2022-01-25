@@ -7,7 +7,6 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 class _ChampionsNotifier extends ChangeNotifier {
   List<models.Champion> champions = [];
   List<models.PlayerChampion>? playerChampions;
-  List<models.Loadout>? loadouts;
 
   /// Loads the `champions` data from local db and syncs it with server
   Future<void> loadChampions() async {
@@ -41,25 +40,9 @@ class _ChampionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Get the `loadouts` data for the championId of that playerId
-  Future<void> getPlayerLoadouts(String playerId, String championId) async {
-    final response = await api.LoadoutRequests.playerLoadouts(
-      playerId: playerId,
-      championId: championId,
-    );
-    if (response == null) return;
-    loadouts = response.loadouts;
-    notifyListeners();
-  }
-
   /// Deletes the plyerChampions
   void resetPlayerChampions() {
     playerChampions = null;
-  }
-
-  /// Deletes the lodouts
-  void resetPlayerLoadouts() {
-    loadouts = null;
   }
 
   /// Sort playerChampions on basis of name

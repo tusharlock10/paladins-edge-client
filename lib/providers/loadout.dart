@@ -1,29 +1,56 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 
 class _LoadoutNotifier extends ChangeNotifier {
+  bool isGettingLoadouts = true;
   bool isSavingLoadout = false;
-  models.DraftLoadout draftLoadout = models.DraftLoadout.empty();
+  bool isEditingLoadout = false; // if false, means user is creating new loadout
+  List<models.Loadout>? loadouts;
+  data_classes.DraftLoadout draftLoadout = data_classes.DraftLoadout.empty();
+
+  /// Get the `loadouts` data for the championId of that playerId
+  void getPlayerLoadouts(String playerId, String championId) async {
+    final response = await api.LoadoutRequests.playerLoadouts(
+      playerId: playerId,
+      championId: championId,
+    );
+
+    loadouts = response?.loadouts;
+    isGettingLoadouts = false;
+    notifyListeners();
+  }
+
+  /// Deletes the lodouts
+  void resetPlayerLoadouts() {
+    isGettingLoadouts = true;
+    loadouts = null;
+  }
 
   /// Creates a `draftLoaodut` to use to drafting loadout
   /// instanciates the loadout with championId and playerId
   void createDraftLoadout({
     required String championId,
     required String playerId,
+    required models.Loadout? loadout,
   }) {
-    draftLoadout = models.DraftLoadout(
-      championId: championId,
-      loadoutCards: List<models.LoadoutCard?>.filled(5, null),
-      name: 'New Loadout',
-      playerId: playerId,
-    );
+    isEditingLoadout = loadout != null;
+    draftLoadout = loadout != null
+        ? data_classes.DraftLoadout.fromLoadout(loadout)
+        : draftLoadout.copyWith(
+            championId: championId,
+            playerId: playerId,
+          );
   }
 
   /// Reset the `draftLoadout` when user navigates back from draft loadout screen
   void resetDraftLoadout() {
-    draftLoadout = models.DraftLoadout.empty();
+    draftLoadout = data_classes.DraftLoadout.empty();
+    isSavingLoadout = false;
+    isEditingLoadout = false;
   }
 
   /// Inserts the loadoutCard at the appropriate index
@@ -34,8 +61,8 @@ class _LoadoutNotifier extends ChangeNotifier {
       cardId2: card.cardId2,
       level: 1,
     );
-    draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
 
+    draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
     notifyListeners();
   }
 
@@ -51,8 +78,8 @@ class _LoadoutNotifier extends ChangeNotifier {
       cardId2: loadoutCard.cardId2,
       level: cardPoints,
     );
-    draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
 
+    draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
     notifyListeners();
   }
 
@@ -65,7 +92,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   }
 
   /// validates loadout before saving
-  Map<String, Object> validateLoadout() {
+  data_classes.LoadoutValidationResult validateLoadout() {
     // check if loadout name is valid
 
     bool result = true;
@@ -95,28 +122,46 @@ class _LoadoutNotifier extends ChangeNotifier {
       error = 'Loadout should have 15 points';
     }
 
-    return {
-      'result': result,
-      'error': error,
-    };
+    return data_classes.LoadoutValidationResult(
+      error: error,
+      result: result,
+    );
   }
 
-  Future<void> saveLoadout() async {
-    final loadout = models.Loadout(
-      championId: draftLoadout.championId,
-      playerId: draftLoadout.playerId,
-      isImported: draftLoadout.isImported,
-      loadoutCards: List<models.LoadoutCard>.from(draftLoadout.loadoutCards),
-      name: draftLoadout.name,
-    );
+  /// saves or updates the loadout based on
+  /// if the loadout is being edited
+  Future<bool> saveLoadout() async {
+    final loadout = models.Loadout.fromDraftLoadout(draftLoadout);
 
     isSavingLoadout = true;
     notifyListeners();
 
-    await api.LoadoutRequests.savePlayerLoadout(loadout: loadout);
+    final result = isEditingLoadout
+        ? await api.LoadoutRequests.updatePlayerLoadout(loadout: loadout)
+        : await api.LoadoutRequests.savePlayerLoadout(loadout: loadout);
+
+    if (result != null) {
+      _updateLoadouts(result.loadout);
+    }
 
     isSavingLoadout = false;
     notifyListeners();
+
+    return result != null;
+  }
+
+  void _updateLoadouts(models.Loadout loadout) {
+    if (loadouts == null || loadouts!.isEmpty) return;
+
+    final loadoutsClone = List.from(loadouts!);
+
+    final index =
+        loadoutsClone.indexWhere((_) => _.loadoutHash == loadout.loadoutHash);
+    if (index != -1) {
+      loadoutsClone[index] = loadout;
+    } else {
+      loadoutsClone.add(loadout);
+    }
   }
 }
 

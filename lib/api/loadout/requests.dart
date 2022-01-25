@@ -29,14 +29,40 @@ abstract class LoadoutRequests {
   static Future<responses.SavePlayerLoadoutResponse?> savePlayerLoadout({
     required models.Loadout loadout,
   }) async {
-    final response = await utilities.api.post<Map<String, dynamic>>(
-      constants.Urls.savePlayerLoadout,
-      data: {'loadout': loadout},
-    );
-    if (response.data != null) {
-      return responses.SavePlayerLoadoutResponse.fromJson(response.data!);
-    }
+    try {
+      final response = await utilities.api.post<Map<String, dynamic>>(
+        constants.Urls.savePlayerLoadout,
+        data: {
+          'loadout': loadout,
+        },
+      );
+      if (response.data != null) {
+        return responses.SavePlayerLoadoutResponse.fromJson(response.data!);
+      }
 
-    return null;
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<responses.SavePlayerLoadoutResponse?> updatePlayerLoadout({
+    required models.Loadout loadout,
+  }) async {
+    try {
+      final response = await utilities.api.put<Map<String, dynamic>>(
+        constants.Urls.updatePlayerLoadout,
+        data: {
+          'loadout': loadout,
+        },
+      );
+      if (response.data != null) {
+        return responses.SavePlayerLoadoutResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
   }
 }

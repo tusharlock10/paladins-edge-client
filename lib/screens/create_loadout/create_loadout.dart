@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
 import 'package:paladinsedge/screens/create_loadout/draggable_cards.dart';
@@ -21,15 +21,16 @@ class CreateLoadout extends HookConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.isSavingLoadout));
 
     // Variables
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final arguments = ModalRoute.of(context)?.settings.arguments
+        as data_classes.CreateLoadoutScreenArguments;
 
     // Effects
     useEffect(
       () {
         loadoutProvider.createDraftLoadout(
-          championId: champion.championId,
+          championId: arguments.champion.championId,
           playerId: authProvider.player!.playerId,
+          loadout: arguments.loadout,
         );
 
         return loadoutProvider.resetDraftLoadout;
@@ -41,13 +42,21 @@ class CreateLoadout extends HookConsumerWidget {
     final onSave = useCallback(
       () async {
         final canSave = loadoutProvider.validateLoadout();
-        if (canSave['result'] as bool) {
-          await loadoutProvider.saveLoadout();
-          Navigator.of(context).pop();
+        if (canSave.result) {
+          final success = await loadoutProvider.saveLoadout();
+          if (success) {
+            Navigator.of(context).pop();
+          } else {
+            widgets.showToast(
+              context: context,
+              text: 'An error occured while saving loadout',
+              type: widgets.ToastType.error,
+            );
+          }
         } else {
           widgets.showToast(
             context: context,
-            text: canSave['error'] as String,
+            text: canSave.error,
             type: widgets.ToastType.error,
           );
         }
@@ -57,7 +66,8 @@ class CreateLoadout extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Loadout'),
+        title:
+            Text(arguments.loadout != null ? "Edit Loadout" : "Create Loadout"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -94,12 +104,23 @@ class CreateLoadout extends HookConsumerWidget {
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          CreateLoadoutTarget(),
-          DraggableCards(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const [
+            CreateLoadoutTarget(),
+            DraggableCards(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: Text('''
+* Select a card from the list and drag it in the loadout
+* Tap the card in the loadout to change its points
+* Rename the loadout to your liking and save
+'''),
+            ),
+          ],
+        ),
       ),
     );
   }

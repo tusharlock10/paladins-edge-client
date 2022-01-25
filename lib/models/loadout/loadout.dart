@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:paladinsedge/data_classes/index.dart' show DraftLoadout;
 
 part 'loadout.g.dart';
 
@@ -47,49 +48,18 @@ class Loadout {
     this.loadoutHash,
   });
 
+  factory Loadout.fromDraftLoadout(DraftLoadout draftLoadout) {
+    return Loadout(
+      championId: draftLoadout.championId,
+      playerId: draftLoadout.playerId,
+      isImported: draftLoadout.isImported,
+      loadoutCards: List<LoadoutCard>.from(draftLoadout.loadoutCards),
+      name: draftLoadout.name,
+      loadoutHash: draftLoadout.loadoutHash,
+    );
+  }
+
   factory Loadout.fromJson(Map<String, dynamic> json) =>
       _$LoadoutFromJson(json);
   Map<String, dynamic> toJson() => _$LoadoutToJson(this);
-}
-
-class DraftLoadout {
-  final String championId;
-  final String playerId;
-  final String name;
-  final List<LoadoutCard?> loadoutCards;
-  final bool isImported;
-
-  const DraftLoadout({
-    required this.championId,
-    required this.playerId,
-    required this.name,
-    required this.loadoutCards,
-    this.isImported = false,
-  });
-
-  factory DraftLoadout.empty() {
-    return DraftLoadout(
-      championId: '',
-      playerId: '',
-      name: '',
-      loadoutCards: List<LoadoutCard?>.filled(5, null),
-      isImported: false,
-    );
-  }
-
-  DraftLoadout copyWith({
-    String? championId,
-    String? playerId,
-    String? name,
-    List<LoadoutCard?>? loadoutCards,
-    bool? isImported,
-  }) {
-    return DraftLoadout(
-      championId: championId ?? this.championId,
-      playerId: playerId ?? this.playerId,
-      name: name ?? this.name,
-      loadoutCards: loadoutCards ?? this.loadoutCards,
-      isImported: isImported ?? this.isImported,
-    );
-  }
 }
