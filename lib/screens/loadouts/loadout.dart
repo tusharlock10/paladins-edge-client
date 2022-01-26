@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
@@ -16,8 +14,6 @@ class Loadout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
-
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       clipBehavior: Clip.hardEdge,
@@ -67,67 +63,23 @@ class Loadout extends StatelessWidget {
                   final imageHeight =
                       imageWidth / constants.ImageAspectRatios.loadoutCard;
 
-                  return Material(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 7,
-                    child: Row(
-                      children: loadout.loadoutCards.map((loadoutCard) {
+                  return Row(
+                    children: loadout.loadoutCards.map(
+                      (loadoutCard) {
                         final card = champion.cards.firstWhere(
                           (_) => _.cardId2 == loadoutCard.cardId2,
                         );
 
-                        return SizedBox(
-                          height: imageHeight,
-                          width: imageWidth,
-                          child: Stack(
-                            children: [
-                              SizedBox(
-                                height: imageHeight,
-                                child: InkWell(
-                                  onTap: () =>
-                                      widgets.showLoadoutCardDetailSheet(
-                                    context: context,
-                                    champion: champion,
-                                    card: card,
-                                    cardPoints: loadoutCard.level,
-                                  ),
-                                  child: widgets.FastImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: card.imageUrl,
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  width: imageWidth,
-                                  height: imageHeight * 0.25,
-                                  color: primaryColor.withOpacity(0.6),
-                                  child: ClipRRect(
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                        sigmaX: 2,
-                                        sigmaY: 6,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          loadoutCard.level.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        return widgets.LoadoutDeckCard(
+                          imageHeight: imageHeight,
+                          imageWidth: imageWidth,
+                          card: card,
+                          champion: champion,
+                          loadoutCard: loadoutCard,
+                          sliderFixed: true,
                         );
-                      }).toList(),
-                    ),
+                      },
+                    ).toList(),
                   );
                 },
               ),
