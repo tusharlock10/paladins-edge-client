@@ -14,11 +14,17 @@ class RecordExpiry extends HiveObject {
   @HiveField(1)
   DateTime _searchHistoryExpiry;
 
+  /// date at which the saved bountyStore record will expire
+  @HiveField(2)
+  DateTime _bountyStoreExpiry;
+
   RecordExpiry()
       : _championsExpiry =
             DateTime.now().add(RecordExpiryData.championDuration),
         _searchHistoryExpiry =
-            DateTime.now().add(RecordExpiryData.searchHistoryDuration);
+            DateTime.now().add(RecordExpiryData.searchHistoryDuration),
+        _bountyStoreExpiry =
+            DateTime.now().add(RecordExpiryData.bountyStoreDuration);
 
   bool isRecordExpired(String recordName) {
     // checks if the provided record is expired
@@ -28,6 +34,8 @@ class RecordExpiry extends HiveObject {
       return now.isAfter(_championsExpiry);
     } else if (recordName == RecordExpiryData.searchHistory) {
       return now.isAfter(_searchHistoryExpiry);
+    } else if (recordName == RecordExpiryData.bountyStore) {
+      return now.isAfter(_bountyStoreExpiry);
     } else {
       return true;
     }
@@ -40,6 +48,9 @@ class RecordExpiry extends HiveObject {
     } else if (recordName == RecordExpiryData.searchHistory) {
       _searchHistoryExpiry =
           DateTime.now().add(RecordExpiryData.searchHistoryDuration);
+    } else if (recordName == RecordExpiryData.bountyStore) {
+      _bountyStoreExpiry =
+          DateTime.now().add(RecordExpiryData.bountyStoreDuration);
     }
   }
 }

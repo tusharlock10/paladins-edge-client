@@ -8,23 +8,25 @@ class _BountyStoreNotifier extends ChangeNotifier {
   List<models.BountyStore> bountyStore = [];
 
   /// Loads the `bountyStore` data from local db and syncs it with server
-  Future<void> loadBountyStore() async {
+  Future<List<models.BountyStore>?> loadBountyStore() async {
     final savedBountyStore = utilities.Database.getBountyStore();
 
     if (savedBountyStore != null) {
       bountyStore = savedBountyStore;
 
-      return notifyListeners();
+      return bountyStore;
     }
 
     final response = await api.BountyStoreRequests.bountyStoreDetails();
-    if (response == null) return;
+
+    if (response == null) return null;
+
     bountyStore = response.bountyStore;
 
     // save bounty store locally for future use
     bountyStore.forEach(utilities.Database.saveBountyStore);
 
-    notifyListeners();
+    return bountyStore;
   }
 }
 

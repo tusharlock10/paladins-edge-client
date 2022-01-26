@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -64,24 +63,13 @@ class BountyStoreDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bountyStoreProvider = ref.watch(providers.bountyStore);
+    // Providers
+    final bountyStoreProvider = ref.read(providers.bountyStore);
 
-    final isLoading = useState(true);
-
-    useEffect(
-      () {
-        bountyStoreProvider
-            .loadBountyStore()
-            .then((_) => isLoading.value = false);
-      },
-      [],
-    );
-
+    // Variables
     const itemHeight = 100;
-
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
-
     int crossAxisCount = 2;
     double width = size.width;
 
@@ -94,53 +82,62 @@ class BountyStoreDetails extends HookConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    if (isLoading.value) {
-      return const widgets.LoadingIndicator(
-        size: 20,
-        lineWidth: 2,
-        center: true,
-        margin: EdgeInsets.all(20),
-        label: Text('Loading Bounty Store'),
-      );
-    }
+    return FutureBuilder<List<models.BountyStore>?>(
+      future: bountyStoreProvider.loadBountyStore(),
+      builder: (context, dataSnapshot) {
+        if (dataSnapshot.connectionState == ConnectionState.waiting) {
+          return const widgets.LoadingIndicator(
+            size: 20,
+            lineWidth: 2,
+            center: true,
+            margin: EdgeInsets.all(20),
+            label: Text('Loading Bounty Store'),
+          );
+        }
 
-    return SizedBox(
-      width: width,
-      child: Column(
-        children: [
-          Text(
-            'Bounty Store Updates',
-            style: textTheme.headline3,
-          ),
-          bountyStoreProvider.bountyStore.isEmpty
-              ? const Card(
-                  elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Center(
-                      child: Text(
-                        'Sorry we were unable to fetch the bounty store',
-                      ),
-                    ),
-                  ),
-                )
-              : GridView.count(
-                  childAspectRatio: childAspectRatio,
-                  crossAxisCount: crossAxisCount,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  children: bountyStoreProvider.bountyStore
-                      .map(
-                        (_bountyStore) =>
-                            _BountyStoreCard(bountyStore: _bountyStore),
-                      )
-                      .toList(),
+        if (dataSnapshot.data == null || dataSnapshot.data!.isEmpty) {
+          return const Card(
+            elevation: 4,
+            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Center(
+                child: Text(
+                  'Sorry we were unable to fetch the bounty store',
                 ),
-        ],
-      ),
+              ),
+            ),
+          );
+        }
+
+        return SizedBox(
+          width: width,
+          child: Column(
+            children: [
+              Text(
+                'Bounty Store Updates',
+                style: textTheme.headline3,
+              ),
+              GridView.count(
+                childAspectRatio: childAspectRatio,
+                crossAxisCount: crossAxisCount,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                children: bountyStoreProvider.bountyStore
+                    .map(
+                      (_bountyStore) =>
+                          _BountyStoreCard(bountyStore: _bountyStore),
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
