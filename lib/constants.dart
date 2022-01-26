@@ -117,12 +117,14 @@ abstract class HiveBoxes {
   static const champion = "champion";
   static const recordExpiry = "recordExpiry";
   static const bountyStore = "bountyStore";
+  static const playerChampion = "playerChampion";
 }
 
 abstract class RecordExpiryData {
   static const champion = "champion";
   static const searchHistory = "searchHistory";
   static const bountyStore = "bountyStore";
+  static const playerChampion = "playerChampion";
 
   static const championDuration =
       Duration(days: 1); // expire saved champion records in 1 day
@@ -130,6 +132,8 @@ abstract class RecordExpiryData {
       Duration(days: 7); // expire saved searchHistory records in 7 days
   static const bountyStoreDuration =
       Duration(days: 1); // expire saved bountyStore records in 1 day
+  static const playerChampionDuration =
+      Duration(days: 1); // expire saved playerChampion records in 1 day
 }
 
 abstract class ImageAspectRatios {

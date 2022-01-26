@@ -6,11 +6,14 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
   List<models.Champion> champions = [];
-  List<models.PlayerChampion>? playerChampions;
+  List<models.PlayerChampion> userPlayerChampions =
+      []; // holds playerChampions data for the user
+  List<models.PlayerChampion>?
+      playerChampions; // holds playerChampions data for other players
 
   /// Loads the `champions` data from local db and syncs it with server
   Future<void> loadChampions() async {
-    // try to load chhampions from db
+    // try to load champions from db
     final savedChampions = utilities.Database.getChampions();
 
     if (savedChampions != null) {
@@ -29,6 +32,30 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     // save champion locally for future use
     champions.forEach(utilities.Database.saveChampion);
+  }
+
+  /// Loads the `playerChampions` data for the user from local db and
+  /// syncs it with server for showing in Champions screen
+  Future<void> loadUserPlayerChampions() async {
+    final user = utilities.Database.getUser();
+    final savedPlayerChampions = utilities.Database.getPlayerChampions();
+
+    if (savedPlayerChampions != null) {
+      userPlayerChampions = savedPlayerChampions;
+
+      return;
+    }
+
+    if (user?.playerId == null) return;
+
+    final response =
+        await api.ChampionsRequests.playerChampions(playerId: user!.playerId!);
+
+    if (response == null) return;
+    userPlayerChampions = response.playerChampions;
+
+    // save playerChampions locally for future use
+    response.playerChampions.forEach(utilities.Database.savePlayerChampion);
   }
 
   /// Get the `playerChampions` data for the playerId

@@ -5,6 +5,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 abstract class Database {
   static bool _init = false;
 
+  // create a hive box here
   static models.RecordExpiry? _recordExpiry;
   static Box<String>? _tokenBox;
   static Box<models.User>? _userBox;
@@ -15,6 +16,7 @@ abstract class Database {
   static Box<models.Champion>? _championBox;
   static Box<models.RecordExpiry>? _recordExpiryBox;
   static Box<models.BountyStore>? _bountyStoreBox;
+  static Box<models.PlayerChampion>? _playerChampionBox;
 
   static Future<void> initDatabase() async {
     if (_init) return;
@@ -32,9 +34,11 @@ abstract class Database {
     Hive.registerAdapter(models.SearchHistoryAdapter());
     Hive.registerAdapter(models.RecordExpiryAdapter());
     Hive.registerAdapter(models.BountyStoreAdapter());
+    Hive.registerAdapter(models.PlayerChampionAdapter());
 
     _init = true;
 
+    // initialize boxes here
     _tokenBox = await Hive.openBox<String>(constants.HiveBoxes.token);
     _userBox = await Hive.openBox<models.User>(constants.HiveBoxes.user);
     _playerBox = await Hive.openBox<models.Player>(constants.HiveBoxes.player);
@@ -50,8 +54,10 @@ abstract class Database {
     _recordExpiryBox = await Hive.openBox<models.RecordExpiry>(
       constants.HiveBoxes.recordExpiry,
     );
-    _bountyStoreBox = await Hive.openBox<models.BountyStore>(
-      constants.HiveBoxes.bountyStore,
+    _bountyStoreBox =
+        await Hive.openBox<models.BountyStore>(constants.HiveBoxes.bountyStore);
+    _playerChampionBox = await Hive.openBox<models.PlayerChampion>(
+      constants.HiveBoxes.playerChampion,
     );
 
     // check if recordExpiry contains any data
@@ -87,6 +93,9 @@ abstract class Database {
 
   static void saveBountyStore(models.BountyStore bountyStore) =>
       _bountyStoreBox?.add(bountyStore);
+
+  static void savePlayerChampion(models.PlayerChampion playerChampion) =>
+      _playerChampionBox?.add(playerChampion);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
@@ -138,7 +147,7 @@ abstract class Database {
   }
 
   static List<models.BountyStore>? getBountyStore() {
-    // check if bounty store records have expired
+    // check if bountyStore records have expired
     if (_recordExpiry!
         .isRecordExpired(constants.RecordExpiryData.bountyStore)) {
       // if the data is expired, then clear bountyStore box
@@ -152,6 +161,24 @@ abstract class Database {
     return bountyStore == null || bountyStore.isEmpty ? null : bountyStore;
   }
 
+  static List<models.PlayerChampion>? getPlayerChampions() {
+    // check if playerChampion records have expired
+    if (_recordExpiry!
+        .isRecordExpired(constants.RecordExpiryData.playerChampion)) {
+      // if the data is expired, then clear playerChampion box
+      // and renew the recordExpiry for playerChampion records
+      _playerChampionBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryData.playerChampion);
+    }
+
+    final playerChampions = _playerChampionBox?.values.toList();
+
+    return playerChampions == null || playerChampions.isEmpty
+        ? null
+        : playerChampions;
+  }
+
+  // clear all the boxes
   static void clear() {
     _tokenBox?.clear();
     _userBox?.clear();
@@ -160,6 +187,8 @@ abstract class Database {
     _essentialsBox?.clear();
     _searchHistoryBox?.clear();
     _championBox?.clear();
+    _bountyStoreBox?.clear();
+    _playerChampionBox?.clear();
   }
 
   /// renews the expiry date on saved records.
