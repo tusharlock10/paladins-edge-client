@@ -20,11 +20,10 @@ class Champions extends HookConsumerWidget {
     useEffect(
       () {
         final championsProvider = ref.read(providers.champions);
-        final authProvider = ref.read(providers.auth);
 
         Future.wait([
           championsProvider.loadChampions(),
-          championsProvider.getPlayerChampions(authProvider.player!.playerId),
+          championsProvider.loadUserPlayerChampions(),
         ]).then((_) {
           isLoading.value = false;
         });

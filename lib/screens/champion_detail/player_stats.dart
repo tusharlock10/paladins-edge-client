@@ -32,9 +32,10 @@ class PlayerStats extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
-    final playerChampions = ref.read(providers.champions).playerChampions;
+    final userPlayerChampions =
+        ref.read(providers.champions).userPlayerChampions;
     final playerChampion =
-        utilities.findPlayerChampion(playerChampions, champion.championId);
+        utilities.findPlayerChampion(userPlayerChampions, champion.championId);
 
     if (playerChampion == null) {
       return const Padding(
