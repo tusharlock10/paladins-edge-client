@@ -56,7 +56,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   /// Inserts the loadoutCard at the appropriate index
   /// when the user drags the card to dragTarget
   void onAcceptDragCard(models.Card card, int index) {
-    final loadoutCardsClone = draftLoadout.loadoutCards;
+    final loadoutCardsClone = [...draftLoadout.loadoutCards];
     loadoutCardsClone[index] = models.LoadoutCard(
       cardId2: card.cardId2,
       level: 1,
@@ -71,7 +71,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     // 1) find the index of loadoutCard in draftLoadout
     // 2) replace the loadoutCard with the new cardPoints value
 
-    final loadoutCardsClone = draftLoadout.loadoutCards;
+    final loadoutCardsClone = [...draftLoadout.loadoutCards];
     final index =
         loadoutCardsClone.indexWhere((_) => _?.cardId2 == loadoutCard.cardId2);
     loadoutCardsClone[index] = models.LoadoutCard(
@@ -153,7 +153,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   void _updateLoadouts(models.Loadout loadout) {
     if (loadouts == null || loadouts!.isEmpty) return;
 
-    final loadoutsClone = List.from(loadouts!);
+    final loadoutsClone = [...loadouts!];
 
     final index =
         loadoutsClone.indexWhere((_) => _.loadoutHash == loadout.loadoutHash);
@@ -162,6 +162,8 @@ class _LoadoutNotifier extends ChangeNotifier {
     } else {
       loadoutsClone.add(loadout);
     }
+
+    loadouts = loadoutsClone;
   }
 }
 
