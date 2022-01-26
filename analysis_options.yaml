@@ -13,6 +13,7 @@ analyzer:
   exclude:
     - lib/**.g.dart
     - lib/**.gen.dart
+    - lib/**.freezed.dart
   plugins:
     - dart_code_metrics
   strong-mode:

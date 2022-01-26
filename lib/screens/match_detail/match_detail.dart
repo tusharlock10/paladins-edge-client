@@ -148,6 +148,7 @@ class _MatchPlayer extends ConsumerWidget {
                           champion: champion,
                           card: card,
                           cardPoints: playerChampionCard.cardLevel,
+                          sliderFixed: true,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3),

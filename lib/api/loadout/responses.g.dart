@@ -19,3 +19,15 @@ Map<String, dynamic> _$PlayerLoadoutsResponseToJson(
     <String, dynamic>{
       'loadouts': instance.loadouts,
     };
+
+SavePlayerLoadoutResponse _$SavePlayerLoadoutResponseFromJson(
+        Map<String, dynamic> json) =>
+    SavePlayerLoadoutResponse(
+      loadout: Loadout.fromJson(json['loadout'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$SavePlayerLoadoutResponseToJson(
+        SavePlayerLoadoutResponse instance) =>
+    <String, dynamic>{
+      'loadout': instance.loadout,
+    };

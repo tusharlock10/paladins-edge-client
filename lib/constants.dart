@@ -41,6 +41,7 @@ abstract class Urls {
   // loadout
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET
   static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
+  static const updatePlayerLoadout = '/loadout/updatePlayerLoadout'; // PUT
 }
 
 abstract class StorageKeys {

@@ -8,7 +8,7 @@ class LoadingIndicator extends StatelessWidget {
   final double? lineWidth;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
-  final Widget? label;
+  final Text? label;
 
   const LoadingIndicator({
     required this.size,
@@ -27,6 +27,7 @@ class LoadingIndicator extends StatelessWidget {
       margin: margin,
       padding: padding,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SpinKitRing(
             lineWidth: lineWidth ?? 3,

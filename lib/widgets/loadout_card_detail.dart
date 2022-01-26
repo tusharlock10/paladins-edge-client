@@ -9,7 +9,9 @@ void showLoadoutCardDetailSheet({
   required BuildContext context,
   required models.Champion champion,
   required models.Card card,
-  int? cardPoints,
+  required bool sliderFixed,
+  int cardPoints = 1,
+  void Function(int)? onSliderChange,
 }) {
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
@@ -24,6 +26,8 @@ void showLoadoutCardDetailSheet({
         card: card,
         champion: champion,
         cardPoints: cardPoints,
+        onSliderChange: onSliderChange,
+        sliderFixed: sliderFixed,
       );
     },
   );
@@ -32,12 +36,16 @@ void showLoadoutCardDetailSheet({
 class _LoadoutCardDetail extends HookWidget {
   final models.Card card;
   final models.Champion champion;
-  final int? cardPoints;
+  final bool sliderFixed;
+  final int cardPoints;
+  final void Function(int)? onSliderChange;
 
   const _LoadoutCardDetail({
     required this.card,
     required this.champion,
-    this.cardPoints,
+    required this.sliderFixed,
+    required this.cardPoints,
+    this.onSliderChange,
     Key? key,
   }) : super(key: key);
 
@@ -47,7 +55,7 @@ class _LoadoutCardDetail extends HookWidget {
     final textTheme = Theme.of(context).textTheme;
 
     // State
-    final amount = useState(cardPoints ?? 1);
+    final amount = useState(cardPoints);
 
     // Methods
     final getDescriptionParts =
@@ -56,6 +64,16 @@ class _LoadoutCardDetail extends HookWidget {
     final getParsedDescription = useCallback(
       () => utilities.getParsedDescription(getDescriptionParts(), amount.value),
       [amount.value],
+    );
+
+    final onChanged = useCallback(
+      (double value) {
+        amount.value = value.toInt();
+        if (onSliderChange != null) {
+          onSliderChange!(amount.value);
+        }
+      },
+      [],
     );
 
     return Column(
@@ -135,20 +153,18 @@ class _LoadoutCardDetail extends HookWidget {
               ),
               const SizedBox(height: 10),
               AbsorbPointer(
-                absorbing: cardPoints != null,
+                absorbing: sliderFixed,
                 child: Slider(
                   value: amount.value.toDouble(),
                   divisions: 4,
                   min: 1,
                   max: 5,
                   label: '${amount.value}',
-                  onChanged: (value) => amount.value = value.toInt(),
+                  onChanged: onChanged,
                 ),
               ),
-              cardPoints != null
-                  ? const SizedBox()
-                  : const SizedBox(height: 10),
-              cardPoints != null
+              sliderFixed ? const SizedBox() : const SizedBox(height: 10),
+              sliderFixed
                   ? const SizedBox()
                   : Text(
                       '*Change slider to view the card with different points',
