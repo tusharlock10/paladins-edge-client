@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/theme/index.dart' as theme;
@@ -58,6 +57,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.read(providers.champions).champions;
+    final playerChampions =
+        ref.watch(providers.champions.select((_) => _.playerChampions));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -85,24 +86,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           return Colors.white;
         } else {
           return Colors.green;
-        }
-      },
-      [],
-    );
-
-    final getPlayerChampion = useCallback(
-      () async {
-        if (isPrivatePlayer) return;
-
-        final response = await api.ChampionsRequests.playerChampions(
-          playerId: playerInfo.player.playerId,
-        );
-
-        if (response != null) {
-          playerChampion.value = response.playerChampions.firstWhere(
-            (_playerChampion) =>
-                _playerChampion.championId == champion.championId,
-          );
         }
       },
       [],
@@ -164,10 +147,17 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        // get the player champion from paladins api
-        getPlayerChampion();
+        if (playerChampions != null) {
+          final index = playerChampions.indexWhere(
+            (_) => _.playerId == playerInfo.player.playerId,
+          );
+
+          if (index != -1) {
+            playerChampion.value = playerChampions[index];
+          }
+        }
       },
-      [],
+      [playerChampions],
     );
 
     return Card(
@@ -308,7 +298,10 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                       ],
                     ),
                   )
-                : const SizedBox(),
+                : const Text(
+                    '* Unable to get data for this player',
+                    style: TextStyle(fontSize: 12),
+                  ),
           ],
         ),
       ),

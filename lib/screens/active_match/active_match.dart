@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/active_match/active_match_player.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -14,6 +15,7 @@ class ActiveMatch extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
+    final championsProvider = ref.read(providers.champions);
     final playerStatus =
         ref.watch(providers.players.select((_) => _.playerStatus));
     final playerId = ref.read(providers.auth).player?.playerId;
@@ -38,6 +40,25 @@ class ActiveMatch extends HookConsumerWidget {
         }
       },
       [],
+    );
+
+    useEffect(
+      () {
+        if (playerStatus != null &&
+            playerStatus.match != null &&
+            playerStatus.match?.playersInfo != null) {
+          final playerChampionsQuery =
+              playerStatus.match!.playersInfo.map((item) {
+            return data_classes.BatchPlayerChampionsPayload(
+              championId: item.championId.toString(),
+              playerId: item.player.playerId,
+            );
+          }).toList();
+
+          championsProvider.getPlayerChampionsBatch(playerChampionsQuery);
+        }
+      },
+      [playerStatus],
     );
 
     return Scaffold(
