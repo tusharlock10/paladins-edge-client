@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
@@ -22,7 +23,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       return;
     }
 
-    final response = await api.ChampionsRequests.allChampions(allData: true);
+    final response = await api.ChampionsRequests.allChampions();
     if (response == null) return;
     champions = response.champions;
 
@@ -62,6 +63,19 @@ class _ChampionsNotifier extends ChangeNotifier {
   Future<void> getPlayerChampions(String playerId) async {
     final response =
         await api.ChampionsRequests.playerChampions(playerId: playerId);
+    if (response == null) return;
+    playerChampions = response.playerChampions;
+    notifyListeners();
+  }
+
+  /// Get the batch `playerChampions` data for the playerId and championId
+  /// to be used in active match
+  Future<void> getPlayerChampionsBatch(
+    List<data_classes.BatchPlayerChampionsPayload> playerChampionsQuery,
+  ) async {
+    final response = await api.ChampionsRequests.batchPlayerChampions(
+      playerChampionsQuery: playerChampionsQuery,
+    );
     if (response == null) return;
     playerChampions = response.playerChampions;
     notifyListeners();
