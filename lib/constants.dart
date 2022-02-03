@@ -31,6 +31,7 @@ abstract class Urls {
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
+  static const queueTimeline = "/queue/queueTimeline"; // GET
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
@@ -152,4 +153,34 @@ abstract class ImageAspectRatios {
   static const rankIcon = 1;
 
   static const loadoutCard = 1 / 2;
+}
+
+abstract class QueueId {
+  static const unknown = "0";
+  static const casualSiege = "424";
+  static const teamDeathmatch = "469";
+  static const onslaught = "452";
+  static const rankedKeyboard = "486";
+  static const rankedController = "428";
+  static const shootingRange = "434";
+  static const trainingSiege = "425";
+  static const trainingTeamDeathmatch = "470";
+  static const trainingOnslaught = "453";
+  static const testMaps = "445";
+
+  static List<String> get list {
+    return [
+      unknown,
+      casualSiege,
+      teamDeathmatch,
+      onslaught,
+      rankedKeyboard,
+      rankedController,
+      shootingRange,
+      trainingSiege,
+      trainingTeamDeathmatch,
+      trainingOnslaught,
+      testMaps,
+    ];
+  }
 }

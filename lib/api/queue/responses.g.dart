@@ -6,16 +6,16 @@ part of 'responses.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-QueueDetailsResponse _$QueueDetailsResponseFromJson(
+QueueTimelineResponse _$QueueTimelineResponseFromJson(
         Map<String, dynamic> json) =>
-    QueueDetailsResponse(
-      queue: (json['queue'] as List<dynamic>)
+    QueueTimelineResponse(
+      timeline: (json['timeline'] as List<dynamic>)
           .map((e) => Queue.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$QueueDetailsResponseToJson(
-        QueueDetailsResponse instance) =>
+Map<String, dynamic> _$QueueTimelineResponseToJson(
+        QueueTimelineResponse instance) =>
     <String, dynamic>{
-      'queue': instance.queue,
+      'timeline': instance.timeline,
     };
