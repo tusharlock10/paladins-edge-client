@@ -35,7 +35,7 @@ class BottomTabs extends HookWidget {
 
     return Scaffold(
       drawer: const widgets.AppDrawer(),
-      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
+      drawerEnableOpenDragGesture: false,
       body: IndexedStack(
         children: _pages.map((page) => page['screen'] as Widget).toList(),
         index: selectedPageIndex.value,

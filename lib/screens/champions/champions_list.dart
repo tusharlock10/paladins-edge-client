@@ -15,7 +15,7 @@ class ChampionsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final championsProvider = ref.read(providers.champions);
     final champions = championsProvider.champions;
-    final playerChampions = championsProvider.playerChampions;
+    final userPlayerChampions = championsProvider.userPlayerChampions;
     final size = MediaQuery.of(context).size;
     const itemHeight = 120.0;
     int crossAxisCount;
@@ -58,7 +58,7 @@ class ChampionsList extends ConsumerWidget {
       children: newChampions.map(
         (champion) {
           final playerChampion = utilities.findPlayerChampion(
-            playerChampions,
+            userPlayerChampions,
             champion.championId,
           );
 

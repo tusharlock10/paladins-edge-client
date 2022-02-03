@@ -20,6 +20,7 @@ abstract class Urls {
   // champions
   static const allChampions = "/champions/allChampions"; // GET
   static const playerChampions = "/champions/playerChampions"; // GET
+  static const batchPlayerChampions = '/champions/batchPlayerChampions'; // POST
 
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
@@ -30,6 +31,7 @@ abstract class Urls {
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
+  static const queueTimeline = "/queue/queueTimeline"; // GET
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
@@ -117,12 +119,14 @@ abstract class HiveBoxes {
   static const champion = "champion";
   static const recordExpiry = "recordExpiry";
   static const bountyStore = "bountyStore";
+  static const playerChampion = "playerChampion";
 }
 
 abstract class RecordExpiryData {
   static const champion = "champion";
   static const searchHistory = "searchHistory";
   static const bountyStore = "bountyStore";
+  static const playerChampion = "playerChampion";
 
   static const championDuration =
       Duration(days: 1); // expire saved champion records in 1 day
@@ -130,6 +134,8 @@ abstract class RecordExpiryData {
       Duration(days: 7); // expire saved searchHistory records in 7 days
   static const bountyStoreDuration =
       Duration(days: 1); // expire saved bountyStore records in 1 day
+  static const playerChampionDuration =
+      Duration(days: 1); // expire saved playerChampion records in 1 day
 }
 
 abstract class ImageAspectRatios {
@@ -147,4 +153,34 @@ abstract class ImageAspectRatios {
   static const rankIcon = 1;
 
   static const loadoutCard = 1 / 2;
+}
+
+abstract class QueueId {
+  static const unknown = "0";
+  static const casualSiege = "424";
+  static const teamDeathmatch = "469";
+  static const onslaught = "452";
+  static const rankedKeyboard = "486";
+  static const rankedController = "428";
+  static const shootingRange = "434";
+  static const trainingSiege = "425";
+  static const trainingTeamDeathmatch = "470";
+  static const trainingOnslaught = "453";
+  static const testMaps = "445";
+
+  static List<String> get list {
+    return [
+      unknown,
+      casualSiege,
+      teamDeathmatch,
+      onslaught,
+      rankedKeyboard,
+      rankedController,
+      shootingRange,
+      trainingSiege,
+      trainingTeamDeathmatch,
+      trainingOnslaught,
+      testMaps,
+    ];
+  }
 }
