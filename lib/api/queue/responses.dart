@@ -13,3 +13,14 @@ class QueueDetailsResponse {
       _$QueueDetailsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$QueueDetailsResponseToJson(this);
 }
+
+@JsonSerializable()
+class QueueTimelineResponse {
+  final List<Queue> timeline;
+
+  QueueTimelineResponse({required this.timeline});
+
+  factory QueueTimelineResponse.fromJson(Map<String, dynamic> json) =>
+      _$QueueTimelineResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$QueueTimelineResponseToJson(this);
+}

@@ -13,10 +13,14 @@ class Queue {
   /// Number of matches being played currently in this
   final int activeMatchCount;
 
+  /// DateTime at which this queue data was created
+  final DateTime createdAt;
+
   Queue({
     required this.queueId,
     required this.name,
     required this.activeMatchCount,
+    required this.createdAt,
   });
 
   factory Queue.fromJson(Map<String, dynamic> json) => _$QueueFromJson(json);

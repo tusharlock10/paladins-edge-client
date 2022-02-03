@@ -31,6 +31,7 @@ abstract class Urls {
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
+  static const queueTimeline = "/queue/queueTimeline"; // GET
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET

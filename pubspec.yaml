@@ -58,6 +58,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   flash: ^2.0.3+2
   freezed_annotation: ^1.1.0
+  fl_chart: ^0.41.0
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +67,7 @@ dev_dependencies:
   json_serializable: ^6.0.0
   hive_generator: ^1.1.1
   flutter_launcher_icons: ^0.9.2
-  flutter_native_splash: ^1.2.3
+  flutter_native_splash: ^2.0.1+1
   flutter_lints: ^1.0.4
   dart_code_metrics: ^4.8.1
   freezed: ^1.1.1

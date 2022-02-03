@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paladinsedge/screens/home/bounty_store_details.dart';
+import 'package:paladinsedge/screens/home/queue_chart.dart';
 import 'package:paladinsedge/screens/home/queue_details.dart';
 
 class Home extends StatelessWidget {
@@ -21,6 +22,7 @@ class Home extends StatelessWidget {
         Expanded(
           child: ListView(
             children: const [
+              QueueChart(),
               QueueDetails(),
               BountyStoreDetails(),
             ],

@@ -7,9 +7,11 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class _QueueCard extends StatelessWidget {
   final models.Queue queue;
+  final void Function(String queueId) onTap;
 
   const _QueueCard({
     required this.queue,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -18,19 +20,23 @@ class _QueueCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            queue.name.replaceAll(RegExp('_'), ' '),
-            textAlign: TextAlign.center,
-            style: textTheme.bodyText1,
-          ),
-          Text(
-            '${queue.activeMatchCount}',
-            style: textTheme.bodyText2?.copyWith(fontSize: 16),
-          ),
-        ],
+      child: InkWell(
+        onTap: () => onTap(queue.queueId),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              queue.name.replaceAll(RegExp('_'), ' '),
+              textAlign: TextAlign.center,
+              style: textTheme.bodyText1,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '${queue.activeMatchCount}',
+              style: textTheme.bodyText2?.copyWith(fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -41,10 +47,22 @@ class QueueDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final queueProvider = ref.watch(providers.queue);
 
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+    const itemHeight = 100;
+    int crossAxisCount = 2;
+    double width = size.width;
+    final itemWidth = width / crossAxisCount;
+    double childAspectRatio = itemWidth / itemHeight;
+
+    // State
     final isLoading = useState(true);
 
+    // Effects
     useEffect(
       () {
         queueProvider.getQueueDetails().then((_) => isLoading.value = false);
@@ -52,21 +70,19 @@ class QueueDetails extends HookConsumerWidget {
       [],
     );
 
-    final textTheme = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
-
-    const itemHeight = 100;
-    int crossAxisCount = 2;
-    double width = size.width;
+    // Methods
+    final getQueueTimeline = useCallback(
+      (String queueId) {
+        queueProvider.getQueueTimeline(queueId);
+      },
+      [],
+    );
 
     if (size.height < size.width) {
       // means in landscape mode, fix the headerHeight
       crossAxisCount = 4;
       width = size.width * 0.75;
     }
-
-    final itemWidth = width / crossAxisCount;
-    double childAspectRatio = itemWidth / itemHeight;
 
     if (isLoading.value) {
       return const widgets.LoadingIndicator(
@@ -108,7 +124,10 @@ class QueueDetails extends HookConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   children: queueProvider.queue
                       .where((_queue) => _queue.queueId != "0")
-                      .map((_queue) => _QueueCard(queue: _queue))
+                      .map((_queue) => _QueueCard(
+                            queue: _queue,
+                            onTap: getQueueTimeline,
+                          ))
                       .toList(),
                 ),
         ],

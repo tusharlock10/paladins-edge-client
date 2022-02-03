@@ -19,3 +19,17 @@ Map<String, dynamic> _$QueueDetailsResponseToJson(
     <String, dynamic>{
       'queue': instance.queue,
     };
+
+QueueTimelineResponse _$QueueTimelineResponseFromJson(
+        Map<String, dynamic> json) =>
+    QueueTimelineResponse(
+      timeline: (json['timeline'] as List<dynamic>)
+          .map((e) => Queue.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$QueueTimelineResponseToJson(
+        QueueTimelineResponse instance) =>
+    <String, dynamic>{
+      'timeline': instance.timeline,
+    };
