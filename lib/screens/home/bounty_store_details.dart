@@ -19,6 +19,9 @@ class _BountyStoreCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

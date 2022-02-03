@@ -3,28 +3,10 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 abstract class QueueRequests {
-  static Future<responses.QueueDetailsResponse?> queueDetails() async {
+  static Future<responses.QueueTimelineResponse?> queueTimeline() async {
     try {
       final response = await utilities.api
-          .get<Map<String, dynamic>>(constants.Urls.queueDetails);
-      if (response.data != null) {
-        return responses.QueueDetailsResponse.fromJson(response.data!);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  static Future<responses.QueueTimelineResponse?> queueTimeline({
-    required String queueId,
-  }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.queueTimeline,
-        queryParameters: {'queueId': queueId},
-      );
+          .get<Map<String, dynamic>>(constants.Urls.queueTimeline);
       if (response.data != null) {
         return responses.QueueTimelineResponse.fromJson(response.data!);
       }

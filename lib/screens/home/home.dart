@@ -22,8 +22,8 @@ class Home extends StatelessWidget {
         Expanded(
           child: ListView(
             children: const [
-              QueueChart(),
               QueueDetails(),
+              QueueChart(),
               BountyStoreDetails(),
             ],
           ),
