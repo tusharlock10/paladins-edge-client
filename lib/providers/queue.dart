@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ class _QueueState extends ChangeNotifier {
   String selectedQueueId = constants.QueueId.casualSiege;
 
   // data related to charting
+  final accuracy = 28; // i.e. it provides 28 minutes of accuracy in the chart
   List<models.Queue> selectedTimeline = [];
   List<FlSpot> chartTimelineData = [];
   double chartMaxX = 0;
@@ -50,8 +52,10 @@ class _QueueState extends ChangeNotifier {
     chartMaxX = 0;
     chartMaxY = 0;
 
-    selectedTimeline =
-        timeline.where((queue) => queue.queueId == queueId).toList();
+    selectedTimeline = timeline
+        .where((queue) => queue.queueId == queueId)
+        .filterIndexed((_, index) => index % (accuracy ~/ 4) == 0)
+        .toList();
     chartTimelineData = selectedTimeline.map(
       (queue) {
         index++;

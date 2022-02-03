@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,13 +25,9 @@ class QueueChart extends HookConsumerWidget {
 
     // Variables
     const gradient = [Color(0xff6dd5ed), Color(0xff2193b0)];
-    const reservedSize = 24.0;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final themeBrightness = Theme.of(context).brightness;
+    final brightness = Theme.of(context).brightness;
     final intervalY = (chartMaxY - chartMinY) / 5;
-    final width = MediaQuery.of(context).size.width;
-    final tilesNumber = width ~/ reservedSize;
-    final intervalX = width / tilesNumber;
 
     // Methods
     final getQueueTimeTitle = useCallback(
@@ -78,7 +76,7 @@ class QueueChart extends HookConsumerWidget {
             clipData: FlClipData.all(),
             minX: chartMinX,
             maxX: chartMaxX,
-            minY: chartMinY - intervalY,
+            minY: max(chartMinY - intervalY, 0),
             maxY: chartMaxY + intervalY,
             extraLinesData: ExtraLinesData(
               extraLinesOnTop: false,
@@ -104,10 +102,9 @@ class QueueChart extends HookConsumerWidget {
               rightTitles: SideTitles(showTitles: false),
               bottomTitles: SideTitles(
                 showTitles: true,
-                reservedSize: reservedSize,
-                interval: intervalX,
                 getTextStyles: (_, __) => const TextStyle(fontSize: 9),
                 getTitles: getQueueTimeTitle,
+                interval: selectedTimeline.length / 6,
               ),
               leftTitles: SideTitles(
                 showTitles: true,
@@ -124,7 +121,21 @@ class QueueChart extends HookConsumerWidget {
             lineBarsData: [
               LineChartBarData(
                 colors: gradient,
-                barWidth: 1.5,
+                barWidth: 2.5,
+                isCurved: true,
+                isStrokeCapRound: true,
+                preventCurveOverShooting: true,
+                shadow: brightness == Brightness.light
+                    ? const Shadow(
+                        color: Color(0xff5cb7cc),
+                        blurRadius: 5,
+                        offset: Offset(0, 4),
+                      )
+                    : const Shadow(
+                        color: Color(0xff438999),
+                        blurRadius: 7,
+                        offset: Offset(0, 5),
+                      ),
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(
                   show: true,
