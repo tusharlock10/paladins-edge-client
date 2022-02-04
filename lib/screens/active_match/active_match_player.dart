@@ -156,6 +156,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
             playerChampion.value = playerChampions[index];
           }
         }
+
+        return null;
       },
       [playerChampions],
     );

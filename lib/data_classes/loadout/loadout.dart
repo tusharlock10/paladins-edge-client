@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart' hide Card;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:paladinsedge/models/index.dart'
-    show Champion, Loadout, LoadoutCard;
+    show Champion, Loadout, LoadoutCard, Card;
 
 part 'loadout.freezed.dart';
 
@@ -51,4 +52,22 @@ class DraftLoadout with _$DraftLoadout {
       loadoutHash: loadout.loadoutHash,
     );
   }
+}
+
+class ShowLoadoutDetailsOptions {
+  final BuildContext context;
+  final Champion champion;
+  final Card card;
+  final bool sliderFixed;
+  int cardPoints;
+  void Function(int)? onSliderChange;
+
+  ShowLoadoutDetailsOptions({
+    required this.context,
+    required this.champion,
+    required this.card,
+    required this.sliderFixed,
+    this.cardPoints = 1,
+    this.onSliderChange,
+  });
 }

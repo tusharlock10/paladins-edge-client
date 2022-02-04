@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-void showLoadoutCardDetailSheet({
-  required BuildContext context,
-  required models.Champion champion,
-  required models.Card card,
-  required bool sliderFixed,
-  int cardPoints = 1,
-  void Function(int)? onSliderChange,
-}) {
+void showLoadoutCardDetailSheet(
+  data_classes.ShowLoadoutDetailsOptions options,
+) {
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -20,14 +16,14 @@ void showLoadoutCardDetailSheet({
         topRight: Radius.circular(15),
       ),
     ),
-    context: context,
+    context: options.context,
     builder: (_) {
       return _LoadoutCardDetail(
-        card: card,
-        champion: champion,
-        cardPoints: cardPoints,
-        onSliderChange: onSliderChange,
-        sliderFixed: sliderFixed,
+        card: options.card,
+        champion: options.champion,
+        cardPoints: options.cardPoints,
+        onSliderChange: options.onSliderChange,
+        sliderFixed: options.sliderFixed,
       );
     },
   );
