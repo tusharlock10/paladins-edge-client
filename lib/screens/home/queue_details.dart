@@ -93,6 +93,13 @@ class QueueDetails extends HookConsumerWidget {
     const itemHeight = 100;
     int crossAxisCount = 2;
     double width = size.width;
+
+    if (size.height < size.width) {
+      // means in landscape mode, fix the headerHeight
+      crossAxisCount = 4;
+      width = size.width * 0.75;
+    }
+
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
@@ -100,6 +107,8 @@ class QueueDetails extends HookConsumerWidget {
     useEffect(
       () {
         queueProvider.getQueueTimeline();
+
+        return null;
       },
       [],
     );
@@ -111,12 +120,6 @@ class QueueDetails extends HookConsumerWidget {
       },
       [],
     );
-
-    if (size.height < size.width) {
-      // means in landscape mode, fix the headerHeight
-      crossAxisCount = 4;
-      width = size.width * 0.75;
-    }
 
     if (isLoading) {
       return const widgets.LoadingIndicator(

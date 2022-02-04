@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
@@ -160,13 +161,15 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Marks, unmarks a `friend` player as favourite
-  Future<int> markFavouriteFriend(String playerId) async {
+  Future<data_classes.FavouriteFriendResult> markFavouriteFriend(
+    String playerId,
+  ) async {
     // returns 0,1 or 2 as response
     // 0 -> player is removed from favouriteFriends
     // 1 -> player is added in favouriteFriends
     // 2 -> player is not added due to favouriteFriends limit reached
 
-    if (user == null) return 0;
+    if (user == null) return data_classes.FavouriteFriendResult.removed;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
 
@@ -176,7 +179,7 @@ class _AuthNotifier extends ChangeNotifier {
       // check if user already has max number of friends
       if (user!.favouriteFriends.length >=
           utilities.Global.essentials!.maxFavouriteFriends) {
-        return 2;
+        return data_classes.FavouriteFriendResult.limitReached;
       }
 
       user!.favouriteFriends.add(playerId);
@@ -203,7 +206,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     notifyListeners();
 
-    return 1;
+    return data_classes.FavouriteFriendResult.added;
   }
 
   /// Toggle the theme from `light` to `dark` and vice versa

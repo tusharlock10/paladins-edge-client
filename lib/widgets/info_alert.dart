@@ -24,6 +24,8 @@ class _InfoAlert extends HookWidget {
       () {
         PackageInfo.fromPlatform()
             .then((_packageInfo) => packageInfo.value = _packageInfo);
+
+        return null;
       },
       [],
     );

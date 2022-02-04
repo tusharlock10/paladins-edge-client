@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friends_list.dart';
@@ -35,6 +35,8 @@ class Friends extends HookConsumerWidget {
               )
               .then((_) => isLoading.value = false);
         }
+
+        return null;
       },
       [],
     );
@@ -58,8 +60,7 @@ class Friends extends HookConsumerWidget {
         final result = await authProvider
             .markFavouriteFriend(selectedFriend.value!.playerId);
 
-        // TODO: Change result to be an enum
-        if (result == 2) {
+        if (result == data_classes.FavouriteFriendResult.limitReached) {
           // user already has max number of friends
           // show a toast displaying this info
 
@@ -73,7 +74,7 @@ class Friends extends HookConsumerWidget {
               ),
             ),
           );
-        } else if (result == 1) {
+        } else if (result == data_classes.FavouriteFriendResult.added) {
           // player is added in list
           playersProvider.moveFriendToTop(selectedFriend.value!.playerId);
           _friendsListKey.currentState?.insertItem(0);

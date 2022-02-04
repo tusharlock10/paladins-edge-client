@@ -7,7 +7,6 @@ final lightTheme = ThemeData(
   primaryColor: themeMaterialColor,
   primaryColorLight: themeMaterialColor,
   primaryColorDark: darkThemeMaterialColor,
-  primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
     elevation: 7,
@@ -131,7 +130,6 @@ final darkTheme = ThemeData(
   primaryColor: darkThemeMaterialColor,
   primaryColorLight: themeMaterialColor,
   primaryColorDark: darkThemeMaterialColor,
-  primaryColorBrightness: Brightness.dark,
   scaffoldBackgroundColor: darkThemeMaterialColor,
   appBarTheme: AppBarTheme(
     elevation: 7,
