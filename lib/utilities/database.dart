@@ -17,6 +17,7 @@ abstract class Database {
   static Box<models.RecordExpiry>? _recordExpiryBox;
   static Box<models.BountyStore>? _bountyStoreBox;
   static Box<models.PlayerChampion>? _playerChampionBox;
+  static Box<models.Queue>? _queueTimelineBox;
 
   static Future<void> initDatabase() async {
     if (_init) return;
@@ -35,6 +36,7 @@ abstract class Database {
     Hive.registerAdapter(models.RecordExpiryAdapter());
     Hive.registerAdapter(models.BountyStoreAdapter());
     Hive.registerAdapter(models.PlayerChampionAdapter());
+    Hive.registerAdapter(models.QueueAdapter());
 
     _init = true;
 
@@ -58,6 +60,9 @@ abstract class Database {
         await Hive.openBox<models.BountyStore>(constants.HiveBoxes.bountyStore);
     _playerChampionBox = await Hive.openBox<models.PlayerChampion>(
       constants.HiveBoxes.playerChampion,
+    );
+    _queueTimelineBox = await Hive.openBox<models.Queue>(
+      constants.HiveBoxes.queueTimeline,
     );
 
     // check if recordExpiry contains any data
@@ -96,6 +101,8 @@ abstract class Database {
 
   static void savePlayerChampion(models.PlayerChampion playerChampion) =>
       _playerChampionBox?.add(playerChampion);
+
+  static void saveQueue(models.Queue queue) => _queueTimelineBox?.add(queue);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
@@ -178,6 +185,23 @@ abstract class Database {
         : playerChampions;
   }
 
+  static List<models.Queue>? getQueueTimeline() {
+    // check if queueTimeline records have expired
+    if (_recordExpiry!
+        .isRecordExpired(constants.RecordExpiryData.queueTimeline)) {
+      // if the data is expired, then clear queueTimeline box
+      // and renew the recordExpiry for queueTimeline records
+      _queueTimelineBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryData.queueTimeline);
+    }
+
+    final queueTimeline = _queueTimelineBox?.values.toList();
+
+    return queueTimeline == null || queueTimeline.isEmpty
+        ? null
+        : queueTimeline;
+  }
+
   // clear all the boxes
   static void clear() {
     _tokenBox?.clear();
@@ -189,6 +213,7 @@ abstract class Database {
     _championBox?.clear();
     _bountyStoreBox?.clear();
     _playerChampionBox?.clear();
+    _queueTimelineBox?.clear();
   }
 
   /// renews the expiry date on saved records.

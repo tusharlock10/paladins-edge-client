@@ -88,6 +88,7 @@ abstract class TypeIds {
   static const searchHistory = 11;
   static const recordExpiry = 12;
   static const bountyStore = 13;
+  static const queue = 14;
 }
 
 abstract class NotificationChannels {
@@ -120,22 +121,23 @@ abstract class HiveBoxes {
   static const recordExpiry = "recordExpiry";
   static const bountyStore = "bountyStore";
   static const playerChampion = "playerChampion";
+  static const queueTimeline = "queueTimeline";
 }
 
 abstract class RecordExpiryData {
+  // name of the records to save
   static const champion = "champion";
   static const searchHistory = "searchHistory";
   static const bountyStore = "bountyStore";
   static const playerChampion = "playerChampion";
+  static const queueTimeline = "queueTimeline";
 
-  static const championDuration =
-      Duration(days: 1); // expire saved champion records in 1 day
-  static const searchHistoryDuration =
-      Duration(days: 7); // expire saved searchHistory records in 7 days
-  static const bountyStoreDuration =
-      Duration(days: 1); // expire saved bountyStore records in 1 day
-  static const playerChampionDuration =
-      Duration(days: 1); // expire saved playerChampion records in 1 day
+  // Time to live duration of these records
+  static const championDuration = Duration(days: 1);
+  static const searchHistoryDuration = Duration(days: 7);
+  static const bountyStoreDuration = Duration(days: 1);
+  static const playerChampionDuration = Duration(days: 1);
+  static const queueTimelineDuration = Duration(minutes: 10);
 }
 
 abstract class ImageAspectRatios {
