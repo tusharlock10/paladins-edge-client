@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 /// Round a `number` to nearest multile of 10
 /// eg. 1733 has nearest multiple of 10 as 1000
 /// so the result will be 2000
@@ -43,4 +45,10 @@ int roundToNearestTenth(
   }
 
   return result;
+}
+
+/// Callback that is called after Flutter is done painting a frame
+/// eleminates the "markNeedsBuild" error
+void postFrameCallback(void Function() callback) {
+  WidgetsBinding.instance?.addPostFrameCallback((_) => callback());
 }
