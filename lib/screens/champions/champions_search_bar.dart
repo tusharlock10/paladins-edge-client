@@ -20,7 +20,7 @@ class ChampionsSearchBar extends StatelessWidget {
 
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: Theme.of(context).primaryColorBrightness,
+        statusBarBrightness: Theme.of(context).brightness,
       ),
       title: TextField(
         maxLength: 16,

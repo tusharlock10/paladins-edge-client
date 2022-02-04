@@ -124,6 +124,8 @@ class Login extends HookConsumerWidget {
     useEffect(
       () {
         initApp();
+
+        return null;
       },
       [],
     );

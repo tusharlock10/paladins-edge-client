@@ -58,6 +58,8 @@ class Search extends HookConsumerWidget {
     useEffect(
       () {
         playersProvider.getSearchHistory();
+
+        return null;
       },
       [],
     );

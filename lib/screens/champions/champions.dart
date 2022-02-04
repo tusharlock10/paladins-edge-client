@@ -27,6 +27,8 @@ class Champions extends HookConsumerWidget {
         ]).then((_) {
           isLoading.value = false;
         });
+
+        return null;
       },
       [],
     );

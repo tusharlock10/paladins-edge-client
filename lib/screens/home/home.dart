@@ -16,7 +16,7 @@ class Home extends StatelessWidget {
         AppBar(
           title: const Text('Home'),
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Theme.of(context).primaryColorBrightness,
+            statusBarBrightness: Theme.of(context).brightness,
           ),
         ),
         Expanded(

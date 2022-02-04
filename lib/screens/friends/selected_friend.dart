@@ -51,7 +51,7 @@ class SelectedFriend extends ConsumerWidget {
                                 style: theme.textTheme.bodyText2,
                               ),
                               Text(
-                                '${selectedFriend!.platform}',
+                                selectedFriend!.platform,
                                 style: theme.textTheme.bodyText1,
                               ),
                             ],

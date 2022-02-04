@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -39,12 +38,14 @@ class LoadoutDeckCard extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(5)),
             child: GestureDetector(
               onTap: () => widgets.showLoadoutCardDetailSheet(
-                context: context,
-                champion: champion,
-                card: card,
-                cardPoints: loadoutCard.level,
-                onSliderChange: onSliderChange,
-                sliderFixed: sliderFixed,
+                data_classes.ShowLoadoutDetailsOptions(
+                  context: context,
+                  champion: champion,
+                  card: card,
+                  cardPoints: loadoutCard.level,
+                  onSliderChange: onSliderChange,
+                  sliderFixed: sliderFixed,
+                ),
               ),
               child: Stack(
                 children: [

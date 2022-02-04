@@ -34,11 +34,3 @@ String getParsedDescription(List<String> descriptionParts, int amount) {
 
   return desc;
 }
-
-void main() {
-  String desc =
-      "Heal for {scale=100|-7.5} every 0.5s for {scale=0.5|0.5}s after activating Dash. This effect stacks.";
-
-  final descriptionParts = getDescriptionParts(desc);
-  final parsedDescription = getParsedDescription(descriptionParts, 1);
-}

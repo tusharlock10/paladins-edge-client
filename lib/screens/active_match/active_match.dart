@@ -38,6 +38,8 @@ class ActiveMatch extends HookConsumerWidget {
               .getPlayerStatus(playerId)
               .then((_) => isLoading.value = false);
         }
+
+        return null;
       },
       [],
     );
@@ -57,6 +59,8 @@ class ActiveMatch extends HookConsumerWidget {
 
           championsProvider.getPlayerChampionsBatch(playerChampionsQuery);
         }
+
+        return null;
       },
       [playerStatus],
     );

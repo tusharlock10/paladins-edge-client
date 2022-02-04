@@ -38,7 +38,7 @@ class TopSearchBar extends HookConsumerWidget {
 
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: theme.primaryColorBrightness,
+        statusBarBrightness: theme.brightness,
       ),
       title: TextField(
         controller: textController,
