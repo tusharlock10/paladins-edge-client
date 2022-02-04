@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _QueueState extends ChangeNotifier {
   bool isLoading = true;
@@ -21,16 +22,26 @@ class _QueueState extends ChangeNotifier {
   double chartMinX = double.infinity;
   double chartMinY = double.infinity;
 
+  /// Loads the `timeline` data for the queue from local db and
+  /// syncs it with server for showing on Home screen
   Future<void> getQueueTimeline() async {
-    final response = await api.QueueRequests.queueTimeline();
-    if (response == null) return;
-    isLoading = false;
-    timeline = response.timeline.reversed.toList();
+    final savedQueueTimeline = utilities.Database.getQueueTimeline();
+
+    if (savedQueueTimeline != null) {
+      timeline = savedQueueTimeline;
+      isLoading = false;
+    } else {
+      final response = await api.QueueRequests.queueTimeline();
+      isLoading = false;
+      if (response == null) return;
+      timeline = response.timeline.reversed.toList();
+      timeline.forEach(utilities.Database.saveQueue);
+    }
 
     _getQueue();
     _selectTimelineQueue(selectedQueueId);
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void selectTimelineQueue(String queueId) {

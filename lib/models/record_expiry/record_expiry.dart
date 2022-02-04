@@ -22,6 +22,10 @@ class RecordExpiry extends HiveObject {
   @HiveField(3)
   DateTime _playerChampionExpiry;
 
+  /// date at which the saved queue record will expire
+  @HiveField(4)
+  DateTime _queueTimelineExpiry;
+
   RecordExpiry()
       : _championsExpiry =
             DateTime.now().add(RecordExpiryData.championDuration),
@@ -30,7 +34,9 @@ class RecordExpiry extends HiveObject {
         _bountyStoreExpiry =
             DateTime.now().add(RecordExpiryData.bountyStoreDuration),
         _playerChampionExpiry =
-            DateTime.now().add(RecordExpiryData.playerChampionDuration);
+            DateTime.now().add(RecordExpiryData.playerChampionDuration),
+        _queueTimelineExpiry =
+            DateTime.now().add(RecordExpiryData.queueTimelineDuration);
 
   bool isRecordExpired(String recordName) {
     // checks if the provided record is expired
@@ -44,6 +50,8 @@ class RecordExpiry extends HiveObject {
       return now.isAfter(_bountyStoreExpiry);
     } else if (recordName == RecordExpiryData.playerChampion) {
       return now.isAfter(_playerChampionExpiry);
+    } else if (recordName == RecordExpiryData.queueTimeline) {
+      return now.isAfter(_queueTimelineExpiry);
     } else {
       return true;
     }
@@ -62,6 +70,9 @@ class RecordExpiry extends HiveObject {
     } else if (recordName == RecordExpiryData.playerChampion) {
       _playerChampionExpiry =
           DateTime.now().add(RecordExpiryData.playerChampionDuration);
+    } else if (recordName == RecordExpiryData.queueTimeline) {
+      _queueTimelineExpiry =
+          DateTime.now().add(RecordExpiryData.queueTimelineDuration);
     }
   }
 }
