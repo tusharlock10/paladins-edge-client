@@ -124,14 +124,15 @@ abstract class HiveBoxes {
   static const queueTimeline = "queueTimeline";
 }
 
-abstract class RecordExpiryData {
-  // name of the records to save
-  static const champion = "champion";
-  static const searchHistory = "searchHistory";
-  static const bountyStore = "bountyStore";
-  static const playerChampion = "playerChampion";
-  static const queueTimeline = "queueTimeline";
+enum RecordExpiryName {
+  champion,
+  searchHistory,
+  bountyStore,
+  playerChampion,
+  queueTimeline,
+}
 
+abstract class RecordExpiryDuration {
   // Time to live duration of these records
   static const championDuration = Duration(days: 1);
   static const searchHistoryDuration = Duration(days: 7);
