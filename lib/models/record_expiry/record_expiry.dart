@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds, RecordExpiryData;
+import 'package:paladinsedge/constants.dart'
+    show TypeIds, RecordExpiryDuration, RecordExpiryName;
 
 part 'record_expiry.g.dart';
 
@@ -8,71 +9,82 @@ part 'record_expiry.g.dart';
 class RecordExpiry extends HiveObject {
   /// date at which the saved champion record will expire
   @HiveField(0)
-  DateTime _championsExpiry;
+  DateTime? _championsExpiry;
 
   /// date at which the saved searchHistory record will expire
   @HiveField(1)
-  DateTime _searchHistoryExpiry;
+  DateTime? _searchHistoryExpiry;
 
   /// date at which the saved bountyStore record will expire
   @HiveField(2)
-  DateTime _bountyStoreExpiry;
+  DateTime? _bountyStoreExpiry;
 
   /// date at which the saved playerChampion record will expire
   @HiveField(3)
-  DateTime _playerChampionExpiry;
+  DateTime? _playerChampionExpiry;
 
   /// date at which the saved queue record will expire
   @HiveField(4)
-  DateTime _queueTimelineExpiry;
+  DateTime? _queueTimelineExpiry;
 
-  RecordExpiry()
-      : _championsExpiry =
-            DateTime.now().add(RecordExpiryData.championDuration),
-        _searchHistoryExpiry =
-            DateTime.now().add(RecordExpiryData.searchHistoryDuration),
-        _bountyStoreExpiry =
-            DateTime.now().add(RecordExpiryData.bountyStoreDuration),
-        _playerChampionExpiry =
-            DateTime.now().add(RecordExpiryData.playerChampionDuration),
-        _queueTimelineExpiry =
-            DateTime.now().add(RecordExpiryData.queueTimelineDuration);
-
-  bool isRecordExpired(String recordName) {
+  bool isRecordExpired(RecordExpiryName recordName) {
     // checks if the provided record is expired
     final now = DateTime.now();
+    Duration duration;
 
-    if (recordName == RecordExpiryData.champion) {
-      return now.isAfter(_championsExpiry);
-    } else if (recordName == RecordExpiryData.searchHistory) {
-      return now.isAfter(_searchHistoryExpiry);
-    } else if (recordName == RecordExpiryData.bountyStore) {
-      return now.isAfter(_bountyStoreExpiry);
-    } else if (recordName == RecordExpiryData.playerChampion) {
-      return now.isAfter(_playerChampionExpiry);
-    } else if (recordName == RecordExpiryData.queueTimeline) {
-      return now.isAfter(_queueTimelineExpiry);
-    } else {
-      return true;
+    switch (recordName) {
+      case RecordExpiryName.champion:
+        duration = RecordExpiryDuration.championDuration;
+        return now.isAfter(_championsExpiry ?? now.add(duration));
+
+      case RecordExpiryName.searchHistory:
+        duration = RecordExpiryDuration.searchHistoryDuration;
+        return now.isAfter(_searchHistoryExpiry ?? now.add(duration));
+
+      case RecordExpiryName.bountyStore:
+        duration = RecordExpiryDuration.bountyStoreDuration;
+        return now.isAfter(_bountyStoreExpiry ?? now.add(duration));
+
+      case RecordExpiryName.playerChampion:
+        duration = RecordExpiryDuration.playerChampionDuration;
+        return now.isAfter(_playerChampionExpiry ?? now.add(duration));
+
+      case RecordExpiryName.queueTimeline:
+        duration = RecordExpiryDuration.queueTimelineDuration;
+        return now.isAfter(_queueTimelineExpiry ?? now.add(duration));
+
+      default:
+        return true;
     }
   }
 
-  void renewRecordExpiry(String recordName) {
+  void renewRecordExpiry(RecordExpiryName recordName) {
     // renews the expiry date of a record
-    if (recordName == RecordExpiryData.champion) {
-      _championsExpiry = DateTime.now().add(RecordExpiryData.championDuration);
-    } else if (recordName == RecordExpiryData.searchHistory) {
-      _searchHistoryExpiry =
-          DateTime.now().add(RecordExpiryData.searchHistoryDuration);
-    } else if (recordName == RecordExpiryData.bountyStore) {
-      _bountyStoreExpiry =
-          DateTime.now().add(RecordExpiryData.bountyStoreDuration);
-    } else if (recordName == RecordExpiryData.playerChampion) {
-      _playerChampionExpiry =
-          DateTime.now().add(RecordExpiryData.playerChampionDuration);
-    } else if (recordName == RecordExpiryData.queueTimeline) {
-      _queueTimelineExpiry =
-          DateTime.now().add(RecordExpiryData.queueTimelineDuration);
+    switch (recordName) {
+      case RecordExpiryName.champion:
+        _championsExpiry =
+            DateTime.now().add(RecordExpiryDuration.championDuration);
+        return;
+
+      case RecordExpiryName.searchHistory:
+        _searchHistoryExpiry =
+            DateTime.now().add(RecordExpiryDuration.searchHistoryDuration);
+        return;
+
+      case RecordExpiryName.bountyStore:
+        _bountyStoreExpiry =
+            DateTime.now().add(RecordExpiryDuration.bountyStoreDuration);
+        return;
+
+      case RecordExpiryName.playerChampion:
+        _playerChampionExpiry =
+            DateTime.now().add(RecordExpiryDuration.playerChampionDuration);
+        return;
+
+      case RecordExpiryName.queueTimeline:
+        _queueTimelineExpiry =
+            DateTime.now().add(RecordExpiryDuration.queueTimelineDuration);
+        return;
     }
   }
 }

@@ -125,11 +125,11 @@ abstract class Database {
   static List<models.SearchHistory>? getSearchHistory() {
     // check if searchHistory have expired
     if (_recordExpiry!
-        .isRecordExpired(constants.RecordExpiryData.searchHistory)) {
+        .isRecordExpired(constants.RecordExpiryName.searchHistory)) {
       // if the data is expired, then clear searchHistory box
       // and renew the recordExpiry for searchHistory
       _searchHistoryBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryData.searchHistory);
+      _renewRecordExpiry(constants.RecordExpiryName.searchHistory);
     }
 
     final searchHistory = _searchHistoryBox?.values.toList().reversed.toList();
@@ -141,11 +141,11 @@ abstract class Database {
 
   static List<models.Champion>? getChampions() {
     // check if champion records have expired
-    if (_recordExpiry!.isRecordExpired(constants.RecordExpiryData.champion)) {
+    if (_recordExpiry!.isRecordExpired(constants.RecordExpiryName.champion)) {
       // if the data is expired, then clear champion box
       // and renew the recordExpiry for champion records
       _championBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryData.champion);
+      _renewRecordExpiry(constants.RecordExpiryName.champion);
     }
 
     final champions = _championBox?.values.toList();
@@ -156,11 +156,11 @@ abstract class Database {
   static List<models.BountyStore>? getBountyStore() {
     // check if bountyStore records have expired
     if (_recordExpiry!
-        .isRecordExpired(constants.RecordExpiryData.bountyStore)) {
+        .isRecordExpired(constants.RecordExpiryName.bountyStore)) {
       // if the data is expired, then clear bountyStore box
       // and renew the recordExpiry for bountyStore records
       _bountyStoreBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryData.bountyStore);
+      _renewRecordExpiry(constants.RecordExpiryName.bountyStore);
     }
 
     final bountyStore = _bountyStoreBox?.values.toList();
@@ -171,11 +171,11 @@ abstract class Database {
   static List<models.PlayerChampion>? getPlayerChampions() {
     // check if playerChampion records have expired
     if (_recordExpiry!
-        .isRecordExpired(constants.RecordExpiryData.playerChampion)) {
+        .isRecordExpired(constants.RecordExpiryName.playerChampion)) {
       // if the data is expired, then clear playerChampion box
       // and renew the recordExpiry for playerChampion records
       _playerChampionBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryData.playerChampion);
+      _renewRecordExpiry(constants.RecordExpiryName.playerChampion);
     }
 
     final playerChampions = _playerChampionBox?.values.toList();
@@ -188,11 +188,11 @@ abstract class Database {
   static List<models.Queue>? getQueueTimeline() {
     // check if queueTimeline records have expired
     if (_recordExpiry!
-        .isRecordExpired(constants.RecordExpiryData.queueTimeline)) {
+        .isRecordExpired(constants.RecordExpiryName.queueTimeline)) {
       // if the data is expired, then clear queueTimeline box
       // and renew the recordExpiry for queueTimeline records
       _queueTimelineBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryData.queueTimeline);
+      _renewRecordExpiry(constants.RecordExpiryName.queueTimeline);
     }
 
     final queueTimeline = _queueTimelineBox?.values.toList();
@@ -220,7 +220,7 @@ abstract class Database {
   ///
   /// Should be called after api calls,
   /// when data has been saved to the local db
-  static void _renewRecordExpiry(String recordName) {
+  static void _renewRecordExpiry(constants.RecordExpiryName recordName) {
     _recordExpiry?.renewRecordExpiry(recordName);
     _recordExpiry?.save();
   }

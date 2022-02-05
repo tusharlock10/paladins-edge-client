@@ -17,11 +17,11 @@ class RecordExpiryAdapter extends TypeAdapter<RecordExpiry> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecordExpiry()
-      .._championsExpiry = fields[0] as DateTime
-      .._searchHistoryExpiry = fields[1] as DateTime
-      .._bountyStoreExpiry = fields[2] as DateTime
-      .._playerChampionExpiry = fields[3] as DateTime
-      .._queueTimelineExpiry = fields[4] as DateTime;
+      .._championsExpiry = fields[0] as DateTime?
+      .._searchHistoryExpiry = fields[1] as DateTime?
+      .._bountyStoreExpiry = fields[2] as DateTime?
+      .._playerChampionExpiry = fields[3] as DateTime?
+      .._queueTimelineExpiry = fields[4] as DateTime?;
   }
 
   @override
