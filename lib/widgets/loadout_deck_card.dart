@@ -29,56 +29,52 @@ class LoadoutDeckCard extends StatelessWidget {
     return SizedBox(
       height: imageHeight,
       width: imageWidth,
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Material(
-          elevation: 3,
+      child: Card(
+        margin: const EdgeInsets.all(4),
+        child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            child: GestureDetector(
-              onTap: () => widgets.showLoadoutCardDetailSheet(
-                data_classes.ShowLoadoutDetailsOptions(
-                  context: context,
-                  champion: champion,
-                  card: card,
-                  cardPoints: loadoutCard.level,
-                  onSliderChange: onSliderChange,
-                  sliderFixed: sliderFixed,
-                ),
+          child: GestureDetector(
+            onTap: () => widgets.showLoadoutCardDetailSheet(
+              data_classes.ShowLoadoutDetailsOptions(
+                context: context,
+                champion: champion,
+                card: card,
+                cardPoints: loadoutCard.level,
+                onSliderChange: onSliderChange,
+                sliderFixed: sliderFixed,
               ),
-              child: Stack(
-                children: [
-                  SizedBox(
-                    height: imageHeight,
-                    child: widgets.FastImage(
-                      fit: BoxFit.cover,
-                      imageUrl: card.imageUrl,
-                    ),
+            ),
+            child: Stack(
+              children: [
+                SizedBox(
+                  height: imageHeight,
+                  child: widgets.FastImage(
+                    fit: BoxFit.cover,
+                    imageUrl: card.imageUrl,
                   ),
-                  loadoutCard.level == 0
-                      ? const SizedBox()
-                      : Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: imageWidth,
-                            height: imageHeight * 0.25,
-                            color: theme.darkThemeMaterialColor.shade200
-                                .withOpacity(0.4),
-                            child: Center(
-                              child: Text(
-                                loadoutCard.level.toString(),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                ),
+                loadoutCard.level == 0
+                    ? const SizedBox()
+                    : Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: imageWidth,
+                          height: imageHeight * 0.25,
+                          color: theme.darkThemeMaterialColor.shade200
+                              .withOpacity(0.4),
+                          child: Center(
+                            child: Text(
+                              loadoutCard.level.toString(),
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                ],
-              ),
+                      ),
+              ],
             ),
           ),
         ),

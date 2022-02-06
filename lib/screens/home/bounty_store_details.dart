@@ -4,6 +4,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timer_builder/timer_builder.dart';
 
 class _BountyStoreCard extends StatelessWidget {
@@ -76,8 +77,7 @@ class BountyStoreDetails extends HookConsumerWidget {
     int crossAxisCount = 2;
     double width = size.width;
 
-    if (size.height < size.width) {
-      // means in landscape mode, fix the headerHeight
+    if (ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
       crossAxisCount = 4;
       width = size.width * 0.75;
     }

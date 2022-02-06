@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/firebase_options.dart' as firebase_options;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -39,13 +40,21 @@ class PaladinsEdgeApp extends ConsumerWidget {
         theme: theme.lightTheme,
         darkTheme: theme.darkTheme,
         routes: screens.routes,
+        title: "Paladins Edge",
+        color: Colors.white,
+        scrollBehavior: BouncingScrollBehavior(),
         builder: (context, widget) => ResponsiveWrapper.builder(
           widget,
           defaultScale: true,
           breakpoints: [
-            const ResponsiveBreakpoint.resize(480, name: MOBILE),
-            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-            const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+            const ResponsiveBreakpoint.resize(
+              constants.ResponsiveBreakpoints.mobile,
+              name: MOBILE,
+            ),
+            const ResponsiveBreakpoint.resize(
+              constants.ResponsiveBreakpoints.desktop,
+              name: DESKTOP,
+            ),
           ],
         ),
       ),

@@ -187,3 +187,9 @@ abstract class QueueId {
     ];
   }
 }
+
+abstract class ResponsiveBreakpoints {
+  static const double mobile = 480;
+  static const double tablet = 800;
+  static const double desktop = 1000;
+}
