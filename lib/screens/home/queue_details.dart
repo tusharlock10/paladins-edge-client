@@ -5,6 +5,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:responsive_framework/responsive_framework.dart';
 
 class _QueueCard extends StatelessWidget {
   final models.Queue queue;
@@ -94,8 +95,7 @@ class QueueDetails extends HookConsumerWidget {
     int crossAxisCount = 2;
     double width = size.width;
 
-    if (size.height < size.width) {
-      // means in landscape mode, fix the headerHeight
+    if (ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
       crossAxisCount = 4;
       width = size.width * 0.75;
     }
@@ -161,11 +161,13 @@ class QueueDetails extends HookConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   children: queue
                       .where((_queue) => _queue.queueId != "0")
-                      .map((_queue) => _QueueCard(
-                            queue: _queue,
-                            isSelected: selectedQueueId == _queue.queueId,
-                            onTap: getQueueTimeline,
-                          ))
+                      .map(
+                        (_queue) => _QueueCard(
+                          queue: _queue,
+                          isSelected: selectedQueueId == _queue.queueId,
+                          onTap: getQueueTimeline,
+                        ),
+                      )
                       .toList(),
                 ),
         ],

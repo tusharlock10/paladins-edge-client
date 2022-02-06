@@ -7,6 +7,7 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/loadouts/loadout.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:responsive_framework/responsive_framework.dart';
 
 class Loadouts extends HookConsumerWidget {
   static const routeName = '/loadouts';
@@ -26,6 +27,10 @@ class Loadouts extends HookConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final crossAxisCount =
+        ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 2 : 1;
+    final double horizontalPadding =
+        ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 30 : 10;
 
     // State
     final hideLoadoutFab = useState(false);
@@ -120,10 +125,19 @@ class Loadouts extends HookConsumerWidget {
               center: true,
             )
           : loadouts != null
-              ? ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 70),
+              ? ResponsiveGridView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: 20,
+                  ),
                   physics: const BouncingScrollPhysics(),
                   itemCount: loadouts.length,
+                  gridDelegate: ResponsiveGridDelegate(
+                    childAspectRatio: Loadout.loadoutAspectRatio,
+                    crossAxisExtent: (MediaQuery.of(context).size.width -
+                            horizontalPadding * 2) /
+                        crossAxisCount,
+                  ),
                   itemBuilder: (_, index) {
                     final loadout = loadouts[index];
 

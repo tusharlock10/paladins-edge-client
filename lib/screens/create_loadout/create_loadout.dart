@@ -103,23 +103,28 @@ class CreateLoadout extends HookConsumerWidget {
           ),
         ],
       ),
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            CreateLoadoutTarget(),
-            DraggableCards(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25),
-              child: Text('''
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              SizedBox(height: 20),
+              CreateLoadoutTarget(),
+              SizedBox(height: 30),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                child: Text('''
 * Select a card from the list and drag it in the loadout
 * Tap the card in the loadout to change its points
 * Rename the loadout to your liking and save
 '''),
-            ),
-          ],
+              ),
+              SizedBox(height: 30),
+              DraggableCards(),
+              SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
     );
