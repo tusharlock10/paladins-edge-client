@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:responsive_framework/responsive_framework.dart';
 
 class QueueChart extends HookConsumerWidget {
   const QueueChart({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class QueueChart extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final queueProvider = ref.read(providers.queue);
     final selectedTimeline =
         ref.watch(providers.queue.select((_) => _.selectedTimeline));
     final chartTimelineData =
@@ -25,9 +27,25 @@ class QueueChart extends HookConsumerWidget {
 
     // Variables
     const gradient = [Color(0xff6dd5ed), Color(0xff2193b0)];
+    final isLargerThanMobile =
+        ResponsiveWrapper.of(context).isLargerThan(MOBILE);
     final secondaryColor = Theme.of(context).colorScheme.secondary;
     final brightness = Theme.of(context).brightness;
     final intervalY = (chartMaxY - chartMinY) / 5;
+
+    // Effects
+    useEffect(
+      () {
+        int smallestUnit = 28;
+        if (isLargerThanMobile) {
+          smallestUnit = 16;
+        }
+        queueProvider.changeTimelineGranularity(smallestUnit);
+
+        return;
+      },
+      [isLargerThanMobile],
+    );
 
     // Methods
     final getQueueTimeTitle = useCallback(
