@@ -16,6 +16,8 @@ class PlayerDetail extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final isLoadingPlayerData =
+        ref.watch(providers.players.select((_) => _.isLoadingPlayerData));
     final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
     final championsProvider = ref.read(providers.champions);
@@ -81,6 +83,7 @@ class PlayerDetail extends HookConsumerWidget {
                   PlayerDetailComponent(
                     player: player,
                     onForceUpdate: onForceUpdate,
+                    isLoading: isLoadingPlayerData,
                   ),
                   const TabBar(
                     tabs: [
