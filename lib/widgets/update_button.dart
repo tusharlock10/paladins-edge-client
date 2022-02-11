@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
 
 class UpdateButton extends StatelessWidget {
   final DateTime? lastUpdated;
   final void Function() onPressed;
+  final bool isLoading;
 
   const UpdateButton({
     required this.lastUpdated,
     required this.onPressed,
+    required this.isLoading,
     Key? key,
   }) : super(key: key);
 
@@ -31,6 +34,30 @@ class UpdateButton extends StatelessWidget {
         if (lastUpdated == null ||
             utilities.Global.essentials?.forceUpdatePlayerDuration == null) {
           return const SizedBox();
+        }
+
+        if (isLoading) {
+          return SizedBox(
+            height: 36,
+            width: 128,
+            child: OutlinedButton(
+              onPressed: null,
+              style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                  const BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                shape: MaterialStateProperty.all(const StadiumBorder()),
+              ),
+              child: const widgets.LoadingIndicator(
+                size: 16,
+                center: true,
+                lineWidth: 1.5,
+                color: Colors.grey,
+              ),
+            ),
+          );
         }
 
         if (remainingTime == null) {

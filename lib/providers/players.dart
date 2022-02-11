@@ -5,6 +5,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
+  bool isLoadingPlayerData = false;
   api.PlayerStatusResponse? playerStatus;
   models.Player? playerData;
   List<api.LowerSearch> lowerSearchList = [];
@@ -115,13 +116,25 @@ class _PlayersNotifier extends ChangeNotifier {
     required String playerId,
     required bool forceUpdate,
   }) async {
+    isLoadingPlayerData = true;
+    utilities.postFrameCallback(notifyListeners);
+
     final response = await api.PlayersRequests.playerDetail(
       playerId: playerId,
       forceUpdate: forceUpdate,
     );
-    if (response == null) return;
+
+    if (response == null) {
+      isLoadingPlayerData = false;
+      utilities.postFrameCallback(notifyListeners);
+
+      return null;
+    }
+
     playerData = response.player;
-    notifyListeners();
+
+    isLoadingPlayerData = false;
+    utilities.postFrameCallback(notifyListeners);
   }
 }
 
