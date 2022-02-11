@@ -14,7 +14,8 @@ class _QueueState extends ChangeNotifier {
   String selectedQueueId = constants.QueueId.casualSiege;
 
   // data related to charting
-  final accuracy = 28; // i.e. it provides 28 minutes of accuracy in the chart
+  int smallestUnit =
+      28; // i.e. it provides 28 minutes of granularity in the chart
   List<models.Queue> selectedTimeline = [];
   List<FlSpot> chartTimelineData = [];
   double chartMaxX = 0;
@@ -47,7 +48,15 @@ class _QueueState extends ChangeNotifier {
   void selectTimelineQueue(String queueId) {
     _selectTimelineQueue(queueId);
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  void changeTimelineGranularity(int _smallestUnit) {
+    smallestUnit = _smallestUnit;
+
+    _selectTimelineQueue(selectedQueueId);
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void _selectTimelineQueue(String queueId) {
@@ -65,7 +74,7 @@ class _QueueState extends ChangeNotifier {
 
     selectedTimeline = timeline
         .where((queue) => queue.queueId == queueId)
-        .filterIndexed((_, index) => index % (accuracy ~/ 4) == 0)
+        .filterIndexed((_, index) => index % (smallestUnit ~/ 4) == 0)
         .toList();
     chartTimelineData = selectedTimeline.map(
       (queue) {
