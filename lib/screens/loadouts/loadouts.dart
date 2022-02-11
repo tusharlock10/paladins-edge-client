@@ -6,6 +6,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/loadouts/loadout.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -27,10 +28,18 @@ class Loadouts extends HookConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
-    final crossAxisCount =
-        ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 2 : 1;
-    final double horizontalPadding =
-        ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 30 : 10;
+    final crossAxisCount = utilities.responsiveCondition(
+      context,
+      desktop: 2,
+      tablet: 2,
+      mobile: 1,
+    );
+    final double horizontalPadding = utilities.responsiveCondition(
+      context,
+      desktop: 30,
+      tablet: 30,
+      mobile: 10,
+    );
 
     // State
     final hideLoadoutFab = useState(false);

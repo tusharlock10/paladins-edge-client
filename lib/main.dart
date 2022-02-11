@@ -51,6 +51,10 @@ class PaladinsEdgeApp extends ConsumerWidget {
               constants.ResponsiveBreakpoints.mobile,
               name: MOBILE,
             ),
+            const ResponsiveBreakpoint.autoScale(
+              constants.ResponsiveBreakpoints.tablet,
+              name: TABLET,
+            ),
             const ResponsiveBreakpoint.resize(
               constants.ResponsiveBreakpoints.desktop,
               name: DESKTOP,

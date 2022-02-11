@@ -6,8 +6,8 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateLoadoutTarget extends HookConsumerWidget {
   static const loadoutAspectRatio = 15 / 9;
@@ -25,9 +25,13 @@ class CreateLoadoutTarget extends HookConsumerWidget {
     final arguments = ModalRoute.of(context)?.settings.arguments
         as data_classes.CreateLoadoutScreenArguments;
     final champion = arguments.champion;
-    final loadoutWidth = ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-        ? MediaQuery.of(context).size.width / 2
-        : MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final loadoutWidth = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth / 2,
+      tablet: screenWidth / 2,
+      mobile: screenWidth,
+    );
     final loadoutHeight = loadoutWidth / loadoutAspectRatio;
 
     final imageWidth = (loadoutWidth - 24) / 5;
