@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:responsive_framework/responsive_framework.dart';
 
 class _QueueCard extends StatelessWidget {
   final models.Queue queue;
@@ -90,15 +90,20 @@ class QueueDetails extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery.of(context).size.width;
     const itemHeight = 100;
-    int crossAxisCount = 2;
-    double width = size.width;
-
-    if (ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
-      crossAxisCount = 4;
-      width = size.width * 0.75;
-    }
+    final crossAxisCount = utilities.responsiveCondition(
+      context,
+      desktop: 4,
+      tablet: 4,
+      mobile: 2,
+    );
+    final width = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth * 0.75,
+      tablet: screenWidth * 0.75,
+      mobile: screenWidth,
+    );
 
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;

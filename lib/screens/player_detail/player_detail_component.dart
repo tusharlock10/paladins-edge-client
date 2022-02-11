@@ -5,10 +5,12 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 class PlayerDetailComponent extends StatelessWidget {
   final models.Player player;
   final void Function() onForceUpdate;
+  final bool isLoading;
 
   const PlayerDetailComponent({
     required this.player,
     required this.onForceUpdate,
+    required this.isLoading,
     Key? key,
   }) : super(key: key);
 
@@ -77,6 +79,7 @@ class PlayerDetailComponent extends StatelessWidget {
                               widgets.UpdateButton(
                                 lastUpdated: player.lastUpdatedPlayer,
                                 onPressed: onForceUpdate,
+                                isLoading: isLoading,
                               ),
                             ],
                           )
