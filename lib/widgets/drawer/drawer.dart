@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/widgets/drawer/drawer_button.dart';
+import 'package:paladinsedge/widgets/drawer/drawer_info.dart';
 import 'package:paladinsedge/widgets/drawer/player_profile.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -65,17 +67,17 @@ class AppDrawer extends HookConsumerWidget {
           children: [
             const SizedBox(height: 20),
             const PlayerProfile(),
-            _DrawerButton(
+            DrawerButton(
               context: context,
               label: 'Change Theme',
               onPressed: () => onChangeTheme(context, ref),
             ),
-            _DrawerButton(
+            DrawerButton(
               context: context,
               label: 'Friends',
               onPressed: () => onFriends(context),
             ),
-            _DrawerButton(
+            DrawerButton(
               context: context,
               label: 'Active Match',
               onPressed: () => onActiveMatch(context),
@@ -89,7 +91,7 @@ class AppDrawer extends HookConsumerWidget {
                         lineWidth: 2,
                       )
                     : const SizedBox(),
-                _DrawerButton(
+                DrawerButton(
                   context: context,
                   label: 'Logout',
                   disabled: isLoggingOut.value,
@@ -97,37 +99,10 @@ class AppDrawer extends HookConsumerWidget {
                 ),
               ],
             ),
+            const DrawerInfo(),
+            const SizedBox(height: 15),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _DrawerButton extends StatelessWidget {
-  final BuildContext context;
-  final String label;
-  final bool disabled;
-  final void Function() onPressed;
-
-  const _DrawerButton({
-    Key? key,
-    required this.context,
-    required this.label,
-    required this.onPressed,
-    this.disabled = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return TextButton(
-      onPressed: disabled ? null : onPressed,
-      child: Text(
-        label,
-        style: theme.textTheme.headline3
-            ?.copyWith(color: theme.colorScheme.secondary),
       ),
     );
   }
