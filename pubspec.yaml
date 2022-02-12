@@ -59,6 +59,8 @@ dependencies:
   flash: ^2.0.3+2
   freezed_annotation: ^1.1.0
   fl_chart: ^0.41.0
+  flutter_feather_icons: ^2.0.0+1
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:
