@@ -18,10 +18,19 @@ class AppDrawer extends HookConsumerWidget {
 
     // Methods
     final onLogout = useCallback(
-      (BuildContext context, WidgetRef ref) async {
+      () async {
         isLoggingOut.value = true;
-        await ref.read(providers.auth).logout();
-        Navigator.pushReplacementNamed(context, screens.Login.routeName);
+        final isLoggedOut = await ref.read(providers.auth).logout();
+
+        if (isLoggedOut) {
+          Navigator.pushReplacementNamed(context, screens.Login.routeName);
+        } else {
+          widgets.showToast(
+            context: context,
+            text: 'Unable to logout, try again later',
+            type: widgets.ToastType.error,
+          );
+        }
         isLoggingOut.value = false;
       },
       [],
@@ -95,7 +104,7 @@ class AppDrawer extends HookConsumerWidget {
                   context: context,
                   label: 'Logout',
                   disabled: isLoggingOut.value,
-                  onPressed: () => onLogout(context, ref),
+                  onPressed: onLogout,
                 ),
               ],
             ),

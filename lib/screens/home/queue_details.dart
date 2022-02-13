@@ -10,7 +10,7 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 class _QueueCard extends StatelessWidget {
   final models.Queue queue;
   final bool isSelected;
-  final void Function(String queueId) onTap;
+  final void Function(int queueId) onTap;
 
   const _QueueCard({
     required this.queue,
@@ -120,7 +120,7 @@ class QueueDetails extends HookConsumerWidget {
 
     // Methods
     final getQueueTimeline = useCallback(
-      (String queueId) {
+      (int queueId) {
         queueProvider.selectTimelineQueue(queueId);
       },
       [],

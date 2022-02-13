@@ -56,22 +56,22 @@ abstract class AuthRequests {
     required String name,
     required String verification,
   }) async {
-    try{
+    try {
       final response = await utilities.api.post<Map<String, dynamic>>(
-      constants.Urls.login,
-      data: {
-        'uid': uid,
-        'email': email,
-        'name': name,
-        'verification': verification,
-      },
-    );
-    if (response.data != null) {
-      return responses.LoginResponse.fromJson(response.data!);
-    }
+        constants.Urls.login,
+        data: {
+          'uid': uid,
+          'email': email,
+          'name': name,
+          'verification': verification,
+        },
+      );
+      if (response.data != null) {
+        return responses.LoginResponse.fromJson(response.data!);
+      }
 
-    return null;
-    } catch(_){
+      return null;
+    } catch (_) {
       return null;
     }
   }
@@ -82,7 +82,7 @@ abstract class AuthRequests {
 
       return true;
     } catch (_) {
-      return true;
+      return false;
     }
   }
 }

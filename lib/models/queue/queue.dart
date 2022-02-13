@@ -9,7 +9,7 @@ part 'queue.g.dart';
 class Queue {
   /// Queue Id of the game mode provided by paladins API
   @HiveField(0)
-  final String queueId;
+  final int queueId;
 
   /// name of the queue/ game mode
   @HiveField(1)

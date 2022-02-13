@@ -11,7 +11,7 @@ class _QueueState extends ChangeNotifier {
   bool isLoading = true;
   List<models.Queue> queue = [];
   List<models.Queue> timeline = [];
-  String selectedQueueId = constants.QueueId.casualSiege;
+  int selectedQueueId = constants.QueueId.casualSiege;
 
   // data related to charting
   int smallestUnit =
@@ -45,7 +45,7 @@ class _QueueState extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  void selectTimelineQueue(String queueId) {
+  void selectTimelineQueue(int queueId) {
     _selectTimelineQueue(queueId);
 
     utilities.postFrameCallback(notifyListeners);
@@ -59,7 +59,7 @@ class _QueueState extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  void _selectTimelineQueue(String queueId) {
+  void _selectTimelineQueue(int queueId) {
     // x axis -> index
     // y axis -> activeMatchCount
 
