@@ -121,7 +121,7 @@ class MatchPlayer {
   final int skinId;
 
   /// party the player belongs to
-  final int partyId;
+  final int? partyNumber;
 
   /// team of the player
   final int team;
@@ -157,7 +157,7 @@ class MatchPlayer {
     required this.talentId2,
     required this.skin,
     required this.skinId,
-    required this.partyId,
+    required this.partyNumber,
     required this.team,
     this.matchPosition,
     this.playerRanked,

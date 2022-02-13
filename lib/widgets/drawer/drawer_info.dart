@@ -47,7 +47,7 @@ class DrawerInfo extends StatelessWidget {
                   ),
                   widgets.TextChip(
                     color: Colors.cyan,
-                    text: constants.Env.appType,
+                    text: constants.AppType.shortAppType,
                     spacing: 5,
                   ),
                 ],

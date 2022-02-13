@@ -100,11 +100,11 @@ workflows:
         - pull_request
       branch_patterns:
         - pattern: "*"
-          include: true
-          source: true
-        - pattern: "main"
           include: false
           source: false
+        - pattern: "develop"
+          include: true
+          source: true
       cancel_previous_builds: true
     scripts:
       - |
