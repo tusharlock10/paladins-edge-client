@@ -196,3 +196,32 @@ abstract class ResponsiveBreakpoints {
   static const double tablet = 800;
   static const double desktop = 1000;
 }
+
+abstract class AppType {
+  static const development = "development";
+  static const staging = "staging";
+  static const production = "production";
+
+  static const developmentShort = "dev";
+  static const stagingShort = "stage";
+  static const productionShort = "prod";
+
+  static String get shortAppType {
+    if (Env.appType == production) {
+      return productionShort;
+    }
+    if (Env.appType == staging) {
+      return stagingShort;
+    }
+
+    return developmentShort;
+  }
+}
+
+const partyColors = [
+  Colors.lightBlue,
+  Colors.green,
+  Colors.orange,
+  Colors.red,
+  Colors.pink,
+];

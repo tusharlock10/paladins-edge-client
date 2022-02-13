@@ -35,6 +35,9 @@ class MatchPlayer extends ConsumerWidget {
         : ((kills + assists) / deaths).toStringAsFixed(2);
 
     final isPrivatePlayer = matchPlayer.playerId == "0";
+    final partyNumber = matchPlayer.partyNumber;
+    final partyColor =
+        partyNumber != null ? constsnts.partyColors[partyNumber - 1] : null;
 
     String matchPosition = ' ${matchPlayer.matchPosition}th ';
 
@@ -125,11 +128,38 @@ class MatchPlayer extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '$kills / $deaths / $assists  ($kda)',
-                  style: textTheme.bodyText1?.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                RichText(
+                  text: TextSpan(
+                    style: textTheme.bodyText1?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      if (matchPlayer.partyNumber != null)
+                        TextSpan(
+                          text: 'party ${matchPlayer.partyNumber}',
+                          style: TextStyle(
+                            color: partyColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                        )
+                      else
+                        const TextSpan(
+                          text: 'solo',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      TextSpan(text: '  $kills / $deaths / $assists  '),
+                      TextSpan(
+                        text: '($kda)',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 5),
