@@ -2,13 +2,6 @@ name: Build Test
 
 on: [push]
 
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  PE_PRIVATE_AWS_S3_BUCKET_NAME: ${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}
-  PE_PRIVATE_AWS_ACCESS_KEY_ID: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
-  PE_PRIVATE_AWS_SECRET_ACCESS_KEY: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
-  BUILD_NUMBER: ${{ github.run_number }}
-
 jobs:
   check:
     name: "code metrics 📈"
@@ -31,15 +24,15 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: $PE_PRIVATE_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: $PE_PRIVATE_AWS_SECRET_ACCESS_KEY
-          aws-region: $AWS_REGION
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/paladins-edge-prod.env ./paladins-edge.env
-          aws s3 cp s3://paladinsedge-private/credentials/client/google-services.json ./android/app/
-          aws s3 cp s3://$PE_PRIVATE_AWS_S3_BUCKET_NAME/credentials/client/upload-keystore.jks ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
 
       - name: Generate release notes
         run: git log -1 --pretty="PRODUCTION BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
@@ -52,12 +45,11 @@ jobs:
       - name: Setup properties
         run: |
           cat >> "./android/key.properties" <<EOF
-          storePassword=$FCI_KEYSTORE_PASSWORD
-          keyPassword=$FCI_KEY_PASSWORD
-          keyAlias=$FCI_KEY_ALIAS
+          storePassword=${{ secrets.FCI_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.FCI_KEY_PASSWORD }}
+          keyAlias=${{ secrets.FCI_KEY_ALIAS }}
           storeFile=upload-keystore.jks
           EOF
-          echo "flutter.sdk=$HOME/programs/flutter" > "./android/local.properties"
 
       - name: Get dependencies
         run: |
@@ -68,7 +60,7 @@ jobs:
         run: flutter analyze
 
       - name: Build apk
-        run: flutter build apk --release --build-number=$BUILD_NUMBER
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
