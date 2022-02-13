@@ -10,6 +10,17 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
+  check:
+    name: "code metrics 📈"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: dart-code-metrics
+        uses: dart-code-checker/dart-code-metrics-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
   build-apk:
     name: "build test 🔨"
     runs-on: ubuntu-latest
