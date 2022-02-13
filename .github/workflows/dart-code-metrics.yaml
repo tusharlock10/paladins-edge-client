@@ -4,10 +4,8 @@ on: [push]
 
 jobs:
   check:
-    name: dart-code-metrics-action
-
+    name: "code metrics 📈"
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
