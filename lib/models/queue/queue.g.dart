@@ -17,7 +17,7 @@ class QueueAdapter extends TypeAdapter<Queue> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Queue(
-      queueId: fields[0] as String,
+      queueId: fields[0] as int,
       name: fields[1] as String,
       activeMatchCount: fields[2] as int,
       createdAt: fields[3] as DateTime,
@@ -54,7 +54,7 @@ class QueueAdapter extends TypeAdapter<Queue> {
 // **************************************************************************
 
 Queue _$QueueFromJson(Map<String, dynamic> json) => Queue(
-      queueId: json['queueId'] as String,
+      queueId: json['queueId'] as int,
       name: json['name'] as String,
       activeMatchCount: json['activeMatchCount'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
