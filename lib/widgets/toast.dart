@@ -27,11 +27,9 @@ void showToast({
         position: FlashPosition.bottom,
         margin: const EdgeInsets.only(bottom: 15),
         controller: controller,
+        borderRadius: const BorderRadius.all(Radius.circular(6)),
         child: Card(
           elevation: 7,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-          ),
           clipBehavior: Clip.hardEdge,
           margin: const EdgeInsets.all(0),
           child: IntrinsicWidth(
