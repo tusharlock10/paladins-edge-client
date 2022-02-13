@@ -56,9 +56,6 @@ jobs:
       - name: Analyze for errors and warnings
         run: flutter analyze
 
-      - name: Build apk
-        run: flutter build apk --release --build-number=${{ github.run_number }}
-
       - name: Get flutter version
         id: flutter_version
         uses: its404/get-flutter-version@v1.0.0
@@ -79,6 +76,10 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
+
+      - name: Build apk
+        run: |
+          flutter build apk --release --build-number=${{ github.run_number }}
 
       - name: Upload apk to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
