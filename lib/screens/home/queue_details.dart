@@ -165,7 +165,7 @@ class QueueDetails extends HookConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   children: queue
-                      .where((_queue) => _queue.queueId != "0")
+                      .where((_queue) => _queue.queueId != 0)
                       .map(
                         (_queue) => _QueueCard(
                           queue: _queue,

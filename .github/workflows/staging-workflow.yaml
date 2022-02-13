@@ -1,0 +1,152 @@
+name: Staging Workflow
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+env:
+  flutter_version: "2.10.x"
+
+jobs:
+  check:
+    name: "code metrics 📈"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dart-code-metrics
+        uses: dart-code-checker/dart-code-metrics-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-apk:
+    name: "deploy apk 🔨"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download credential files
+        run: |
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.flutter_version }}
+
+      - name: Setup properties
+        run: |
+          cat >> "./android/key.properties" <<EOF
+          storePassword=${{ secrets.FCI_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.FCI_KEY_PASSWORD }}
+          keyAlias=${{ secrets.FCI_KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      # Run analyze on PR
+      - name: Analyze code
+        if: ${{ github.event_name == 'pull_request' }}
+        run: flutter analyze
+
+      - name: Build apk
+        run: flutter build apk --release --build-number=${{ github.run_number }}
+
+      # Run below tasks only if its a push
+      - name: Get flutter version
+        if: ${{ github.event_name == 'push' }}
+        id: flutter_version
+        uses: NiklasLehnfeld/flutter-version-number-action@main
+        with:
+          file-path: ./pubspec.yaml
+
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' }}
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          custom_tag: ${{ steps.flutter_version.outputs.version-number }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a GitHub release
+        if: ${{ github.event_name == 'push' }}
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          draft: true
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }} [STAGE]
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: "./build/app/outputs/flutter-apk/app-release.apk"
+
+  build-bundle:
+    name: "build bundle 🛠️"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download credential files
+        run: |
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.flutter_version }}
+
+      - name: Setup properties
+        run: |
+          cat >> "./android/key.properties" <<EOF
+          storePassword=${{ secrets.FCI_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.FCI_KEY_PASSWORD }}
+          keyAlias=${{ secrets.FCI_KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build bundle
+        run: flutter build appbundle --release --build-number=${{ github.run_number }}
+
+      # Run the below tasks only if its a push
+      - name: Get release notes
+        if: ${{ github.event_name == 'push' }}
+        run: git log -1 --pretty="STAGING BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
+
+      - name: Upload bundle to app distribution
+        if: ${{ github.event_name == 'push' }}
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: 1:280154424805:android:935bdd39d46aa621aa1b0c
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: Developers
+          releaseNotesFile: ./release_notes.txt
+          file: ./build/app/outputs/bundle/release/app-release.aab
