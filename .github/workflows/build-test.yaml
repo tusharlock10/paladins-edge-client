@@ -62,13 +62,11 @@ jobs:
       - name: Build apk
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload apk to App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          name: staging-apk
-          path: ./build/**/outputs/apk/**/*.apk
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: release-notes.txt
-          path: ./release_notes.txt
+          appId: 1:280154424805:android:935bdd39d46aa621aa1b0c
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: Developers
+          releaseNotesFile: ./release_notes.txt
+          file: build/**/outputs/apk/**/*.apk
