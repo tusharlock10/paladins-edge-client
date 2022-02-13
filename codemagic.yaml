@@ -22,9 +22,6 @@ workflows:
         - push
         - pull_request
       branch_patterns:
-        - pattern: "*"
-          include: false
-          source: false
         - pattern: "main"
           include: true
           source: true
@@ -99,9 +96,6 @@ workflows:
         - push
         - pull_request
       branch_patterns:
-        - pattern: "*"
-          include: false
-          source: false
         - pattern: "develop"
           include: true
           source: true
