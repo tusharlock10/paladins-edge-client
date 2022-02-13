@@ -69,4 +69,4 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: Developers
           releaseNotesFile: ./release_notes.txt
-          file: build/**/outputs/apk/**/*.apk
+          file: ./build/app/outputs/flutter-apk/app-release.apk
