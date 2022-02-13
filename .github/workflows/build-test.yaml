@@ -28,16 +28,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          channel: "stable"
-
-      - name: Configure aws cli
-        run: |
-          aws configure set aws_access_key_id $PE_PRIVATE_AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $PE_PRIVATE_AWS_SECRET_ACCESS_KEY
-          aws configure set default.region $AWS_REGION
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Download credential files
         run: |
@@ -47,6 +43,11 @@ jobs:
 
       - name: Generate release notes
         run: git log -1 --pretty="PRODUCTION BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
 
       - name: Setup properties
         run: |
