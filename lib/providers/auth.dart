@@ -105,7 +105,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Logs out the user, also sends this info to server
-  Future<void> logout() async {
+  Future<bool> logout() async {
     // 1) Clear user's storage first so,
     //    if the logout fails in the steps below
     //    he can still login
@@ -113,14 +113,23 @@ class _AuthNotifier extends ChangeNotifier {
     // 3) Notify backend about logout
     // 4) remove user, player, token from provider
 
-    await GoogleSignIn().signOut();
-    await api.AuthRequests.logout();
+    try {
+      await GoogleSignIn().signOut();
+    } catch (_) {
+      return false;
+    }
+    final result = await api.AuthRequests.logout();
+    if (!result) {
+      return false;
+    }
 
     // clear values from the database and provider
     utilities.Database.clear();
     user = null;
     player = null;
     token = null;
+
+    return true;
   }
 
   /// Send the FCM token to server, only works on `Android`
