@@ -5,6 +5,10 @@ on:
     branches-ignore:
       - main
       - develop
+  pull_request:
+    branches-ignore:
+      - main
+      - develop
 
 env:
   flutter_version: "2.10.x"
