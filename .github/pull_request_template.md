@@ -41,3 +41,7 @@ If this is a breaking change (i.e. removing a feature, etc.) that could impact e
 
 - [ ] Yes
 - [ ] No
+
+<!-- Link the github issue number eg. resolves #123 -->
+
+resolves #*github-issue-number*

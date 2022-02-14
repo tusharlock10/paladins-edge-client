@@ -1,0 +1,81 @@
+name: Build Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - develop
+  pull_request:
+    branches-ignore:
+      - main
+      - develop
+
+env:
+  flutter_version: "2.10.x"
+
+jobs:
+  check:
+    name: "code metrics 📈"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dart-code-metrics
+        uses: dart-code-checker/dart-code-metrics-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-test-apk:
+    name: "build test apk 🔨"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download credential files
+        run: |
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.flutter_version }}
+
+      - name: Setup properties
+        run: |
+          cat >> "./android/key.properties" <<EOF
+          storePassword=${{ secrets.FCI_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.FCI_KEY_PASSWORD }}
+          keyAlias=${{ secrets.FCI_KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Build apk
+        run: flutter build apk --release --build-number=${{ github.run_number }}
+
+      - name: Get release notes
+        run: git log -1 --pretty="TEST BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
+
+      - name: Upload apk to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: 1:280154424805:android:935bdd39d46aa621aa1b0c
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: Developers
+          releaseNotesFile: ./release_notes.txt
+          file: ./build/app/outputs/flutter-apk/app-release.apk

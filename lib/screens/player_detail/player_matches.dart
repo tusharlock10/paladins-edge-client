@@ -3,21 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/constants.dart' as constants;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
-
-class _LoadoutItem {
-  final models.Card? card;
-  final int cardLevel;
-
-  _LoadoutItem({
-    required this.card,
-    required this.cardLevel,
-  });
-}
 
 class _PlayerMatchCard extends ConsumerWidget {
   final models.MatchPlayer matchPlayer;
@@ -46,13 +37,18 @@ class _PlayerMatchCard extends ConsumerWidget {
 
     final talentUsed = champion.talents
         .firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
-    final loadout = matchPlayer.playerChampionCards.map((playerChampionCard) {
-      // find the card from that champion
-      final card = champion.cards
-          .firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
+    final loadout = matchPlayer.playerChampionCards.map(
+      (playerChampionCard) {
+        // find the card from that champion
+        final card = champion.cards
+            .firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
 
-      return _LoadoutItem(card: card, cardLevel: playerChampionCard.cardLevel);
-    });
+        return data_classes.LoadoutItem(
+          card: card,
+          cardLevel: playerChampionCard.cardLevel,
+        );
+      },
+    );
 
     return InkWell(
       onTap: () => onTap(context),
