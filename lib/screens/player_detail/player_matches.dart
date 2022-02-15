@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -36,12 +37,12 @@ class _PlayerMatchCard extends ConsumerWidget {
     final playerStats = matchPlayer.playerStats;
 
     final talentUsed = champion.talents
-        .firstWhere((_) => _.talentId2 == matchPlayer.talentId2);
+        .firstOrNullWhere((_) => _.talentId2 == matchPlayer.talentId2);
     final loadout = matchPlayer.playerChampionCards.map(
       (playerChampionCard) {
         // find the card from that champion
         final card = champion.cards
-            .firstWhere((_) => _.cardId2 == playerChampionCard.cardId2);
+            .firstOrNullWhere((_) => _.cardId2 == playerChampionCard.cardId2);
 
         return data_classes.LoadoutItem(
           card: card,
@@ -97,11 +98,13 @@ class _PlayerMatchCard extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      widgets.FastImage(
-                        imageUrl: talentUsed.imageUrl,
-                        height: 48,
-                        width: 48,
-                      ),
+                      talentUsed == null
+                          ? const SizedBox(height: 48, width: 48)
+                          : widgets.FastImage(
+                              imageUrl: talentUsed.imageUrl,
+                              height: 48,
+                              width: 48,
+                            ),
                       ...loadout.map(
                         (loadoutItem) {
                           final cardImageUrl = loadoutItem.card?.imageUrl;
@@ -201,12 +204,16 @@ class PlayerMatches extends ConsumerWidget {
 
         // find the match that is associated with that matchPlayer
         final match = playerMatches.matches
-            .firstWhere((_) => _.matchId == matchPlayer.matchId);
+            .firstOrNullWhere((_) => _.matchId == matchPlayer.matchId);
 
         // champion that this player played in the match
-        final champion = champions.firstWhere(
+        final champion = champions.firstOrNullWhere(
           (_) => _.championId == matchPlayer.championId.toString(),
         );
+
+        if (match == null || champion == null) {
+          return const SizedBox();
+        }
 
         return _PlayerMatchCard(
           matchPlayer: matchPlayer,

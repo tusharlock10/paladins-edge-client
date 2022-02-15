@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
@@ -15,10 +16,15 @@ class _PlayersNotifier extends ChangeNotifier {
 
   void moveFriendToTop(String playerId) {
     // the player to move to top of the friends list
-    final player = friends.firstWhere((friend) => friend.playerId == playerId);
+    final player =
+        friends.firstOrNullWhere((friend) => friend.playerId == playerId);
+
+    if (player == null) return;
+
     friends.removeWhere((friend) => friend.playerId == playerId);
     friends.insert(0, player);
-    notifyListeners();
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   Future<void> getFriendsList(
@@ -50,14 +56,14 @@ class _PlayersNotifier extends ChangeNotifier {
       friends = favouritePlayers + friends;
     }
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   Future<void> getPlayerStatus(String playerId) async {
     playerStatus = null;
     final response = await api.PlayersRequests.playerStatus(playerId: playerId);
     playerStatus = response;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   getSearchHistory() {
@@ -97,7 +103,7 @@ class _PlayersNotifier extends ChangeNotifier {
       utilities.Database.saveSearchHistory(searchItem);
     }
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     return response.exactMatch;
   }
@@ -105,7 +111,7 @@ class _PlayersNotifier extends ChangeNotifier {
   void clearSearchList() {
     topSearchList = [];
     lowerSearchList = [];
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void clearPlayerData() {

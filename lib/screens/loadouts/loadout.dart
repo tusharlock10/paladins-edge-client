@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
@@ -76,9 +77,13 @@ class Loadout extends StatelessWidget {
                     Row(
                       children: loadout.loadoutCards.map(
                         (loadoutCard) {
-                          final card = champion.cards.firstWhere(
+                          final card = champion.cards.firstOrNullWhere(
                             (_) => _.cardId2 == loadoutCard.cardId2,
                           );
+
+                          if (card == null) {
+                            return const SizedBox();
+                          }
 
                           return widgets.LoadoutDeckCard(
                             imageHeight: imageHeight,

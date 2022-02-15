@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   api.PlayerMatchesResponse? playerMatches;
@@ -11,11 +12,13 @@ class _MatchesNotifier extends ChangeNotifier {
     if (response == null) return;
     playerMatches = response;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void resetPlayerMatches() {
     playerMatches = null;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   Future<void> getMatchDetails(String matchId) async {
@@ -23,11 +26,14 @@ class _MatchesNotifier extends ChangeNotifier {
     if (response == null) return;
     matchDetails = response;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void resetMatchDetails() {
+    print('RESETTING');
     matchDetails = null;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 }
 
