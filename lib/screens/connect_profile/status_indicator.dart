@@ -14,32 +14,33 @@ class _StatusIndicatorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isActive = currentStep == step;
+    // Variables
     const radius = 14.0;
+    final theme = Theme.of(context);
+    final isActive = currentStep == step;
 
     return Column(children: [
-      Card(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-        child: Container(
-          height: radius * 2,
-          width: radius * 2,
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: isActive ? Theme.of(context).primaryColor : Colors.white,
-            borderRadius: BorderRadius.circular(radius),
-          ),
-          child: Center(
-            child: Text(
-              '${step + 1}',
-              style: TextStyle(
-                color: isActive ? Colors.white : Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
+      Container(
+        height: radius * 2,
+        width: radius * 2,
+        decoration: BoxDecoration(
+          color:
+              isActive ? theme.textTheme.headline1?.color : Colors.transparent,
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: Center(
+          child: Text(
+            '${step + 1}',
+            style: TextStyle(
+              color: isActive
+                  ? theme.scaffoldBackgroundColor
+                  : theme.textTheme.headline1?.color,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
       ),
+      const SizedBox(height: 15),
       Text(
         label,
         textAlign: TextAlign.center,

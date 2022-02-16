@@ -23,13 +23,20 @@ void showToast({
           : Colors.red.shade400;
 
       return Flash.bar(
+        boxShadows: [
+          BoxShadow(
+            color: toastColor.withOpacity(0.2),
+            spreadRadius: 0,
+            blurRadius: 8,
+            offset: const Offset(-1, 5),
+          ),
+        ],
         enableVerticalDrag: true,
         position: FlashPosition.bottom,
         margin: const EdgeInsets.only(bottom: 15),
         controller: controller,
         borderRadius: const BorderRadius.all(Radius.circular(6)),
         child: Card(
-          elevation: 7,
           clipBehavior: Clip.hardEdge,
           margin: const EdgeInsets.all(0),
           child: IntrinsicWidth(

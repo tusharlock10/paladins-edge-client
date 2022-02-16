@@ -24,6 +24,9 @@ class ConnectProfile extends HookConsumerWidget {
     final authProvider = ref.read(providers.auth);
     final searchProvider = ref.read(providers.players);
 
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
+
     // State
     final otp = useState(
       constants.isDebug
@@ -101,6 +104,7 @@ class ConnectProfile extends HookConsumerWidget {
 
     // Build Widgets
     return Scaffold(
+      drawer: const widgets.AppDrawer(),
       appBar: AppBar(
         title: const Text('Connect Profile'),
       ),
@@ -108,10 +112,35 @@ class ConnectProfile extends HookConsumerWidget {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            name != null ? Text('Hi, $name') : const SizedBox(),
+            const SizedBox(height: 15),
+            name != null
+                ? RichText(
+                    text: TextSpan(
+                      style: textTheme.headline1,
+                      children: [
+                        const TextSpan(
+                          text: 'Hi, ',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        TextSpan(
+                          text: name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
+            const SizedBox(height: 15),
             const Text(
               'In order to enjoy all the features of Paladins Edge, please connect your profile',
+              textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 15),
             StatusIndicator(currentStep: step.value),
             Expanded(
               child: IndexedStack(
