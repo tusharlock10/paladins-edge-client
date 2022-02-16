@@ -13,6 +13,10 @@ on:
 env:
   flutter_version: "2.10.x"
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     name: "code metrics 📈"
