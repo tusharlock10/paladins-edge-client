@@ -16,14 +16,14 @@ class _AuthNotifier extends ChangeNotifier {
   /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
   void loadEssentials() async {
     // gets the essential data for the app
 
-    // getting the essential data from local untill the api call is completed
+    // getting the essential data from local until the api call is completed
     utilities.Global.essentials = utilities.Database.getEssentials();
 
     // call essentials api to update its data
@@ -49,7 +49,7 @@ class _AuthNotifier extends ChangeNotifier {
     }
   }
 
-  /// Signin the user with his/her `Google` account
+  /// Sign-in the user with his/her `Google` account
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -109,7 +109,7 @@ class _AuthNotifier extends ChangeNotifier {
     // 1) Clear user's storage first so,
     //    if the logout fails in the steps below
     //    he can still login
-    // 2) Signout from google
+    // 2) Sign-out from google
     // 3) Notify backend about logout
     // 4) remove user, player, token from provider
 
@@ -134,7 +134,7 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Send the FCM token to server, only works on `Android`
   void sendFcmToken(String fcmToken) async {
-    // send the fcm token of the devivce to the server
+    // send the fcm token of the device to the server
     // for sending notification fcm token is used only
     // for the server, and not stored on the app/ browser
 
@@ -142,7 +142,10 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Claim a player profile and connect it to the user
-  Future<bool> claimPlayer(String otp, String playerId) async {
+  Future<api.ClaimPlayerResponse?> claimPlayer(
+    String otp,
+    String playerId,
+  ) async {
     // Sends an otp and playerId to server to check
     // if a loadout exists with that OTP
     // if it does, then player is verified
@@ -153,23 +156,20 @@ class _AuthNotifier extends ChangeNotifier {
       verification: verification,
       playerId: playerId,
     );
-    if (response == null) {
-      return false;
-    }
 
-    if (response.verified) {
+    if (response != null && response.verified) {
       // if verified, then save the user and player in the provider
 
       user = response.user;
       player = response.player;
-      utilities.Database.saveUser(user!);
-      utilities.Database.savePlayer(player!);
+      if (user != null) utilities.Database.saveUser(user!);
+      if (player != null) utilities.Database.savePlayer(player!);
     }
 
-    return response.verified;
+    return response;
   }
 
-  /// Marks, unmarks a `friend` player as favourite
+  /// Marks, un-marks a `friend` player as favourite
   Future<data_classes.FavouriteFriendResult> markFavouriteFriend(
     String playerId,
   ) async {
@@ -197,7 +197,7 @@ class _AuthNotifier extends ChangeNotifier {
       user!.favouriteFriends.remove(playerId);
     }
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     // after we update the UI, update the list in backend
     // update the UI for the latest changes
@@ -213,7 +213,7 @@ class _AuthNotifier extends ChangeNotifier {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     return data_classes.FavouriteFriendResult.added;
   }
@@ -224,7 +224,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     // save the settings after changing the theme
     utilities.Database.saveSettings(settings);
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 }
 
