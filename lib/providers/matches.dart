@@ -1,33 +1,51 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
+  bool isPlayerMatchesLoading = false;
+  bool isMatcheDetailsLoading = false;
   api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
 
   Future<void> getPlayerMatches(String playerId) async {
+    isPlayerMatchesLoading = true;
+    utilities.postFrameCallback(notifyListeners);
+
     final response = await api.MatchRequests.playerMatches(playerId: playerId);
-    if (response == null) return;
+
+    isPlayerMatchesLoading = false;
     playerMatches = response;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void resetPlayerMatches() {
     playerMatches = null;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   Future<void> getMatchDetails(String matchId) async {
+    isMatcheDetailsLoading = true;
+    utilities.postFrameCallback(notifyListeners);
+
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
-    if (response == null) return;
+
+    isMatcheDetailsLoading = false;
     matchDetails = response;
 
-    notifyListeners();
+    // sort players based on their team
+    matchDetails?.matchPlayers.sort((a, b) => a.team - b.team);
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void resetMatchDetails() {
     matchDetails = null;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 }
 

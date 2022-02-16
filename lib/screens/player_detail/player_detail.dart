@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/player_detail/player_champions.dart';
-import 'package:paladinsedge/screens/player_detail/player_detail_component.dart';
+import 'package:paladinsedge/screens/player_detail/player_detail_header.dart';
 import 'package:paladinsedge/screens/player_detail/player_matches.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -16,54 +16,39 @@ class PlayerDetail extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final playerId = ref.watch(providers.players.select((_) => _.playerId));
     final isLoadingPlayerData =
         ref.watch(providers.players.select((_) => _.isLoadingPlayerData));
     final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
     final championsProvider = ref.read(providers.champions);
 
-    // Variables
-    final routeArguments =
-        ModalRoute.of(context)?.settings.arguments as String?;
-
     // Methods
     final onForceUpdate = useCallback(
-      () {
-        if (playersProvider.playerData?.playerId != null) {
-          playersProvider.getPlayerData(
-            playerId: playersProvider.playerData!.playerId,
-            forceUpdate: true,
-          );
-        }
-      },
+      () => playersProvider.getPlayerData(forceUpdate: true),
       [playersProvider.playerData],
     );
 
     // Effects
     useEffect(
       () {
-        // check if the playerId is passed in arguments
-        // if passed set loading to true and fetch the
-        // data from server using playerId else show the player
-        // from the playerData in provider
+        // check if the playerId will should always be present in the provider
+        // before this screen is accessed
+        // if player is null, then call getplayerData
 
-        String? playerId = routeArguments;
-        if (playerId != null) {
+        if (playerId == null) return;
+        if (player == null) {
           // fetch playerData from server
-          playersProvider.getPlayerData(playerId: playerId, forceUpdate: false);
-        } else {
-          // get the playerId from playerData
-          playerId = playersProvider.playerData!.playerId;
+          playersProvider.getPlayerData(forceUpdate: false);
         }
 
         // get the playerMatches and plaerChampions from server
         matchesProvider.getPlayerMatches(playerId);
         championsProvider.getPlayerChampions(playerId);
 
-        // remove the player data from provider when going back
-        return playersProvider.clearPlayerData;
+        return;
       },
-      [],
+      [playerId],
     );
 
     return DefaultTabController(
@@ -80,7 +65,7 @@ class PlayerDetail extends HookConsumerWidget {
               )
             : Column(
                 children: [
-                  PlayerDetailComponent(
+                  PlayerDetailHeader(
                     player: player,
                     onForceUpdate: onForceUpdate,
                     isLoading: isLoadingPlayerData,

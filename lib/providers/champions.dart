@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
@@ -95,9 +96,11 @@ class _ChampionsNotifier extends ChangeNotifier {
     _playerChampions.sort((a, b) {
       // get the name of the champion from champions list
       final aName =
-          champions.firstWhere((_) => _.championId == a.championId).name;
+          champions.firstOrNullWhere((_) => _.championId == a.championId)?.name;
       final bName =
-          champions.firstWhere((_) => _.championId == b.championId).name;
+          champions.firstOrNullWhere((_) => _.championId == b.championId)?.name;
+
+      if (aName == null || bName == null) return 0;
 
       if (ascending) return bName.compareTo(aName);
 
