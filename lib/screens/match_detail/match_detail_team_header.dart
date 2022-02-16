@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 
 class MatchDetailTeamHeader extends StatelessWidget {
-  final Map<String, int> teamStats;
+  final data_classes.MatchTeamStats teamStats;
   final bool isWinningTeam;
   final models.MatchPlayer matchPlayer;
 
@@ -37,7 +38,7 @@ class MatchDetailTeamHeader extends StatelessWidget {
           ),
           const SizedBox(width: 15),
           Text(
-            '${teamStats['kills']} / ${teamStats['deaths']} / ${teamStats['assists']}',
+            '${teamStats.kills} / ${teamStats.deaths} / ${teamStats.assists}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
