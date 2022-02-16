@@ -40,7 +40,7 @@ class Search extends HookConsumerWidget {
         isLoading.value = false;
 
         if (exactMatch) {
-          Navigator.pushNamed(context, screens.PlayerDetail.routeName);
+          Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
         }
       },
       [],

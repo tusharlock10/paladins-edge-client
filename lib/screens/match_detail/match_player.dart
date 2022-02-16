@@ -6,7 +6,6 @@ import 'package:paladinsedge/constants.dart' as constsnts;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -22,6 +21,7 @@ class MatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
+    final playersProvider = ref.watch(providers.players);
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -48,10 +48,10 @@ class MatchPlayer extends HookConsumerWidget {
 
     // Methods
     final onPressPlayer = useCallback(
-      () => Navigator.of(context).popAndPushNamed(
-        screens.PlayerDetail.routeName,
-        arguments: matchPlayer.playerId,
-      ),
+      () {
+        Navigator.of(context).pop();
+        playersProvider.setPlayerId(matchPlayer.playerId);
+      },
       [],
     );
 
@@ -95,14 +95,21 @@ class MatchPlayer extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  isPrivatePlayer ? 'Private Profile' : matchPlayer.playerName,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight:
-                        isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
-                    fontStyle:
-                        isPrivatePlayer ? FontStyle.italic : FontStyle.normal,
+                SizedBox(
+                  width: 160,
+                  child: Text(
+                    isPrivatePlayer
+                        ? 'Private Profile'
+                        : matchPlayer.playerName,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight:
+                          isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
+                      fontStyle:
+                          isPrivatePlayer ? FontStyle.italic : FontStyle.normal,
+                    ),
                   ),
                 ),
                 Row(

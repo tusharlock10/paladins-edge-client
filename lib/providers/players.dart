@@ -8,6 +8,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   api.PlayerStatusResponse? playerStatus;
+  String? playerId;
   models.Player? playerData;
   List<api.LowerSearch> lowerSearchList = [];
   List<models.Player> friends = [];
@@ -92,6 +93,7 @@ class _PlayersNotifier extends ChangeNotifier {
     }
 
     if (response.exactMatch) {
+      playerId = response.playerData?.playerId;
       playerData = response.playerData;
     } else {
       topSearchList = response.searchData.topSearchList;
@@ -114,19 +116,23 @@ class _PlayersNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  void clearPlayerData() {
+  void setPlayerId(String _playerId) {
     playerData = null;
+    playerId = _playerId;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void getPlayerData({
-    required String playerId,
     required bool forceUpdate,
   }) async {
+    if (playerId == null) return;
+
     isLoadingPlayerData = true;
     utilities.postFrameCallback(notifyListeners);
 
     final response = await api.PlayersRequests.playerDetail(
-      playerId: playerId,
+      playerId: playerId!,
       forceUpdate: forceUpdate,
     );
 

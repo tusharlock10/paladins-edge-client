@@ -4,12 +4,18 @@ import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
+  bool isPlayerMatchesLoading = false;
+  bool isMatcheDetailsLoading = false;
   api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
 
   Future<void> getPlayerMatches(String playerId) async {
+    isPlayerMatchesLoading = true;
+    utilities.postFrameCallback(notifyListeners);
+
     final response = await api.MatchRequests.playerMatches(playerId: playerId);
-    if (response == null) return;
+
+    isPlayerMatchesLoading = false;
     playerMatches = response;
 
     utilities.postFrameCallback(notifyListeners);
@@ -22,15 +28,21 @@ class _MatchesNotifier extends ChangeNotifier {
   }
 
   Future<void> getMatchDetails(String matchId) async {
+    isMatcheDetailsLoading = true;
+    utilities.postFrameCallback(notifyListeners);
+
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
-    if (response == null) return;
+
+    isMatcheDetailsLoading = false;
     matchDetails = response;
+
+    // sort players based on their team
+    matchDetails?.matchPlayers.sort((a, b) => a.team - b.team);
 
     utilities.postFrameCallback(notifyListeners);
   }
 
   void resetMatchDetails() {
-    print('RESETTING');
     matchDetails = null;
 
     utilities.postFrameCallback(notifyListeners);
