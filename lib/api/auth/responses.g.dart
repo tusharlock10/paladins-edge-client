@@ -25,10 +25,13 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
 ClaimPlayerResponse _$ClaimPlayerResponseFromJson(Map<String, dynamic> json) =>
     ClaimPlayerResponse(
       verified: json['verified'] as bool,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
       player: json['player'] == null
           ? null
           : Player.fromJson(json['player'] as Map<String, dynamic>),
+      reason: json['reason'] as String?,
     );
 
 Map<String, dynamic> _$ClaimPlayerResponseToJson(
@@ -37,6 +40,7 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
       'verified': instance.verified,
       'user': instance.user,
       'player': instance.player,
+      'reason': instance.reason,
     };
 
 EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>

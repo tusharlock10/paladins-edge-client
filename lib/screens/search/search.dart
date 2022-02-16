@@ -26,7 +26,7 @@ class Search extends HookConsumerWidget {
     final onSearch = useCallback(
       (
         String playerName, {
-        bool addInSeachHistory = true,
+        bool addInSearchHistory = true,
       }) async {
         isLoading.value = true;
 
@@ -34,7 +34,7 @@ class Search extends HookConsumerWidget {
         final exactMatch = await searchProvider.searchByName(
           playerName: playerName,
           simpleResults: false,
-          addInSeachHistory: addInSeachHistory,
+          addInSearchHistory: addInSearchHistory,
         );
 
         isLoading.value = false;
@@ -49,7 +49,7 @@ class Search extends HookConsumerWidget {
     final onTapSearchHistory = useCallback(
       (String _playerName) {
         playerName.value = _playerName;
-        onSearch(playerName.value, addInSeachHistory: false);
+        onSearch(playerName.value, addInSearchHistory: false);
       },
       [],
     );

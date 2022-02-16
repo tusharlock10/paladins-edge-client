@@ -66,7 +66,7 @@ class _ChampionsNotifier extends ChangeNotifier {
         await api.ChampionsRequests.playerChampions(playerId: playerId);
     if (response == null) return;
     playerChampions = response.playerChampions;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Get the batch `playerChampions` data for the playerId and championId
@@ -79,7 +79,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
     if (response == null) return;
     playerChampions = response.playerChampions;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Deletes the plyerChampions
@@ -109,7 +109,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of matches
@@ -128,7 +128,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of kills
@@ -145,7 +145,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of deaths
@@ -162,7 +162,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of KDA
@@ -181,7 +181,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of win rate
@@ -200,7 +200,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of play time
@@ -217,7 +217,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of level
@@ -234,7 +234,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sort playerChampions on basis of last played
@@ -251,7 +251,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     playerChampions = _playerChampions;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 }
 
