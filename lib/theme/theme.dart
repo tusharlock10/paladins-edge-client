@@ -14,7 +14,7 @@ final lightTheme = ThemeData(
     centerTitle: true,
     iconTheme: const IconThemeData(
       color: Colors.white,
-      size: 16,
+      size: 20,
     ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,
@@ -36,6 +36,7 @@ final lightTheme = ThemeData(
   brightness: Brightness.light,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
+    // TODO: Remove this and fix the widgets impated by this change
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(themeMaterialColor),
     ),
@@ -138,7 +139,7 @@ final darkTheme = ThemeData(
     centerTitle: true,
     iconTheme: const IconThemeData(
       color: Colors.white,
-      size: 16,
+      size: 20,
     ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,
@@ -160,6 +161,7 @@ final darkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
   elevatedButtonTheme: ElevatedButtonThemeData(
+    // TODO: Remove this and fix the widgets impated by this change
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(darkThemeMaterialColor),
     ),

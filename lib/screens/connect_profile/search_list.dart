@@ -18,15 +18,12 @@ class _SearchItem extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final themeData = Theme.of(context);
-
     return ListTile(
       onTap: () => onTap(searchItem),
       title: Text(
         searchItem.name,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
-          color: themeData.primaryColor,
           fontSize: 18,
         ),
       ),
@@ -68,18 +65,21 @@ class SearchList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Variables
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
     final lowerSearchList =
         ref.watch(providers.players.select((_) => _.lowerSearchList));
 
     return Column(
       children: [
+        const SizedBox(height: 15),
         PlayerInput(
           isLoading: isLoading,
           onSearch: onSearch,
         ),
+        const SizedBox(height: 15),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.only(top: 20),
             itemCount: lowerSearchList.length,
             itemBuilder: (context, index) {
               final searchItem = lowerSearchList[index];
@@ -90,7 +90,7 @@ class SearchList extends ConsumerWidget {
                     searchItem: searchItem,
                     onTap: onTap,
                   ),
-                  const Divider(),
+                  Divider(color: secondaryColor),
                 ],
               );
             },

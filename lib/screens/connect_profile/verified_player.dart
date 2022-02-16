@@ -9,34 +9,38 @@ class VerifiedPlayer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final player = ref.watch(providers.auth.select((_) => _.player));
 
-    final themeData = Theme.of(context);
+    // Variables
+    final theme = Theme.of(context);
+    final secondaryColor = theme.colorScheme.secondary;
+
     if (player == null) {
-      return Container();
+      return const SizedBox();
     }
 
     return Column(
       children: [
-        const Text('Congrats, Profile connected'),
-        const Text(
-          'Now you can enjoy all of the amazing features of paladins edge',
-        ),
+        const SizedBox(height: 15),
+        const Text('Yay! Profile connected 🎉'),
+        const SizedBox(height: 15),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             widgets.ElevatedAvatar(
-              size: 28,
+              size: 24,
               borderRadius: 10,
               imageUrl: player.avatarUrl,
             ),
+            const SizedBox(width: 10),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   player.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: themeData.primaryColor,
                     fontSize: 18,
                   ),
                 ),
@@ -45,12 +49,23 @@ class VerifiedPlayer extends ConsumerWidget {
             ),
           ],
         ),
-        TextButton(
-          onPressed: () => Navigator.pushReplacementNamed(
-            context,
-            screens.BottomTabs.routeName,
+        const SizedBox(height: 15),
+        SizedBox(
+          width: 150,
+          child: TextButton(
+            onPressed: () => Navigator.pushReplacementNamed(
+              context,
+              screens.BottomTabs.routeName,
+            ),
+            style: TextButton.styleFrom(
+              side: BorderSide(width: 1.5, color: secondaryColor),
+              backgroundColor: theme.scaffoldBackgroundColor,
+            ),
+            child: Text(
+              'Continue',
+              style: TextStyle(color: secondaryColor),
+            ),
           ),
-          child: const Text('Continue'),
         ),
       ],
     );

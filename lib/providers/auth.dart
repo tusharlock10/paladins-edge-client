@@ -164,6 +164,8 @@ class _AuthNotifier extends ChangeNotifier {
       player = response.player;
       if (user != null) utilities.Database.saveUser(user!);
       if (player != null) utilities.Database.savePlayer(player!);
+
+      utilities.postFrameCallback(notifyListeners);
     }
 
     return response;
