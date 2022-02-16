@@ -13,6 +13,9 @@ class AppDrawer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final player = ref.watch(providers.auth.select((_) => _.player));
+
     // State
     final isLoggingOut = useState(false);
 
@@ -81,16 +84,18 @@ class AppDrawer extends HookConsumerWidget {
               label: 'Change Theme',
               onPressed: () => onChangeTheme(context, ref),
             ),
-            DrawerButton(
-              context: context,
-              label: 'Friends',
-              onPressed: () => onFriends(context),
-            ),
-            DrawerButton(
-              context: context,
-              label: 'Active Match',
-              onPressed: () => onActiveMatch(context),
-            ),
+            if (player != null)
+              DrawerButton(
+                context: context,
+                label: 'Friends',
+                onPressed: () => onFriends(context),
+              ),
+            if (player != null)
+              DrawerButton(
+                context: context,
+                label: 'Active Match',
+                onPressed: () => onActiveMatch(context),
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

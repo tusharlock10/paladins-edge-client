@@ -20,55 +20,85 @@ class CreateLoadout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme.headline6;
+    final theme = Theme.of(context);
+    final headline6 = theme.textTheme.headline6;
+    final secondaryColor = theme.colorScheme.secondary;
 
-    return Column(
-      children: [
-        RichText(
-          text: TextSpan(
-            text: 'Verifying for ',
-            style: TextStyle(
-              color: textTheme?.color,
-              fontFamily: textTheme?.fontFamily,
-            ),
-            children: [
-              TextSpan(
-                text: '${selectedPlayer?.name}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 15),
+          RichText(
+            text: TextSpan(
+              text: 'Verifying for ',
+              style: TextStyle(
+                color: headline6?.color,
+                fontFamily: headline6?.fontFamily,
               ),
-            ],
-          ),
-        ),
-        RichText(
-          text: TextSpan(
-            text: 'Create a loadout with the name ',
-            style: TextStyle(
-              color: textTheme?.color,
-              fontFamily: textTheme?.fontFamily,
+              children: [
+                TextSpan(
+                  text: '${selectedPlayer?.name}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            children: [
-              TextSpan(
-                text: otp,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
           ),
-        ),
-        const Text('Click verify once you have created and saved your loadout'),
-        TextButton(
-          onPressed: onVerify,
-          child: isVerifying
-              ? const widgets.LoadingIndicator(
-                  size: 18,
-                  lineWidth: 2,
-                )
-              : const Text('Verify'),
-        ),
-        TextButton(
-          onPressed: onChangeName,
-          child: const Text('Change name'),
-        ),
-      ],
+          RichText(
+            text: TextSpan(
+              text: 'Create a loadout with the name ',
+              style: TextStyle(
+                color: headline6?.color,
+                fontFamily: headline6?.fontFamily,
+              ),
+              children: [
+                TextSpan(
+                  text: otp,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          const Text(
+            'Click verify once you have created and saved your loadout',
+          ),
+          const SizedBox(height: 15),
+          SizedBox(
+            width: 150,
+            child: TextButton(
+              onPressed: isVerifying ? null : onVerify,
+              style: TextButton.styleFrom(
+                side: BorderSide(width: 1.5, color: secondaryColor),
+                backgroundColor: theme.scaffoldBackgroundColor,
+              ),
+              child: isVerifying
+                  ? widgets.LoadingIndicator(
+                      size: 18,
+                      lineWidth: 1.5,
+                      color: secondaryColor,
+                    )
+                  : Text(
+                      'Verify',
+                      style: TextStyle(color: secondaryColor),
+                    ),
+            ),
+          ),
+          SizedBox(
+            width: 150,
+            child: TextButton(
+              onPressed: onChangeName,
+              style: TextButton.styleFrom(
+                side: BorderSide(width: 1.5, color: secondaryColor),
+                backgroundColor: theme.scaffoldBackgroundColor,
+              ),
+              child: Text(
+                'Change name',
+                style: TextStyle(color: secondaryColor),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

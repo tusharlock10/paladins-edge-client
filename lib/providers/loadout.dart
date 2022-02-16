@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _LoadoutNotifier extends ChangeNotifier {
   bool isGettingLoadouts = true;
@@ -21,10 +22,10 @@ class _LoadoutNotifier extends ChangeNotifier {
 
     loadouts = response?.loadouts;
     isGettingLoadouts = false;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
-  /// Deletes the lodouts
+  /// Deletes the loadouts
   void resetPlayerLoadouts() {
     isGettingLoadouts = true;
     loadouts = null;
@@ -63,7 +64,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sets thevalue of loadoutCard level when user changes the slider
@@ -80,7 +81,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Sets the loadoutName in draftLoadout and also validates the name
@@ -134,7 +135,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     final loadout = models.Loadout.fromDraftLoadout(draftLoadout);
 
     isSavingLoadout = true;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     final result = isEditingLoadout
         ? await api.LoadoutRequests.updatePlayerLoadout(loadout: loadout)
@@ -145,7 +146,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     }
 
     isSavingLoadout = false;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     return result != null;
   }

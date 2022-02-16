@@ -23,13 +23,15 @@ class LoginResponse {
 @JsonSerializable()
 class ClaimPlayerResponse {
   final bool verified;
-  final User user;
+  final User? user;
   final Player? player;
+  final String? reason;
 
   ClaimPlayerResponse({
     required this.verified,
-    required this.user,
+    this.user,
     this.player,
+    this.reason,
   });
 
   factory ClaimPlayerResponse.fromJson(Map<String, dynamic> json) =>

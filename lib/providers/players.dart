@@ -76,7 +76,7 @@ class _PlayersNotifier extends ChangeNotifier {
   Future<bool> searchByName({
     required String playerName,
     required bool simpleResults,
-    required bool addInSeachHistory,
+    required bool addInSearchHistory,
   }) async {
     // makes a req. to api for search
     // saves the searchItem in the searchHistory
@@ -100,7 +100,7 @@ class _PlayersNotifier extends ChangeNotifier {
       lowerSearchList = response.searchData.lowerSearchList;
     }
     final searchItem = models.SearchHistory(playerName: playerName);
-    if (addInSeachHistory) {
+    if (addInSearchHistory) {
       searchHistory.insert(0, searchItem);
       utilities.Database.saveSearchHistory(searchItem);
     }
