@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class TopSearchItem extends StatelessWidget {
+class TopSearchItem extends HookConsumerWidget {
   final models.Player player;
 
   const TopSearchItem({
@@ -12,13 +15,21 @@ class TopSearchItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final playersProvider = ref.read(providers.players);
+
+    // Methods
+    final onTap = useCallback(
+      () {
+        playersProvider.setPlayerId(player.playerId);
+        Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
+      },
+      [],
+    );
+
     return ListTile(
-      onTap: () => Navigator.pushNamed(
-        context,
-        screens.PlayerDetail.routeName,
-        arguments: player.playerId,
-      ),
+      onTap: onTap,
       title: Text(
         player.name,
         style: Theme.of(context).primaryTextTheme.headline6,

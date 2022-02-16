@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -92,15 +93,17 @@ class PlayerChampions extends HookConsumerWidget {
         final lastPlayed =
             utilities.getLastPlayedTime(playerChampion.lastPlayed);
         final champion = champions
-            .firstWhere((_) => _.championId == playerChampion.championId);
+            .firstOrNullWhere((_) => _.championId == playerChampion.championId);
 
         return DataRow(
           cells: [
             DataCell(
-              widgets.ElevatedAvatar(
-                imageUrl: champion.iconUrl,
-                size: 18,
-              ),
+              champion == null
+                  ? const SizedBox(height: 18 * 2, width: 18 * 2)
+                  : widgets.ElevatedAvatar(
+                      imageUrl: champion.iconUrl,
+                      size: 18,
+                    ),
             ),
             DataCell(Text(matches.toString())),
             DataCell(Text(kills.toString())),

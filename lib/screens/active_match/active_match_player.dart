@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -68,7 +69,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
             100 /
             (playerInfo.ranked!.wins + playerInfo.ranked!.looses)
         : null;
-    final champion = champions.firstWhere(
+    final champion = champions.firstOrNullWhere(
       (_champion) => _champion.championId == playerInfo.championId.toString(),
     );
 
@@ -169,10 +170,12 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           children: [
             Row(
               children: [
-                widgets.ElevatedAvatar(
-                  imageUrl: champion.iconUrl,
-                  size: 24,
-                ),
+                champion == null
+                    ? const SizedBox(height: 24 * 2, width: 24 * 2)
+                    : widgets.ElevatedAvatar(
+                        imageUrl: champion.iconUrl,
+                        size: 24,
+                      ),
                 playerInfo.ranked == null
                     ? const SizedBox(width: 20)
                     : Padding(
