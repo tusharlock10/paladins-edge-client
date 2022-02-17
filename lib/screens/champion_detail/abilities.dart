@@ -62,10 +62,10 @@ class Abilities extends StatelessWidget {
                                 return widgets.TextChip(
                                   spacing: 5,
                                   hidden: damageTypeChip == null,
-                                  color: damageTypeChip?['color']
-                                      as MaterialColor?,
-                                  text: damageTypeChip?['name'] as String?,
-                                  icon: damageTypeChip?['icon'] as IconData?,
+                                  color:
+                                      damageTypeChip?.color as MaterialColor?,
+                                  text: damageTypeChip?.name,
+                                  icon: damageTypeChip?.icon,
                                 );
                               }),
                               widgets.TextChip(

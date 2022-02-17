@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'champions.g.dart';
@@ -15,4 +16,16 @@ class BatchPlayerChampionsPayload {
   factory BatchPlayerChampionsPayload.fromJson(Map<String, dynamic> json) =>
       _$BatchPlayerChampionsPayloadFromJson(json);
   Map<String, dynamic> toJson() => _$BatchPlayerChampionsPayloadToJson(this);
+}
+
+class ChampionDamage {
+  final String name;
+  final Color color;
+  final IconData? icon;
+
+  ChampionDamage({
+    required this.name,
+    required this.color,
+    this.icon,
+  });
 }

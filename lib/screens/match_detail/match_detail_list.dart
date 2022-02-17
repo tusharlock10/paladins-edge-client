@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/match_detail/match_detail_team_header.dart';
@@ -12,37 +13,15 @@ class MatchDetailList extends HookConsumerWidget {
 
   const MatchDetailList({Key? key}) : super(key: key);
 
-  Map<String, int> calculateTeamStats(
-    int team,
-    List<models.MatchPlayer> matchPlayers,
-  ) {
-    int kills = 0;
-    int deaths = 0;
-    int assists = 0;
-
-    for (var matchPlayer in matchPlayers) {
-      if (matchPlayer.team == team) {
-        kills += matchPlayer.playerStats.kills;
-        deaths += matchPlayer.playerStats.deaths;
-        assists += matchPlayer.playerStats.assists;
-      }
-    }
-
-    return {
-      'kills': kills,
-      'deaths': deaths,
-      'assists': assists,
-    };
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final matchesProvider = ref.read(providers.matches);
     final matchId = ModalRoute.of(context)?.settings.arguments as String;
-    final isMatcheDetailsLoading =
-        ref.watch(providers.matches.select((_) => _.isMatcheDetailsLoading));
+    final isMatchDetailsLoading =
+        ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading));
     final matchDetails =
         ref.watch(providers.matches.select((_) => _.matchDetails));
+    final List<Widget> matchPlayerWidgets = [];
 
     // Effects
     useEffect(
@@ -55,9 +34,31 @@ class MatchDetailList extends HookConsumerWidget {
       [],
     );
 
-    final List<Widget> matchPlayerWidgets = [];
+    // Methods
+    final calculateTeamStats = useCallback(
+      (
+        int team,
+        List<models.MatchPlayer> matchPlayers,
+      ) {
+        final teamStats = data_classes.MatchTeamStats(
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+        );
+        for (var matchPlayer in matchPlayers) {
+          if (matchPlayer.team == team) {
+            teamStats.kills += matchPlayer.playerStats.kills;
+            teamStats.deaths += matchPlayer.playerStats.deaths;
+            teamStats.assists += matchPlayer.playerStats.assists;
+          }
+        }
 
-    if (isMatcheDetailsLoading) {
+        return teamStats;
+      },
+      [],
+    );
+
+    if (isMatchDetailsLoading) {
       return const Center(
         child: widgets.LoadingIndicator(
           size: 36,

@@ -5,7 +5,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;
-  bool isMatcheDetailsLoading = false;
+  bool isMatchDetailsLoading = false;
   api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
 
@@ -28,12 +28,12 @@ class _MatchesNotifier extends ChangeNotifier {
   }
 
   Future<void> getMatchDetails(String matchId) async {
-    isMatcheDetailsLoading = true;
+    isMatchDetailsLoading = true;
     utilities.postFrameCallback(notifyListeners);
 
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
 
-    isMatcheDetailsLoading = false;
+    isMatchDetailsLoading = false;
     matchDetails = response;
 
     // sort players based on their team
