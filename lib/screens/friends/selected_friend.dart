@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/active_match_card.dart';
 import 'package:paladinsedge/screens/friends/status_indicator.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class SelectedFriend extends ConsumerWidget {
+class SelectedFriend extends HookConsumerWidget {
   final models.Player? selectedFriend;
   final void Function() onFavouriteFriend;
 
@@ -18,14 +20,28 @@ class SelectedFriend extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    // Providers
+    final playersProvider = ref.read(providers.players);
     final playerStatus =
         ref.watch(providers.players.select((_) => _.playerStatus));
     final favouriteFriends =
         ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
 
+    // Variables
+    final theme = Theme.of(context);
     final bool isFavourite =
         favouriteFriends?.contains(selectedFriend?.playerId) ?? false;
+
+    // Methods
+    final onPressFriend = useCallback(
+      () {
+        if (selectedFriend == null) return;
+
+        playersProvider.setPlayerId(selectedFriend!.playerId);
+        Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
+      },
+      [selectedFriend],
+    );
 
     return Column(
       children: [
@@ -42,9 +58,14 @@ class SelectedFriend extends ConsumerWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                selectedFriend!.name,
-                                style: theme.textTheme.headline3,
+                              GestureDetector(
+                                onTap: onPressFriend,
+                                child: Text(
+                                  selectedFriend!.name,
+                                  style: theme.textTheme.headline3?.copyWith(
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
                               ),
                               Text(
                                 'Level ${selectedFriend!.level}',
