@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/index.dart' show Player, ActiveMatch;
+import 'package:paladinsedge/models/index.dart'
+    show Player, ActiveMatch, SearchHistory;
 
 part 'responses.g.dart';
 
@@ -94,4 +95,17 @@ class FavouriteFriendResponse {
   factory FavouriteFriendResponse.fromJson(Map<String, dynamic> json) =>
       _$FavouriteFriendResponseFromJson(json);
   Map<String, dynamic> toJson() => _$FavouriteFriendResponseToJson(this);
+}
+
+@JsonSerializable()
+class SearchHistoryResponse {
+  final List<SearchHistory> searchHistory;
+
+  SearchHistoryResponse({
+    required this.searchHistory,
+  });
+
+  factory SearchHistoryResponse.fromJson(Map<String, dynamic> json) =>
+      _$SearchHistoryResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SearchHistoryResponseToJson(this);
 }

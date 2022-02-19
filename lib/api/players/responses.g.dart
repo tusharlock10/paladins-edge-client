@@ -109,3 +109,17 @@ Map<String, dynamic> _$FavouriteFriendResponseToJson(
     <String, dynamic>{
       'favouriteFriends': instance.favouriteFriends,
     };
+
+SearchHistoryResponse _$SearchHistoryResponseFromJson(
+        Map<String, dynamic> json) =>
+    SearchHistoryResponse(
+      searchHistory: (json['searchHistory'] as List<dynamic>)
+          .map((e) => SearchHistory.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SearchHistoryResponseToJson(
+        SearchHistoryResponse instance) =>
+    <String, dynamic>{
+      'searchHistory': instance.searchHistory,
+    };

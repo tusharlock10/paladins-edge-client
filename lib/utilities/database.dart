@@ -4,9 +4,9 @@ import 'package:paladinsedge/models/index.dart' as models;
 
 abstract class Database {
   static bool _init = false;
+  static models.RecordExpiry? _recordExpiry;
 
   // create a hive box here
-  static models.RecordExpiry? _recordExpiry;
   static Box<String>? _tokenBox;
   static Box<models.User>? _userBox;
   static Box<models.Player>? _playerBox;
@@ -18,6 +18,20 @@ abstract class Database {
   static Box<models.BountyStore>? _bountyStoreBox;
   static Box<models.PlayerChampion>? _playerChampionBox;
   static Box<models.Queue>? _queueTimelineBox;
+
+  // getters
+  static Box<String>? get tokenBox => _tokenBox;
+  static Box<models.User>? get userBox => _userBox;
+  static Box<models.Player>? get playerBox => _playerBox;
+  static Box<models.Settings>? get settingsBox => _settingsBox;
+  static Box<models.Essentials>? get essentialsBox => _essentialsBox;
+  static Box<models.SearchHistory>? get searchHistoryBox => _searchHistoryBox;
+  static Box<models.Champion>? get championBox => _championBox;
+  static Box<models.RecordExpiry>? get recordExpiryBox => _recordExpiryBox;
+  static Box<models.BountyStore>? get bountyStoreBox => _bountyStoreBox;
+  static Box<models.PlayerChampion>? get playerChampionBox =>
+      _playerChampionBox;
+  static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
 
   static Future<void> initDatabase() async {
     if (_init) return;
@@ -134,7 +148,7 @@ abstract class Database {
 
     final searchHistory = _searchHistoryBox?.values.toList().reversed.toList();
 
-    return searchHistory == null || searchHistory.isEmpty
+    return (searchHistory == null || searchHistory.isEmpty)
         ? null
         : searchHistory;
   }
@@ -202,6 +216,11 @@ abstract class Database {
         : queueTimeline;
   }
 
+  // delete methods
+  static Future<void> deleteSearchItem(int index) async {
+    await _searchHistoryBox?.deleteAt(index);
+  }
+
   // clear all the boxes
   static void clear() {
     _tokenBox?.clear();
@@ -211,6 +230,7 @@ abstract class Database {
     _essentialsBox?.clear();
     _searchHistoryBox?.clear();
     _championBox?.clear();
+    _recordExpiryBox?.clear();
     _bountyStoreBox?.clear();
     _playerChampionBox?.clear();
     _queueTimelineBox?.clear();

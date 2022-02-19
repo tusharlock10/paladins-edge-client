@@ -34,7 +34,7 @@ class Essentials extends HiveObject {
   @HiveField(5)
   final int forceUpdateChampionsDuration;
 
-  /// max number of favourite friends earch user can have
+  /// max number of favourite friends each user can have
   @HiveField(6)
   final int maxFavouriteFriends;
 
