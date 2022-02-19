@@ -64,13 +64,55 @@ class _PlayersNotifier extends ChangeNotifier {
     playerStatus = null;
     final response = await api.PlayersRequests.playerStatus(playerId: playerId);
     playerStatus = response;
+
     utilities.postFrameCallback(notifyListeners);
   }
 
-  getSearchHistory() {
+  /// Loads the `searchHistory` data for the user from local db and
+  /// syncs it with server for showing in Search screen
+  void loadSearchHistory() async {
     // gets the search history from local db
     final _searchHistory = utilities.Database.getSearchHistory();
-    searchHistory = _searchHistory ?? [];
+
+    // if searchHistory is not available
+    // fetch it from backend
+    if (_searchHistory == null) {
+      final response = await api.PlayersRequests.searchHistory();
+
+      if (response == null) {
+        searchHistory = [];
+
+        return;
+      }
+
+      searchHistory = response.searchHistory;
+      response.searchHistory.forEach(utilities.Database.saveSearchHistory);
+    } else {
+      searchHistory = _searchHistory;
+    }
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  Future<void> insertSearchHistory({
+    required String playerName,
+    required String playerId,
+  }) async {
+    // remove existing searchItem
+    final index = searchHistory.indexWhere((_) => _.playerId == playerId);
+    if (index != -1) {
+      await utilities.Database.deleteSearchItem(index);
+      searchHistory.removeAt(index);
+    }
+
+    final searchItem = models.SearchHistory(
+      playerName: playerName,
+      playerId: playerId,
+      time: DateTime.now(),
+    );
+
+    utilities.Database.saveSearchHistory(searchItem);
+    searchHistory.insert(0, searchItem);
   }
 
   Future<bool> searchByName({
@@ -93,16 +135,18 @@ class _PlayersNotifier extends ChangeNotifier {
     }
 
     if (response.exactMatch) {
-      playerId = response.playerData?.playerId;
+      playerId = response.playerData!.playerId;
       playerData = response.playerData;
+
+      if (addInSearchHistory) {
+        await insertSearchHistory(
+          playerName: playerData!.name,
+          playerId: playerId!,
+        );
+      }
     } else {
       topSearchList = response.searchData.topSearchList;
       lowerSearchList = response.searchData.lowerSearchList;
-    }
-    final searchItem = models.SearchHistory(playerName: playerName);
-    if (addInSearchHistory) {
-      searchHistory.insert(0, searchItem);
-      utilities.Database.saveSearchHistory(searchItem);
     }
 
     utilities.postFrameCallback(notifyListeners);
@@ -144,6 +188,11 @@ class _PlayersNotifier extends ChangeNotifier {
     }
 
     playerData = response.player;
+
+    await insertSearchHistory(
+      playerName: playerData!.name,
+      playerId: playerId!,
+    );
 
     isLoadingPlayerData = false;
     utilities.postFrameCallback(notifyListeners);

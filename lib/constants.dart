@@ -30,6 +30,7 @@ abstract class Urls {
   static const playerStatus = "/players/playerStatus"; // GET
   static const friendsList = "/players/friendsList"; // GET
   static const favouriteFriend = "/players/favouriteFriend"; // PUT
+  static const searchHistory = "/players/searchHistory"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
@@ -147,7 +148,7 @@ enum RecordExpiryName {
 abstract class RecordExpiryDuration {
   // Time to live duration of these records
   static const championDuration = Duration(days: 1);
-  static const searchHistoryDuration = Duration(days: 7);
+  static const searchHistoryDuration = Duration(hours: 1);
   static const bountyStoreDuration = Duration(days: 1);
   static const playerChampionDuration = Duration(days: 1);
   static const queueTimelineDuration = Duration(minutes: 10);
