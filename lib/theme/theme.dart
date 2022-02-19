@@ -35,12 +35,6 @@ final lightTheme = ThemeData(
   ),
   brightness: Brightness.light,
   fontFamily: GoogleFonts.manrope().fontFamily,
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    // TODO: Remove this and fix the widgets impated by this change
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(themeMaterialColor),
-    ),
-  ),
   textTheme: TextTheme(
     headline1: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,
@@ -160,12 +154,6 @@ final darkTheme = ThemeData(
   ),
   brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    // TODO: Remove this and fix the widgets impated by this change
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(darkThemeMaterialColor),
-    ),
-  ),
   textTheme: TextTheme(
     headline1: TextStyle(
       fontFamily: GoogleFonts.montserrat().fontFamily,

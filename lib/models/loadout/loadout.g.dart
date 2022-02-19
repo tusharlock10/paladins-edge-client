@@ -18,7 +18,7 @@ Map<String, dynamic> _$LoadoutCardToJson(LoadoutCard instance) =>
     };
 
 Loadout _$LoadoutFromJson(Map<String, dynamic> json) => Loadout(
-      championId: json['championId'] as String,
+      championId: json['championId'] as int,
       playerId: json['playerId'] as String,
       name: json['name'] as String,
       loadoutCards: (json['loadoutCards'] as List<dynamic>)

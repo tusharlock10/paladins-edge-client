@@ -2,7 +2,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 
 models.PlayerChampion? findPlayerChampion(
   List<models.PlayerChampion>? playerChampions,
-  String championId,
+  int championId,
 ) {
   if (playerChampions == null) return null;
 

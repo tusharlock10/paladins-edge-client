@@ -10,7 +10,7 @@ BatchPlayerChampionsPayload _$BatchPlayerChampionsPayloadFromJson(
         Map<String, dynamic> json) =>
     BatchPlayerChampionsPayload(
       playerId: json['playerId'] as String,
-      championId: json['championId'] as String,
+      championId: json['championId'] as int,
     );
 
 Map<String, dynamic> _$BatchPlayerChampionsPayloadToJson(

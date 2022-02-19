@@ -18,7 +18,7 @@ class PlayerChampionAdapter extends TypeAdapter<PlayerChampion> {
     };
     return PlayerChampion(
       playerId: fields[0] as String,
-      championId: fields[1] as String,
+      championId: fields[1] as int,
       totalAssists: fields[2] as int,
       totalDeaths: fields[3] as int,
       totalCredits: fields[4] as int,
@@ -80,7 +80,7 @@ class PlayerChampionAdapter extends TypeAdapter<PlayerChampion> {
 PlayerChampion _$PlayerChampionFromJson(Map<String, dynamic> json) =>
     PlayerChampion(
       playerId: json['playerId'] as String,
-      championId: json['championId'] as String,
+      championId: json['championId'] as int,
       totalAssists: json['totalAssists'] as int,
       totalDeaths: json['totalDeaths'] as int,
       totalCredits: json['totalCredits'] as int,

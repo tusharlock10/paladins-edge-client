@@ -70,7 +70,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
             (playerInfo.ranked!.wins + playerInfo.ranked!.looses)
         : null;
     final champion = champions.firstOrNullWhere(
-      (_champion) => _champion.championId == playerInfo.championId.toString(),
+      (_champion) => _champion.championId == playerInfo.championId,
     );
 
     // State

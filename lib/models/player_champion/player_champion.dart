@@ -14,7 +14,7 @@ class PlayerChampion {
 
   /// Paladins champion id
   @HiveField(1)
-  final String championId;
+  final int championId;
 
   /// total number of eliminations
   @HiveField(2)

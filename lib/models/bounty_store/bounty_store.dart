@@ -17,7 +17,7 @@ class BountyStore {
 
   /// id of the champion the skin belongs to
   @HiveField(2)
-  final String championId;
+  final int championId;
 
   /// name of the champion the skin belongs to
   @HiveField(3)

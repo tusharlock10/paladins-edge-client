@@ -52,7 +52,7 @@ class ActiveMatch extends HookConsumerWidget {
           final playerChampionsQuery =
               playerStatus.match!.playersInfo.map((item) {
             return data_classes.BatchPlayerChampionsPayload(
-              championId: item.championId.toString(),
+              championId: item.championId,
               playerId: item.player.playerId,
             );
           }).toList();
