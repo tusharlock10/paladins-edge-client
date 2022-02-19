@@ -6,7 +6,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 abstract class LoadoutRequests {
   static Future<responses.PlayerLoadoutsResponse?> playerLoadouts({
     required String playerId,
-    required String championId,
+    required int championId,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(

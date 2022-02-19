@@ -14,7 +14,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   data_classes.DraftLoadout draftLoadout = data_classes.DraftLoadout.empty();
 
   /// Get the `loadouts` data for the championId of that playerId
-  void getPlayerLoadouts(String playerId, String championId) async {
+  void getPlayerLoadouts(String playerId, int championId) async {
     final response = await api.LoadoutRequests.playerLoadouts(
       playerId: playerId,
       championId: championId,
@@ -32,9 +32,9 @@ class _LoadoutNotifier extends ChangeNotifier {
   }
 
   /// Creates a `draftLoaodut` to use to drafting loadout
-  /// instanciates the loadout with championId and playerId
+  /// instantiates the loadout with championId and playerId
   void createDraftLoadout({
-    required String championId,
+    required int championId,
     required String playerId,
     required models.Loadout? loadout,
   }) {

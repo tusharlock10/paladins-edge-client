@@ -65,10 +65,10 @@ class UpdateButton extends StatelessWidget {
             height: 36,
             width: 128,
             child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green),
-                elevation: MaterialStateProperty.all(0),
-                shape: MaterialStateProperty.all(const StadiumBorder()),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                elevation: 0,
+                shape: const StadiumBorder(),
               ),
               onPressed: onPressed,
               child: const Text(

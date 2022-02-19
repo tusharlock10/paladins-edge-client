@@ -21,7 +21,7 @@ class LoadoutCard {
 @JsonSerializable()
 class Loadout {
   /// id of the champion that this belongs to
-  final String championId;
+  final int championId;
 
   /// if of the player that loadout belongs to
   final String playerId;

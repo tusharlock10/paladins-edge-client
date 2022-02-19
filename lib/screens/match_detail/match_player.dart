@@ -2,7 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constsnts;
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -26,7 +26,7 @@ class MatchPlayer extends HookConsumerWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final champion = champions.firstOrNullWhere(
-      (champion) => champion.championId == matchPlayer.championId.toString(),
+      (champion) => champion.championId == matchPlayer.championId,
     );
     final talentUsed = champion?.talents
         .firstOrNullWhere((_) => _.talentId2 == matchPlayer.talentId2);
@@ -39,7 +39,7 @@ class MatchPlayer extends HookConsumerWidget {
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
     final partyColor =
-        partyNumber != null ? constsnts.partyColors[partyNumber - 1] : null;
+        partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
     String matchPosition = ' ${matchPlayer.matchPosition}th ';
 
     if (matchPlayer.matchPosition == 1) matchPosition = "MVP";
@@ -49,6 +49,8 @@ class MatchPlayer extends HookConsumerWidget {
     // Methods
     final onPressPlayer = useCallback(
       () {
+        if (isPrivatePlayer) return null;
+
         Navigator.of(context).pop();
         playersProvider.setPlayerId(matchPlayer.playerId);
       },
@@ -104,6 +106,9 @@ class MatchPlayer extends HookConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
+                      decoration: isPrivatePlayer
+                          ? TextDecoration.none
+                          : TextDecoration.underline,
                       fontSize: 14,
                       fontWeight:
                           isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
@@ -216,7 +221,7 @@ class MatchPlayer extends HookConsumerWidget {
                             imageUrl: card.imageUrl,
                             width: 32,
                             height:
-                                32 / constsnts.ImageAspectRatios.championCard,
+                                32 / constants.ImageAspectRatios.championCard,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(5),
                             ),

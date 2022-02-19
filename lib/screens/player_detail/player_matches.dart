@@ -38,7 +38,7 @@ class PlayerMatches extends ConsumerWidget {
 
         // champion that this player played in the match
         final champion = champions.firstOrNullWhere(
-          (_) => _.championId == matchPlayer.championId.toString(),
+          (_) => _.championId == matchPlayer.championId,
         );
 
         if (match == null || champion == null) {

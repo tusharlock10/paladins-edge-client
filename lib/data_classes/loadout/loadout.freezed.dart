@@ -328,7 +328,7 @@ class _$DraftLoadoutTearOff {
   const _$DraftLoadoutTearOff();
 
   _DraftLoadout call(
-      {required String championId,
+      {required int championId,
       required String playerId,
       required String name,
       required List<LoadoutCard?> loadoutCards,
@@ -350,7 +350,7 @@ const $DraftLoadout = _$DraftLoadoutTearOff();
 
 /// @nodoc
 mixin _$DraftLoadout {
-  String get championId => throw _privateConstructorUsedError;
+  int get championId => throw _privateConstructorUsedError;
   String get playerId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<LoadoutCard?> get loadoutCards => throw _privateConstructorUsedError;
@@ -368,7 +368,7 @@ abstract class $DraftLoadoutCopyWith<$Res> {
           DraftLoadout value, $Res Function(DraftLoadout) then) =
       _$DraftLoadoutCopyWithImpl<$Res>;
   $Res call(
-      {String championId,
+      {int championId,
       String playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
@@ -397,7 +397,7 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
       championId: championId == freezed
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       playerId: playerId == freezed
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
@@ -430,7 +430,7 @@ abstract class _$DraftLoadoutCopyWith<$Res>
       __$DraftLoadoutCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String championId,
+      {int championId,
       String playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
@@ -461,7 +461,7 @@ class __$DraftLoadoutCopyWithImpl<$Res> extends _$DraftLoadoutCopyWithImpl<$Res>
       championId: championId == freezed
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       playerId: playerId == freezed
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
@@ -498,7 +498,7 @@ class _$_DraftLoadout implements _DraftLoadout {
       this.loadoutHash});
 
   @override
-  final String championId;
+  final int championId;
   @override
   final String playerId;
   @override
@@ -550,7 +550,7 @@ class _$_DraftLoadout implements _DraftLoadout {
 
 abstract class _DraftLoadout implements DraftLoadout {
   factory _DraftLoadout(
-      {required String championId,
+      {required int championId,
       required String playerId,
       required String name,
       required List<LoadoutCard?> loadoutCards,
@@ -558,7 +558,7 @@ abstract class _DraftLoadout implements DraftLoadout {
       String? loadoutHash}) = _$_DraftLoadout;
 
   @override
-  String get championId;
+  int get championId;
   @override
   String get playerId;
   @override
