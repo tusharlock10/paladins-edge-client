@@ -97,4 +97,19 @@ abstract class PlayersRequests {
       return null;
     }
   }
+
+  static Future<responses.SearchHistoryResponse?> searchHistory() async {
+    try {
+      final response = await utilities.api.get<Map<String, dynamic>>(
+        constants.Urls.searchHistory,
+      );
+      if (response.data != null) {
+        return responses.SearchHistoryResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

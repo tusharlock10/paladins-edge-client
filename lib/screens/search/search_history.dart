@@ -33,7 +33,7 @@ class SearchHistory extends ConsumerWidget {
               const Duration(minutes: 1),
               builder: (context) {
                 return Text(
-                  Jiffy(search.date).fromNow(),
+                  Jiffy(search.time).fromNow(),
                   style: Theme.of(context).primaryTextTheme.caption,
                 );
               },

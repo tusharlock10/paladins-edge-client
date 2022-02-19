@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -19,6 +20,9 @@ class TopSearchItem extends HookConsumerWidget {
     // Providers
     final playersProvider = ref.read(providers.players);
 
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
+
     // Methods
     final onTap = useCallback(
       () {
@@ -28,17 +32,66 @@ class TopSearchItem extends HookConsumerWidget {
       [],
     );
 
-    return ListTile(
-      onTap: onTap,
-      title: Text(
-        player.name,
-        style: Theme.of(context).primaryTextTheme.headline6,
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: widgets.ElevatedAvatar(
+                      imageUrl: player.avatarUrl,
+                      size: 24,
+                      borderRadius: 3,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        player.name,
+                        style: textTheme.headline6?.copyWith(fontSize: 16),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        player.region,
+                        style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                      ),
+                      Text(
+                        player.platform,
+                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (player.ranked != null && player.ranked!.rank != 0)
+                    widgets.FastImage(
+                      imageUrl: player.ranked!.rankIconUrl,
+                      height: 32,
+                      width: 32,
+                    ),
+                  const SizedBox(height: 3),
+                  Text(
+                    Jiffy(player.lastLoginDate).fromNow(),
+                    style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
-      trailing: player.ranked != null
-          ? widgets.FastImage(
-              imageUrl: player.ranked!.rankIconUrl,
-            )
-          : const SizedBox(),
     );
   }
 }

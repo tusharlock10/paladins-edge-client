@@ -17,19 +17,22 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SearchHistory(
-      playerName: fields[0] as String,
-      date: fields[1] as DateTime?,
+      playerId: fields[0] as String,
+      playerName: fields[1] as String,
+      time: fields[2] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, SearchHistory obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.playerName)
+      ..write(obj.playerId)
       ..writeByte(1)
-      ..write(obj.date);
+      ..write(obj.playerName)
+      ..writeByte(2)
+      ..write(obj.time);
   }
 
   @override
@@ -42,3 +45,21 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
+    SearchHistory(
+      playerId: json['playerId'] as String,
+      playerName: json['playerName'] as String,
+      time: DateTime.parse(json['time'] as String),
+    );
+
+Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
+    <String, dynamic>{
+      'playerId': instance.playerId,
+      'playerName': instance.playerName,
+      'time': instance.time.toIso8601String(),
+    };
