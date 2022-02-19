@@ -19,7 +19,7 @@ class BountyStoreAdapter extends TypeAdapter<BountyStore> {
     return BountyStore(
       bountyStoreId: fields[0] as String,
       skinName: fields[1] as String,
-      championId: fields[2] as String,
+      championId: fields[2] as int,
       championName: fields[3] as String,
       finalPrice: fields[4] as String,
       initialPrice: fields[5] as String,
@@ -68,7 +68,7 @@ class BountyStoreAdapter extends TypeAdapter<BountyStore> {
 BountyStore _$BountyStoreFromJson(Map<String, dynamic> json) => BountyStore(
       bountyStoreId: json['bountyStoreId'] as String,
       skinName: json['skinName'] as String,
-      championId: json['championId'] as String,
+      championId: json['championId'] as int,
       championName: json['championName'] as String,
       finalPrice: json['finalPrice'] as String,
       initialPrice: json['initialPrice'] as String,

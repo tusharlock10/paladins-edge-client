@@ -34,7 +34,7 @@ class PlayerDetail extends HookConsumerWidget {
       () {
         // check if the playerId will should always be present in the provider
         // before this screen is accessed
-        // if player is null, then call getplayerData
+        // if player is null, then call getPlayerData
 
         if (playerId == null) return;
         if (player == null) {
@@ -42,13 +42,26 @@ class PlayerDetail extends HookConsumerWidget {
           playersProvider.getPlayerData(forceUpdate: false);
         }
 
-        // get the playerMatches and plaerChampions from server
+        return;
+      },
+      [playerId],
+    );
+
+    useEffect(
+      () {
+        if (playerId == null) return;
+        if (player == null) return;
+
+        // only fetch playerMatches and playerChampions
+        // when we have received player from the server
+
+        // get the playerMatches and playerChampions from server
         matchesProvider.getPlayerMatches(playerId);
         championsProvider.getPlayerChampions(playerId);
 
         return;
       },
-      [playerId],
+      [player],
     );
 
     return DefaultTabController(

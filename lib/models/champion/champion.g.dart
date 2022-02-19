@@ -207,7 +207,7 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Champion(
-      championId: fields[0] as String,
+      championId: fields[0] as int,
       name: fields[1] as String,
       iconUrl: fields[2] as String,
       headerUrl: fields[3] as String,
@@ -360,7 +360,7 @@ Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
     };
 
 Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
-      championId: json['championId'] as String,
+      championId: json['championId'] as int,
       name: json['name'] as String,
       iconUrl: json['iconUrl'] as String,
       headerUrl: json['headerUrl'] as String,

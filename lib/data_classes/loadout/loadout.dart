@@ -24,7 +24,7 @@ class LoadoutValidationResult with _$LoadoutValidationResult {
 @freezed
 class DraftLoadout with _$DraftLoadout {
   factory DraftLoadout({
-    required String championId,
+    required int championId,
     required String playerId,
     required String name,
     required List<LoadoutCard?> loadoutCards,
@@ -34,7 +34,7 @@ class DraftLoadout with _$DraftLoadout {
 
   factory DraftLoadout.empty() {
     return DraftLoadout(
-      championId: '',
+      championId: 0,
       playerId: '',
       name: 'New Loadout',
       loadoutCards: List<LoadoutCard?>.filled(5, null),

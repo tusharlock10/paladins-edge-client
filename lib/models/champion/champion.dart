@@ -161,7 +161,7 @@ class Tag {
 class Champion {
   /// Paladins champion id
   @HiveField(0)
-  final String championId;
+  final int championId;
 
   /// eg. Androxus
   @HiveField(1)

@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:paladinsedge/data_classes/champions/index.dart' as data_classes;
 
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
@@ -98,19 +99,27 @@ abstract class NotificationChannels {
   static const friends = 'friends';
 }
 
-const Map<String, Map<String, dynamic>> championDamageType = {
-  'Amplification': {"name": "Amplification", "color": Colors.pink},
-  'Area Damage': {"name": "Area Damage", "color": Colors.red},
-  'Crowd Control': {"name": "Crowd Control", "color": Colors.teal},
-  'Direct Damage': {"name": "Direct Damage", "color": Colors.red},
-  'Heal': {"name": "Heal", "color": Colors.green},
-  'Movement': {"name": "Movement", "color": Colors.amber},
-  'Protective': {"name": "Protective", "color": Colors.lightBlue},
-  'Reveal': {"name": "Reveal", "color": Colors.amber},
-  'Shield': {"name": "Shield", "color": Colors.indigo},
-  'Stance Change': {"name": "Stance Change", "color": Colors.pink},
-  'Stealth': {"name": "Stealth", "color": Colors.blue},
-  'Ultimate': {"name": "Ultimate", "color": Colors.orange},
+final Map<String, data_classes.ChampionDamage> championDamageType = {
+  'Amplification':
+      data_classes.ChampionDamage(name: "Amplification", color: Colors.pink),
+  'Area Damage':
+      data_classes.ChampionDamage(name: "Area Damage", color: Colors.red),
+  'Crowd Control':
+      data_classes.ChampionDamage(name: "Crowd Control", color: Colors.teal),
+  'Direct Damage':
+      data_classes.ChampionDamage(name: "Direct Damage", color: Colors.red),
+  'Heal': data_classes.ChampionDamage(name: "Heal", color: Colors.green),
+  'Movement':
+      data_classes.ChampionDamage(name: "Movement", color: Colors.amber),
+  'Protective':
+      data_classes.ChampionDamage(name: "Protective", color: Colors.lightBlue),
+  'Reveal': data_classes.ChampionDamage(name: "Reveal", color: Colors.amber),
+  'Shield': data_classes.ChampionDamage(name: "Shield", color: Colors.indigo),
+  'Stance Change':
+      data_classes.ChampionDamage(name: "Stance Change", color: Colors.pink),
+  'Stealth': data_classes.ChampionDamage(name: "Stealth", color: Colors.blue),
+  'Ultimate':
+      data_classes.ChampionDamage(name: "Ultimate", color: Colors.orange),
 };
 
 abstract class HiveBoxes {

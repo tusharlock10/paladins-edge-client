@@ -92,8 +92,9 @@ class PlayerChampions extends HookConsumerWidget {
         final level = playerChampion.level;
         final lastPlayed =
             utilities.getLastPlayedTime(playerChampion.lastPlayed);
-        final champion = champions
-            .firstOrNullWhere((_) => _.championId == playerChampion.championId);
+        final champion = champions.firstOrNullWhere(
+          (_) => _.championId == playerChampion.championId,
+        );
 
         return DataRow(
           cells: [
