@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class DrawerButton extends StatelessWidget {
   final BuildContext context;
   final String label;
-  final bool disabled;
   final void Function() onPressed;
+  final bool disabled;
+  final String? subTitle;
 
   const DrawerButton({
     Key? key,
@@ -12,6 +13,7 @@ class DrawerButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.disabled = false,
+    this.subTitle,
   }) : super(key: key);
 
   @override
@@ -20,12 +22,31 @@ class DrawerButton extends StatelessWidget {
 
     return TextButton(
       onPressed: disabled ? null : onPressed,
-      child: Text(
-        label,
-        style: theme.textTheme.headline3?.copyWith(
-          color: disabled ? Colors.grey : theme.colorScheme.secondary,
-        ),
-      ),
+      child: subTitle == null
+          ? Text(
+              label,
+              style: theme.textTheme.headline3?.copyWith(
+                color: disabled ? Colors.grey : theme.colorScheme.secondary,
+              ),
+            )
+          : Column(
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.headline3?.copyWith(
+                    color: disabled ? Colors.grey : theme.colorScheme.secondary,
+                  ),
+                ),
+                Text(
+                  subTitle!,
+                  style: theme.textTheme.headline3?.copyWith(
+                    color: disabled ? Colors.grey : theme.colorScheme.secondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
