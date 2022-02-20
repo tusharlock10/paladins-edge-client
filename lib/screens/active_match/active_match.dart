@@ -65,69 +65,98 @@ class ActiveMatch extends HookConsumerWidget {
       [playerStatus],
     );
 
+    if (!isLoading.value && playerStatus == null) {
+      return const Center(child: Text('Unable to fetch your active match'));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Active Match'),
       ),
       body: isLoading.value
           ? const widgets.LoadingIndicator(
+              lineWidth: 2,
               size: 28,
               label: Text('Loading Active Match'),
+              center: true,
             )
           : SizedBox(
               width: width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    playerStatus!.status,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  playerStatus.match == null
-                      ? const Text('You are not in a match')
-                      : Text('${playerStatus.match?.map}'),
-                  playersInfoTeam1 == null || playersInfoTeam2 == null
-                      ? const SizedBox()
-                      : Expanded(
-                          child: ListView(
-                            children: [
-                              const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    'Team 1',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                              ),
-                              ...playersInfoTeam1.map(
-                                (_playerInfo) {
-                                  return ActiveMatchPlayer(
-                                    playerInfo: _playerInfo,
-                                  );
-                                },
-                              ).toList(),
-                              const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    'Team 2',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                              ),
-                              ...playersInfoTeam2.map(
-                                (_playerInfo) {
-                                  return ActiveMatchPlayer(
-                                    playerInfo: _playerInfo,
-                                  );
-                                },
-                              ).toList(),
-                            ],
+              child: playerStatus?.match == null
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          playerStatus!.status,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                ],
-              ),
+                        const Text(
+                          'You are not in a match',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  : Expanded(
+                      child: ListView(
+                        children: [
+                          const SizedBox(height: 30),
+                          if (playerStatus?.match != null)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  playerStatus!.status,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  '${playerStatus.match?.map}',
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          const SizedBox(height: 10),
+                          const Center(
+                            child: Text(
+                              'Team 1',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ...playersInfoTeam1?.map(
+                                (_playerInfo) {
+                                  return ActiveMatchPlayer(
+                                    playerInfo: _playerInfo,
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Team 2',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                          ...playersInfoTeam2?.map(
+                                (_playerInfo) {
+                                  return ActiveMatchPlayer(
+                                    playerInfo: _playerInfo,
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
             ),
     );
   }

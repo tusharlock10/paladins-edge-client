@@ -15,6 +15,9 @@ class AppDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final player = ref.watch(providers.auth.select((_) => _.player));
+    final authProvider = ref.read(providers.auth);
+    final themeMode =
+        ref.watch(providers.auth.select((_) => _.settings.themeMode));
 
     // State
     final isLoggingOut = useState(false);
@@ -40,12 +43,12 @@ class AppDrawer extends HookConsumerWidget {
     );
 
     final onChangeTheme = useCallback(
-      (BuildContext context, WidgetRef ref) {
-        final authProvider = ref.read(providers.auth);
-
-        if (authProvider.settings.themeMode == ThemeMode.dark) {
+      () {
+        if (themeMode == ThemeMode.dark) {
           authProvider.toggleTheme(ThemeMode.light);
-        } else if (authProvider.settings.themeMode == ThemeMode.light) {
+        } else if (themeMode == ThemeMode.light) {
+          authProvider.toggleTheme(ThemeMode.system);
+        } else if (themeMode == ThemeMode.system) {
           authProvider.toggleTheme(ThemeMode.dark);
         } else {
           final brightness = Theme.of(context).brightness;
@@ -57,8 +60,23 @@ class AppDrawer extends HookConsumerWidget {
       [],
     );
 
+    final getThemeName = useCallback(
+      () {
+        if (themeMode == ThemeMode.dark) {
+          return 'dark';
+        } else if (themeMode == ThemeMode.light) {
+          return 'light';
+        } else if (themeMode == ThemeMode.system) {
+          return 'system';
+        } else {
+          return null;
+        }
+      },
+      [authProvider.settings.themeMode],
+    );
+
     final onFriends = useCallback(
-      (BuildContext context) {
+      () {
         Navigator.of(context).pop();
         Navigator.of(context).pushNamed(screens.Friends.routeName);
       },
@@ -66,7 +84,7 @@ class AppDrawer extends HookConsumerWidget {
     );
 
     final onActiveMatch = useCallback(
-      (BuildContext context) {
+      () {
         Navigator.of(context).pop();
         Navigator.of(context).pushNamed(screens.ActiveMatch.routeName);
       },
@@ -79,22 +97,24 @@ class AppDrawer extends HookConsumerWidget {
           children: [
             const SizedBox(height: 20),
             const PlayerProfile(),
+            const SizedBox(height: 20),
             DrawerButton(
               context: context,
               label: 'Change Theme',
-              onPressed: () => onChangeTheme(context, ref),
+              subTitle: getThemeName(),
+              onPressed: onChangeTheme,
             ),
             if (player != null)
               DrawerButton(
                 context: context,
                 label: 'Friends',
-                onPressed: () => onFriends(context),
+                onPressed: onFriends,
               ),
             if (player != null)
               DrawerButton(
                 context: context,
                 label: 'Active Match',
-                onPressed: () => onActiveMatch(context),
+                onPressed: onActiveMatch,
               ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
