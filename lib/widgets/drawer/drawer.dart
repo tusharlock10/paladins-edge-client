@@ -48,16 +48,11 @@ class AppDrawer extends HookConsumerWidget {
           authProvider.toggleTheme(ThemeMode.light);
         } else if (themeMode == ThemeMode.light) {
           authProvider.toggleTheme(ThemeMode.system);
-        } else if (themeMode == ThemeMode.system) {
-          authProvider.toggleTheme(ThemeMode.dark);
         } else {
-          final brightness = Theme.of(context).brightness;
-          authProvider.toggleTheme(
-            brightness == Brightness.dark ? ThemeMode.light : ThemeMode.dark,
-          );
+          authProvider.toggleTheme(ThemeMode.dark);
         }
       },
-      [],
+      [themeMode],
     );
 
     final getThemeName = useCallback(
