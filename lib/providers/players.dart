@@ -7,9 +7,10 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
-  api.PlayerStatusResponse? playerStatus;
   String? playerId;
+  String? playerStatusPlayerId;
   models.Player? playerData;
+  api.PlayerStatusResponse? playerStatus;
   List<api.LowerSearch> lowerSearchList = [];
   List<models.Player> friends = [];
   List<models.Player> topSearchList = [];
@@ -61,9 +62,7 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   Future<void> getPlayerStatus(String playerId) async {
-    playerStatus = null;
-    final response = await api.PlayersRequests.playerStatus(playerId: playerId);
-    playerStatus = response;
+    playerStatus = await api.PlayersRequests.playerStatus(playerId: playerId);
 
     utilities.postFrameCallback(notifyListeners);
   }
@@ -160,9 +159,18 @@ class _PlayersNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
+  /// The the playerId of the player to be shown in profile detail screen
   void setPlayerId(String _playerId) {
     playerData = null;
     playerId = _playerId;
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// The the playerId of the player to be shown in active match screen
+  void setPlayerStatusPlayerId(String _playerStatusPlayerId) {
+    playerStatus = null;
+    playerStatusPlayerId = _playerStatusPlayerId;
 
     utilities.postFrameCallback(notifyListeners);
   }

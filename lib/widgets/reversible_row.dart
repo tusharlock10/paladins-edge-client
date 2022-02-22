@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// A row whose children can be reversed
-class ReversableRow extends StatelessWidget {
+class ReversibleRow extends StatelessWidget {
   final bool shouldReverse;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final List<Widget> children;
 
-  const ReversableRow({
+  const ReversibleRow({
     required this.shouldReverse,
     required this.children,
     this.mainAxisAlignment = MainAxisAlignment.start,
