@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class PlayerDetailHeader extends StatelessWidget {
+class PlayerDetailHeader extends HookConsumerWidget {
   final models.Player player;
   final void Function() onForceUpdate;
   final bool isLoading;
@@ -15,79 +19,82 @@ class PlayerDetailHeader extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final playersProvider = ref.read(providers.players);
+
+    // Variables
     final textTheme = Theme.of(context).textTheme;
+
+    // Methods
+    final onPressActiveMatch = useCallback(
+      () {
+        playersProvider.setPlayerStatusPlayerId(player.playerId);
+        Navigator.of(context).pushNamed(screens.ActiveMatch.routeName);
+      },
+      [],
+    );
 
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          Row(
-            children: [
-              widgets.ElevatedAvatar(
-                size: 54,
-                borderRadius: 10,
-                imageUrl: player.avatarUrl,
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                height: 54 * 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          IntrinsicHeight(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                widgets.ElevatedAvatar(
+                  size: 42,
+                  borderRadius: 10,
+                  imageUrl: player.avatarUrl,
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          player.name,
-                          style: textTheme.headline3?.copyWith(fontSize: 20),
+                        widgets.FastImage(
+                          imageUrl: player.ranked!.rankIconUrl,
+                          height: 36,
+                          width: 36,
                         ),
-                        player.title != null
-                            ? Text(
-                                player.title!,
-                                style:
-                                    textTheme.bodyText1?.copyWith(fontSize: 14),
-                              )
-                            : const SizedBox(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              player.ranked!.rankName,
+                              style:
+                                  textTheme.bodyText2?.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              '${player.ranked!.points} TP',
+                              style:
+                                  textTheme.bodyText1?.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    player.ranked != null
-                        ? Row(
-                            children: [
-                              widgets.FastImage(
-                                imageUrl: player.ranked!.rankIconUrl,
-                                height: 46,
-                                width: 46,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    player.ranked!.rankName,
-                                    style: textTheme.bodyText2
-                                        ?.copyWith(fontSize: 14),
-                                  ),
-                                  Text(
-                                    '${player.ranked!.points} TP',
-                                    style: textTheme.bodyText1
-                                        ?.copyWith(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 10),
-                              widgets.UpdateButton(
-                                lastUpdated: player.lastUpdatedPlayer,
-                                onPressed: onForceUpdate,
-                                isLoading: isLoading,
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
+                    Row(
+                      children: [
+                        widgets.UpdateButton(
+                          lastUpdated: player.lastUpdatedPlayer,
+                          onPressed: onForceUpdate,
+                          isLoading: isLoading,
+                        ),
+                        const SizedBox(width: 10),
+                        widgets.Button(
+                          label: 'Active Match',
+                          onPressed: onPressActiveMatch,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
