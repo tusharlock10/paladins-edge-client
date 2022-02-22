@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// A column whose children can be reversed
-class ReversableColumn extends StatelessWidget {
+class ReversibleColumn extends StatelessWidget {
   final bool shouldReverse;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final List<Widget> children;
 
-  const ReversableColumn({
+  const ReversibleColumn({
     required this.shouldReverse,
     required this.children,
     this.mainAxisAlignment = MainAxisAlignment.start,

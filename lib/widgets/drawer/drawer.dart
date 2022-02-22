@@ -14,6 +14,7 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final authProvider = ref.read(providers.auth);
     final themeMode =
@@ -72,16 +73,17 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFriends = useCallback(
       () {
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed(screens.Friends.routeName);
+        Navigator.of(context).popAndPushNamed(screens.Friends.routeName);
       },
       [],
     );
 
     final onActiveMatch = useCallback(
       () {
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed(screens.ActiveMatch.routeName);
+        if (player == null) return;
+
+        playersProvider.setPlayerStatusPlayerId(player.playerId);
+        Navigator.of(context).popAndPushNamed(screens.ActiveMatch.routeName);
       },
       [],
     );

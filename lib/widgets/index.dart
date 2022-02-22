@@ -1,3 +1,4 @@
+export './button.dart';
 export './champion_loadout_card.dart';
 export './debug_alert.dart';
 export './drawer/index.dart';
@@ -7,8 +8,8 @@ export './info_alert.dart';
 export './loading_indicator.dart';
 export './loadout_card_detail.dart';
 export './loadout_deck_card.dart';
-export './reversable_column.dart';
-export './reversable_row.dart';
+export './reversible_column.dart';
+export './reversible_row.dart';
 export './ripple.dart';
 export './text_chip.dart';
 export './toast.dart';

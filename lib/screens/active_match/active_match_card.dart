@@ -23,7 +23,7 @@ class _PlayerMatch extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: teamInfo.map(
           (player) {
-            return widgets.ReversableRow(
+            return widgets.ReversibleRow(
               mainAxisAlignment: !shouldReverse
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
@@ -46,7 +46,7 @@ class _PlayerMatch extends StatelessWidget {
                       style: textTheme.bodyText1?.copyWith(fontSize: 12),
                     ),
                     player.ranked != null
-                        ? widgets.ReversableRow(
+                        ? widgets.ReversibleRow(
                             shouldReverse: shouldReverse,
                             children: [
                               widgets.FastImage(
