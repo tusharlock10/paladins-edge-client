@@ -23,9 +23,6 @@ class PlayerDetail extends HookConsumerWidget {
     final matchesProvider = ref.read(providers.matches);
     final championsProvider = ref.read(providers.champions);
 
-    // Variables
-    final textTheme = Theme.of(context).textTheme;
-
     // Methods
     final onForceUpdate = useCallback(
       () => playersProvider.getPlayerData(forceUpdate: true),
