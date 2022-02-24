@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ChampionsSearchBar extends StatelessWidget {
+class ChampionsSearchBar extends HookWidget {
   final void Function(String) onChanged;
   final void Function() onPressed;
 
@@ -13,6 +14,7 @@ class ChampionsSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Variables
     final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
           color: Colors.white,
           fontSize: 16,
