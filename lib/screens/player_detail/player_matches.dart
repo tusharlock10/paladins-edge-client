@@ -28,20 +28,21 @@ class PlayerMatches extends ConsumerWidget {
 
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
-      itemCount: playerMatches.matchPlayers.length,
+      itemCount: playerMatches.matches.length,
       itemBuilder: (context, index) {
-        final matchPlayer = playerMatches.matchPlayers[index];
+        final match =
+            playerMatches.matches[playerMatches.matches.length - index - 1];
 
         // find the match that is associated with that matchPlayer
-        final match = playerMatches.matches
-            .firstOrNullWhere((_) => _.matchId == matchPlayer.matchId);
+        final matchPlayer = playerMatches.matchPlayers
+            .firstOrNullWhere((_) => _.matchId == match.matchId);
 
         // champion that this player played in the match
         final champion = champions.firstOrNullWhere(
-          (_) => _.championId == matchPlayer.championId,
+          (_) => _.championId == matchPlayer?.championId,
         );
 
-        if (match == null || champion == null) {
+        if (matchPlayer == null || champion == null) {
           return const SizedBox();
         }
 

@@ -76,12 +76,15 @@ class PlayerDetail extends HookConsumerWidget {
                   children: [
                     Text(
                       player.name,
-                      style: textTheme.headline3?.copyWith(fontSize: 18),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     if (player.title != null)
                       Text(
                         player.title!,
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                   ],
                 )
