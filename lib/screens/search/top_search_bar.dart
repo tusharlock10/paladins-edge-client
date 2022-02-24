@@ -6,11 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 
 class TopSearchBar extends HookConsumerWidget {
-  final textController = TextEditingController();
   final bool isLoading;
   final void Function(String) onSearch;
 
-  TopSearchBar({
+  const TopSearchBar({
     required this.isLoading,
     required this.onSearch,
     Key? key,
@@ -23,11 +22,13 @@ class TopSearchBar extends HookConsumerWidget {
 
     // Variables
     final theme = Theme.of(context);
+    final textController = useTextEditingController();
     final textStyle = theme.textTheme.headline6?.copyWith(
       color: Colors.white,
       fontSize: 16,
     );
 
+    // Methods
     final onClear = useCallback(
       () {
         searchProvider.clearSearchList();
@@ -45,6 +46,7 @@ class TopSearchBar extends HookConsumerWidget {
         maxLength: 30,
         style: textStyle,
         cursorColor: theme.primaryColor,
+        onSubmitted: isLoading ? null : onSearch,
         decoration: InputDecoration(
           hintText: 'Search player',
           counterText: "",

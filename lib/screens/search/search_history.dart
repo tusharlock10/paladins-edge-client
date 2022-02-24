@@ -16,7 +16,11 @@ class SearchHistory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final searchProvider = ref.watch(providers.players);
+
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -27,14 +31,14 @@ class SearchHistory extends ConsumerWidget {
             onTap: () => onTap(search.playerName),
             title: Text(
               search.playerName,
-              style: Theme.of(context).primaryTextTheme.headline6,
+              style: textTheme.headline6?.copyWith(fontSize: 16),
             ),
             trailing: TimerBuilder.periodic(
               const Duration(minutes: 1),
               builder: (context) {
                 return Text(
                   Jiffy(search.time).fromNow(),
-                  style: Theme.of(context).primaryTextTheme.caption,
+                  style: textTheme.bodyText1?.copyWith(fontSize: 12),
                 );
               },
             ),
