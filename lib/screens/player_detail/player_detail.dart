@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/player_detail/player_champions.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/player_detail/player_detail_header.dart';
 import 'package:paladinsedge/screens/player_detail/player_matches.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:touchable_opacity/touchable_opacity.dart';
 
 class PlayerDetail extends HookConsumerWidget {
   static const routeName = '/playerDetail';
@@ -64,60 +65,75 @@ class PlayerDetail extends HookConsumerWidget {
       [player],
     );
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: player != null
-              ? Column(
-                  children: [
+    // Methods
+    final onTapChamps = useCallback(
+      () {
+        Navigator.of(context).pushNamed(screens.PlayerChampions.routeName);
+      },
+      [],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: TouchableOpacity(
+              onTap: onTapChamps,
+              child: Center(
+                child: Row(
+                  children: const [
                     Text(
-                      player.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      'Champs',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
-                    if (player.title != null)
-                      Text(
-                        player.title!,
-                        style: const TextStyle(fontSize: 12),
-                      ),
+                    SizedBox(width: 4),
+                    Icon(Icons.arrow_forward),
                   ],
-                )
-              : const Text('Loading'),
-        ),
-        body: player == null
-            ? const Center(
-                child: widgets.LoadingIndicator(
-                  size: 36,
                 ),
-              )
-            : Column(
+              ),
+            ),
+          ),
+        ],
+        title: player != null
+            ? Column(
                 children: [
-                  PlayerDetailHeader(
-                    player: player,
-                    onForceUpdate: onForceUpdate,
-                    isLoading: isLoadingPlayerData,
-                  ),
-                  const TabBar(
-                    tabs: [
-                      Tab(text: "Matches"),
-                      Tab(text: "Champions"),
-                    ],
-                  ),
-                  const Expanded(
-                    child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        PlayerMatches(),
-                        PlayerChampions(),
-                      ],
+                  Text(
+                    player.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  if (player.title != null)
+                    Text(
+                      player.title!,
+                      style: const TextStyle(fontSize: 12),
+                    ),
                 ],
-              ),
+              )
+            : const Text('Loading'),
       ),
+      body: player == null
+          ? const Center(
+              child: widgets.LoadingIndicator(
+                size: 36,
+              ),
+            )
+          : Column(
+              children: [
+                PlayerDetailHeader(
+                  player: player,
+                  onForceUpdate: onForceUpdate,
+                  isLoading: isLoadingPlayerData,
+                ),
+                const Expanded(
+                  child: PlayerMatches(),
+                ),
+              ],
+            ),
     );
   }
 }
