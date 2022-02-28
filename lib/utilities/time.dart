@@ -1,8 +1,8 @@
 import 'package:jiffy/jiffy.dart';
 
 /// Gets the time remaining between [fromDate] and [toDate] i.e.
-/// toDate-fromDate in aproperly formatted string
-///
+/// toDate-fromDate in appropriately formatted string
+
 /// returns null if fromDate is ahead of toDate
 String? getTimeRemaining({
   required DateTime toDate,
@@ -34,15 +34,19 @@ String _getFormat(Duration diff) {
   return "s[s]";
 }
 
-String getLastPlayedTime(DateTime lastPlayed) {
+String getLastPlayedTime(
+  DateTime lastPlayed, {
+  bool shortFormat = false,
+}) {
   // if difference in lastPlayed and now is greater than 1 day,
   // show the full date
   // else from the from now duration
   var lastPlayedTime = '';
   final duration = DateTime.now().difference(lastPlayed);
-  lastPlayedTime = const Duration(days: 1).compareTo(duration) < 0
-      ? Jiffy(lastPlayed).fromNow()
-      : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
+  lastPlayedTime =
+      const Duration(days: 1).compareTo(duration) < 0 || shortFormat
+          ? Jiffy(lastPlayed).fromNow()
+          : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
 
   return lastPlayedTime;
 }
