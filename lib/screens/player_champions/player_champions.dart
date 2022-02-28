@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/player_champions/player_champions_data_source.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PlayerChampions extends HookConsumerWidget {
   static const routeName = '/playerChampions';
@@ -22,43 +23,23 @@ class PlayerChampions extends HookConsumerWidget {
     final champions = championsProvider.champions;
 
     // State
-    final _sortColumnIndex = useState(0);
-    final _sortAscending = useState(true);
     final _playerChampionsDataSource =
-        useState<PlyerChampionsDataSource?>(null);
+        useState<PlayerChampionsDataSource?>(null);
 
     // Effects
     useEffect(
       () {
-        if (playerChampions != null) {
-          _playerChampionsDataSource.value = PlyerChampionsDataSource(
-            champions: champions,
-            playerChampions: playerChampions,
-          );
-        }
+        if (playerChampions == null) return null;
+
+        _playerChampionsDataSource.value = PlayerChampionsDataSource(
+          champions: champions,
+          playerChampions: playerChampions,
+        );
 
         return null;
       },
       [playerChampions],
     );
-
-    // Methods
-    final sortChampionsByColumn = useCallback(
-      (int columnIndex, void Function(bool) sortChampion) {
-        _sortColumnIndex.value = columnIndex;
-        _sortAscending.value = !_sortAscending.value;
-        sortChampion(_sortAscending.value);
-      },
-      [],
-    );
-
-    if (playerChampions == null) {
-      return const Center(
-        child: widgets.LoadingIndicator(
-          size: 32,
-        ),
-      );
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +51,71 @@ class PlayerChampions extends HookConsumerWidget {
                 size: 32,
               ),
             )
-          : const SizedBox(),
+          : SfDataGrid(
+              allowSorting: true,
+              rowHeight: 60,
+              source: _playerChampionsDataSource.value!,
+              columnWidthMode: ColumnWidthMode.fitByColumnName,
+              headerGridLinesVisibility: GridLinesVisibility.both,
+              gridLinesVisibility: GridLinesVisibility.both,
+              columns: [
+                GridColumn(
+                  columnName: 'Champ',
+                  label: const Center(
+                    child: Text('Champs'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Matches',
+                  label: const Center(
+                    child: Text('Matches'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Kills',
+                  label: const Center(
+                    child: Text('Kills'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Deaths',
+                  label: const Center(
+                    child: Text('Deaths'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'KDA',
+                  label: const Center(
+                    child: Text('KDA'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Win Rate',
+                  label: const Center(
+                    child: Text('Win Rate'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Play Time',
+                  autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  label: const Center(
+                    child: Text('Play Time'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Level',
+                  label: const Center(
+                    child: Text('Level'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Last Played',
+                  label: const Center(
+                    child: Text('Last Played'),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
