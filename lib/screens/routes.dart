@@ -14,4 +14,5 @@ final routes = {
   screens.ActiveMatch.routeName: (_) => const screens.ActiveMatch(),
   screens.Loadouts.routeName: (_) => const screens.Loadouts(),
   screens.CreateLoadout.routeName: (_) => const screens.CreateLoadout(),
+  screens.PlayerChampions.routeName: (_) => const screens.PlayerChampions(),
 };

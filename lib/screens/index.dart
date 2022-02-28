@@ -9,6 +9,7 @@ export './home/index.dart';
 export './loadouts/index.dart';
 export './login/login.dart';
 export './match_detail/index.dart';
+export './player_champions/index.dart';
 export './player_detail/index.dart';
 export './routes.dart';
 export './search/index.dart';
