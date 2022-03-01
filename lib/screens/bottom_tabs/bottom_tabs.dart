@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class BottomTabs extends HookWidget {
@@ -37,6 +38,8 @@ class BottomTabs extends HookWidget {
     return Scaffold(
       drawer: const widgets.AppDrawer(),
       drawerEnableOpenDragGesture: false,
+      onDrawerChanged: (isOpened) =>
+          isOpened ? utilities.unFocusNode(context) : null,
       body: IndexedStack(
         children: _pages.map((page) => page.screen).toList(),
         index: selectedPageIndex.value,
