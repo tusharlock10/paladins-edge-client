@@ -7,7 +7,7 @@ import 'package:paladinsedge/firebase_options.dart' as firebase_options;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/messaging.dart' as messaging;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
@@ -16,9 +16,9 @@ void main() async {
     options: firebase_options.DefaultFirebaseOptions.currentPlatform,
   );
 
-  messaging.Messaging.onMessage();
-  messaging.Messaging.onBackgroundMessage();
-  messaging.Messaging.registerLocalNotification();
+  utilities.Messaging.onMessage();
+  utilities.Messaging.onBackgroundMessage();
+  utilities.Messaging.registerLocalNotification();
 
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
@@ -33,33 +33,35 @@ class PaladinsEdgeApp extends ConsumerWidget {
 
     return OverlaySupport.global(
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
-      child: MaterialApp(
-        navigatorObservers: const [],
-        debugShowCheckedModeBanner: false,
-        themeMode: themeMode,
-        theme: theme.lightTheme,
-        darkTheme: theme.darkTheme,
-        routes: screens.routes,
-        title: "Paladins Edge",
-        color: Colors.white,
-        scrollBehavior: BouncingScrollBehavior(),
-        builder: (context, widget) => ResponsiveWrapper.builder(
-          widget,
-          defaultScale: true,
-          breakpoints: [
-            const ResponsiveBreakpoint.resize(
-              constants.ResponsiveBreakpoints.mobile,
-              name: MOBILE,
-            ),
-            const ResponsiveBreakpoint.autoScale(
-              constants.ResponsiveBreakpoints.tablet,
-              name: TABLET,
-            ),
-            const ResponsiveBreakpoint.resize(
-              constants.ResponsiveBreakpoints.desktop,
-              name: DESKTOP,
-            ),
-          ],
+      child: GestureDetector(
+        onTap: () => utilities.unFocusNode(context),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          themeMode: themeMode,
+          theme: theme.lightTheme,
+          darkTheme: theme.darkTheme,
+          routes: screens.routes,
+          title: "Paladins Edge",
+          color: Colors.white,
+          scrollBehavior: BouncingScrollBehavior(),
+          builder: (context, widget) => ResponsiveWrapper.builder(
+            widget,
+            defaultScale: true,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(
+                constants.ResponsiveBreakpoints.mobile,
+                name: MOBILE,
+              ),
+              const ResponsiveBreakpoint.autoScale(
+                constants.ResponsiveBreakpoints.tablet,
+                name: TABLET,
+              ),
+              const ResponsiveBreakpoint.resize(
+                constants.ResponsiveBreakpoints.desktop,
+                name: DESKTOP,
+              ),
+            ],
+          ),
         ),
       ),
     );

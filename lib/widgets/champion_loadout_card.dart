@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionLoadoutCard extends HookWidget {
@@ -28,6 +29,7 @@ class ChampionLoadoutCard extends HookWidget {
       () {
         if (card == null || champion == null) return;
 
+        utilities.unFocusNode(context);
         widgets.showLoadoutCardDetailSheet(
           data_classes.ShowLoadoutDetailsOptions(
             card: card!,

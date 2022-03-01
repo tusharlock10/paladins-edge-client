@@ -16,3 +16,6 @@ T responsiveCondition<T>(
 
   return mobile;
 }
+
+unFocusNode(BuildContext context) =>
+    FocusScope.of(context).requestFocus(FocusNode());

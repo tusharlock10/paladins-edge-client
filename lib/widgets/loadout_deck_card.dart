@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class LoadoutDeckCard extends StatelessWidget {
+class LoadoutDeckCard extends HookWidget {
   final double imageHeight;
   final double imageWidth;
   final models.Card card;
@@ -26,6 +28,24 @@ class LoadoutDeckCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Methods
+    final onTapCard = useCallback(
+      () {
+        utilities.unFocusNode(context);
+        widgets.showLoadoutCardDetailSheet(
+          data_classes.ShowLoadoutDetailsOptions(
+            context: context,
+            champion: champion,
+            card: card,
+            cardPoints: loadoutCard.level,
+            onSliderChange: onSliderChange,
+            sliderFixed: sliderFixed,
+          ),
+        );
+      },
+      [],
+    );
+
     return SizedBox(
       height: imageHeight,
       width: imageWidth,
@@ -34,16 +54,7 @@ class LoadoutDeckCard extends StatelessWidget {
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           child: GestureDetector(
-            onTap: () => widgets.showLoadoutCardDetailSheet(
-              data_classes.ShowLoadoutDetailsOptions(
-                context: context,
-                champion: champion,
-                card: card,
-                cardPoints: loadoutCard.level,
-                onSliderChange: onSliderChange,
-                sliderFixed: sliderFixed,
-              ),
-            ),
+            onTap: onTapCard,
             child: Stack(
               children: [
                 SizedBox(

@@ -7,6 +7,7 @@ import 'package:paladinsedge/screens/search/lower_search_list.dart';
 import 'package:paladinsedge/screens/search/search_history.dart';
 import 'package:paladinsedge/screens/search/top_search_bar.dart';
 import 'package:paladinsedge/screens/search/top_search_list.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class Search extends HookConsumerWidget {
   static const routeName = '/search';
@@ -41,6 +42,7 @@ class Search extends HookConsumerWidget {
         isLoading.value = false;
 
         if (exactMatch) {
+          utilities.unFocusNode(context);
           Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
         }
       },

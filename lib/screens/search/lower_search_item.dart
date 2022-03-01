@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class LowerSearchItem extends HookConsumerWidget {
   final api.LowerSearch lowerSearch;
@@ -24,6 +25,7 @@ class LowerSearchItem extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
+        utilities.unFocusNode(context);
         playersProvider.setPlayerId(lowerSearch.playerId);
         Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
       },
