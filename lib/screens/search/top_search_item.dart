@@ -5,6 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class TopSearchItem extends HookConsumerWidget {
@@ -26,6 +27,7 @@ class TopSearchItem extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
+        utilities.unFocusNode(context);
         playersProvider.setPlayerId(player.playerId);
         Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
       },

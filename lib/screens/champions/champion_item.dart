@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class ChampionItem extends StatelessWidget {
+class ChampionItem extends HookWidget {
   final models.Champion champion;
   final models.PlayerChampion? playerChampion;
   final double height;
@@ -21,11 +23,24 @@ class ChampionItem extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
+    // Variables
     final textTheme = Theme.of(context).textTheme;
     MaterialColor levelColor = Colors.blueGrey;
     if (playerChampion?.level != null && playerChampion!.level > 49) {
       levelColor = Colors.orange;
     }
+
+    // Methods
+    final onTapChampion = useCallback(
+      () {
+        utilities.unFocusNode(context);
+        Navigator.of(context).pushNamed(
+          screens.ChampionDetail.routeName,
+          arguments: champion,
+        );
+      },
+      [],
+    );
 
     return SizedBox(
       width: width,
@@ -36,8 +51,7 @@ class ChampionItem extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          onTap: () => Navigator.of(context)
-              .pushNamed(screens.ChampionDetail.routeName, arguments: champion),
+          onTap: onTapChampion,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
