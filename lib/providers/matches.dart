@@ -47,6 +47,14 @@ class _MatchesNotifier extends ChangeNotifier {
 
     utilities.postFrameCallback(notifyListeners);
   }
+
+  /// Clears all user sensitive data upon logout
+  void logout() {
+    isPlayerMatchesLoading = false;
+    isMatchDetailsLoading = false;
+    playerMatches = null;
+    matchDetails = null;
+  }
 }
 
 /// Provider to handle matches

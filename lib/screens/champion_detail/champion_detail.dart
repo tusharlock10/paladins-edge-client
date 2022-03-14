@@ -97,6 +97,7 @@ class ChampionDetail extends HookConsumerWidget {
                   const LoadoutCards(),
                   const TitleLabel(label: 'Your Stats'),
                   const PlayerStats(),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

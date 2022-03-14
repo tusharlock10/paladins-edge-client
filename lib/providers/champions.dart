@@ -85,6 +85,12 @@ class _ChampionsNotifier extends ChangeNotifier {
   void resetPlayerChampions() {
     playerChampions = null;
   }
+
+  /// Clears all user sensitive data upon logout
+  void logout() {
+    userPlayerChampions = [];
+    playerChampions = null;
+  }
 }
 
 /// Provider to handle champions

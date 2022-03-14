@@ -1,1 +1,1 @@
-export './auth.dart' show FavouriteFriendResult;
+export './auth.dart' show FavouriteFriendResult, ShowLoginModalOptions;

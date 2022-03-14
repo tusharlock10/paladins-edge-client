@@ -65,7 +65,7 @@ class Login extends HookConsumerWidget {
           WidgetsBinding.instance?.addPostFrameCallback(
             (_) => widgets.showDebugAlert(
               context: context,
-              isDismissable: false,
+              isDismissible: false,
               message: 'Env variable ${missingEnvs.join(", ")} not found',
               forceShow: true,
             ),
@@ -97,8 +97,6 @@ class Login extends HookConsumerWidget {
           return;
         }
 
-        final authProvider = ref.read(providers.auth);
-
         isLoggingIn.value = true;
 
         final loginSuccess = await authProvider.signInWithGoogle();
@@ -116,6 +114,14 @@ class Login extends HookConsumerWidget {
         } else {
           isLoggingIn.value = false;
         }
+      },
+      [],
+    );
+
+    final onGuestLogin = useCallback(
+      () {
+        authProvider.loginAsGuest();
+        Navigator.pushReplacementNamed(context, screens.BottomTabs.routeName);
       },
       [],
     );
@@ -166,10 +172,12 @@ class Login extends HookConsumerWidget {
                 ? LoginPortrait(
                     isLoggingIn: isLoggingIn.value,
                     onGoogleSignIn: onGoogleSignIn,
+                    onGuestLogin: onGuestLogin,
                   )
                 : LoginLandscape(
                     isLoggingIn: isLoggingIn.value,
                     onGoogleSignIn: onGoogleSignIn,
+                    onGuestLogin: onGuestLogin,
                   ),
       ),
     );

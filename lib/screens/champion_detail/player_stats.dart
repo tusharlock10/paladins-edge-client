@@ -18,8 +18,20 @@ class PlayerStats extends HookConsumerWidget {
         ModalRoute.of(context)?.settings.arguments as models.Champion;
     final userPlayerChampions =
         ref.read(providers.champions).userPlayerChampions;
+    final isGuest = ref.read(providers.auth).isGuest;
     final playerChampion =
         utilities.findPlayerChampion(userPlayerChampions, champion.championId);
+
+    if (isGuest) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'Stats not available for Guest Users',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
+      );
+    }
 
     if (playerChampion == null) {
       return const Padding(
