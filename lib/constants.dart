@@ -250,4 +250,11 @@ check stats of all the players before loading in
 and visit their profile directly
 """
       .replaceAll('\n', ' ');
+
+  static final loadoutFab = """Loadout section allows you to
+view your in-game loadouts,
+create and save your own
+loadouts outside the game 
+"""
+      .replaceAll('\n', ' ');
 }

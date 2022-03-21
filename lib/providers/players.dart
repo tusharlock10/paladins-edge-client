@@ -207,7 +207,7 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   /// Clears all user sensitive data upon logout
-  void logout() {
+  void clearData() {
     isLoadingPlayerData = false;
     playerId = null;
     playerStatusPlayerId = null;

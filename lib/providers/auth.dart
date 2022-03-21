@@ -138,24 +138,22 @@ class _AuthNotifier extends ChangeNotifier {
     } catch (_) {
       return false;
     }
-    final result = await api.AuthRequests.logout();
-    if (!result) {
-      return false;
+
+    if (!isGuest) {
+      final result = await api.AuthRequests.logout();
+      if (!result) {
+        return false;
+      }
     }
 
     // clear values from the database and provider
     utilities.Database.clear();
-    player = null;
-    token = null;
-    isGuest = false;
-    user = null;
-    settings = models.Settings();
 
     // providers to clear data from
-    ref.read(champions_provider.champions).logout();
-    ref.read(loadout_provider.loadout).logout();
-    ref.read(matches_provider.matches).logout();
-    ref.read(players_provider.players).logout();
+    ref.read(champions_provider.champions).clearData();
+    ref.read(loadout_provider.loadout).clearData();
+    ref.read(matches_provider.matches).clearData();
+    ref.read(players_provider.players).clearData();
 
     return true;
   }
@@ -250,6 +248,14 @@ class _AuthNotifier extends ChangeNotifier {
     // save the settings after changing the theme
     utilities.Database.saveSettings(settings);
     utilities.postFrameCallback(notifyListeners);
+  }
+
+  void clearData() {
+    player = null;
+    token = null;
+    isGuest = false;
+    user = null;
+    settings = models.Settings();
   }
 }
 

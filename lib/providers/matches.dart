@@ -49,7 +49,7 @@ class _MatchesNotifier extends ChangeNotifier {
   }
 
   /// Clears all user sensitive data upon logout
-  void logout() {
+  void clearData() {
     isPlayerMatchesLoading = false;
     isMatchDetailsLoading = false;
     playerMatches = null;

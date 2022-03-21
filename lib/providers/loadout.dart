@@ -152,7 +152,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   }
 
   /// Clears all user sensitive data upon logout
-  void logout() {
+  void clearData() {
     isGettingLoadouts = true;
     isSavingLoadout = false;
     isEditingLoadout = false;

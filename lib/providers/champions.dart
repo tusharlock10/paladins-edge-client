@@ -87,7 +87,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Clears all user sensitive data upon logout
-  void logout() {
+  void clearData() {
     userPlayerChampions = [];
     playerChampions = null;
   }
