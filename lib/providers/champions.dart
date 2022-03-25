@@ -57,6 +57,8 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     // save playerChampions locally for future use
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Get the `playerChampions` data for the playerId

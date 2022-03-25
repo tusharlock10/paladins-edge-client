@@ -25,10 +25,10 @@ class ChampionItem extends HookWidget {
   ) {
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    MaterialColor levelColor = Colors.blueGrey;
-    if (playerChampion?.level != null && playerChampion!.level > 49) {
-      levelColor = Colors.orange;
-    }
+    MaterialColor levelColor;
+    levelColor = playerChampion?.level != null && playerChampion!.level > 49
+        ? Colors.orange
+        : Colors.blueGrey;
 
     // Methods
     final onTapChampion = useCallback(

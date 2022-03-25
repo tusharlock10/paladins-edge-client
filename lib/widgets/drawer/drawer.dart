@@ -8,6 +8,7 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/drawer/drawer_button.dart';
 import 'package:paladinsedge/widgets/drawer/drawer_info.dart';
 import 'package:paladinsedge/widgets/drawer/guest_profile.dart';
+import 'package:paladinsedge/widgets/drawer/login_drawer_button.dart';
 import 'package:paladinsedge/widgets/drawer/player_profile.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:paladinsedge/widgets/login_modal.dart';
@@ -173,12 +174,17 @@ class AppDrawer extends HookConsumerWidget {
                         lineWidth: 2,
                       )
                     : const SizedBox(),
-                DrawerButton(
-                  context: context,
-                  label: isGuest ? 'Login' : 'Logout',
-                  disabled: isLoggingOut.value,
-                  onPressed: onLogout,
-                ),
+                isGuest
+                    ? LoginDrawerButton(
+                        context: context,
+                        onPressed: onLogout,
+                      )
+                    : DrawerButton(
+                        context: context,
+                        label: 'Logout',
+                        disabled: isLoggingOut.value,
+                        onPressed: onLogout,
+                      ),
               ],
             ),
             const DrawerInfo(),

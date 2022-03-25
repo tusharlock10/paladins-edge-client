@@ -14,23 +14,40 @@ class Champions extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final championsProvider = ref.read(providers.champions);
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+
+    // State
     final search = useState('');
     final isLoading = useState(true);
 
+    // Methods
+    final getData = useCallback(
+      () async {
+        await championsProvider.loadChampions();
+        isLoading.value = false;
+      },
+      [],
+    );
+
+    // Effects
     useEffect(
       () {
-        final championsProvider = ref.read(providers.champions);
-
-        Future.wait([
-          championsProvider.loadChampions(),
-          championsProvider.loadUserPlayerChampions(),
-        ]).then((_) {
-          isLoading.value = false;
-        });
+        getData();
 
         return null;
       },
       [],
+    );
+
+    useEffect(
+      () {
+        championsProvider.loadUserPlayerChampions();
+
+        return null;
+      },
+      [isGuest],
     );
 
     return Column(
