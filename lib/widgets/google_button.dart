@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:paladinsedge/gen/assets.gen.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class GoogleButton extends StatelessWidget {
@@ -19,6 +20,8 @@ class GoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
+    final enableGuestLogin = utilities.RemoteConfig.enableGuestLogin;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -68,7 +71,7 @@ class GoogleButton extends StatelessWidget {
             ],
           ),
         ),
-        if (onGuestLogin != null)
+        if ((onGuestLogin != null) && enableGuestLogin)
           TextButton(
             onPressed: onGuestLogin,
             child: const Text(

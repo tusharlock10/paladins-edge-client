@@ -9,5 +9,6 @@ export './global.dart';
 export './math.dart';
 export './messaging.dart';
 export './player_utils.dart';
+export './remote_config.dart';
 export './responsive.dart';
 export './time.dart';

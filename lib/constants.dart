@@ -258,3 +258,7 @@ loadouts outside the game
 """
       .replaceAll('\n', ' ');
 }
+
+abstract class RemoteConfigParams {
+  static const enableGuestLogin = 'enableGuestLogin';
+}

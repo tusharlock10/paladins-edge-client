@@ -74,12 +74,15 @@ class Login extends HookConsumerWidget {
           return;
         }
 
-        await utilities.RSACrypto.setupRSAPublicKey();
-        await utilities.Database.initDatabase();
-        await FirebasePerformance.instance
-            .setPerformanceCollectionEnabled(!constants.isDebug);
-        await FirebaseAnalytics.instance
-            .setAnalyticsCollectionEnabled(!constants.isDebug);
+        await Future.wait([
+          utilities.RSACrypto.setupRSAPublicKey(),
+          utilities.Database.initDatabase(),
+          utilities.RemoteConfig.setupRemoteConfig(),
+          FirebasePerformance.instance
+              .setPerformanceCollectionEnabled(!constants.isDebug),
+          FirebaseAnalytics.instance
+              .setAnalyticsCollectionEnabled(!constants.isDebug),
+        ]);
 
         authProvider.loadEssentials(); // load the essentials from hive
         authProvider.loadSettings(); // load the settings from hive
