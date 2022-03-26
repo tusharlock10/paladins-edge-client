@@ -40,24 +40,16 @@ jobs:
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-stage.env ./paladins-edge.env
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
           flutter-version: ${{ env.flutter_version }}
-
-      - name: Setup properties
-        run: |
-          cat >> "./android/key.properties" <<EOF
-          storePassword=${{ secrets.FCI_KEYSTORE_PASSWORD }}
-          keyPassword=${{ secrets.FCI_KEY_PASSWORD }}
-          keyAlias=${{ secrets.FCI_KEY_ALIAS }}
-          storeFile=upload-keystore.jks
-          EOF
 
       - name: Get dependencies
         run: flutter pub get
@@ -74,7 +66,7 @@ jobs:
       - name: Upload apk to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: 1:280154424805:android:935bdd39d46aa621aa1b0c
+          appId: 1:280154424805:android:06755c7776c617c0aa1b0c
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: Developers
           releaseNotesFile: ./release_notes.txt

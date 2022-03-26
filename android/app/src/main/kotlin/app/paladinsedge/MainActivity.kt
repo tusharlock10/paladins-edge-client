@@ -1,4 +1,4 @@
-package ml.paladinsedge
+package app.paladinsedge
 
 import io.flutter.embedding.android.FlutterActivity
 
