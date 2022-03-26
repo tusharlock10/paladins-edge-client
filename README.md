@@ -3,7 +3,7 @@
 [![Production Workflow](https://github.com/tusharlock10/paladins-edge-client/actions/workflows/prod-workflow.yaml/badge.svg)](https://github.com/tusharlock10/paladins-edge-client/actions/workflows/prod-workflow.yaml)\
 [![Staging Workflow](https://github.com/tusharlock10/paladins-edge-client/actions/workflows/staging-workflow.yaml/badge.svg)](https://github.com/tusharlock10/paladins-edge-client/actions/workflows/staging-workflow.yaml)
 
-Companion app for Paladins, available for [Android](https://play.google.com/store/apps/details?id=ml.paladinsedge) and [Web](https://paladinsedge.ml)
+Companion app for Paladins, available for [Android](https://play.google.com/store/apps/details?id=app.paladinsedge) and [Web](https://paladinsedge.app)
 
 ## Contributing
 
