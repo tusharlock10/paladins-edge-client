@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCUMi5hu_qRESYn89dp0VFjpeXg-l4HEfo',
-    appId: '1:280154424805:android:935bdd39d46aa621aa1b0c',
+    appId: '1:280154424805:android:06755c7776c617c0aa1b0c',
     messagingSenderId: '280154424805',
     projectId: 'paladins-edge',
     storageBucket: 'paladins-edge.appspot.com',
