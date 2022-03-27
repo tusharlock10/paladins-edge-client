@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champion_item.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-class ChampionsList extends ConsumerWidget {
+class ChampionsList extends HookConsumerWidget {
   final String search;
   const ChampionsList({
     required this.search,
@@ -13,14 +14,17 @@ class ChampionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final championsProvider = ref.read(providers.champions);
-    final champions = championsProvider.champions;
-    final userPlayerChampions = championsProvider.userPlayerChampions;
-    final size = MediaQuery.of(context).size;
-    const itemHeight = 120.0;
+    // Providers
+    final champions = ref.read(providers.champions).champions;
+    final userPlayerChampions =
+        ref.watch(providers.champions.select((_) => _.userPlayerChampions));
+
+    // Variables
     int crossAxisCount;
     double horizontalPadding;
     double width;
+    final size = MediaQuery.of(context).size;
+    const itemHeight = 120.0;
 
     if (size.height < size.width) {
       // for landscape mode
@@ -37,16 +41,24 @@ class ChampionsList extends ConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    // modify the champions list according to search
-    final newChampions = champions.where((champion) {
-      if (search == '') {
-        return true;
-      } else if (champion.name.toUpperCase().contains(search.toUpperCase())) {
-        return true;
-      }
+    // Hooks
+    final newChampions = useMemoized(
+      () {
+        // modify the champions list according to search
+        return champions.where((champion) {
+          if (search == '') {
+            return true;
+          } else if (champion.name
+              .toUpperCase()
+              .contains(search.toUpperCase())) {
+            return true;
+          }
 
-      return false;
-    });
+          return false;
+        });
+      },
+      [search],
+    );
 
     return GridView.count(
       crossAxisCount: crossAxisCount,

@@ -31,7 +31,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     loadouts = null;
   }
 
-  /// Creates a `draftLoaodut` to use to drafting loadout
+  /// Creates a `draftLoadout` to use to drafting loadout
   /// instantiates the loadout with championId and playerId
   void createDraftLoadout({
     required int championId,
@@ -67,7 +67,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  /// Sets thevalue of loadoutCard level when user changes the slider
+  /// Sets the value of loadoutCard level when user changes the slider
   void onSliderChange(models.LoadoutCard loadoutCard, int cardPoints) {
     // 1) find the index of loadoutCard in draftLoadout
     // 2) replace the loadoutCard with the new cardPoints value
@@ -149,6 +149,15 @@ class _LoadoutNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
 
     return result != null;
+  }
+
+  /// Clears all user sensitive data upon logout
+  void clearData() {
+    isGettingLoadouts = true;
+    isSavingLoadout = false;
+    isEditingLoadout = false;
+    loadouts = null;
+    draftLoadout = data_classes.DraftLoadout.empty();
   }
 
   void _updateLoadouts(models.Loadout loadout) {

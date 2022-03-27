@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/constants.dart' as constants;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champion_detail/abilities.dart';
 import 'package:paladinsedge/screens/champion_detail/champion_app_bar.dart';
 import 'package:paladinsedge/screens/champion_detail/champion_heading.dart';
@@ -11,6 +14,7 @@ import 'package:paladinsedge/screens/champion_detail/player_stats.dart';
 import 'package:paladinsedge/screens/champion_detail/talents.dart';
 import 'package:paladinsedge/screens/champion_detail/title_label.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetail extends HookConsumerWidget {
   static const routeName = '/champion';
@@ -18,6 +22,9 @@ class ChampionDetail extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+
     // State
     final hideLoadoutFab = useState(false);
 
@@ -46,10 +53,25 @@ class ChampionDetail extends HookConsumerWidget {
       [],
     );
 
-    final onLoadoutPress = useCallback(
+    final _onLoadoutPress = useCallback(
       () => Navigator.of(context)
           .pushNamed(screens.Loadouts.routeName, arguments: champion),
       [],
+    );
+
+    final onLoadoutPress = useCallback(
+      () {
+        if (isGuest) {
+          widgets.showLoginModal(data_classes.ShowLoginModalOptions(
+            context: context,
+            loginCta: constants.LoginCTA.loadoutFab,
+            onSuccess: _onLoadoutPress,
+          ));
+        } else {
+          _onLoadoutPress();
+        }
+      },
+      [isGuest],
     );
 
     return Scaffold(
@@ -97,6 +119,7 @@ class ChampionDetail extends HookConsumerWidget {
                   const LoadoutCards(),
                   const TitleLabel(label: 'Your Stats'),
                   const PlayerStats(),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

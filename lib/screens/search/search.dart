@@ -19,6 +19,7 @@ class Search extends HookConsumerWidget {
     // Providers
     final searchProvider = ref.watch(providers.players);
     final playersProvider = ref.read(providers.players);
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // State
     final isLoading = useState(false);
@@ -36,7 +37,7 @@ class Search extends HookConsumerWidget {
         final exactMatch = await searchProvider.searchByName(
           playerName: playerName,
           simpleResults: false,
-          addInSearchHistory: addInSearchHistory,
+          addInSearchHistory: addInSearchHistory && !isGuest,
         );
 
         isLoading.value = false;
@@ -60,11 +61,13 @@ class Search extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        playersProvider.loadSearchHistory();
+        if (!isGuest) {
+          playersProvider.loadSearchHistory();
+        }
 
         return null;
       },
-      [],
+      [isGuest],
     );
 
     return CustomScrollView(

@@ -34,7 +34,11 @@ class _QueueState extends ChangeNotifier {
     } else {
       final response = await api.QueueRequests.queueTimeline();
       isLoading = false;
-      if (response == null) return;
+      if (response == null) {
+        utilities.postFrameCallback(notifyListeners);
+
+        return;
+      }
       timeline = response.timeline.reversed.toList();
       timeline.forEach(utilities.Database.saveQueue);
     }
