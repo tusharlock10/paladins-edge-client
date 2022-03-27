@@ -4,13 +4,13 @@ import 'package:paladinsedge/constants.dart' as constants;
 void showDebugAlert({
   required BuildContext context,
   required String message,
-  bool isDismissable = true,
+  bool isDismissible = true,
   bool forceShow = false,
 }) {
   // shows a alert with the message for easy debugging :)
   if (!forceShow && !constants.isDebug) return;
   showDialog(
-    barrierDismissible: isDismissable,
+    barrierDismissible: isDismissible,
     context: context,
     builder: (_) => _DebugAlert(
       message: message,

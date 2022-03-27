@@ -5,13 +5,21 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/champions.dart' as champions_provider;
+import 'package:paladinsedge/providers/loadout.dart' as loadout_provider;
+import 'package:paladinsedge/providers/matches.dart' as matches_provider;
+import 'package:paladinsedge/providers/players.dart' as players_provider;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _AuthNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef<_AuthNotifier> ref;
+  bool isGuest = false;
   String? token;
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
+
+  _AuthNotifier({required this.ref});
 
   /// Loads the `settings` from local db
   void loadSettings() {
@@ -101,7 +109,19 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = token;
 
+    isGuest = false;
+    utilities.postFrameCallback(notifyListeners);
+
     return true;
+  }
+
+  /// Login the user as Guest so that he/she can explore the app
+  void loginAsGuest() {
+    // use firebase to sign-in anonymously
+    FirebaseAuth.instance.signInAnonymously();
+    isGuest = true;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Logs out the user, also sends this info to server
@@ -118,16 +138,22 @@ class _AuthNotifier extends ChangeNotifier {
     } catch (_) {
       return false;
     }
-    final result = await api.AuthRequests.logout();
-    if (!result) {
-      return false;
+
+    if (!isGuest) {
+      final result = await api.AuthRequests.logout();
+      if (!result) {
+        return false;
+      }
     }
 
     // clear values from the database and provider
     utilities.Database.clear();
-    user = null;
-    player = null;
-    token = null;
+
+    // providers to clear data from
+    ref.read(champions_provider.champions).clearData();
+    ref.read(loadout_provider.loadout).clearData();
+    ref.read(matches_provider.matches).clearData();
+    ref.read(players_provider.players).clearData();
 
     return true;
   }
@@ -175,11 +201,6 @@ class _AuthNotifier extends ChangeNotifier {
   Future<data_classes.FavouriteFriendResult> markFavouriteFriend(
     String playerId,
   ) async {
-    // returns 0,1 or 2 as response
-    // 0 -> player is removed from favouriteFriends
-    // 1 -> player is added in favouriteFriends
-    // 2 -> player is not added due to favouriteFriends limit reached
-
     if (user == null) return data_classes.FavouriteFriendResult.removed;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
@@ -228,7 +249,15 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.Database.saveSettings(settings);
     utilities.postFrameCallback(notifyListeners);
   }
+
+  void clearData() {
+    player = null;
+    token = null;
+    isGuest = false;
+    user = null;
+    settings = models.Settings();
+  }
 }
 
 /// Provider to handle auth and user data
-final auth = ChangeNotifierProvider((_) => _AuthNotifier());
+final auth = ChangeNotifierProvider((ref) => _AuthNotifier(ref: ref));

@@ -65,7 +65,7 @@ class Login extends HookConsumerWidget {
           WidgetsBinding.instance?.addPostFrameCallback(
             (_) => widgets.showDebugAlert(
               context: context,
-              isDismissable: false,
+              isDismissible: false,
               message: 'Env variable ${missingEnvs.join(", ")} not found',
               forceShow: true,
             ),
@@ -74,12 +74,15 @@ class Login extends HookConsumerWidget {
           return;
         }
 
-        await utilities.RSACrypto.setupRSAPublicKey();
-        await utilities.Database.initDatabase();
-        await FirebasePerformance.instance
-            .setPerformanceCollectionEnabled(!constants.isDebug);
-        await FirebaseAnalytics.instance
-            .setAnalyticsCollectionEnabled(!constants.isDebug);
+        await Future.wait([
+          utilities.RSACrypto.setupRSAPublicKey(),
+          utilities.Database.initDatabase(),
+          utilities.RemoteConfig.setupRemoteConfig(),
+          FirebasePerformance.instance
+              .setPerformanceCollectionEnabled(!constants.isDebug),
+          FirebaseAnalytics.instance
+              .setAnalyticsCollectionEnabled(!constants.isDebug),
+        ]);
 
         authProvider.loadEssentials(); // load the essentials from hive
         authProvider.loadSettings(); // load the settings from hive
@@ -96,8 +99,6 @@ class Login extends HookConsumerWidget {
         if (isLoggingIn.value) {
           return;
         }
-
-        final authProvider = ref.read(providers.auth);
 
         isLoggingIn.value = true;
 
@@ -116,6 +117,14 @@ class Login extends HookConsumerWidget {
         } else {
           isLoggingIn.value = false;
         }
+      },
+      [],
+    );
+
+    final onGuestLogin = useCallback(
+      () {
+        authProvider.loginAsGuest();
+        Navigator.pushReplacementNamed(context, screens.BottomTabs.routeName);
       },
       [],
     );
@@ -166,10 +175,12 @@ class Login extends HookConsumerWidget {
                 ? LoginPortrait(
                     isLoggingIn: isLoggingIn.value,
                     onGoogleSignIn: onGoogleSignIn,
+                    onGuestLogin: onGuestLogin,
                   )
                 : LoginLandscape(
                     isLoggingIn: isLoggingIn.value,
                     onGoogleSignIn: onGoogleSignIn,
+                    onGuestLogin: onGuestLogin,
                   ),
       ),
     );

@@ -205,6 +205,19 @@ class _PlayersNotifier extends ChangeNotifier {
     isLoadingPlayerData = false;
     utilities.postFrameCallback(notifyListeners);
   }
+
+  /// Clears all user sensitive data upon logout
+  void clearData() {
+    isLoadingPlayerData = false;
+    playerId = null;
+    playerStatusPlayerId = null;
+    playerData = null;
+    playerStatus = null;
+    lowerSearchList = [];
+    friends = [];
+    topSearchList = [];
+    searchHistory = [];
+  }
 }
 
 /// Provider to handle players

@@ -57,6 +57,8 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     // save playerChampions locally for future use
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Get the `playerChampions` data for the playerId
@@ -83,6 +85,12 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Deletes the plyerChampions
   void resetPlayerChampions() {
+    playerChampions = null;
+  }
+
+  /// Clears all user sensitive data upon logout
+  void clearData() {
+    userPlayerChampions = [];
     playerChampions = null;
   }
 }
