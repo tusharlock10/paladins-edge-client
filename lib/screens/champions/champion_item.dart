@@ -39,7 +39,7 @@ class ChampionItem extends HookWidget {
           arguments: champion,
         );
       },
-      [],
+      [champion],
     );
 
     return SizedBox(
