@@ -259,7 +259,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                           ),
                         ),
                         Text(
-                          'Level ${playerInfo.player.level.toString()}',
+                          'Level ${playerInfo.player.level}',
                           style: textTheme.bodyText1?.copyWith(fontSize: 12),
                         ),
                       ],
@@ -305,12 +305,34 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                   return const SizedBox();
                                 }
 
-                                return AnimatedRotation(
-                                  duration: const Duration(milliseconds: 200),
-                                  turns: isExpanded ? 0.5 : 0,
-                                  child: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                  ),
+                                return Row(
+                                  children: [
+                                    if (champion != null)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Stats',
+                                            style: textTheme.bodyText1
+                                                ?.copyWith(fontSize: 10),
+                                          ),
+                                          Text(
+                                            champion.name,
+                                            style: textTheme.bodyText1
+                                                ?.copyWith(fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                    AnimatedRotation(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      turns: isExpanded ? 0.5 : 0,
+                                      child: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                      ),
+                                    ),
+                                  ],
                                 );
                               },
                             ),

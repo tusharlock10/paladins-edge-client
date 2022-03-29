@@ -29,7 +29,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     champions = response.champions;
 
     // sort champions based on their name
-    champions.sortedBy((champion) => champion.name);
+    champions = champions.sortedBy((champion) => champion.name);
 
     // save champion locally for future use
     champions.forEach(utilities.Database.saveChampion);

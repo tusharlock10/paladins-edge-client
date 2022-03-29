@@ -15,16 +15,27 @@ class ChampionsSearchBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
+    final textController = useTextEditingController();
     final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
           color: Colors.white,
           fontSize: 16,
         );
+
+    // Methods
+    final onClear = useCallback(
+      () {
+        textController.clear();
+        onPressed();
+      },
+      [],
+    );
 
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Theme.of(context).brightness,
       ),
       title: TextField(
+        controller: textController,
         maxLength: 16,
         enableInteractiveSelection: true,
         style: textStyle,
@@ -38,7 +49,7 @@ class ChampionsSearchBar extends HookWidget {
             color: Colors.white,
             iconSize: 18,
             icon: const Icon(Icons.clear),
-            onPressed: onPressed,
+            onPressed: onClear,
           ),
         ),
       ),
