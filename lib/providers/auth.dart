@@ -28,18 +28,25 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
-  void loadEssentials() async {
+  Future<void> loadEssentials() async {
     // gets the essential data for the app
 
     // getting the essential data from local until the api call is completed
-    utilities.Global.essentials = utilities.Database.getEssentials();
+    final savedEssentials = utilities.Database.getEssentials();
 
-    // call essentials api to update its data
-    final response = await api.AuthRequests.essentials();
-    if (response != null) {
-      utilities.Database.saveEssentials(response.essentials);
-      utilities.Global.essentials = response.essentials;
+    api.EssentialsResponse? response;
+    while (true) {
+      response = await api.AuthRequests.essentials();
+      if (response == null && savedEssentials != null) {
+        utilities.Global.essentials = savedEssentials;
+
+        return;
+      }
+      if (response != null) break;
     }
+
+    utilities.Database.saveEssentials(response.essentials);
+    utilities.Global.essentials = response.essentials;
   }
 
   /// Checks if the user is already logged in

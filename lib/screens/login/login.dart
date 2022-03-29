@@ -84,7 +84,9 @@ class Login extends HookConsumerWidget {
               .setAnalyticsCollectionEnabled(!constants.isDebug),
         ]);
 
-        authProvider.loadEssentials(); // load the essentials from hive
+        // load the essentials from hive
+        // this depends on initDatabase to be completed
+        await authProvider.loadEssentials();
         authProvider.loadSettings(); // load the settings from hive
 
         isInitialized.value = true;
