@@ -129,6 +129,13 @@ class AppDrawer extends HookConsumerWidget {
       [],
     );
 
+    final onFeedback = useCallback(
+      () {
+        Navigator.of(context).popAndPushNamed(screens.Feedback.routeName);
+      },
+      [player],
+    );
+
     final showPlayerDependentButtons = useCallback(
       () {
         // to show or hide buttons dependant on player info
@@ -165,6 +172,11 @@ class AppDrawer extends HookConsumerWidget {
                 label: 'Active Match',
                 onPressed: onActiveMatch,
               ),
+            DrawerButton(
+              context: context,
+              label: 'Feedback',
+              onPressed: onFeedback,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

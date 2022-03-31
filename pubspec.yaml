@@ -66,6 +66,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^19.4.53
   duration: ^3.0.10
   firebase_remote_config: ^2.0.2
+  file_picker: ^4.5.1
 
 dev_dependencies:
   flutter_test:
