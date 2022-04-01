@@ -5,6 +5,24 @@ part 'feedback.g.dart';
 abstract class FeedbackTypes {
   static const featureRequest = "featureRequest";
   static const suggestion = "suggestion";
+
+  static String getFeedbackTypeText(String feedbackType) {
+    switch (feedbackType) {
+      case featureRequest:
+        return "Feature Request";
+      case suggestion:
+        return "Suggestion";
+    }
+
+    return '';
+  }
+
+  static List<String> getFeedbackTypes() {
+    return [
+      featureRequest,
+      suggestion,
+    ];
+  }
 }
 
 @JsonSerializable()
