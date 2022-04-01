@@ -17,7 +17,7 @@ abstract class FeedbackTypes {
     return '';
   }
 
-  static List<String> getFeedbackTypes() {
+  static List<String> getFeedbackType() {
     return [
       featureRequest,
       suggestion,

@@ -7,6 +7,8 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _FeedbackNotifier extends ChangeNotifier {
   bool isSubmitting = false;
+  String description = '';
+  String selectedFeedbackType = models.FeedbackTypes.featureRequest;
   FilePickerResult? selectedImage;
 
   /// Opens the file picker to select images
@@ -23,9 +25,20 @@ class _FeedbackNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
+  /// Changes feedbackType
+  void changeDescription(String text) {
+    description = text;
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Changes feedbackType
+  void changeFeedbackType(String feedbackType) {
+    selectedFeedbackType = feedbackType;
+    utilities.postFrameCallback(notifyListeners);
+  }
+
   /// Submit the feedback
-  Future<void> submitFeedback(String description) async {
-    // TODO: Add support for feedback types
+  Future<void> submitFeedback() async {
     isSubmitting = true;
     utilities.postFrameCallback(notifyListeners);
 
@@ -33,7 +46,7 @@ class _FeedbackNotifier extends ChangeNotifier {
 
     final feedback = models.Feedback(
       description: description,
-      type: models.FeedbackTypes.suggestion,
+      type: selectedFeedbackType,
       imageUrl: imageUrl,
     );
 

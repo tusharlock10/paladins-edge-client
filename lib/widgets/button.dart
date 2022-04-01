@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class Button extends StatelessWidget {
   final String label;
   final void Function() onPressed;
+  final bool disabled;
 
   const Button({
     required this.label,
     required this.onPressed,
+    this.disabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -24,7 +26,7 @@ class Button extends StatelessWidget {
           elevation: 0,
           shape: const StadiumBorder(),
         ),
-        onPressed: onPressed,
+        onPressed: disabled ? null : onPressed,
         child: Text(
           label,
           style: const TextStyle(fontSize: 14),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:mime/mime.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 
 // api singleton
@@ -20,6 +21,7 @@ Future<void> uploadFile({
   required String filePath,
 }) async {
   final file = File(filePath);
+  final contentType = lookupMimeType(filePath);
 
   await Dio().put(
     url,
@@ -27,6 +29,7 @@ Future<void> uploadFile({
     options: Options(
       headers: {
         Headers.contentLengthHeader: file.lengthSync(),
+        Headers.contentTypeHeader: contentType,
       },
     ),
   );
