@@ -30,8 +30,7 @@ class PlayerMatches extends ConsumerWidget {
       physics: const BouncingScrollPhysics(),
       itemCount: playerMatches.matches.length,
       itemBuilder: (context, index) {
-        final match =
-            playerMatches.matches[playerMatches.matches.length - index - 1];
+        final match = playerMatches.matches[index];
 
         // find the match that is associated with that matchPlayer
         final matchPlayer = playerMatches.matchPlayers

@@ -34,7 +34,18 @@ class Feedback extends HookConsumerWidget {
     // Methods
     final onSubmit = useCallback(
       () async {
-        await feedbackProvider.submitFeedback();
+        final result = await feedbackProvider.submitFeedback();
+
+        if (!result) {
+          widgets.showToast(
+            context: context,
+            text: 'Unable to submit feedback',
+            type: widgets.ToastType.error,
+          );
+
+          return;
+        }
+
         Navigator.of(context).pop();
         widgets.showToast(
           context: context,
