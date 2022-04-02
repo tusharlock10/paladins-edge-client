@@ -39,11 +39,18 @@ class _FeedbackNotifier extends ChangeNotifier {
   }
 
   /// Submit the feedback
-  Future<void> submitFeedback() async {
+  Future<bool> submitFeedback() async {
     isSubmitting = true;
     utilities.postFrameCallback(notifyListeners);
 
-    final imageUrl = await _uploadImage();
+    String? imageUrl;
+    if (selectedImage != null) {
+      imageUrl = await _uploadImage();
+      if (imageUrl == null) {
+        isSubmitting = false;
+        utilities.postFrameCallback(notifyListeners);
+      }
+    }
 
     final feedback = models.Feedback(
       description: description,
@@ -51,10 +58,13 @@ class _FeedbackNotifier extends ChangeNotifier {
       imageUrl: imageUrl,
     );
 
-    await api.FeedbackRequests.submitFeedback(feedback: feedback);
+    final response =
+        await api.FeedbackRequests.submitFeedback(feedback: feedback);
 
     isSubmitting = false;
     utilities.postFrameCallback(notifyListeners);
+
+    return response != null;
   }
 
   /// Clears all data
@@ -76,12 +86,12 @@ class _FeedbackNotifier extends ChangeNotifier {
 
     if (response == null) return null;
 
-    await utilities.uploadImage(
+    final result = await utilities.uploadImage(
       url: response.uploadUrl,
       image: selectedImage!,
     );
 
-    return response.imageUrl;
+    return result ? response.imageUrl : null;
   }
 }
 

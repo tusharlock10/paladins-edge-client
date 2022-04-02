@@ -14,6 +14,7 @@ import 'package:paladinsedge/screens/champion_detail/player_stats.dart';
 import 'package:paladinsedge/screens/champion_detail/talents.dart';
 import 'package:paladinsedge/screens/champion_detail/title_label.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetail extends HookConsumerWidget {
@@ -29,7 +30,6 @@ class ChampionDetail extends HookConsumerWidget {
     final hideLoadoutFab = useState(false);
 
     // Variables
-    final primaryColor = Theme.of(context).primaryColor;
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
@@ -87,7 +87,7 @@ class ChampionDetail extends HookConsumerWidget {
             elevation: 4,
             hoverElevation: 6,
             focusElevation: 8,
-            backgroundColor: primaryColor,
+            backgroundColor: theme.themeMaterialColor,
             child: Text(
               'Loadouts',
               style: textTheme.bodyText2?.copyWith(

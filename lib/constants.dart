@@ -269,3 +269,12 @@ loadouts outside the game
 abstract class RemoteConfigParams {
   static const enableGuestLogin = 'enableGuestLogin';
 }
+
+class PaladinsGuruSite {
+  static const _baseUrl = "https://paladins.guru";
+
+  static String match(String matchId) => "$_baseUrl/match/$matchId";
+
+  static String champions(String playerId) =>
+      "$_baseUrl/profile/$playerId/champions";
+}

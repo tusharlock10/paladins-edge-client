@@ -15,7 +15,7 @@ final api = Dio(
 );
 
 /// Upload an image to the provided S3 URL
-Future<void> uploadImage({
+Future<bool> uploadImage({
   required String url,
   required XFile image,
 }) async {
@@ -24,15 +24,21 @@ Future<void> uploadImage({
   final imageLength = await image.length();
   final contentType = lookupMimeType(fileName);
 
-  await Dio().put(
-    url,
-    data: data,
-    options: Options(
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Headers.contentLengthHeader: imageLength,
-        Headers.contentTypeHeader: contentType,
-      },
-    ),
-  );
+  try {
+    await Dio().put(
+      url,
+      data: data,
+      options: Options(
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Headers.contentLengthHeader: imageLength,
+          Headers.contentTypeHeader: contentType,
+        },
+      ),
+    );
+
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
