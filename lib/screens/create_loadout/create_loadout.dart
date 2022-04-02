@@ -49,7 +49,7 @@ class CreateLoadout extends HookConsumerWidget {
           } else {
             widgets.showToast(
               context: context,
-              text: 'An error occured while saving loadout',
+              text: 'An error occurred while saving loadout',
               type: widgets.ToastType.error,
             );
           }

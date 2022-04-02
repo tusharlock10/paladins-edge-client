@@ -15,4 +15,5 @@ final routes = {
   screens.Loadouts.routeName: (_) => const screens.Loadouts(),
   screens.CreateLoadout.routeName: (_) => const screens.CreateLoadout(),
   screens.PlayerChampions.routeName: (_) => const screens.PlayerChampions(),
+  screens.Feedback.routeName: (_) => const screens.Feedback(),
 };
