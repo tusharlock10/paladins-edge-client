@@ -5,6 +5,7 @@ part 'feedback.g.dart';
 abstract class FeedbackTypes {
   static const featureRequest = "featureRequest";
   static const suggestion = "suggestion";
+  static const bug = "bug";
 
   static String getFeedbackTypeText(String feedbackType) {
     switch (feedbackType) {
@@ -12,6 +13,8 @@ abstract class FeedbackTypes {
         return "Feature Request";
       case suggestion:
         return "Suggestion";
+      case bug:
+        return "Bug";
     }
 
     return '';
@@ -21,6 +24,7 @@ abstract class FeedbackTypes {
     return [
       featureRequest,
       suggestion,
+      bug,
     ];
   }
 }
