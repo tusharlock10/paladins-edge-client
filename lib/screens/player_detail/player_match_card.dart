@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -146,10 +147,11 @@ class PlayerMatchCard extends ConsumerWidget {
                         },
                       ),
                       matchPlayer.playerStats.biggestKillStreak > 5
-                          ? Text(
-                              '${matchPlayer.playerStats.biggestKillStreak} streak',
-                              style:
-                                  textTheme.bodyText1?.copyWith(fontSize: 14),
+                          ? widgets.TextChip(
+                              icon: FeatherIcons.zap,
+                              color: Colors.orange,
+                              text:
+                                  '${matchPlayer.playerStats.biggestKillStreak} streak',
                             )
                           : const SizedBox(),
                       matchPlayer.playerStats.totalDamageDealt >
@@ -157,17 +159,17 @@ class PlayerMatchCard extends ConsumerWidget {
                           ? Text(
                               '${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg',
                               style: textTheme.bodyText1?.copyWith(
-                                fontSize: 14,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.red.shade400,
+                                fontStyle: FontStyle.italic,
                               ),
                             )
                           : Text(
                               '${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal',
                               style: textTheme.bodyText1?.copyWith(
-                                fontSize: 14,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.green.shade400,
+                                fontStyle: FontStyle.italic,
                               ),
                             ),
                     ],

@@ -15,6 +15,16 @@ class _MatchesNotifier extends ChangeNotifier {
 
     final response = await api.MatchRequests.playerMatches(playerId: playerId);
 
+    // sort matches & matchPlayers based on matchId
+    if (response != null) {
+      response.matches.sort(
+        (a, b) => int.parse(b.matchId).compareTo(int.parse(a.matchId)),
+      );
+      response.matchPlayers.sort(
+        (a, b) => int.parse(b.matchId).compareTo(int.parse(a.matchId)),
+      );
+    }
+
     isPlayerMatchesLoading = false;
     playerMatches = response;
 
@@ -37,7 +47,7 @@ class _MatchesNotifier extends ChangeNotifier {
     matchDetails = response;
 
     // sort players based on their team
-    matchDetails?.matchPlayers.sort((a, b) => a.team - b.team);
+    matchDetails?.matchPlayers.sort((a, b) => a.team.compareTo(b.team));
 
     utilities.postFrameCallback(notifyListeners);
   }

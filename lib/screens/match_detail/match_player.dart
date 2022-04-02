@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -145,9 +146,18 @@ class MatchPlayer extends HookConsumerWidget {
                     ),
                     const SizedBox(width: 5),
                     widgets.TextChip(
+                      width: 55,
                       text: matchPosition,
-                      color:
-                          matchPosition == "MVP" ? Colors.orange : Colors.cyan,
+                      icon: matchPlayer.matchPosition == 1
+                          ? FeatherIcons.award
+                          : matchPlayer.matchPosition == 10
+                              ? FeatherIcons.meh
+                              : null,
+                      color: matchPlayer.matchPosition == 1
+                          ? Colors.orange
+                          : matchPlayer.matchPosition == 10
+                              ? Colors.blueGrey
+                              : Colors.cyan,
                     ),
                   ],
                 ),

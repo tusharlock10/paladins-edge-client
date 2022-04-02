@@ -6,6 +6,8 @@ class TextChip extends StatelessWidget {
   final bool? hidden;
   final double? spacing;
   final IconData? icon;
+  final double? width;
+  final double? height;
 
   const TextChip({
     this.text,
@@ -13,6 +15,8 @@ class TextChip extends StatelessWidget {
     this.spacing = 0,
     this.hidden = false,
     this.icon,
+    this.width,
+    this.height,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +31,8 @@ class TextChip extends StatelessWidget {
     final color2 = isLightTheme ? color!.shade900 : color!.shade50;
 
     return Container(
+      width: width,
+      height: height,
       margin: EdgeInsets.symmetric(
         horizontal: spacing! / 2,
         vertical: spacing! / 2,
@@ -38,6 +44,7 @@ class TextChip extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           icon != null
               ? Padding(

@@ -39,9 +39,9 @@ class _PlayersNotifier extends ChangeNotifier {
 
     if (favouriteFriends != null) {
       // sort the friends on the basis on name
-      friends.sort((a, b) {
-        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
-      });
+      friends.sort(
+        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+      );
 
       // find favourite players
       final List<models.Player> favouritePlayers = [];
@@ -89,6 +89,9 @@ class _PlayersNotifier extends ChangeNotifier {
     } else {
       searchHistory = _searchHistory;
     }
+
+    // sort search history on basis of time
+    searchHistory.sort((a, b) => b.time.compareTo(a.time));
 
     utilities.postFrameCallback(notifyListeners);
   }
