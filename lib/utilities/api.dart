@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 
@@ -15,20 +14,23 @@ final api = Dio(
   ),
 );
 
-/// Upload a file to the provided URL
-Future<void> uploadFile({
+/// Upload an image to the provided S3 URL
+Future<void> uploadImage({
   required String url,
-  required String filePath,
+  required XFile image,
 }) async {
-  final file = File(filePath);
-  final contentType = lookupMimeType(filePath);
+  final fileName = image.name;
+  final data = image.openRead();
+  final imageLength = await image.length();
+  final contentType = lookupMimeType(fileName);
 
   await Dio().put(
     url,
-    data: file.openRead(),
+    data: data,
     options: Options(
       headers: {
-        Headers.contentLengthHeader: file.lengthSync(),
+        "Access-Control-Allow-Origin": "*",
+        Headers.contentLengthHeader: imageLength,
         Headers.contentTypeHeader: contentType,
       },
     ),

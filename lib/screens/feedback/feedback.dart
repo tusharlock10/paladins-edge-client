@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/feedback/feedback_description.dart';
-import 'package:paladinsedge/screens/feedback/feedback_image.dart';
+import 'package:paladinsedge/screens/feedback/feedback_input_landscape.dart';
+import 'package:paladinsedge/screens/feedback/feedback_input_portrait.dart';
 import 'package:paladinsedge/screens/feedback/feedback_type_selector.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Feedback extends HookConsumerWidget {
@@ -49,19 +50,17 @@ class Feedback extends HookConsumerWidget {
         title: const Text('Provide Feedback'),
       ),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         children: [
           const SizedBox(height: 20),
+          const FeedbackTypeSelector(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: const [
-                FeedbackTypeSelector(),
-                SizedBox(height: 15),
-                FeedbackDescription(),
-                SizedBox(height: 15),
-                FeedbackImage(),
-              ],
+            child: utilities.responsiveCondition(
+              context,
+              desktop: const FeedbackInputLandscape(),
+              tablet: const FeedbackInputLandscape(),
+              mobile: const FeedbackInputPortrait(),
             ),
           ),
           const SizedBox(height: 30),
@@ -77,6 +76,7 @@ class Feedback extends HookConsumerWidget {
                     disabled: description.length < 10,
                   ),
           ),
+          const SizedBox(height: 30),
         ],
       ),
     );

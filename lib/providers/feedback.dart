@@ -1,6 +1,8 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -9,17 +11,16 @@ class _FeedbackNotifier extends ChangeNotifier {
   bool isSubmitting = false;
   String description = '';
   String selectedFeedbackType = models.FeedbackTypes.featureRequest;
-  FilePickerResult? selectedImage;
+  XFile? selectedImage;
+  Uint8List? selectedImageBytes;
 
   /// Opens the file picker to select images
   void pickFeedbackImage() async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.image,
-    );
+    final result = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (result != null) {
       selectedImage = result;
+      selectedImageBytes = await selectedImage!.readAsBytes();
     }
 
     utilities.postFrameCallback(notifyListeners);
@@ -59,25 +60,28 @@ class _FeedbackNotifier extends ChangeNotifier {
   /// Clears all data
   void clearData() {
     isSubmitting = false;
+    description = '';
+    selectedFeedbackType = models.FeedbackTypes.featureRequest;
     selectedImage = null;
+    selectedImageBytes = null;
   }
 
   /// Upload image to aws s3 bucket
   Future<String?> _uploadImage() async {
-    final fileName = selectedImage?.names.first;
+    if (selectedImage == null) return null;
 
-    if (fileName == null) return null;
-    final response =
-        await api.FeedbackRequests.uploadImageUrl(fileName: fileName);
+    final response = await api.FeedbackRequests.uploadImageUrl(
+      fileName: selectedImage!.name,
+    );
 
-    final filePath = selectedImage?.files.first.path;
-    if (response != null && filePath != null) {
-      await utilities.uploadFile(url: response.uploadUrl, filePath: filePath);
+    if (response == null) return null;
 
-      return response.imageUrl;
-    }
+    await utilities.uploadImage(
+      url: response.uploadUrl,
+      image: selectedImage!,
+    );
 
-    return null;
+    return response.imageUrl;
   }
 }
 
