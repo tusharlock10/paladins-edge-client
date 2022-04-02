@@ -2,6 +2,7 @@ export './active_match/active_match.dart';
 export './bounty_store/bounty_store.dart';
 export './champion/champion.dart';
 export './essentials/essentials.dart';
+export './feedback/feedback.dart';
 export './loadout/loadout.dart';
 export './match/match.dart';
 export './player/player.dart';

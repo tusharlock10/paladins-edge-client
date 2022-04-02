@@ -47,6 +47,10 @@ abstract class Urls {
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET
   static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
   static const updatePlayerLoadout = '/loadout/updatePlayerLoadout'; // PUT
+
+  // feedback
+  static const submitFeedback = "/feedback/submitFeedback"; // POST
+  static const uploadImageUrl = "/feedback/uploadImageUrl"; // GET
 }
 
 abstract class StorageKeys {
@@ -155,6 +159,7 @@ abstract class RecordExpiryDuration {
 }
 
 abstract class ImageAspectRatios {
+  // ratio = width/height
   static const championCard = 4 / 3;
   static const championAbility = 1;
   static const championTalent = 1;
@@ -169,6 +174,8 @@ abstract class ImageAspectRatios {
   static const rankIcon = 1;
 
   static const loadoutCard = 1 / 2;
+
+  static const feedbackImage = 4 / 3;
 }
 
 abstract class QueueId {
