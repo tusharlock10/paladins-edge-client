@@ -87,6 +87,7 @@ class AppDrawer extends HookConsumerWidget {
     final onFriends = useCallback(
       () {
         if (isGuest) {
+          Navigator.of(context).pop();
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,

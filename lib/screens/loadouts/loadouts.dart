@@ -6,6 +6,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/loadouts/loadout.dart';
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:responsive_framework/responsive_framework.dart';
@@ -24,7 +25,6 @@ class Loadouts extends HookConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.isGettingLoadouts));
 
     // Variables
-    final primaryColor = Theme.of(context).primaryColor;
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
@@ -93,7 +93,7 @@ class Loadouts extends HookConsumerWidget {
             elevation: 4,
             hoverElevation: 6,
             focusElevation: 8,
-            backgroundColor: primaryColor,
+            backgroundColor: theme.themeMaterialColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -135,9 +135,11 @@ class Loadouts extends HookConsumerWidget {
             )
           : loadouts != null
               ? ResponsiveGridView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: horizontalPadding,
-                    vertical: 20,
+                  padding: EdgeInsets.only(
+                    right: horizontalPadding,
+                    left: horizontalPadding,
+                    top: 20,
+                    bottom: 70,
                   ),
                   physics: const BouncingScrollPhysics(),
                   itemCount: loadouts.length,
