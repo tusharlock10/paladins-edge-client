@@ -30,7 +30,7 @@ class ChampionHeading extends ConsumerWidget {
       range = 'Fall-off ${champion.damageFallOffRange.toInt()}';
     }
 
-    final bday = Jiffy(champion.releaseDate).format('MMM do');
+    final birthDay = Jiffy(champion.releaseDate).format('MMM do');
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -72,7 +72,7 @@ class ChampionHeading extends ConsumerWidget {
                       style: textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                     Text(
-                      'B\'day on $bday',
+                      'B\'day on $birthDay',
                       style: textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                   ],
