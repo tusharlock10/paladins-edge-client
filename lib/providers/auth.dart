@@ -11,6 +11,18 @@ import 'package:paladinsedge/providers/matches.dart' as matches_provider;
 import 'package:paladinsedge/providers/players.dart' as players_provider;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
+class _GetFirebaseUserResponse {
+  final UserCredential? firebaseUser;
+  final int? errorCode;
+  final String? errorMessage;
+
+  _GetFirebaseUserResponse({
+    this.firebaseUser,
+    this.errorCode,
+    this.errorMessage,
+  });
+}
+
 class _AuthNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_AuthNotifier> ref;
   bool isGuest = false;
@@ -65,28 +77,16 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Sign-in the user with his/her `Google` account
-  Future<bool> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<data_classes.SignInProviderResponse> signInWithGoogle() async {
+    final firebaseUserResponse = await _getFirebaseUser();
+    final firebaseUser = firebaseUserResponse.firebaseUser;
 
-    if (googleUser == null) {
-      return false;
-    }
-
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final firebaseUser =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-
-    if (firebaseUser.user == null ||
-        firebaseUser.user?.email == null ||
-        firebaseUser.user?.displayName == null) {
-      return false;
+    if (firebaseUser == null) {
+      return data_classes.SignInProviderResponse(
+        result: false,
+        errorCode: firebaseUserResponse.errorCode,
+        errorMessage: firebaseUserResponse.errorMessage,
+      );
     }
 
     final uid = firebaseUser.user!.uid;
@@ -102,8 +102,13 @@ class _AuthNotifier extends ChangeNotifier {
       verification: verification,
     );
 
-    // If player is null, navigate to ConnectProfile
-    if (response == null) return false;
+    if (response == null) {
+      return data_classes.SignInProviderResponse(
+        result: false,
+        errorCode: 5,
+        errorMessage: "Login failure, try again later",
+      );
+    }
 
     user = response.user;
     token = response.token;
@@ -119,7 +124,7 @@ class _AuthNotifier extends ChangeNotifier {
     isGuest = false;
     utilities.postFrameCallback(notifyListeners);
 
-    return true;
+    return data_classes.SignInProviderResponse(result: true);
   }
 
   /// Login the user as Guest so that he/she can explore the app
@@ -263,6 +268,54 @@ class _AuthNotifier extends ChangeNotifier {
     isGuest = false;
     user = null;
     settings = models.Settings();
+  }
+
+  Future<_GetFirebaseUserResponse> _getFirebaseUser() async {
+    final GoogleSignInAccount? googleUser;
+    try {
+      googleUser = await GoogleSignIn().signIn();
+    } catch (error) {
+      return _GetFirebaseUserResponse(
+        errorCode: 1,
+        errorMessage: error.toString(),
+      );
+    }
+
+    if (googleUser == null) {
+      return _GetFirebaseUserResponse(
+        errorCode: 2,
+        errorMessage: "User not found for this Google Account",
+      );
+    }
+
+    final GoogleSignInAuthentication googleAuth;
+    try {
+      googleAuth = await googleUser.authentication;
+    } catch (error) {
+      return _GetFirebaseUserResponse(
+        errorCode: 3,
+        errorMessage: error.toString(),
+      );
+    }
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final firebaseUser =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    if (firebaseUser.user == null ||
+        firebaseUser.user?.email == null ||
+        firebaseUser.user?.displayName == null) {
+      return _GetFirebaseUserResponse(
+        errorCode: 4,
+        errorMessage: "User not found for this Google Account",
+      );
+    }
+
+    return _GetFirebaseUserResponse(firebaseUser: firebaseUser);
   }
 }
 
