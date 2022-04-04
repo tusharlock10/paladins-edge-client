@@ -17,3 +17,15 @@ class ShowLoginModalOptions {
     required this.onSuccess,
   });
 }
+
+class SignInProviderResponse {
+  final bool result;
+  final int? errorCode;
+  final String? errorMessage;
+
+  SignInProviderResponse({
+    required this.result,
+    this.errorCode,
+    this.errorMessage,
+  });
+}
