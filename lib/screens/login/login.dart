@@ -104,8 +104,8 @@ class Login extends HookConsumerWidget {
 
         isLoggingIn.value = true;
 
-        final loginSuccess = await authProvider.signInWithGoogle();
-        if (loginSuccess) {
+        final response = await authProvider.signInWithGoogle();
+        if (response.result) {
           // after the user is logged in, send the device fcm token to the server
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
@@ -118,6 +118,14 @@ class Login extends HookConsumerWidget {
           );
         } else {
           isLoggingIn.value = false;
+          if (response.errorCode != null && response.errorMessage != null) {
+            widgets.showToast(
+              context: context,
+              text: response.errorMessage!,
+              type: widgets.ToastType.error,
+              errorCode: response.errorCode,
+            );
+          }
         }
       },
       [],

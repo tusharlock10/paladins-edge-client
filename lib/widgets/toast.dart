@@ -13,11 +13,13 @@ class _FlashBar extends HookWidget {
   final FlashController controller;
   final ToastType type;
   final String text;
+  final int? errorCode;
 
   const _FlashBar({
     required this.controller,
     required this.type,
     required this.text,
+    this.errorCode,
     Key? key,
   }) : super(key: key);
 
@@ -52,7 +54,7 @@ class _FlashBar extends HookWidget {
         if (type == ToastType.success) return 'Success';
         if (type == ToastType.info) return 'Info';
 
-        return 'Error';
+        return errorCode == null ? 'Error' : 'Error ($errorCode)';
       },
       [],
     );
@@ -68,6 +70,10 @@ class _FlashBar extends HookWidget {
     );
 
     return Flash.bar(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width - 40,
+      ),
+      horizontalDismissDirection: HorizontalDismissDirection.horizontal,
       boxShadows: [
         BoxShadow(
           color: getToastColor().withOpacity(0.2),
@@ -77,18 +83,18 @@ class _FlashBar extends HookWidget {
         ),
       ],
       enableVerticalDrag: true,
-      position: FlashPosition.bottom,
-      margin: const EdgeInsets.only(bottom: 15),
+      useSafeArea: true,
+      position: FlashPosition.top,
       controller: controller,
       borderRadius: const BorderRadius.all(Radius.circular(6)),
       child: Card(
         clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.all(0),
-        child: IntrinsicWidth(
+        child: SizedBox(
+          height: 60,
           child: Row(
             children: [
               Container(
-                height: 60,
                 width: 8,
                 color: getToastColor(),
               ),
@@ -109,9 +115,11 @@ class _FlashBar extends HookWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              IntrinsicHeight(
+              Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
                       getToastMessage(),
@@ -119,7 +127,11 @@ class _FlashBar extends HookWidget {
                     ),
                     Text(
                       text,
-                      style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                      maxLines: 1,
+                      style: textTheme.bodyText1?.copyWith(
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
@@ -137,6 +149,7 @@ void showToast({
   required BuildContext context,
   required String text,
   required ToastType type,
+  int? errorCode,
 }) {
   if (utilities.Global.isToastShown) return;
   showFlash(
@@ -146,6 +159,7 @@ void showToast({
       controller: controller,
       type: type,
       text: text,
+      errorCode: errorCode,
     ),
   );
 }

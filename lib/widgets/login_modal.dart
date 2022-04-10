@@ -6,6 +6,7 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/google_button.dart';
+import 'package:paladinsedge/widgets/toast.dart';
 
 void showLoginModal(data_classes.ShowLoginModalOptions options) {
   showModalBottomSheet(
@@ -49,24 +50,28 @@ class _LoginModal extends HookConsumerWidget {
 
         isLoggingIn.value = true;
 
-        final loginSuccess = await authProvider.signInWithGoogle();
-        if (loginSuccess) {
+        final response = await authProvider.signInWithGoogle();
+        if (response.result) {
           // after the user is logged in, send the device fcm token to the server
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
 
-          if (authProvider.user?.playerId == null) {
-            Navigator.of(context).pop();
-            Navigator.pushReplacementNamed(
-              context,
-              screens.ConnectProfile.routeName,
-            );
-          } else {
-            Navigator.of(context).pop();
-            options.onSuccess();
-          }
+          Navigator.pushReplacementNamed(
+            context,
+            authProvider.user?.playerId == null
+                ? screens.ConnectProfile.routeName
+                : screens.BottomTabs.routeName,
+          );
         } else {
           isLoggingIn.value = false;
+          if (response.errorCode == null && response.errorMessage == null) {
+            showToast(
+              context: context,
+              text: response.errorMessage!,
+              type: ToastType.error,
+              errorCode: response.errorCode,
+            );
+          }
         }
       },
       [],
@@ -94,7 +99,7 @@ class _LoginModal extends HookConsumerWidget {
                       'LOGIN REQUIRED',
                       style: textTheme.headline1?.copyWith(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
