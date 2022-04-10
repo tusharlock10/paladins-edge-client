@@ -25,7 +25,7 @@ class LowerSearchItem extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
-        utilities.unFocusNode(context);
+        utilities.unFocusKeyboard(context);
         playersProvider.setPlayerId(lowerSearch.playerId);
         Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
       },

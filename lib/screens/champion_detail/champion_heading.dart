@@ -72,7 +72,7 @@ class ChampionHeading extends ConsumerWidget {
                       style: textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                     Text(
-                      'B\'day on $birthDay',
+                      "B'day on $birthDay",
                       style: textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                   ],

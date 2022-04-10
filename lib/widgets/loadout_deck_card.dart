@@ -31,7 +31,7 @@ class LoadoutDeckCard extends HookWidget {
     // Methods
     final onTapCard = useCallback(
       () {
-        utilities.unFocusNode(context);
+        utilities.unFocusKeyboard(context);
         widgets.showLoadoutCardDetailSheet(
           data_classes.ShowLoadoutDetailsOptions(
             context: context,

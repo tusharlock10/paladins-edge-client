@@ -27,7 +27,7 @@ class TopSearchItem extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
-        utilities.unFocusNode(context);
+        utilities.unFocusKeyboard(context);
         playersProvider.setPlayerId(player.playerId);
         Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
       },

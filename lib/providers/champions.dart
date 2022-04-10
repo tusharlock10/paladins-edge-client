@@ -7,66 +7,78 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
+  /// loading state for combinedChampions
+  bool isLoadingCombinedChampions = false;
+
+  /// loading state for playerChampions
+  bool isLoadingPlayerChampions = false;
+
+  /// holds data for all champions
   List<models.Champion> champions = [];
-  List<models.PlayerChampion> userPlayerChampions =
-      []; // holds playerChampions data for the user
-  List<models.PlayerChampion>?
-      playerChampions; // holds playerChampions data for other players
 
-  /// Loads the `champions` data from local db and syncs it with server
-  Future<void> loadChampions() async {
-    // try to load champions from db
-    final savedChampions = utilities.Database.getChampions();
+  /// holds playerChampions data for the user
+  List<models.PlayerChampion>? userPlayerChampions;
 
-    if (savedChampions != null) {
-      champions = savedChampions;
+  /// holds the champion and userPlayerChampion in one object for easy access
+  List<data_classes.CombinedChampion>? combinedChampions;
 
-      return;
-    }
+  /// holds playerChampions data for other players
+  List<models.PlayerChampion>? playerChampions;
 
-    final response = await api.ChampionsRequests.allChampions();
-    if (response == null) return;
-    champions = response.champions;
+  /// holds the value of currently active filter
+  data_classes.SelectedChampionsFilter selectedFilter =
+      data_classes.SelectedChampionsFilter();
 
-    // sort champions based on their name
-    champions = champions.sortedBy((champion) => champion.name);
+  /// holds the currently active filter
+  String? selectedSort;
 
-    // save champion locally for future use
-    champions.forEach(utilities.Database.saveChampion);
-  }
+  /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
+  /// combines the result of them into one single entity of CombinedChampion
+  Future<void> loadCombinedChampions() async {
+    isLoadingCombinedChampions = true;
 
-  /// Loads the `playerChampions` data for the user from local db and
-  /// syncs it with server for showing in Champions screen
-  Future<void> loadUserPlayerChampions() async {
-    final user = utilities.Database.getUser();
-    final savedPlayerChampions = utilities.Database.getPlayerChampions();
+    final result = await Future.wait([
+      _loadChampions(),
+      _loadUserPlayerChampions(),
+    ]);
 
-    if (savedPlayerChampions != null) {
-      userPlayerChampions = savedPlayerChampions;
+    // if champions is null, then abort this operation
+    if (result.first == null) {
+      isLoadingCombinedChampions = false;
+      utilities.postFrameCallback(notifyListeners);
 
       return;
     }
 
-    if (user?.playerId == null) return;
+    isLoadingCombinedChampions = false;
+    champions = result.first as List<models.Champion>;
+    userPlayerChampions = result.last as List<models.PlayerChampion>?;
 
-    final response =
-        await api.ChampionsRequests.playerChampions(playerId: user!.playerId!);
+    combinedChampions = champions.map((champion) {
+      final playerChampion = utilities.findPlayerChampion(
+        userPlayerChampions,
+        champion.championId,
+      );
 
-    if (response == null) return;
-    userPlayerChampions = response.playerChampions;
-
-    // save playerChampions locally for future use
-    response.playerChampions.forEach(utilities.Database.savePlayerChampion);
+      return data_classes.CombinedChampion(
+        champion: champion,
+        playerChampion: playerChampion,
+      );
+    }).toList();
 
     utilities.postFrameCallback(notifyListeners);
   }
 
   /// Get the `playerChampions` data for the playerId
   Future<void> getPlayerChampions(String playerId) async {
+    isLoadingPlayerChampions = true;
+
     final response =
         await api.ChampionsRequests.playerChampions(playerId: playerId);
-    if (response == null) return;
-    playerChampions = response.playerChampions;
+
+    isLoadingPlayerChampions = false;
+    if (response != null) playerChampions = response.playerChampions;
+
     utilities.postFrameCallback(notifyListeners);
   }
 
@@ -75,11 +87,14 @@ class _ChampionsNotifier extends ChangeNotifier {
   Future<void> getPlayerChampionsBatch(
     List<data_classes.BatchPlayerChampionsPayload> playerChampionsQuery,
   ) async {
+    isLoadingPlayerChampions = true;
     final response = await api.ChampionsRequests.batchPlayerChampions(
       playerChampionsQuery: playerChampionsQuery,
     );
-    if (response == null) return;
-    playerChampions = response.playerChampions;
+
+    isLoadingPlayerChampions = false;
+    if (response != null) playerChampions = response.playerChampions;
+
     utilities.postFrameCallback(notifyListeners);
   }
 
@@ -88,10 +103,131 @@ class _ChampionsNotifier extends ChangeNotifier {
     playerChampions = null;
   }
 
+  /// Filters the champions based on the search provided
+  void filterChampionsBySearch(String search) {
+    if (combinedChampions == null) return;
+
+    // remove filters if search is done
+    // but keep the previous filterName intact
+    selectedFilter = data_classes.SelectedChampionsFilter(
+      name: selectedFilter.name,
+    );
+
+    combinedChampions = data_classes.ChampionsFilter.filterBySearch(
+      combinedChampions!,
+      search,
+    );
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Set the name of filter
+  void setFilterName(String filterName) {
+    selectedFilter = data_classes.SelectedChampionsFilter(name: filterName);
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Set value of filter and apply the filter
+  void setFilterValue(String filterValue) {
+    selectedFilter = data_classes.SelectedChampionsFilter(
+      name: selectedFilter.name,
+      value: filterValue,
+    );
+
+    if (selectedFilter.isValid && combinedChampions != null) {
+      combinedChampions = data_classes.ChampionsFilter.getFilteredChampions(
+        combinedChampions: combinedChampions!,
+        filter: selectedFilter,
+      );
+    }
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Set value of sort and apply sorting
+  void setSort(String sort) {
+    if (combinedChampions == null) return;
+
+    selectedSort = sort;
+    combinedChampions = data_classes.ChampionsSort.getSortedChampions(
+      combinedChampions: combinedChampions!,
+      sort: sort,
+    );
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Clears all applied filters and sort on combinedChampions
+  void clearAppliedFiltersAndSort() {
+    if (combinedChampions == null) return;
+
+    combinedChampions = data_classes.ChampionsFilter.clearFilters(
+      combinedChampions!,
+    );
+    combinedChampions = data_classes.ChampionsSort.clearSorting(
+      combinedChampions!,
+    );
+    selectedFilter = data_classes.SelectedChampionsFilter(
+      name: selectedFilter.name,
+    );
+    selectedSort = null;
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
   /// Clears all user sensitive data upon logout
   void clearData() {
-    userPlayerChampions = [];
+    isLoadingCombinedChampions = false;
+    isLoadingPlayerChampions = false;
+    champions = [];
+    userPlayerChampions = null;
+    combinedChampions = null;
     playerChampions = null;
+    selectedFilter = data_classes.SelectedChampionsFilter();
+    selectedSort = null;
+  }
+
+  /// Loads the `champions` data from local db and syncs it with server
+  Future<List<models.Champion>?> _loadChampions() async {
+    // try to load champions from db
+    final savedChampions = utilities.Database.getChampions();
+
+    if (savedChampions != null) {
+      return savedChampions;
+    }
+
+    final response = await api.ChampionsRequests.allChampions();
+    if (response == null) return null;
+
+    final _champions = response.champions;
+
+    // save champion locally for future use
+    _champions.forEach(utilities.Database.saveChampion);
+
+    // sort champions based on their name
+    return _champions.sortedBy((champion) => champion.name);
+  }
+
+  /// Loads the `playerChampions` data for the user from local db and
+  /// syncs it with server for showing in Champions screen
+  Future<List<models.PlayerChampion>?> _loadUserPlayerChampions() async {
+    final user = utilities.Database.getUser();
+    if (user?.playerId == null) return null;
+
+    final savedPlayerChampions = utilities.Database.getPlayerChampions();
+
+    if (savedPlayerChampions != null) return savedPlayerChampions;
+
+    final response =
+        await api.ChampionsRequests.playerChampions(playerId: user!.playerId!);
+
+    if (response == null) return null;
+
+    // save playerChampions locally for future use
+    response.playerChampions.forEach(utilities.Database.savePlayerChampion);
+
+    return response.playerChampions;
   }
 }
 

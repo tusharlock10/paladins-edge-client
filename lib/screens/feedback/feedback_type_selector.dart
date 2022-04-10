@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 
 class FeedbackTypeSelector extends HookConsumerWidget {
@@ -19,8 +19,9 @@ class FeedbackTypeSelector extends HookConsumerWidget {
 
     // Hooks
     final items = useMemoized(() {
-      return models.FeedbackTypes.getFeedbackType().map((feedbackType) {
-        final text = models.FeedbackTypes.getFeedbackTypeText(feedbackType);
+      return data_classes.FeedbackTypes.feedbackTypes.map((feedbackType) {
+        final text =
+            data_classes.FeedbackTypes.getFeedbackTypeText(feedbackType);
 
         return DropdownMenuItem(
           value: feedbackType,
