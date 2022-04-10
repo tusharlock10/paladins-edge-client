@@ -86,7 +86,7 @@ abstract class ChampionsSort {
         return "Health ${combinedChampion.champion.health.toInt()}";
       case _releasedDate:
         final formattedReleaseDate =
-            Jiffy(combinedChampion.champion.releaseDate).format('MMM do YY');
+            Jiffy(combinedChampion.champion.releaseDate).format('MMM do yy');
         return "Released on $formattedReleaseDate";
       case _dps:
         final dps = combinedChampion.champion.weaponDamage ~/
