@@ -41,7 +41,7 @@ class PaladinsEdgeApp extends ConsumerWidget {
     return OverlaySupport.global(
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
       child: GestureDetector(
-        onTap: () => utilities.unFocusNode(context),
+        onTap: () => utilities.unFocusKeyboard(context),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,

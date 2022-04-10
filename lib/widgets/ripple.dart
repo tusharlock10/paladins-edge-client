@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Ripple extends StatelessWidget {
   final Widget child;
-  final void Function() onTap;
+  final void Function()? onTap;
   final double? height;
   final double? width;
   final BorderRadius? borderRadius;
@@ -13,7 +13,7 @@ class Ripple extends StatelessWidget {
 
   const Ripple({
     required this.child,
-    required this.onTap,
+    this.onTap,
     this.height,
     this.width,
     this.borderRadius = BorderRadius.zero,

@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:paladinsedge/widgets/ripple.dart';
 
 class TextChip extends StatelessWidget {
   final String? text;
+  final double? textSize;
   final MaterialColor? color;
   final bool? hidden;
   final double? spacing;
   final IconData? icon;
+  final double iconSize;
   final double? width;
   final double? height;
+  final void Function()? onTap;
 
   const TextChip({
     this.text,
+    this.textSize = 10,
     this.color = Colors.grey,
     this.spacing = 0,
     this.hidden = false,
     this.icon,
+    this.iconSize = 12,
     this.width,
     this.height,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -37,34 +44,40 @@ class TextChip extends StatelessWidget {
         horizontal: spacing! / 2,
         vertical: spacing! / 2,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: color1,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon != null
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 3),
-                  child: Icon(
-                    icon,
-                    color: color2,
-                    size: 12,
-                  ),
-                )
-              : const SizedBox(),
-          Text(
-            text!,
-            style: Theme.of(context).textTheme.headline2?.copyWith(
-                  fontSize: 10,
-                  color: color2,
-                  fontWeight: FontWeight.normal,
-                ),
+      clipBehavior: Clip.hardEdge,
+      child: Ripple(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 3),
+                      child: Icon(
+                        icon,
+                        color: color2,
+                        size: iconSize,
+                      ),
+                    )
+                  : const SizedBox(),
+              Text(
+                text!,
+                style: Theme.of(context).textTheme.headline2?.copyWith(
+                      fontSize: textSize,
+                      color: color2,
+                      fontWeight: FontWeight.normal,
+                    ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -33,7 +33,7 @@ class ChampionItem extends HookWidget {
     // Methods
     final onTapChampion = useCallback(
       () {
-        utilities.unFocusNode(context);
+        utilities.unFocusKeyboard(context);
         Navigator.of(context).pushNamed(
           screens.ChampionDetail.routeName,
           arguments: champion,

@@ -16,34 +16,13 @@ class Champions extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final championsProvider = ref.read(providers.champions);
+    final isLoadingCombinedChampions = ref
+        .watch(providers.champions.select((_) => _.isLoadingCombinedChampions));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
-    // State
-    final search = useState('');
-    final isLoading = useState(true);
-
-    // Methods
-    final getData = useCallback(
-      () async {
-        await championsProvider.loadChampions();
-        isLoading.value = false;
-      },
-      [],
-    );
-
-    // Effects
     useEffect(
       () {
-        getData();
-
-        return null;
-      },
-      [],
-    );
-
-    useEffect(
-      () {
-        championsProvider.loadUserPlayerChampions();
+        championsProvider.loadCombinedChampions();
 
         return null;
       },
@@ -52,19 +31,16 @@ class Champions extends HookConsumerWidget {
 
     return Column(
       children: [
-        ChampionsSearchBar(
-          onChanged: (_search) => search.value = _search,
-          onPressed: () => search.value = '',
-        ),
+        const ChampionsSearchBar(),
         Expanded(
-          child: isLoading.value
+          child: isLoadingCombinedChampions
               ? const Center(
                   child: widgets.LoadingIndicator(
                     size: 36,
                     color: theme.themeMaterialColor,
                   ),
                 )
-              : ChampionsList(search: search.value),
+              : const ChampionsList(),
         ),
       ],
     );
