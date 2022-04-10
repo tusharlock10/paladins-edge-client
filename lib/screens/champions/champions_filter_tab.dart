@@ -93,7 +93,7 @@ class ChampionsFilterTab extends HookConsumerWidget {
                           Text(
                             data_classes.ChampionsFilter.getFilterDescription(
                               filterName,
-                            )!,
+                            ),
                             style: textTheme.bodyText1,
                           ),
                         if (isFilterNameSelected) const SizedBox(height: 10),

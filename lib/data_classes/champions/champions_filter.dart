@@ -36,7 +36,7 @@ abstract class ChampionsFilter {
     }
   }
 
-  static String? getFilterDescription(
+  static String getFilterDescription(
     String filter,
   ) {
     switch (filter) {
@@ -47,7 +47,7 @@ abstract class ChampionsFilter {
       case _freeRotation:
         return "Filter champions that are in free rotation";
       default:
-        return null;
+        return '';
     }
   }
 

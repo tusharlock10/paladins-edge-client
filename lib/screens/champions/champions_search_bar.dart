@@ -40,7 +40,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
     final onClear = useCallback(
       () {
         textController.clear();
-        championsProvider.clearAppliedFilters();
+        championsProvider.clearAppliedFiltersAndSort();
       },
       [],
     );

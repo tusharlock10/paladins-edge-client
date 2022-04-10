@@ -29,6 +29,9 @@ class _ChampionsNotifier extends ChangeNotifier {
   data_classes.SelectedChampionsFilter selectedFilter =
       data_classes.SelectedChampionsFilter();
 
+  /// holds the currently active filter
+  String? selectedSort;
+
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
   Future<void> loadCombinedChampions() async {
@@ -142,24 +145,47 @@ class _ChampionsNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  /// Clears all applied filters on combinedChampions
-  void clearAppliedFilters() {
+  /// Set value of sort and apply sorting
+  void setSort(String sort) {
+    if (combinedChampions == null) return;
+
+    selectedSort = sort;
+    combinedChampions = data_classes.ChampionsSort.getSortedChampions(
+      combinedChampions: combinedChampions!,
+      sort: sort,
+    );
+
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Clears all applied filters and sort on combinedChampions
+  void clearAppliedFiltersAndSort() {
     if (combinedChampions == null) return;
 
     combinedChampions = data_classes.ChampionsFilter.clearFilters(
       combinedChampions!,
     );
+    combinedChampions = data_classes.ChampionsSort.clearSorting(
+      combinedChampions!,
+    );
     selectedFilter = data_classes.SelectedChampionsFilter(
       name: selectedFilter.name,
     );
+    selectedSort = null;
 
     utilities.postFrameCallback(notifyListeners);
   }
 
   /// Clears all user sensitive data upon logout
   void clearData() {
-    userPlayerChampions = [];
+    isLoadingCombinedChampions = false;
+    isLoadingPlayerChampions = false;
+    champions = [];
+    userPlayerChampions = null;
+    combinedChampions = null;
     playerChampions = null;
+    selectedFilter = data_classes.SelectedChampionsFilter();
+    selectedSort = null;
   }
 
   /// Loads the `champions` data from local db and syncs it with server
