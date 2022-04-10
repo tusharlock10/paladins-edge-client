@@ -4,13 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _FeedbackNotifier extends ChangeNotifier {
   bool isSubmitting = false;
   String description = '';
-  String selectedFeedbackType = models.FeedbackTypes.featureRequest;
+  String selectedFeedbackType = data_classes.FeedbackTypes.featureRequest;
   XFile? selectedImage;
   Uint8List? selectedImageBytes;
 
@@ -71,7 +72,7 @@ class _FeedbackNotifier extends ChangeNotifier {
   void clearData() {
     isSubmitting = false;
     description = '';
-    selectedFeedbackType = models.FeedbackTypes.featureRequest;
+    selectedFeedbackType = data_classes.FeedbackTypes.featureRequest;
     selectedImage = null;
     selectedImageBytes = null;
   }

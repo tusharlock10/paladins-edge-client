@@ -39,7 +39,7 @@ class BottomTabs extends HookWidget {
       drawer: const widgets.AppDrawer(),
       drawerEnableOpenDragGesture: false,
       onDrawerChanged: (isOpened) =>
-          isOpened ? utilities.unFocusNode(context) : null,
+          isOpened ? utilities.unFocusKeyboard(context) : null,
       body: IndexedStack(
         children: _pages.map((page) => page.screen).toList(),
         index: selectedPageIndex.value,

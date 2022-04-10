@@ -29,7 +29,7 @@ class ChampionLoadoutCard extends HookWidget {
       () {
         if (card == null || champion == null) return;
 
-        utilities.unFocusNode(context);
+        utilities.unFocusKeyboard(context);
         widgets.showLoadoutCardDetailSheet(
           data_classes.ShowLoadoutDetailsOptions(
             card: card!,

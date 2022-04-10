@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 0.14.2
+version: 0.15.0
 
 homepage: "https://paladinsedge.app"
 
@@ -69,6 +69,7 @@ dependencies:
   mime: ^1.0.1
   image_picker: ^0.8.4+11
   community_material_icon: ^5.9.55
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:

@@ -43,7 +43,7 @@ class Search extends HookConsumerWidget {
         isLoading.value = false;
 
         if (exactMatch) {
-          utilities.unFocusNode(context);
+          utilities.unFocusKeyboard(context);
           Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
         }
       },

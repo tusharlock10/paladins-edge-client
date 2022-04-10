@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champion_item.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class ChampionsList extends HookConsumerWidget {
-  final String search;
-  const ChampionsList({
-    required this.search,
-    Key? key,
-  }) : super(key: key);
+  const ChampionsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final champions = ref.read(providers.champions).champions;
-    final userPlayerChampions =
-        ref.watch(providers.champions.select((_) => _.userPlayerChampions));
+    final combinedChampions =
+        ref.watch(providers.champions.select((_) => _.combinedChampions));
 
     // Variables
     int crossAxisCount;
@@ -41,47 +34,29 @@ class ChampionsList extends HookConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    // Hooks
-    final newChampions = useMemoized(
-      () {
-        // modify the champions list according to search
-        return champions.where((champion) {
-          if (search == '') {
-            return true;
-          } else if (champion.name
-              .toUpperCase()
-              .contains(search.toUpperCase())) {
-            return true;
-          }
-
-          return false;
-        });
-      },
-      [search],
-    );
-
-    return GridView.count(
-      crossAxisCount: crossAxisCount,
-      childAspectRatio: childAspectRatio,
-      mainAxisSpacing: 5,
-      physics: const BouncingScrollPhysics(),
-      padding:
-          EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20),
-      children: newChampions.map(
-        (champion) {
-          final playerChampion = utilities.findPlayerChampion(
-            userPlayerChampions,
-            champion.championId,
+    return combinedChampions == null
+        ? const SizedBox()
+        : GridView.count(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: childAspectRatio,
+            mainAxisSpacing: 5,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 20,
+            ),
+            children: combinedChampions
+                .where((combinedChampion) => !combinedChampion.hide)
+                .map(
+              (combinedChampion) {
+                return ChampionItem(
+                  champion: combinedChampion.champion,
+                  playerChampion: combinedChampion.playerChampion,
+                  height: itemHeight,
+                  width: itemWidth,
+                );
+              },
+            ).toList(),
           );
-
-          return ChampionItem(
-            champion: champion,
-            playerChampion: playerChampion,
-            height: itemHeight,
-            width: itemWidth,
-          );
-        },
-      ).toList(),
-    );
   }
 }
