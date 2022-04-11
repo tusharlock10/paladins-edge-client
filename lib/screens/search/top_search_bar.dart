@@ -21,9 +21,10 @@ class TopSearchBar extends HookConsumerWidget {
     final searchProvider = ref.read(providers.players);
 
     // Variables
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final brightness = Theme.of(context).brightness;
     final textController = useTextEditingController();
-    final textStyle = theme.textTheme.headline6?.copyWith(
+    final textStyle = textTheme.headline6?.copyWith(
       color: Colors.white,
       fontSize: 16,
     );
@@ -39,13 +40,12 @@ class TopSearchBar extends HookConsumerWidget {
 
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: theme.brightness,
+        statusBarBrightness: brightness,
       ),
       title: TextField(
         controller: textController,
         maxLength: 30,
         style: textStyle,
-        cursorColor: theme.primaryColor,
         onSubmitted: isLoading ? null : onSearch,
         decoration: InputDecoration(
           hintText: 'Search player',
