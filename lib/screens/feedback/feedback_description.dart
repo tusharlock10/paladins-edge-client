@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/theme/index.dart' as theme;
 
 class FeedbackDescription extends ConsumerWidget {
   final double? width;
@@ -15,6 +16,11 @@ class FeedbackDescription extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final feedbackProvider = ref.read(providers.feedback);
+
+    // Variables
+    final cursorColor = Theme.of(context).brightness == Brightness.dark
+        ? theme.darkThemeMaterialColor.shade50
+        : null;
 
     return SizedBox(
       width: width,
@@ -50,18 +56,28 @@ class FeedbackDescription extends ConsumerWidget {
               ),
             ),
             Expanded(
-              child: TextField(
-                minLines: null,
-                maxLines: null,
-                expands: true,
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  border: InputBorder.none,
-                  hintText: 'Write your feedback here...',
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  textSelectionTheme: TextSelectionThemeData(
+                    cursorColor: cursorColor,
+                    selectionColor: cursorColor,
+                    selectionHandleColor: cursorColor,
+                  ),
                 ),
-                style: const TextStyle(fontSize: 18),
-                onChanged: feedbackProvider.changeDescription,
+                child: TextField(
+                  minLines: null,
+                  maxLines: null,
+                  textInputAction: TextInputAction.newline,
+                  expands: true,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    border: InputBorder.none,
+                    hintText: 'Write your feedback here...',
+                  ),
+                  style: const TextStyle(fontSize: 18),
+                  onChanged: feedbackProvider.changeDescription,
+                ),
               ),
             ),
           ],
