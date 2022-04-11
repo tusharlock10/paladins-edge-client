@@ -29,9 +29,9 @@ final lightTheme = ThemeData(
     color: Colors.white,
   ),
   textSelectionTheme: TextSelectionThemeData(
-    selectionHandleColor: themeMaterialColor.shade100,
-    selectionColor: themeMaterialColor.shade100,
-    cursorColor: themeMaterialColor.shade100,
+    selectionHandleColor: themeMaterialColor.shade300,
+    selectionColor: themeMaterialColor.shade300,
+    cursorColor: themeMaterialColor.shade300,
   ),
   brightness: Brightness.light,
   fontFamily: GoogleFonts.manrope().fontFamily,
@@ -147,10 +147,10 @@ final darkTheme = ThemeData(
     shadowColor: darkThemeMaterialColor.shade50,
     color: darkThemeMaterialColor.shade300,
   ),
-  textSelectionTheme: const TextSelectionThemeData(
-    selectionHandleColor: Color(0xff4d5c63),
-    selectionColor: Color(0xff4d5c63),
-    cursorColor: Color(0xff4d5c63),
+  textSelectionTheme: TextSelectionThemeData(
+    selectionHandleColor: darkThemeMaterialColor.shade300,
+    selectionColor: darkThemeMaterialColor.shade300,
+    cursorColor: darkThemeMaterialColor.shade300,
   ),
   brightness: Brightness.dark,
   fontFamily: GoogleFonts.manrope().fontFamily,
