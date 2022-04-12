@@ -39,6 +39,10 @@ class TopSearchBar extends HookConsumerWidget {
     );
 
     return SliverAppBar(
+      snap: true,
+      floating: true,
+      elevation: 4,
+      forceElevated: true,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: brightness,
       ),
@@ -52,31 +56,30 @@ class TopSearchBar extends HookConsumerWidget {
           counterText: "",
           hintStyle: textStyle,
           border: InputBorder.none,
-          suffixIcon: IconButton(
-            color: Colors.white,
-            iconSize: 18,
-            icon: const Icon(Icons.clear),
-            onPressed: onClear,
-          ),
         ),
       ),
       actions: [
-        IconButton(
-          icon: isLoading
-              ? const SpinKitRing(
-                  lineWidth: 2,
-                  color: Colors.white,
-                  size: 20,
-                )
-              : const Icon(Icons.search),
-          onPressed: isLoading ? null : () => onSearch(textController.text),
+        Row(
+          children: [
+            IconButton(
+              icon: isLoading
+                  ? const SpinKitRing(
+                      lineWidth: 2,
+                      color: Colors.white,
+                      size: 20,
+                    )
+                  : const Icon(Icons.search),
+              onPressed: isLoading ? null : () => onSearch(textController.text),
+            ),
+            IconButton(
+              iconSize: 18,
+              icon: const Icon(Icons.clear),
+              onPressed: onClear,
+            ),
+            const SizedBox(width: 10),
+          ],
         ),
       ],
-      floating: true,
-      elevation: 4,
-      forceElevated: true,
-      iconTheme: const IconThemeData(color: Colors.white),
-      toolbarTextStyle: const TextStyle(color: Colors.white),
     );
   }
 }

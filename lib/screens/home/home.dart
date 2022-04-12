@@ -11,20 +11,29 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          title: const Text('Home'),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          snap: true,
+          floating: true,
+          elevation: 4,
+          forceElevated: true,
+          title: const Text(
+            'Paladins Edge',
+            style: TextStyle(fontSize: 20),
+          ),
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarBrightness: Theme.of(context).brightness,
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: const [
+        const SliverList(
+          delegate: SliverChildListDelegate.fixed(
+            [
+              SizedBox(height: 20),
               QueueDetails(),
               QueueChart(),
               BountyStoreDetails(),
+              SizedBox(height: 20),
             ],
           ),
         ),

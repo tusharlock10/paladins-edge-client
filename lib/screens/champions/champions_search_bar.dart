@@ -52,7 +52,11 @@ class ChampionsSearchBar extends HookConsumerWidget {
       [],
     );
 
-    return AppBar(
+    return SliverAppBar(
+      snap: true,
+      floating: true,
+      elevation: 4,
+      forceElevated: true,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Theme.of(context).brightness,
       ),

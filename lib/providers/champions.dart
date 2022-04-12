@@ -8,10 +8,10 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
   /// loading state for combinedChampions
-  bool isLoadingCombinedChampions = false;
+  var isLoadingCombinedChampions = false;
 
   /// loading state for playerChampions
-  bool isLoadingPlayerChampions = false;
+  var isLoadingPlayerChampions = false;
 
   /// holds data for all champions
   List<models.Champion> champions = [];
@@ -26,11 +26,10 @@ class _ChampionsNotifier extends ChangeNotifier {
   List<models.PlayerChampion>? playerChampions;
 
   /// holds the value of currently active filter
-  data_classes.SelectedChampionsFilter selectedFilter =
-      data_classes.SelectedChampionsFilter();
+  var selectedFilter = data_classes.SelectedChampionsFilter();
 
   /// holds the currently active filter
-  String? selectedSort;
+  String selectedSort = data_classes.ChampionsSort.defaultSort;
 
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
@@ -65,6 +64,12 @@ class _ChampionsNotifier extends ChangeNotifier {
         playerChampion: playerChampion,
       );
     }).toList();
+
+    // sort champions based on the selectedSort
+    combinedChampions = data_classes.ChampionsSort.getSortedChampions(
+      combinedChampions: combinedChampions!,
+      sort: selectedSort,
+    );
 
     utilities.postFrameCallback(notifyListeners);
   }
@@ -171,7 +176,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     selectedFilter = data_classes.SelectedChampionsFilter(
       name: selectedFilter.name,
     );
-    selectedSort = null;
+    selectedSort = data_classes.ChampionsSort.defaultSort;
 
     utilities.postFrameCallback(notifyListeners);
   }
@@ -185,7 +190,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     combinedChampions = null;
     playerChampions = null;
     selectedFilter = data_classes.SelectedChampionsFilter();
-    selectedSort = null;
+    selectedSort = data_classes.ChampionsSort.defaultSort;
   }
 
   /// Loads the `champions` data from local db and syncs it with server

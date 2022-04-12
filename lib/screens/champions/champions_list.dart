@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champion_item.dart';
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionsList extends HookConsumerWidget {
   const ChampionsList({Key? key}) : super(key: key);
@@ -11,13 +12,18 @@ class ChampionsList extends HookConsumerWidget {
     // Providers
     final combinedChampions =
         ref.watch(providers.champions.select((_) => _.combinedChampions));
+    final isLoadingCombinedChampions = ref
+        .watch(providers.champions.select((_) => _.isLoadingCombinedChampions));
 
     // Variables
     int crossAxisCount;
     double horizontalPadding;
     double width;
     final size = MediaQuery.of(context).size;
+    final paddingTop = MediaQuery.of(context).padding.top;
     const itemHeight = 120.0;
+    final filteredCombinedChampions =
+        combinedChampions?.where((_) => !_.hide).toList();
 
     if (size.height < size.width) {
       // for landscape mode
@@ -34,29 +40,48 @@ class ChampionsList extends HookConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    return combinedChampions == null
-        ? const SizedBox()
-        : GridView.count(
-            crossAxisCount: crossAxisCount,
-            childAspectRatio: childAspectRatio,
-            mainAxisSpacing: 5,
-            physics: const BouncingScrollPhysics(),
+    return isLoadingCombinedChampions || filteredCombinedChampions == null
+        ? SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                SizedBox(
+                  height: size.height / 2 - 50 - paddingTop,
+                ),
+                isLoadingCombinedChampions
+                    ? const widgets.LoadingIndicator(
+                        size: 36,
+                      )
+                    : const Center(
+                        child: Text('Unable to load champions data'),
+                      ),
+              ],
+            ),
+          )
+        : SliverPadding(
             padding: EdgeInsets.symmetric(
               horizontal: horizontalPadding,
               vertical: 20,
             ),
-            children: combinedChampions
-                .where((combinedChampion) => !combinedChampion.hide)
-                .map(
-              (combinedChampion) {
-                return ChampionItem(
-                  champion: combinedChampion.champion,
-                  playerChampion: combinedChampion.playerChampion,
-                  height: itemHeight,
-                  width: itemWidth,
-                );
-              },
-            ).toList(),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                mainAxisSpacing: 5,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final combinedChampion = filteredCombinedChampions[index];
+
+                  return ChampionItem(
+                    champion: combinedChampion.champion,
+                    playerChampion: combinedChampion.playerChampion,
+                    height: itemHeight,
+                    width: itemWidth,
+                  );
+                },
+                childCount: filteredCombinedChampions.length,
+              ),
+            ),
           );
   }
 }
