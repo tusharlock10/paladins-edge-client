@@ -5,14 +5,14 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/champion_detail/abilities.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_app_bar.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_heading.dart';
-import 'package:paladinsedge/screens/champion_detail/loadout_cards.dart';
-import 'package:paladinsedge/screens/champion_detail/lore.dart';
-import 'package:paladinsedge/screens/champion_detail/player_stats.dart';
-import 'package:paladinsedge/screens/champion_detail/talents.dart';
-import 'package:paladinsedge/screens/champion_detail/title_label.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_abilities.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_app_bar.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_heading.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_loadout_cards.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_lore.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_player_stats.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_talents.dart';
+import 'package:paladinsedge/screens/champion_detail/champion_detail_title_label.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -104,21 +104,21 @@ class ChampionDetail extends HookConsumerWidget {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            const ChampionAppBar(),
+            const ChampionDetailAppBar(),
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const ChampionHeading(),
-                  const TitleLabel(label: 'Lore'),
-                  const Lore(),
-                  const TitleLabel(label: 'Talents'),
-                  const Talents(),
-                  const TitleLabel(label: 'Abilities'),
-                  const Abilities(),
-                  const TitleLabel(label: 'Loadout Cards'),
-                  const LoadoutCards(),
-                  const TitleLabel(label: 'Your Stats'),
-                  const PlayerStats(),
+                  const ChampionDetailHeading(),
+                  const ChampionDetailTitleLabel(label: 'Lore'),
+                  const ChampionDetailLore(),
+                  const ChampionDetailTitleLabel(label: 'Talents'),
+                  const ChampionDetailTalents(),
+                  const ChampionDetailTitleLabel(label: 'Abilities'),
+                  const ChampionDetailAbilities(),
+                  const ChampionDetailTitleLabel(label: 'Loadout Cards'),
+                  const ChampionDetailLoadoutCards(),
+                  const ChampionDetailTitleLabel(label: 'Your Stats'),
+                  const ChampionDetailPlayerStats(),
                   const SizedBox(height: 50),
                 ],
               ),

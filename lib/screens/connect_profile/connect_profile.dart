@@ -6,10 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/connect_profile/create_loadout.dart';
-import 'package:paladinsedge/screens/connect_profile/search_list.dart';
-import 'package:paladinsedge/screens/connect_profile/status_indicator.dart';
-import 'package:paladinsedge/screens/connect_profile/verified_player.dart';
+import 'package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart';
+import 'package:paladinsedge/screens/connect_profile/connect_profile_search_list.dart';
+import 'package:paladinsedge/screens/connect_profile/connect_profile_status_indicator.dart';
+import 'package:paladinsedge/screens/connect_profile/connect_profile_verified_player.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
@@ -141,24 +141,24 @@ class ConnectProfile extends HookConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 15),
-            StatusIndicator(currentStep: step.value),
+            ConnectProfileStatusIndicator(currentStep: step.value),
             Expanded(
               child: IndexedStack(
                 index: step.value,
                 children: [
-                  SearchList(
+                  ConnectProfileSearchList(
                     isLoading: isLoading.value,
                     onSearch: (search) => onSearch(search, ref),
                     onTap: onTapSearchItem,
                   ),
-                  CreateLoadout(
+                  CreateProfileLoadoutVerifier(
                     isVerifying: isVerifying.value,
                     otp: otp.value,
                     selectedPlayer: selectedPlayer.value,
                     onVerify: onVerify,
                     onChangeName: () => step.value--,
                   ),
-                  const VerifiedPlayer(),
+                  const ConnectProfileVerifiedPlayer(),
                 ],
               ),
             ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:paladinsedge/screens/home/bounty_store_details.dart';
-import 'package:paladinsedge/screens/home/queue_chart.dart';
-import 'package:paladinsedge/screens/home/queue_details.dart';
+import 'package:paladinsedge/screens/home/home_bounty_store_details.dart';
+import 'package:paladinsedge/screens/home/home_queue_chart.dart';
+import 'package:paladinsedge/screens/home/home_queue_details.dart';
 
 class Home extends StatelessWidget {
   static const routeName = '/home';
@@ -30,9 +30,9 @@ class Home extends StatelessWidget {
           delegate: SliverChildListDelegate.fixed(
             [
               SizedBox(height: 20),
-              QueueDetails(),
-              QueueChart(),
-              BountyStoreDetails(),
+              HomeQueueDetails(),
+              HomeQueueChart(),
+              HomeBountyStoreDetails(),
               SizedBox(height: 20),
             ],
           ),

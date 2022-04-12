@@ -4,9 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/match_detail/match_detail_player.dart';
+import 'package:paladinsedge/screens/match_detail/match_detail_stats.dart';
 import 'package:paladinsedge/screens/match_detail/match_detail_team_header.dart';
-import 'package:paladinsedge/screens/match_detail/match_player.dart';
-import 'package:paladinsedge/screens/match_detail/match_stats.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
@@ -72,7 +72,7 @@ class MatchDetailList extends HookConsumerWidget {
     }
 
     // TODO: Optimize this shitty code
-    matchPlayerWidgets.add(const MatchStats());
+    matchPlayerWidgets.add(const MatchDetailStats());
 
     for (int index = 0; index < matchDetails.matchPlayers.length; index++) {
       final matchPlayer = matchDetails.matchPlayers[index];
@@ -90,9 +90,9 @@ class MatchDetailList extends HookConsumerWidget {
             matchPlayer: matchPlayer,
           ),
         );
-        matchPlayerWidgets.add(MatchPlayer(matchPlayer: matchPlayer));
+        matchPlayerWidgets.add(MatchDetailPlayer(matchPlayer: matchPlayer));
       } else {
-        matchPlayerWidgets.add(MatchPlayer(matchPlayer: matchPlayer));
+        matchPlayerWidgets.add(MatchDetailPlayer(matchPlayer: matchPlayer));
       }
     }
 
