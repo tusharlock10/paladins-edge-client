@@ -122,15 +122,13 @@ class PlayerDetail extends HookConsumerWidget {
                 size: 36,
               ),
             )
-          : Column(
+          : Stack(
               children: [
+                const PlayerDetailMatches(),
                 PlayerDetailHeader(
                   player: player,
                   onForceUpdate: onForceUpdate,
                   isLoading: isLoadingPlayerData,
-                ),
-                const Expanded(
-                  child: PlayerDetailMatches(),
                 ),
               ],
             ),

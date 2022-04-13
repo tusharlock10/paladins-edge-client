@@ -29,6 +29,7 @@ class PlayerDetailMatches extends ConsumerWidget {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: playerMatches.matches.length,
+      padding: const EdgeInsets.only(top: 130, bottom: 50),
       itemBuilder: (context, index) {
         final match = playerMatches.matches[index];
 
