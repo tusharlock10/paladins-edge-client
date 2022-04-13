@@ -141,7 +141,6 @@ class Loadouts extends HookConsumerWidget {
                     top: 20,
                     bottom: 70,
                   ),
-                  physics: const BouncingScrollPhysics(),
                   itemCount: loadouts.length,
                   gridDelegate: ResponsiveGridDelegate(
                     childAspectRatio: LoadoutItem.loadoutAspectRatio,

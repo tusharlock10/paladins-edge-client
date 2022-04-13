@@ -102,7 +102,6 @@ class ChampionDetail extends HookConsumerWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: onScrollNotification,
         child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
           slivers: [
             const ChampionDetailAppBar(),
             SliverList(

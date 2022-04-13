@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -55,11 +54,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
     return SliverAppBar(
       snap: true,
       floating: true,
-      elevation: 4,
       forceElevated: true,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: Theme.of(context).brightness,
-      ),
       actions: [
         Row(
           children: [

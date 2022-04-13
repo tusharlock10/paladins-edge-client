@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import "package:google_fonts/google_fonts.dart";
 import 'package:paladinsedge/theme/colors.dart';
 
@@ -10,8 +11,11 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
     elevation: 7,
-    shadowColor: darkThemeMaterialColor.withOpacity(0.75),
+    shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     centerTitle: true,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+    ),
     iconTheme: const IconThemeData(
       color: Colors.white,
       size: 20,
@@ -27,6 +31,13 @@ final lightTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     color: Colors.white,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      elevation: MaterialStateProperty.all(7),
+      shadowColor:
+          MaterialStateProperty.all(darkThemeMaterialColor.withOpacity(0.35)),
+    ),
   ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: themeMaterialColor.shade300,
@@ -131,6 +142,9 @@ final darkTheme = ThemeData(
     shadowColor: darkThemeMaterialColor.shade50,
     backgroundColor: darkThemeMaterialColor.shade50,
     centerTitle: true,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+    ),
     iconTheme: const IconThemeData(
       color: Colors.white,
       size: 20,
@@ -146,6 +160,12 @@ final darkTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.shade50,
     color: darkThemeMaterialColor.shade300,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      elevation: MaterialStateProperty.all(7),
+      shadowColor: MaterialStateProperty.all(darkThemeMaterialColor.shade50),
+    ),
   ),
   textSelectionTheme: TextSelectionThemeData(
     selectionHandleColor: darkThemeMaterialColor.shade300,

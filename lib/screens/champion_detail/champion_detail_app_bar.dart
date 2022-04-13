@@ -30,7 +30,6 @@ class ChampionDetailAppBar extends StatelessWidget {
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       forceElevated: true,
-      elevation: 7,
       floating: true,
       snap: true,
       backgroundColor: theme.darkThemeMaterialColor,

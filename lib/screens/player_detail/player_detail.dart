@@ -18,17 +18,9 @@ class PlayerDetail extends HookConsumerWidget {
     // Providers
     final player = ref.watch(providers.players.select((_) => _.playerData));
     final playerId = ref.watch(providers.players.select((_) => _.playerId));
-    final isLoadingPlayerData =
-        ref.watch(providers.players.select((_) => _.isLoadingPlayerData));
     final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
     final championsProvider = ref.read(providers.champions);
-
-    // Methods
-    final onForceUpdate = useCallback(
-      () => playersProvider.getPlayerData(forceUpdate: true),
-      [playersProvider.playerData],
-    );
 
     // Effects
     useEffect(
@@ -45,16 +37,12 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [playerId],
+      [],
     );
 
     useEffect(
       () {
         if (playerId == null) return;
-        if (player == null) return;
-
-        // only fetch playerMatches and playerChampions
-        // when we have received player from the server
 
         // get the playerMatches and playerChampions from server
         matchesProvider.getPlayerMatches(playerId);
@@ -62,7 +50,7 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [player],
+      [],
     );
 
     // Methods
@@ -120,16 +108,13 @@ class PlayerDetail extends HookConsumerWidget {
           ? const Center(
               child: widgets.LoadingIndicator(
                 size: 36,
+                label: Text('Loading player'),
               ),
             )
           : Stack(
-              children: [
-                const PlayerDetailMatches(),
-                PlayerDetailHeader(
-                  player: player,
-                  onForceUpdate: onForceUpdate,
-                  isLoading: isLoadingPlayerData,
-                ),
+              children: const [
+                PlayerDetailMatches(),
+                PlayerDetailHeader(),
               ],
             ),
     );

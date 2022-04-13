@@ -121,7 +121,6 @@ class _LoadoutCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [

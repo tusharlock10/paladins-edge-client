@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,7 +21,6 @@ class SearchAppBar extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final brightness = Theme.of(context).brightness;
     final textController = useTextEditingController();
     final textStyle = textTheme.headline6?.copyWith(
       color: Colors.white,
@@ -41,11 +39,7 @@ class SearchAppBar extends HookConsumerWidget {
     return SliverAppBar(
       snap: true,
       floating: true,
-      elevation: 4,
       forceElevated: true,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: brightness,
-      ),
       title: TextField(
         controller: textController,
         maxLength: 30,

@@ -107,6 +107,9 @@ abstract class Database {
   static void saveSearchHistory(models.SearchHistory searchItem) =>
       _searchHistoryBox?.add(searchItem);
 
+  static void saveManySearchHistory(List<models.SearchHistory> searchHistory) =>
+      _searchHistoryBox?.addAll(searchHistory);
+
   static void saveChampion(models.Champion champion) =>
       _championBox?.add(champion);
 
@@ -214,11 +217,6 @@ abstract class Database {
     return queueTimeline == null || queueTimeline.isEmpty
         ? null
         : queueTimeline;
-  }
-
-  // delete methods
-  static Future<void> deleteSearchItem(int index) async {
-    await _searchHistoryBox?.deleteAt(index);
   }
 
   // clear all the boxes

@@ -90,6 +90,15 @@ class _PlayersNotifier extends ChangeNotifier {
       searchHistory = _searchHistory;
     }
 
+    // remove searchHistory older than 7 days
+    searchHistory = searchHistory
+        .where(
+          (searchItem) =>
+              DateTime.now().difference(searchItem.time) <
+              const Duration(days: 7),
+        )
+        .toList();
+
     // sort search history on basis of time
     searchHistory.sort((a, b) => b.time.compareTo(a.time));
 
@@ -102,10 +111,7 @@ class _PlayersNotifier extends ChangeNotifier {
   }) async {
     // remove existing searchItem
     final index = searchHistory.indexWhere((_) => _.playerId == playerId);
-    if (index != -1) {
-      await utilities.Database.deleteSearchItem(index);
-      searchHistory.removeAt(index);
-    }
+    if (index != -1) searchHistory.removeAt(index);
 
     final searchItem = models.SearchHistory(
       playerName: playerName,
@@ -113,8 +119,11 @@ class _PlayersNotifier extends ChangeNotifier {
       time: DateTime.now(),
     );
 
-    utilities.Database.saveSearchHistory(searchItem);
     searchHistory.insert(0, searchItem);
+
+    // remove all entries from searchBox and reinsert entries
+    await utilities.Database.searchHistoryBox?.clear();
+    searchHistory.forEach(utilities.Database.saveSearchHistory);
   }
 
   Future<bool> searchByName({

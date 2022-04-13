@@ -36,7 +36,6 @@ class ChampionDetailLoadoutCards extends HookWidget {
         child: NotificationListener<ScrollNotification>(
           onNotification: (_) => true,
           child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             itemCount: champion.cards.length,
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),

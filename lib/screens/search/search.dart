@@ -23,7 +23,6 @@ class Search extends HookConsumerWidget {
 
     // State
     final isLoading = useState(false);
-    final playerName = useState('');
 
     // Methods
     final onSearch = useCallback(
@@ -50,14 +49,6 @@ class Search extends HookConsumerWidget {
       [],
     );
 
-    final onTapSearchHistory = useCallback(
-      (String _playerName) {
-        playerName.value = _playerName;
-        onSearch(playerName.value, addInSearchHistory: false);
-      },
-      [],
-    );
-
     // Effects
     useEffect(
       () {
@@ -75,10 +66,7 @@ class Search extends HookConsumerWidget {
         SearchAppBar(isLoading: isLoading.value, onSearch: onSearch),
         searchProvider.topSearchList.isNotEmpty
             ? const SearchTopList()
-            : SearchHistory(
-                playerName: playerName.value,
-                onTap: onTapSearchHistory,
-              ),
+            : const SearchHistory(),
         if (searchProvider.lowerSearchList.isNotEmpty) const SearchLowerList(),
       ],
     );

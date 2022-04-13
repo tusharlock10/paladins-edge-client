@@ -37,7 +37,6 @@ class FriendsList extends ConsumerWidget {
               key: friendsListKey,
               padding: const EdgeInsets.only(top: 10),
               initialItemCount: friendsList.length,
-              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index, animation) {
                 final friend = friendsList[index];
 

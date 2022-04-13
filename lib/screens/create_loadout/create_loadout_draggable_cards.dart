@@ -34,7 +34,6 @@ class CreateLoadoutDraggableCards extends HookConsumerWidget {
     return SizedBox(
       height: cardHeight + 10,
       child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: champion.cards.length,
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
