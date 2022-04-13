@@ -42,13 +42,9 @@ class UpdateButton extends StatelessWidget {
             width: 128,
             child: OutlinedButton(
               onPressed: null,
-              style: ButtonStyle(
-                side: MaterialStateProperty.all(
-                  const BorderSide(
-                    color: Colors.grey,
-                  ),
-                ),
-                shape: MaterialStateProperty.all(const StadiumBorder()),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.grey),
+                shape: const StadiumBorder(),
               ),
               child: const widgets.LoadingIndicator(
                 size: 16,
@@ -67,7 +63,6 @@ class UpdateButton extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.green,
-                elevation: 0,
                 shape: const StadiumBorder(),
               ),
               onPressed: onPressed,

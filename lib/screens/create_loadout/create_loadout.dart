@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/create_loadout/create_loadout_draggable_cards.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
-import 'package:paladinsedge/screens/create_loadout/draggable_cards.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
@@ -121,7 +121,7 @@ class CreateLoadout extends HookConsumerWidget {
 '''),
               ),
               SizedBox(height: 30),
-              DraggableCards(),
+              CreateLoadoutDraggableCards(),
               SizedBox(height: 30),
             ],
           ),

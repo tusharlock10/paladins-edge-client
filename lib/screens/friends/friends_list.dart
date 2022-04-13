@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friend_item.dart';
-import 'package:paladinsedge/screens/friends/selected_friend.dart';
+import 'package:paladinsedge/screens/friends/friend_selected.dart';
 
 class FriendsList extends ConsumerWidget {
   final GlobalKey<AnimatedListState> friendsListKey;
@@ -28,7 +28,7 @@ class FriendsList extends ConsumerWidget {
       child: Column(
         children: [
           Text("Total friends : ${friendsList.length}"),
-          SelectedFriend(
+          FriendSelected(
             selectedFriend: selectedFriend,
             onFavouriteFriend: onFavouriteFriend,
           ),
@@ -37,7 +37,6 @@ class FriendsList extends ConsumerWidget {
               key: friendsListKey,
               padding: const EdgeInsets.only(top: 10),
               initialItemCount: friendsList.length,
-              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index, animation) {
                 final friend = friendsList[index];
 

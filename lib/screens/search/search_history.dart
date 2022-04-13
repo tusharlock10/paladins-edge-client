@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:timer_builder/timer_builder.dart';
 
-class SearchHistory extends ConsumerWidget {
-  final String playerName;
-  final void Function(String) onTap;
-
-  const SearchHistory({
-    required this.playerName,
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
+class SearchHistory extends HookConsumerWidget {
+  const SearchHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final searchProvider = ref.watch(providers.players);
+    final playersProvider = ref.watch(providers.players);
+    final searchHistory =
+        ref.watch(providers.players.select((_) => _.searchHistory));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
+    // Methods
+    final onTap = useCallback(
+      (String playerId) {
+        playersProvider.setPlayerId(playerId);
+        Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
+      },
+      [],
+    );
+
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final search = searchProvider.searchHistory[index];
+          final search = searchHistory[index];
 
           return ListTile(
-            onTap: () => onTap(search.playerName),
+            onTap: () => onTap(search.playerId),
             title: Text(
               search.playerName,
               style: textTheme.headline6?.copyWith(fontSize: 16),
@@ -44,7 +50,7 @@ class SearchHistory extends ConsumerWidget {
             ),
           );
         },
-        childCount: searchProvider.searchHistory.length,
+        childCount: searchHistory.length,
       ),
     );
   }

@@ -38,8 +38,6 @@ class ChampionItem extends HookConsumerWidget {
     // Hooks
     final sortTextChip = useMemoized(
       () {
-        if (selectedSort == null) return null;
-
         return data_classes.ChampionsSort.getSortTextChipValue(
           sort: selectedSort,
           combinedChampion: data_classes.CombinedChampion(

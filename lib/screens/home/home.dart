@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:paladinsedge/screens/home/bounty_store_details.dart';
-import 'package:paladinsedge/screens/home/queue_chart.dart';
-import 'package:paladinsedge/screens/home/queue_details.dart';
+import 'package:paladinsedge/screens/home/home_bounty_store_details.dart';
+import 'package:paladinsedge/screens/home/home_queue_chart.dart';
+import 'package:paladinsedge/screens/home/home_queue_details.dart';
 
 class Home extends StatelessWidget {
   static const routeName = '/home';
@@ -11,20 +10,25 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          title: const Text('Home'),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Theme.of(context).brightness,
+    return const CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          snap: true,
+          floating: true,
+          forceElevated: true,
+          title: Text(
+            'Paladins Edge',
+            style: TextStyle(fontSize: 20),
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: const [
-              QueueDetails(),
-              QueueChart(),
-              BountyStoreDetails(),
+        SliverList(
+          delegate: SliverChildListDelegate.fixed(
+            [
+              SizedBox(height: 20),
+              HomeQueueDetails(),
+              HomeQueueChart(),
+              HomeBountyStoreDetails(),
+              SizedBox(height: 20),
             ],
           ),
         ),

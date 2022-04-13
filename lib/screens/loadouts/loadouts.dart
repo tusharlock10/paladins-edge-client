@@ -5,7 +5,7 @@ import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/loadouts/loadout.dart';
+import 'package:paladinsedge/screens/loadouts/loadout_item.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -141,10 +141,9 @@ class Loadouts extends HookConsumerWidget {
                     top: 20,
                     bottom: 70,
                   ),
-                  physics: const BouncingScrollPhysics(),
                   itemCount: loadouts.length,
                   gridDelegate: ResponsiveGridDelegate(
-                    childAspectRatio: Loadout.loadoutAspectRatio,
+                    childAspectRatio: LoadoutItem.loadoutAspectRatio,
                     crossAxisExtent: (MediaQuery.of(context).size.width -
                             horizontalPadding * 2) /
                         crossAxisCount,
@@ -156,7 +155,7 @@ class Loadouts extends HookConsumerWidget {
                       onTap: () => onEdit(loadout),
                       child: AbsorbPointer(
                         absorbing: true,
-                        child: Loadout(
+                        child: LoadoutItem(
                           loadout: loadout,
                           champion: champion,
                         ),

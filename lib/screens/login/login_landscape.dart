@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paladinsedge/screens/login/big_icon.dart';
-import 'package:paladinsedge/screens/login/tag_line.dart';
+import 'package:paladinsedge/screens/login/login_big_icon.dart';
+import 'package:paladinsedge/screens/login/login_tag_line.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class LoginLandscape extends StatelessWidget {
@@ -21,14 +21,14 @@ class LoginLandscape extends StatelessWidget {
       children: [
         const Flexible(
           flex: 1,
-          child: BigIcon(),
+          child: LoginBigIcon(),
         ),
         Flexible(
           flex: 1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TagLine(),
+              const LoginTagLine(),
               widgets.GoogleButton(
                 isLoggingIn: isLoggingIn,
                 onGoogleSignIn: onGoogleSignIn,
