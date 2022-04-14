@@ -1,5 +1,6 @@
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -56,7 +57,7 @@ class ChampionDetailTalents extends StatelessWidget {
                                 text:
                                     '${talent.cooldown.toInt().toString()} sec',
                                 color: Colors.blueGrey,
-                                icon: Icons.timelapse,
+                                icon: FontAwesomeIcons.stopwatch,
                               ),
                             ],
                           ),

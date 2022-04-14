@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 
@@ -62,12 +63,15 @@ class SearchAppBar extends HookConsumerWidget {
                       color: Colors.white,
                       size: 20,
                     )
-                  : const Icon(Icons.search),
+                  : const Icon(FontAwesomeIcons.magnifyingGlass),
               onPressed: isLoading ? null : () => onSearch(textController.text),
             ),
             IconButton(
               iconSize: 18,
-              icon: const Icon(Icons.clear),
+              icon: const Icon(
+                FontAwesomeIcons.xmark,
+                size: 22,
+              ),
               onPressed: onClear,
             ),
             const SizedBox(width: 10),

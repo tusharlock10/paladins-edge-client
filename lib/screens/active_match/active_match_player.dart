@@ -2,6 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
@@ -329,7 +330,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                           const Duration(milliseconds: 200),
                                       turns: isExpanded ? 0.5 : 0,
                                       child: const Icon(
-                                        Icons.keyboard_arrow_down,
+                                        FontAwesomeIcons.chevronDown,
                                       ),
                                     ),
                                   ],

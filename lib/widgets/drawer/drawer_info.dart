@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -57,7 +57,7 @@ class DrawerInfo extends StatelessWidget {
                 tooltip: 'View on GitHub',
                 splashRadius: 24,
                 icon: const Icon(
-                  FeatherIcons.github,
+                  FontAwesomeIcons.github,
                 ),
                 onPressed: () => launch(constants.Env.githubLink),
               ),

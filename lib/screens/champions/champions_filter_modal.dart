@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/screens/champions/champions_filter_tab.dart';
 import 'package:paladinsedge/screens/champions/champions_sort_tab.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
@@ -64,7 +64,7 @@ class _ChampionsFilterModal extends HookWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(FeatherIcons.filter, size: 18),
+                      Icon(FontAwesomeIcons.filter, size: 18),
                       SizedBox(width: 10),
                       Text('Filter', style: TextStyle(fontSize: 16)),
                     ],
@@ -74,7 +74,7 @@ class _ChampionsFilterModal extends HookWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(FeatherIcons.arrowUp, size: 20),
+                      Icon(FontAwesomeIcons.arrowDownShortWide, size: 20),
                       SizedBox(width: 10),
                       Text('Sort', style: TextStyle(fontSize: 16)),
                     ],

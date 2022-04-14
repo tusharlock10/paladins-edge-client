@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GuestProfile extends StatelessWidget {
   const GuestProfile({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class GuestProfile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
-          FeatherIcons.user,
+          FontAwesomeIcons.userAstronaut,
           size: 24,
           color: textTheme.bodyText1?.color,
         ),

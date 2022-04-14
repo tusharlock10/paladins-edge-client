@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champions_filter_modal.dart';
@@ -63,13 +63,16 @@ class ChampionsSearchBar extends HookConsumerWidget {
                 elevation: 0,
                 showBadge: selectedFilter.isValid,
                 badgeColor: badgeColor,
-                child: const Icon(FeatherIcons.sliders),
+                child: const Icon(FontAwesomeIcons.sliders),
               ),
               onPressed: onFilter,
             ),
             IconButton(
               iconSize: 18,
-              icon: const Icon(Icons.clear),
+              icon: const Icon(
+                FontAwesomeIcons.xmark,
+                size: 22,
+              ),
               onPressed: onClear,
             ),
             const SizedBox(width: 10),

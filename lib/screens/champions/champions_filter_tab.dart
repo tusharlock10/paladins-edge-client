@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -111,11 +112,11 @@ class ChampionsFilterTab extends HookConsumerWidget {
                                 return widgets.TextChip(
                                   spacing: 5,
                                   textSize: 12,
-                                  iconSize: 14,
+                                  iconSize: 12,
                                   text: filterValue,
                                   icon: isFilterValueSelected
-                                      ? Icons.check
-                                      : null,
+                                      ? FontAwesomeIcons.solidCircleDot
+                                      : FontAwesomeIcons.circle,
                                   color: isFilterValueSelected
                                       ? theme.themeMaterialColor
                                       : Colors.blueGrey,

@@ -1,7 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -148,7 +148,7 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                       ),
                       matchPlayer.playerStats.biggestKillStreak > 5
                           ? widgets.TextChip(
-                              icon: FeatherIcons.zap,
+                              icon: FontAwesomeIcons.bolt,
                               color: Colors.orange,
                               text:
                                   '${matchPlayer.playerStats.biggestKillStreak} streak',

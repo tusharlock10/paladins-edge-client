@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -43,8 +44,9 @@ class ChampionDetailAppBar extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
           child: const Icon(
-            Icons.close,
+            FontAwesomeIcons.xmark,
             color: Colors.white,
+            size: 22,
           ),
         ),
         onPressed: () => Navigator.pop(context),

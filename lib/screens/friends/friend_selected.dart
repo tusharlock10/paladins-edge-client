@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -87,8 +88,8 @@ class FriendSelected extends HookConsumerWidget {
                                   onTap: onFavouriteFriend,
                                   child: Icon(
                                     isFavourite
-                                        ? Icons.star
-                                        : Icons.star_outline_outlined,
+                                        ? FontAwesomeIcons.star
+                                        : FontAwesomeIcons.solidStar,
                                     size: 20,
                                     color: isFavourite
                                         ? Colors.yellow

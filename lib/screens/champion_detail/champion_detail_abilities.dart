@@ -1,5 +1,6 @@
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -10,6 +11,8 @@ class ChampionDetailAbilities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Variables
+    final isLight = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
     final champion =
         ModalRoute.of(context)?.settings.arguments as models.Champion;
@@ -17,10 +20,11 @@ class ChampionDetailAbilities extends StatelessWidget {
     return Column(
       children: champion.abilities.map(
         (ability) {
-          final damageTypeChips =
-              ability.damageType.split(',').map((damageType) {
-            return constants.championDamageType[damageType];
-          });
+          final damageTypeChips = ability.damageType.split(',').map(
+            (damageType) {
+              return constants.championDamageType[damageType];
+            },
+          );
 
           return Card(
             shape: const RoundedRectangleBorder(
@@ -57,26 +61,32 @@ class ChampionDetailAbilities extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Wrap(children: [
-                              ...damageTypeChips.map((damageTypeChip) {
-                                return widgets.TextChip(
+                            Wrap(
+                              children: [
+                                ...damageTypeChips.map(
+                                  (damageTypeChip) {
+                                    return widgets.TextChip(
+                                      spacing: 5,
+                                      hidden: damageTypeChip == null,
+                                      color: damageTypeChip?.color
+                                          as MaterialColor?,
+                                      text: damageTypeChip?.name,
+                                      icon: damageTypeChip?.icon,
+                                    );
+                                  },
+                                ),
+                                widgets.TextChip(
+                                  hidden: ability.cooldown == 0,
                                   spacing: 5,
-                                  hidden: damageTypeChip == null,
-                                  color:
-                                      damageTypeChip?.color as MaterialColor?,
-                                  text: damageTypeChip?.name,
-                                  icon: damageTypeChip?.icon,
-                                );
-                              }),
-                              widgets.TextChip(
-                                hidden: ability.cooldown == 0,
-                                spacing: 5,
-                                text:
-                                    '${ability.cooldown.toInt().toString()} sec',
-                                color: Colors.blueGrey,
-                                icon: Icons.timelapse,
-                              ),
-                            ]),
+                                  text:
+                                      '${ability.cooldown.toInt().toString()} sec',
+                                  color: Colors.blueGrey,
+                                  icon: isLight
+                                      ? FontAwesomeIcons.clock
+                                      : FontAwesomeIcons.solidClock,
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

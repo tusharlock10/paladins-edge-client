@@ -20,7 +20,7 @@ class TextChip extends StatelessWidget {
     this.spacing = 0,
     this.hidden = false,
     this.icon,
-    this.iconSize = 12,
+    this.iconSize = 10,
     this.width,
     this.height,
     this.onTap,

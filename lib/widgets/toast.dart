@@ -1,6 +1,7 @@
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 enum ToastType {
@@ -61,10 +62,10 @@ class _FlashBar extends HookWidget {
 
     final getToastIcon = useCallback(
       () {
-        if (type == ToastType.success) return Icons.check;
-        if (type == ToastType.info) return Icons.info_outline;
+        if (type == ToastType.success) return FontAwesomeIcons.check;
+        if (type == ToastType.info) return FontAwesomeIcons.circleInfo;
 
-        return Icons.clear;
+        return FontAwesomeIcons.xmark;
       },
       [],
     );

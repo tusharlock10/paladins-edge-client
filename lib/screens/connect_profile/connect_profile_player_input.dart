@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfilePlayerInput extends StatelessWidget {
@@ -40,7 +41,7 @@ class ConnectProfilePlayerInput extends StatelessWidget {
                   size: 18,
                   color: secondaryColor,
                 )
-              : const Icon(Icons.search),
+              : const Icon(FontAwesomeIcons.magnifyingGlass),
           color: secondaryColor,
           iconSize: 24,
           splashRadius: 24,

@@ -517,13 +517,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.2"
-  flutter_feather_icons:
-    dependency: "direct main"
-    description:
-      name: flutter_feather_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -604,6 +597,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "10.1.0"
   freezed:
     dependency: "direct dev"
     description:

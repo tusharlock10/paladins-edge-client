@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginDrawerButton extends StatelessWidget {
   final BuildContext context;
@@ -19,7 +20,7 @@ class LoginDrawerButton extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Icons.arrow_back,
+            FontAwesomeIcons.angleLeft,
             color: theme.colorScheme.secondary,
             size: 24,
           ),

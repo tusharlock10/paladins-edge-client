@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -95,7 +95,7 @@ class FeedbackImage extends HookConsumerWidget {
                                           ),
                                           const SizedBox(width: 5),
                                           Icon(
-                                            FeatherIcons.image,
+                                            FontAwesomeIcons.image,
                                             size: 22,
                                             color: theme
                                                 .themeMaterialColor.shade50,
@@ -115,7 +115,7 @@ class FeedbackImage extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(
-                          FeatherIcons.image,
+                          FontAwesomeIcons.image,
                           size: 36,
                         ),
                         SizedBox(height: 5),
