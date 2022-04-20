@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/active_match/active_match_card.dart';
+import 'package:paladinsedge/screens/friends/friend_active_match.dart';
 import 'package:paladinsedge/screens/friends/friend_status_indicator.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -108,7 +108,7 @@ class FriendSelected extends HookConsumerWidget {
                           ),
                         ],
                       ),
-                      ActiveMatchCard(match: playerStatus?.match),
+                      FriendActiveMatch(match: playerStatus?.match),
                     ],
                   ),
                 ),

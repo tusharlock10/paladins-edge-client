@@ -73,9 +73,9 @@ class _PlayerMatch extends StatelessWidget {
   }
 }
 
-class ActiveMatchCard extends StatelessWidget {
+class FriendActiveMatch extends StatelessWidget {
   final models.ActiveMatch? match;
-  const ActiveMatchCard({
+  const FriendActiveMatch({
     required this.match,
     Key? key,
   }) : super(key: key);
