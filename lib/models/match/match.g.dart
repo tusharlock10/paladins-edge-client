@@ -113,8 +113,6 @@ Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
 
 Match _$MatchFromJson(Map<String, dynamic> json) => Match(
       matchId: json['matchId'] as String,
-      playerIds:
-          (json['playerIds'] as List<dynamic>).map((e) => e as String).toList(),
       winningTeam: json['winningTeam'] as int,
       team1Score: json['team1Score'] as int,
       team2Score: json['team2Score'] as int,
@@ -131,7 +129,6 @@ Match _$MatchFromJson(Map<String, dynamic> json) => Match(
 
 Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
       'matchId': instance.matchId,
-      'playerIds': instance.playerIds,
       'winningTeam': instance.winningTeam,
       'team1Score': instance.team1Score,
       'team2Score': instance.team2Score,

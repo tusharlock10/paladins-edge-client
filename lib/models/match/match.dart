@@ -177,9 +177,6 @@ class Match {
   /// id of the match
   final String matchId;
 
-  /// player ids stored in a list, for easier searching of the match in db
-  final List<String> playerIds;
-
   /// team that won the match
   final int winningTeam;
 
@@ -214,12 +211,11 @@ class Match {
   // if the match has inComplete data, and needs a paladinsAPI call to fetch the complete data
   // most matches will be inComplete by default
   // and matchDetail api needs to be called to complete the data
-  // playerIds & _playerIds & championBans will be empty for inComplete matches
+  // championBans will be empty for inComplete matches
   final bool isInComplete;
 
   Match({
     required this.matchId,
-    required this.playerIds,
     required this.winningTeam,
     required this.team1Score,
     required this.team2Score,

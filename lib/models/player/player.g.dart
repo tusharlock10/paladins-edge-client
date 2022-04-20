@@ -78,7 +78,7 @@ class PlayerAdapter extends TypeAdapter<Player> {
       region: fields[11] as String,
       accountCreationDate: fields[12] as DateTime,
       lastLoginDate: fields[13] as DateTime,
-      ranked: fields[14] as Ranked?,
+      ranked: fields[14] as Ranked,
       userId: fields[1] as String?,
       title: fields[3] as String?,
       lastUpdatedFriends: fields[15] as DateTime?,
@@ -182,9 +182,7 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
       accountCreationDate:
           DateTime.parse(json['accountCreationDate'] as String),
       lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
-      ranked: json['ranked'] == null
-          ? null
-          : Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
+      ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
       userId: json['userId'] as String?,
       title: json['title'] as String?,
       lastUpdatedFriends: json['lastUpdatedFriends'] == null

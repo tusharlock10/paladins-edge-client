@@ -72,7 +72,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                 Row(
                                   children: [
                                     widgets.FastImage(
-                                      imageUrl: player.ranked!.rankIconUrl,
+                                      imageUrl: player.ranked.rankIconUrl,
                                       height: 36,
                                       width: 36,
                                     ),
@@ -81,12 +81,12 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          player.ranked!.rankName,
+                                          player.ranked.rankName,
                                           style: textTheme.bodyText2
                                               ?.copyWith(fontSize: 14),
                                         ),
                                         Text(
-                                          '${player.ranked!.points} TP',
+                                          '${player.ranked.points} TP',
                                           style: textTheme.bodyText1
                                               ?.copyWith(fontSize: 12),
                                         ),
