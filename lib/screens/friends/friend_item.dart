@@ -64,11 +64,11 @@ class FriendItem extends ConsumerWidget {
               const Expanded(
                 child: SizedBox(),
               ),
-              friend.ranked?.rank != 0
+              friend.ranked.rank != 0
                   ? widgets.FastImage(
                       height: 36,
                       width: 36,
-                      imageUrl: friend.ranked!.rankIconUrl,
+                      imageUrl: friend.ranked.rankIconUrl,
                     )
                   : const SizedBox(),
               Container(

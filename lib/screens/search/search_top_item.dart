@@ -77,9 +77,9 @@ class SearchTopItem extends HookConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (player.ranked != null && player.ranked!.rank != 0)
+                  if (player.ranked.rank != 0)
                     widgets.FastImage(
-                      imageUrl: player.ranked!.rankIconUrl,
+                      imageUrl: player.ranked.rankIconUrl,
                       height: 32,
                       width: 32,
                     ),

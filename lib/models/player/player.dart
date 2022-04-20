@@ -106,7 +106,7 @@ class Player {
 
   /// ranked details of the player
   @HiveField(14)
-  final Ranked? ranked;
+  final Ranked ranked;
 
   /// last update date of friends
   @HiveField(15)

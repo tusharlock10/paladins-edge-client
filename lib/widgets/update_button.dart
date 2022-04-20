@@ -20,21 +20,22 @@ class UpdateButton extends StatelessWidget {
     return TimerBuilder.periodic(
       const Duration(seconds: 1),
       builder: (context) {
-        final textTheme = Theme.of(context).textTheme;
-        final remainingTime = utilities.getTimeRemaining(
-          toDate: lastUpdated!.add(
-            Duration(
-              milliseconds:
-                  utilities.Global.essentials!.forceUpdatePlayerDuration,
-            ),
-          ),
-          fromDate: DateTime.now().toUtc(),
-        );
-
-        if (lastUpdated == null ||
-            utilities.Global.essentials?.forceUpdatePlayerDuration == null) {
+        if (utilities.Global.essentials?.forceUpdatePlayerDuration == null) {
           return const SizedBox();
         }
+
+        final textTheme = Theme.of(context).textTheme;
+        final remainingTime = lastUpdated == null
+            ? null
+            : utilities.getTimeRemaining(
+                toDate: lastUpdated!.add(
+                  Duration(
+                    milliseconds:
+                        utilities.Global.essentials!.forceUpdatePlayerDuration,
+                  ),
+                ),
+                fromDate: DateTime.now().toUtc(),
+              );
 
         if (isLoading) {
           return SizedBox(
