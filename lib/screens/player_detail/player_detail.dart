@@ -37,20 +37,22 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [],
+      [playerId, player],
     );
 
     useEffect(
       () {
         if (playerId == null) return;
+        if (player == null) return;
 
         // get the playerMatches and playerChampions from server
+        // these apis require player to not be null
         matchesProvider.getPlayerMatches(playerId);
         championsProvider.getPlayerChampions(playerId);
 
         return;
       },
-      [],
+      [playerId, player],
     );
 
     // Methods
