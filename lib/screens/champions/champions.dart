@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champions_list.dart';
 import 'package:paladinsedge/screens/champions/champions_search_bar.dart';
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Champions extends HookConsumerWidget {
   static const routeName = '/champions';
@@ -16,20 +17,25 @@ class Champions extends HookConsumerWidget {
     final championsProvider = ref.read(providers.champions);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
+    // Effects
     useEffect(
       () {
-        championsProvider.loadCombinedChampions();
+        championsProvider.loadCombinedChampions(false);
 
         return null;
       },
       [isGuest],
     );
 
-    return const CustomScrollView(
-      slivers: [
-        ChampionsSearchBar(),
-        ChampionsList(),
-      ],
+    return widgets.Refresh(
+      edgeOffset: MediaQuery.of(context).padding.top + kToolbarHeight,
+      onRefresh: () => championsProvider.loadCombinedChampions(true),
+      child: const CustomScrollView(
+        slivers: [
+          ChampionsSearchBar(),
+          ChampionsList(),
+        ],
+      ),
     );
   }
 }

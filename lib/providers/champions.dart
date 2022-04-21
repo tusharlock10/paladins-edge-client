@@ -33,12 +33,13 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
-  Future<void> loadCombinedChampions() async {
-    isLoadingCombinedChampions = true;
+  Future<void> loadCombinedChampions(bool isRefresh) async {
+    // don't show loading indicator when refreshing
+    if (!isRefresh) isLoadingCombinedChampions = true;
 
     final result = await Future.wait([
-      _loadChampions(),
-      _loadUserPlayerChampions(),
+      _loadChampions(isRefresh),
+      _loadUserPlayerChampions(isRefresh),
     ]);
 
     // if champions is null, then abort this operation
@@ -49,9 +50,13 @@ class _ChampionsNotifier extends ChangeNotifier {
       return;
     }
 
-    isLoadingCombinedChampions = false;
+    if (!isRefresh) isLoadingCombinedChampions = false;
     champions = result.first as List<models.Champion>;
-    userPlayerChampions = result.last as List<models.PlayerChampion>?;
+
+    // userPlayerChampions might be null on isGuest
+    if (result.last != null) {
+      userPlayerChampions = result.last as List<models.PlayerChampion>;
+    }
 
     combinedChampions = champions.map((champion) {
       final playerChampion = utilities.findPlayerChampion(
@@ -194,12 +199,13 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Loads the `champions` data from local db and syncs it with server
-  Future<List<models.Champion>?> _loadChampions() async {
+  Future<List<models.Champion>?> _loadChampions(bool isRefresh) async {
     // try to load champions from db
-    final savedChampions = utilities.Database.getChampions();
 
-    if (savedChampions != null) {
-      return savedChampions;
+    // on isRefresh, skip getting data from local db
+    if (!isRefresh) {
+      final savedChampions = utilities.Database.getChampions();
+      if (savedChampions != null) return savedChampions;
     }
 
     final response = await api.ChampionsRequests.allChampions();
@@ -208,6 +214,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     final _champions = response.champions;
 
     // save champion locally for future use
+    utilities.Database.championBox?.clear();
     _champions.forEach(utilities.Database.saveChampion);
 
     // sort champions based on their name
@@ -216,20 +223,28 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Loads the `playerChampions` data for the user from local db and
   /// syncs it with server for showing in Champions screen
-  Future<List<models.PlayerChampion>?> _loadUserPlayerChampions() async {
+  Future<List<models.PlayerChampion>?> _loadUserPlayerChampions(
+    bool isRefresh,
+  ) async {
     final user = utilities.Database.getUser();
-    if (user?.playerId == null) return null;
+    final playerId = user?.playerId;
+    if (playerId == null) return null;
 
-    final savedPlayerChampions = utilities.Database.getPlayerChampions();
+    // on isRefresh, skip getting data from local db
+    if (!isRefresh) {
+      final savedPlayerChampions = utilities.Database.getPlayerChampions();
+      if (savedPlayerChampions != null) return savedPlayerChampions;
+    }
 
-    if (savedPlayerChampions != null) return savedPlayerChampions;
-
-    final response =
-        await api.ChampionsRequests.playerChampions(playerId: user!.playerId!);
+    // response will be null if we try to isRefresh earlier than intended
+    final response = await api.ChampionsRequests.playerChampions(
+      playerId: playerId,
+    );
 
     if (response == null) return null;
 
     // save playerChampions locally for future use
+    utilities.Database.playerChampionBox?.clear();
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
 
     return response.playerChampions;

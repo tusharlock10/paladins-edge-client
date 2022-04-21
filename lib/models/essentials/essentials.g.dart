@@ -19,32 +19,35 @@ class EssentialsAdapter extends TypeAdapter<Essentials> {
     return Essentials(
       version: fields[0] as String,
       imageBaseUrl: fields[1] as String,
-      forceUpdateFriendsDuration: fields[2] as int,
-      forceUpdateMatchesDuration: fields[3] as int,
-      forceUpdatePlayerDuration: fields[4] as int,
-      forceUpdateChampionsDuration: fields[5] as int,
-      maxFavouriteFriends: fields[6] as int,
+      forceUpdateFriendsDuration: fields[3] as int,
+      forceUpdateMatchesDuration: fields[4] as int,
+      forceUpdatePlayerDuration: fields[5] as int,
+      forceUpdateChampionsDuration: fields[6] as int,
+      maxFavouriteFriends: fields[2] as int,
+      forceUpdatePlayerLoadouts: fields[7] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Essentials obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.version)
       ..writeByte(1)
       ..write(obj.imageBaseUrl)
       ..writeByte(2)
-      ..write(obj.forceUpdateFriendsDuration)
+      ..write(obj.maxFavouriteFriends)
       ..writeByte(3)
-      ..write(obj.forceUpdateMatchesDuration)
+      ..write(obj.forceUpdateFriendsDuration)
       ..writeByte(4)
-      ..write(obj.forceUpdatePlayerDuration)
+      ..write(obj.forceUpdateMatchesDuration)
       ..writeByte(5)
-      ..write(obj.forceUpdateChampionsDuration)
+      ..write(obj.forceUpdatePlayerDuration)
       ..writeByte(6)
-      ..write(obj.maxFavouriteFriends);
+      ..write(obj.forceUpdateChampionsDuration)
+      ..writeByte(7)
+      ..write(obj.forceUpdatePlayerLoadouts);
   }
 
   @override
@@ -70,15 +73,17 @@ Essentials _$EssentialsFromJson(Map<String, dynamic> json) => Essentials(
       forceUpdatePlayerDuration: json['forceUpdatePlayerDuration'] as int,
       forceUpdateChampionsDuration: json['forceUpdateChampionsDuration'] as int,
       maxFavouriteFriends: json['maxFavouriteFriends'] as int,
+      forceUpdatePlayerLoadouts: json['forceUpdatePlayerLoadouts'] as int,
     );
 
 Map<String, dynamic> _$EssentialsToJson(Essentials instance) =>
     <String, dynamic>{
       'version': instance.version,
       'imageBaseUrl': instance.imageBaseUrl,
+      'maxFavouriteFriends': instance.maxFavouriteFriends,
       'forceUpdateFriendsDuration': instance.forceUpdateFriendsDuration,
       'forceUpdateMatchesDuration': instance.forceUpdateMatchesDuration,
       'forceUpdatePlayerDuration': instance.forceUpdatePlayerDuration,
       'forceUpdateChampionsDuration': instance.forceUpdateChampionsDuration,
-      'maxFavouriteFriends': instance.maxFavouriteFriends,
+      'forceUpdatePlayerLoadouts': instance.forceUpdatePlayerLoadouts,
     };
