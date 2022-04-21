@@ -5,28 +5,32 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _BountyStoreNotifier extends ChangeNotifier {
-  List<models.BountyStore> bountyStore = [];
+  bool isLoading = true;
+  List<models.BountyStore>? bountyStore;
 
   /// Loads the `bountyStore` data from local db and syncs it with server
-  Future<List<models.BountyStore>?> loadBountyStore() async {
-    final savedBountyStore = utilities.Database.getBountyStore();
+  Future<void> loadBountyStore(bool forceUpdate) async {
+    final savedBountyStore =
+        forceUpdate ? null : utilities.Database.getBountyStore();
 
     if (savedBountyStore != null) {
+      isLoading = false;
       bountyStore = savedBountyStore;
 
-      return bountyStore;
+      return utilities.postFrameCallback(notifyListeners);
     }
 
     final response = await api.BountyStoreRequests.bountyStoreDetails();
+    if (response == null) return;
 
-    if (response == null) return null;
-
+    if (!forceUpdate) isLoading = false;
     bountyStore = response.bountyStore;
+    utilities.postFrameCallback(notifyListeners);
 
-    // save bounty store locally for future use
-    bountyStore.forEach(utilities.Database.saveBountyStore);
-
-    return bountyStore;
+    // save bountyStore locally for future use
+    // clear bountyStore first if forceUpdate
+    if (forceUpdate) await utilities.Database.bountyStoreBox?.clear();
+    bountyStore?.forEach(utilities.Database.saveBountyStore);
   }
 }
 

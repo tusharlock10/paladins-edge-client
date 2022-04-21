@@ -38,16 +38,6 @@ class HomeQueueDetails extends HookConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / itemHeight;
 
-    // Effects
-    useEffect(
-      () {
-        queueProvider.getQueueTimeline();
-
-        return null;
-      },
-      [],
-    );
-
     // Methods
     final getQueueTimeline = useCallback(
       (int queueId) {
@@ -56,57 +46,58 @@ class HomeQueueDetails extends HookConsumerWidget {
       [],
     );
 
-    if (isLoading) {
-      return const widgets.LoadingIndicator(
-        size: 20,
-        lineWidth: 2,
-        center: true,
-        margin: EdgeInsets.all(20),
-        label: Text('Loading Queue'),
-      );
-    }
-
-    return SizedBox(
-      width: width,
-      child: Column(
-        children: [
-          Text(
-            'Live Queue Numbers',
-            style: textTheme.headline3,
-          ),
-          queue.isEmpty
-              ? const Card(
-                  elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Center(
-                      child: Text(
-                        'Sorry we were unable to fetch the queue details',
-                      ),
-                    ),
-                  ),
-                )
-              : GridView.count(
-                  childAspectRatio: childAspectRatio,
-                  crossAxisCount: crossAxisCount,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  children: queue
-                      .where((_queue) => _queue.queueId != 0)
-                      .map(
-                        (_queue) => HomeQueueCard(
-                          queue: _queue,
-                          isSelected: selectedQueueId == _queue.queueId,
-                          onTap: getQueueTimeline,
+    return isLoading
+        ? const widgets.LoadingIndicator(
+            size: 20,
+            lineWidth: 2,
+            center: true,
+            margin: EdgeInsets.all(20),
+            label: Text('Loading Queue'),
+          )
+        : SizedBox(
+            width: width,
+            child: Column(
+              children: [
+                Text(
+                  'Live Queue Numbers',
+                  style: textTheme.headline3,
+                ),
+                queue.isEmpty
+                    ? const Card(
+                        elevation: 4,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              'Sorry we were unable to fetch the queue details',
+                            ),
+                          ),
                         ),
                       )
-                      .toList(),
-                ),
-        ],
-      ),
-    );
+                    : GridView.count(
+                        childAspectRatio: childAspectRatio,
+                        crossAxisCount: crossAxisCount,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        children: queue
+                            .where((_queue) => _queue.queueId != 0)
+                            .map(
+                              (_queue) => HomeQueueCard(
+                                queue: _queue,
+                                isSelected: selectedQueueId == _queue.queueId,
+                                onTap: getQueueTimeline,
+                              ),
+                            )
+                            .toList(),
+                      ),
+              ],
+            ),
+          );
   }
 }

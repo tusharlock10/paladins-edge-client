@@ -20,7 +20,9 @@ class UpdateButton extends StatelessWidget {
     return TimerBuilder.periodic(
       const Duration(seconds: 1),
       builder: (context) {
-        if (utilities.Global.essentials?.forceUpdatePlayerDuration == null) {
+        final forceUpdatePlayerDuration =
+            utilities.Global.essentials?.forceUpdatePlayerDuration;
+        if (forceUpdatePlayerDuration == null) {
           return const SizedBox();
         }
 
@@ -29,10 +31,7 @@ class UpdateButton extends StatelessWidget {
             ? null
             : utilities.getTimeRemaining(
                 toDate: lastUpdated!.add(
-                  Duration(
-                    milliseconds:
-                        utilities.Global.essentials!.forceUpdatePlayerDuration,
-                  ),
+                  Duration(milliseconds: forceUpdatePlayerDuration),
                 ),
                 fromDate: DateTime.now().toUtc(),
               );

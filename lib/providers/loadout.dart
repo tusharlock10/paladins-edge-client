@@ -7,27 +7,37 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _LoadoutNotifier extends ChangeNotifier {
-  bool isGettingLoadouts = true;
+  bool isGettingLoadouts = false;
   bool isSavingLoadout = false;
   bool isEditingLoadout = false; // if false, means user is creating new loadout
   List<models.Loadout>? loadouts;
   data_classes.DraftLoadout draftLoadout = data_classes.DraftLoadout.empty();
 
-  /// Get the `loadouts` data for the championId of that playerId
-  void getPlayerLoadouts(String playerId, int championId) async {
+  /// Get the `loadouts` data for the champion of that player
+  Future<void> getPlayerLoadouts({
+    required String playerId,
+    required int championId,
+    bool forceUpdate = false,
+  }) async {
+    if (!forceUpdate) {
+      isGettingLoadouts = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
+
     final response = await api.LoadoutRequests.playerLoadouts(
       playerId: playerId,
       championId: championId,
+      forceUpdate: forceUpdate,
     );
 
-    loadouts = response?.loadouts;
-    isGettingLoadouts = false;
+    if (!forceUpdate) isGettingLoadouts = false;
+    if (response != null) loadouts = response.loadouts;
+
     utilities.postFrameCallback(notifyListeners);
   }
 
   /// Deletes the loadouts
   void resetPlayerLoadouts() {
-    isGettingLoadouts = true;
     loadouts = null;
   }
 

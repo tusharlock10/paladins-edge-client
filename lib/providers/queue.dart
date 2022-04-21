@@ -25,19 +25,22 @@ class _QueueState extends ChangeNotifier {
 
   /// Loads the `timeline` data for the queue from local db and
   /// syncs it with server for showing on Home screen
-  Future<void> getQueueTimeline() async {
-    final savedQueueTimeline = utilities.Database.getQueueTimeline();
+  Future<void> getQueueTimeline(bool forceUpdate) async {
+    final savedQueueTimeline =
+        forceUpdate ? null : utilities.Database.getQueueTimeline();
 
     if (savedQueueTimeline != null) {
       timeline = savedQueueTimeline;
       isLoading = false;
     } else {
       final response = await api.QueueRequests.queueTimeline();
+
       isLoading = false;
       if (response == null) return utilities.postFrameCallback(notifyListeners);
 
       timeline = response.timeline;
       timeline.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      if (forceUpdate) await utilities.Database.queueTimelineBox?.clear();
       timeline.forEach(utilities.Database.saveQueue);
     }
 

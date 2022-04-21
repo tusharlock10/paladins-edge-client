@@ -18,25 +18,29 @@ class Essentials extends HiveObject {
   @HiveField(1)
   final String imageBaseUrl;
 
-  /// interval duration for player friends forced update
+  /// max number of favourite friends each user can have
   @HiveField(2)
+  final int maxFavouriteFriends;
+
+  /// interval duration for player friends forced update
+  @HiveField(3)
   final int forceUpdateFriendsDuration;
 
   /// interval duration for player matches forced update
-  @HiveField(3)
+  @HiveField(4)
   final int forceUpdateMatchesDuration;
 
   /// interval duration for player profile forced update
-  @HiveField(4)
+  @HiveField(5)
   final int forceUpdatePlayerDuration;
 
   /// interval duration for player champions forced update
-  @HiveField(5)
+  @HiveField(6)
   final int forceUpdateChampionsDuration;
 
-  /// max number of favourite friends each user can have
-  @HiveField(6)
-  final int maxFavouriteFriends;
+  /// interval duration for player loadouts forced update
+  @HiveField(7)
+  final int forceUpdatePlayerLoadouts;
 
   Essentials({
     required this.version,
@@ -46,6 +50,7 @@ class Essentials extends HiveObject {
     required this.forceUpdatePlayerDuration,
     required this.forceUpdateChampionsDuration,
     required this.maxFavouriteFriends,
+    required this.forceUpdatePlayerLoadouts,
   });
 
   factory Essentials.fromJson(Map<String, dynamic> json) =>
