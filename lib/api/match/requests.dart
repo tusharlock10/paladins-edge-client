@@ -23,11 +23,15 @@ abstract class MatchRequests {
 
   static Future<responses.PlayerMatchesResponse?> playerMatches({
     required String playerId,
+    bool forceUpdate = false,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerMatches,
-        queryParameters: {'playerId': playerId},
+        queryParameters: {
+          'playerId': playerId,
+          'forceUpdate': forceUpdate,
+        },
       );
       if (response.data != null) {
         return responses.PlayerMatchesResponse.fromJson(response.data!);
