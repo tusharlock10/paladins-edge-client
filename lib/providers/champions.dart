@@ -246,7 +246,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     // clear the playerChampions in db if forceUpdate
     // save playerChampions locally for future use
-    if (forceUpdate) utilities.Database.playerChampionBox?.clear();
+    if (forceUpdate) await utilities.Database.playerChampionBox?.clear();
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
 
     return response.playerChampions;
