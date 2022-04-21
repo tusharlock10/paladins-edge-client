@@ -7,6 +7,7 @@ abstract class LoadoutRequests {
   static Future<responses.PlayerLoadoutsResponse?> playerLoadouts({
     required String playerId,
     required int championId,
+    bool forceUpdate = false,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
@@ -14,6 +15,7 @@ abstract class LoadoutRequests {
         queryParameters: {
           'playerId': playerId,
           'championId': championId,
+          'forceUpdate': forceUpdate,
         },
       );
       if (response.data != null) {

@@ -220,18 +220,24 @@ abstract class Database {
   }
 
   // clear all the boxes
-  static void clear() {
-    _tokenBox?.clear();
-    _userBox?.clear();
-    _playerBox?.clear();
-    _settingsBox?.clear();
-    _essentialsBox?.clear();
-    _searchHistoryBox?.clear();
-    _championBox?.clear();
-    _recordExpiryBox?.clear();
-    _bountyStoreBox?.clear();
-    _playerChampionBox?.clear();
-    _queueTimelineBox?.clear();
+  static Future<void> clear() async {
+    await Future.wait(
+      [
+        _tokenBox?.clear(),
+        _userBox?.clear(),
+        _playerBox?.clear(),
+        _settingsBox?.clear(),
+        _essentialsBox?.clear(),
+        _searchHistoryBox?.clear(),
+        _championBox?.clear(),
+        _recordExpiryBox?.clear(),
+        _bountyStoreBox?.clear(),
+        _playerChampionBox?.clear(),
+        _queueTimelineBox?.clear(),
+      ].where((_) => _ != null) as List<Future>,
+    );
+
+    return;
   }
 
   /// renews the expiry date on saved records.

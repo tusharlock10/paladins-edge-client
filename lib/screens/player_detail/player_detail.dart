@@ -47,7 +47,7 @@ class PlayerDetail extends HookConsumerWidget {
 
         // get the playerMatches and playerChampions from server
         // these apis require player to not be null
-        matchesProvider.getPlayerMatches(playerId);
+        matchesProvider.getPlayerMatches(playerId: playerId);
         championsProvider.getPlayerChampions(playerId);
 
         return;
@@ -61,6 +61,18 @@ class PlayerDetail extends HookConsumerWidget {
         Navigator.of(context).pushNamed(screens.PlayerChampions.routeName);
       },
       [],
+    );
+
+    final onRefresh = useCallback(
+      () async {
+        if (playerId == null) return;
+
+        return matchesProvider.getPlayerMatches(
+          playerId: playerId,
+          forceUpdate: true,
+        );
+      },
+      [playerId],
     );
 
     return Scaffold(
@@ -113,11 +125,14 @@ class PlayerDetail extends HookConsumerWidget {
                 label: Text('Loading player'),
               ),
             )
-          : Stack(
-              children: const [
-                PlayerDetailMatches(),
-                PlayerDetailHeader(),
-              ],
+          : widgets.Refresh(
+              onRefresh: onRefresh,
+              child: Stack(
+                children: const [
+                  PlayerDetailMatches(),
+                  PlayerDetailHeader(),
+                ],
+              ),
             ),
     );
   }

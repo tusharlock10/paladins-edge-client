@@ -50,3 +50,22 @@ String getLastPlayedTime(
 
   return lastPlayedTime;
 }
+
+Duration forceUpdateRemainingDuration({
+  required DateTime? lastUpdated,
+  required int forceUpdateDuration,
+}) {
+  if (lastUpdated == null) return Duration.zero;
+  final duration = Duration(milliseconds: forceUpdateDuration);
+  final difference = lastUpdated.add(duration).difference(
+        DateTime.now().toUtc(),
+      );
+
+  if (difference.isNegative) return Duration.zero;
+
+  if (difference < duration) {
+    return duration - difference;
+  }
+
+  return Duration.zero;
+}

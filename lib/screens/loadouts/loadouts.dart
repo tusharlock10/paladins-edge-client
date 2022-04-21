@@ -19,7 +19,7 @@ class Loadouts extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final loadoutProvider = ref.read(providers.loadout);
-    final authProvider = ref.read(providers.auth);
+    final playerId = ref.read(providers.auth).player?.playerId;
     final loadouts = ref.watch(providers.loadout.select((_) => _.loadouts));
     final isGettingLoadouts =
         ref.watch(providers.loadout.select((_) => _.isGettingLoadouts));
@@ -47,10 +47,10 @@ class Loadouts extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (authProvider.player?.playerId != null) {
+        if (playerId != null) {
           loadoutProvider.getPlayerLoadouts(
-            authProvider.player!.playerId,
-            champion.championId,
+            playerId: playerId,
+            championId: champion.championId,
           );
         }
 
@@ -80,6 +80,20 @@ class Loadouts extends HookConsumerWidget {
       [],
     );
 
+    final onRefresh = useCallback(
+      () async {
+        if (playerId != null) {
+          return await loadoutProvider.getPlayerLoadouts(
+            playerId: playerId,
+            championId: champion.championId,
+            forceUpdate: true,
+          );
+        }
+      },
+      [playerId],
+    );
+
+    // TODO: Add floating SliverAppBar like in Home screen
     return Scaffold(
       floatingActionButton: SizedBox(
         height: 40,
@@ -133,37 +147,40 @@ class Loadouts extends HookConsumerWidget {
               size: 36,
               center: true,
             )
-          : loadouts != null
-              ? ResponsiveGridView.builder(
-                  padding: EdgeInsets.only(
-                    right: horizontalPadding,
-                    left: horizontalPadding,
-                    top: 20,
-                    bottom: 70,
-                  ),
-                  itemCount: loadouts.length,
-                  gridDelegate: ResponsiveGridDelegate(
-                    childAspectRatio: LoadoutItem.loadoutAspectRatio,
-                    crossAxisExtent: (MediaQuery.of(context).size.width -
-                            horizontalPadding * 2) /
-                        crossAxisCount,
-                  ),
-                  itemBuilder: (_, index) {
-                    final loadout = loadouts[index];
-
-                    return GestureDetector(
-                      onTap: () => onEdit(loadout),
-                      child: AbsorbPointer(
-                        absorbing: true,
-                        child: LoadoutItem(
-                          loadout: loadout,
-                          champion: champion,
-                        ),
+          : widgets.Refresh(
+              onRefresh: onRefresh,
+              child: loadouts != null
+                  ? ResponsiveGridView.builder(
+                      padding: EdgeInsets.only(
+                        right: horizontalPadding,
+                        left: horizontalPadding,
+                        top: 20,
+                        bottom: 70,
                       ),
-                    );
-                  },
-                )
-              : const Text('Unable to fetch loadouts'),
+                      itemCount: loadouts.length,
+                      gridDelegate: ResponsiveGridDelegate(
+                        childAspectRatio: LoadoutItem.loadoutAspectRatio,
+                        crossAxisExtent: (MediaQuery.of(context).size.width -
+                                horizontalPadding * 2) /
+                            crossAxisCount,
+                      ),
+                      itemBuilder: (_, index) {
+                        final loadout = loadouts[index];
+
+                        return GestureDetector(
+                          onTap: () => onEdit(loadout),
+                          child: AbsorbPointer(
+                            absorbing: true,
+                            child: LoadoutItem(
+                              loadout: loadout,
+                              champion: champion,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : const Text('Unable to fetch loadouts'),
+            ),
     );
   }
 }

@@ -21,12 +21,14 @@ abstract class ChampionsRequests {
 
   static Future<responses.PlayerChampionsResponse?> playerChampions({
     required String playerId,
+    bool forceUpdate = false,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerChampions,
         queryParameters: {
           'playerId': playerId,
+          'forceUpdate': forceUpdate,
         },
       );
       if (response.data != null) {

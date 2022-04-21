@@ -9,11 +9,19 @@ class _MatchesNotifier extends ChangeNotifier {
   api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
 
-  Future<void> getPlayerMatches(String playerId) async {
-    isPlayerMatchesLoading = true;
-    utilities.postFrameCallback(notifyListeners);
+  Future<void> getPlayerMatches({
+    required String playerId,
+    bool forceUpdate = false,
+  }) async {
+    if (!forceUpdate) {
+      isPlayerMatchesLoading = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
 
-    final response = await api.MatchRequests.playerMatches(playerId: playerId);
+    final response = await api.MatchRequests.playerMatches(
+      playerId: playerId,
+      forceUpdate: forceUpdate,
+    );
 
     // sort matches & matchPlayers based on matchId
     if (response != null) {
@@ -23,10 +31,10 @@ class _MatchesNotifier extends ChangeNotifier {
       response.matchPlayers.sort(
         (a, b) => int.parse(b.matchId).compareTo(int.parse(a.matchId)),
       );
+      playerMatches = response;
     }
 
-    isPlayerMatchesLoading = false;
-    playerMatches = response;
+    if (!forceUpdate) isPlayerMatchesLoading = false;
 
     utilities.postFrameCallback(notifyListeners);
   }
