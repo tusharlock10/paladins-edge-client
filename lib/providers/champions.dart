@@ -33,27 +33,31 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
-  Future<void> loadCombinedChampions(bool isRefresh) async {
+  Future<void> loadCombinedChampions(bool forceUpdate) async {
     // don't show loading indicator when refreshing
-    if (!isRefresh) isLoadingCombinedChampions = true;
+    if (!forceUpdate) isLoadingCombinedChampions = true;
 
     final result = await Future.wait([
-      _loadChampions(isRefresh),
-      _loadUserPlayerChampions(isRefresh),
+      // champions do not have forceUpdate
+      // return previous value if forceUpdate
+      forceUpdate ? Future.value(champions) : _loadChampions(),
+      _loadUserPlayerChampions(forceUpdate),
     ]);
 
     // if champions is null, then abort this operation
     if (result.first == null) {
-      isLoadingCombinedChampions = false;
-      utilities.postFrameCallback(notifyListeners);
+      if (!forceUpdate) {
+        isLoadingCombinedChampions = false;
+        utilities.postFrameCallback(notifyListeners);
+      }
 
       return;
     }
 
-    if (!isRefresh) isLoadingCombinedChampions = false;
+    if (!forceUpdate) isLoadingCombinedChampions = false;
     champions = result.first as List<models.Champion>;
 
-    // userPlayerChampions might be null on isGuest
+    // userPlayerChampions might be null on isGuest or forceUpdate
     if (result.last != null) {
       userPlayerChampions = result.last as List<models.PlayerChampion>;
     }
@@ -199,14 +203,11 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Loads the `champions` data from local db and syncs it with server
-  Future<List<models.Champion>?> _loadChampions(bool isRefresh) async {
+  Future<List<models.Champion>?> _loadChampions() async {
     // try to load champions from db
 
-    // on isRefresh, skip getting data from local db
-    if (!isRefresh) {
-      final savedChampions = utilities.Database.getChampions();
-      if (savedChampions != null) return savedChampions;
-    }
+    final savedChampions = utilities.Database.getChampions();
+    if (savedChampions != null) return savedChampions;
 
     final response = await api.ChampionsRequests.allChampions();
     if (response == null) return null;
@@ -214,7 +215,6 @@ class _ChampionsNotifier extends ChangeNotifier {
     final _champions = response.champions;
 
     // save champion locally for future use
-    utilities.Database.championBox?.clear();
     _champions.forEach(utilities.Database.saveChampion);
 
     // sort champions based on their name
@@ -224,27 +224,29 @@ class _ChampionsNotifier extends ChangeNotifier {
   /// Loads the `playerChampions` data for the user from local db and
   /// syncs it with server for showing in Champions screen
   Future<List<models.PlayerChampion>?> _loadUserPlayerChampions(
-    bool isRefresh,
+    bool forceUpdate,
   ) async {
     final user = utilities.Database.getUser();
     final playerId = user?.playerId;
     if (playerId == null) return null;
 
-    // on isRefresh, skip getting data from local db
-    if (!isRefresh) {
+    // on forceUpdate, skip getting data from local db
+    if (!forceUpdate) {
       final savedPlayerChampions = utilities.Database.getPlayerChampions();
       if (savedPlayerChampions != null) return savedPlayerChampions;
     }
 
-    // response will be null if we try to isRefresh earlier than intended
+    // response will be null if we try to forceUpdate earlier than intended
     final response = await api.ChampionsRequests.playerChampions(
       playerId: playerId,
+      forceUpdate: forceUpdate,
     );
 
     if (response == null) return null;
 
+    // clear the playerChampions in db if forceUpdate
     // save playerChampions locally for future use
-    utilities.Database.playerChampionBox?.clear();
+    if (forceUpdate) utilities.Database.playerChampionBox?.clear();
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
 
     return response.playerChampions;
