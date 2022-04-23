@@ -20,6 +20,11 @@ final lightTheme = ThemeData(
       color: Colors.white,
       size: 20,
     ),
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.poppins().fontFamily,
+    ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 20,
@@ -148,6 +153,11 @@ final darkTheme = ThemeData(
     iconTheme: const IconThemeData(
       color: Colors.white,
       size: 20,
+    ),
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: GoogleFonts.poppins().fontFamily,
     ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,

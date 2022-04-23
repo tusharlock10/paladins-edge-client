@@ -8,5 +8,13 @@ void postFrameCallback(void Function() callback) {
 
 /// Un-focuses the keyboard
 /// Used when navigating to other page and keyboard should be hidden
-unFocusKeyboard(BuildContext context) =>
+void unFocusKeyboard(BuildContext context) =>
     FocusScope.of(context).requestFocus(FocusNode());
+
+/// Get the height of top padding and appBar combined
+double getTopEdgeOffset(BuildContext context) =>
+    MediaQuery.of(context).padding.top + kToolbarHeight;
+
+/// Get the available body height
+double getBodyHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height - getTopEdgeOffset(context);

@@ -43,7 +43,7 @@ class LoadoutDeckCard extends HookWidget {
           ),
         );
       },
-      [],
+      [card, loadoutCard.level],
     );
 
     return SizedBox(

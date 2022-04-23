@@ -58,13 +58,9 @@ class LoadoutItem extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: loadout.isImported
-                                  ? const Text(
-                                      'In Game',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontStyle: FontStyle.italic,
-                                        color: Colors.green,
-                                      ),
+                                  ? const widgets.TextChip(
+                                      text: 'In Game',
+                                      color: Colors.green,
                                     )
                                   : const SizedBox(
                                       width: 72,

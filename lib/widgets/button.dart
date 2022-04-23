@@ -23,6 +23,7 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: primaryColorLight,
+          elevation: disabled ? 0 : null,
           shape: const StadiumBorder(),
         ),
         onPressed: disabled ? null : onPressed,

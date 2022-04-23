@@ -7,6 +7,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
+  bool isLoadingPlayerStatus = false;
   String? playerId;
   String? playerStatusPlayerId;
   models.Player? playerData;
@@ -26,7 +27,7 @@ class _PlayersNotifier extends ChangeNotifier {
     friends.removeWhere((friend) => friend.playerId == playerId);
     friends.insert(0, player);
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   Future<void> getFriendsList(
@@ -58,13 +59,22 @@ class _PlayersNotifier extends ChangeNotifier {
       friends = favouritePlayers + friends;
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
-  Future<void> getPlayerStatus(String playerId) async {
+  Future<void> getPlayerStatus({
+    required String playerId,
+    bool forceUpdate = false,
+  }) async {
+    if (!forceUpdate) {
+      isLoadingPlayerStatus = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
+
     playerStatus = await api.PlayersRequests.playerStatus(playerId: playerId);
 
-    utilities.postFrameCallback(notifyListeners);
+    if (!forceUpdate) isLoadingPlayerStatus = false;
+    notifyListeners();
   }
 
   /// Loads the `searchHistory` data for the user from local db and
@@ -102,7 +112,7 @@ class _PlayersNotifier extends ChangeNotifier {
     // sort search history on basis of time
     searchHistory.sort((a, b) => b.time.compareTo(a.time));
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   Future<void> insertSearchHistory({
@@ -160,7 +170,7 @@ class _PlayersNotifier extends ChangeNotifier {
       lowerSearchList = response.searchData.lowerSearchList;
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return response.exactMatch;
   }
@@ -168,7 +178,7 @@ class _PlayersNotifier extends ChangeNotifier {
   void clearSearchList() {
     topSearchList = [];
     lowerSearchList = [];
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// The the playerId of the player to be shown in profile detail screen
@@ -176,7 +186,7 @@ class _PlayersNotifier extends ChangeNotifier {
     playerData = null;
     playerId = _playerId;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// The the playerId of the player to be shown in active match screen
@@ -184,7 +194,7 @@ class _PlayersNotifier extends ChangeNotifier {
     playerStatus = null;
     playerStatusPlayerId = _playerStatusPlayerId;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void getPlayerData({
@@ -202,7 +212,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
     if (response == null) {
       isLoadingPlayerData = false;
-      utilities.postFrameCallback(notifyListeners);
+      notifyListeners();
 
       return null;
     }
@@ -215,7 +225,7 @@ class _PlayersNotifier extends ChangeNotifier {
     );
 
     isLoadingPlayerData = false;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Clears all user sensitive data upon logout

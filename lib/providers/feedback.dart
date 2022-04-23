@@ -24,32 +24,32 @@ class _FeedbackNotifier extends ChangeNotifier {
       selectedImageBytes = await selectedImage!.readAsBytes();
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Changes feedbackType
   void changeDescription(String text) {
     description = text;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Changes feedbackType
   void changeFeedbackType(String feedbackType) {
     selectedFeedbackType = feedbackType;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Submit the feedback
   Future<bool> submitFeedback() async {
     isSubmitting = true;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     String? imageUrl;
     if (selectedImage != null) {
       imageUrl = await _uploadImage();
       if (imageUrl == null) {
         isSubmitting = false;
-        utilities.postFrameCallback(notifyListeners);
+        notifyListeners();
       }
     }
 
@@ -63,7 +63,7 @@ class _FeedbackNotifier extends ChangeNotifier {
         await api.FeedbackRequests.submitFeedback(feedback: feedback);
 
     isSubmitting = false;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return response != null;
   }
