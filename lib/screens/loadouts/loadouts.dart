@@ -9,7 +9,6 @@ import 'package:paladinsedge/screens/loadouts/loadout_item.dart';
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:responsive_framework/responsive_framework.dart';
 
 class Loadouts extends HookConsumerWidget {
   static const routeName = '/loadouts';
@@ -93,7 +92,6 @@ class Loadouts extends HookConsumerWidget {
       [playerId],
     );
 
-    // TODO: Add floating SliverAppBar like in Home screen
     return Scaffold(
       floatingActionButton: SizedBox(
         height: 40,
@@ -131,56 +129,78 @@ class Loadouts extends HookConsumerWidget {
           ),
         ),
       ),
-      appBar: AppBar(
-        title: Column(
-          children: [
-            const Text('Loadouts'),
-            Text(
-              champion.name,
-              style: const TextStyle(fontSize: 12),
+      body: widgets.Refresh(
+        edgeOffset: utilities.getTopEdgeOffset(context),
+        onRefresh: onRefresh,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              forceElevated: true,
+              floating: true,
+              snap: true,
+              title: Column(
+                children: [
+                  const Text('Loadouts'),
+                  Text(
+                    champion.name,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
             ),
+            loadouts != null
+                ? SliverPadding(
+                    padding: EdgeInsets.only(
+                      right: horizontalPadding,
+                      left: horizontalPadding,
+                      top: 20,
+                      bottom: 70,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        childAspectRatio: LoadoutItem.loadoutAspectRatio,
+                        mainAxisSpacing: 5,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (_, index) {
+                          final loadout = loadouts[index];
+
+                          return GestureDetector(
+                            onTap: () => onEdit(loadout),
+                            child: AbsorbPointer(
+                              absorbing: true,
+                              child: LoadoutItem(
+                                loadout: loadout,
+                                champion: champion,
+                              ),
+                            ),
+                          );
+                        },
+                        childCount: loadouts.length,
+                      ),
+                    ),
+                  )
+                : SliverList(
+                    delegate: SliverChildListDelegate.fixed(
+                      [
+                        SizedBox(
+                          height: utilities.getBodyHeight(context),
+                          child: isGettingLoadouts
+                              ? const widgets.LoadingIndicator(
+                                  size: 36,
+                                  center: true,
+                                )
+                              : const Center(
+                                  child: Text('Unable to fetch loadouts'),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
           ],
         ),
       ),
-      body: isGettingLoadouts
-          ? const widgets.LoadingIndicator(
-              size: 36,
-              center: true,
-            )
-          : widgets.Refresh(
-              onRefresh: onRefresh,
-              child: loadouts != null
-                  ? ResponsiveGridView.builder(
-                      padding: EdgeInsets.only(
-                        right: horizontalPadding,
-                        left: horizontalPadding,
-                        top: 20,
-                        bottom: 70,
-                      ),
-                      itemCount: loadouts.length,
-                      gridDelegate: ResponsiveGridDelegate(
-                        childAspectRatio: LoadoutItem.loadoutAspectRatio,
-                        crossAxisExtent: (MediaQuery.of(context).size.width -
-                                horizontalPadding * 2) /
-                            crossAxisCount,
-                      ),
-                      itemBuilder: (_, index) {
-                        final loadout = loadouts[index];
-
-                        return GestureDetector(
-                          onTap: () => onEdit(loadout),
-                          child: AbsorbPointer(
-                            absorbing: true,
-                            child: LoadoutItem(
-                              loadout: loadout,
-                              champion: champion,
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : const Text('Unable to fetch loadouts'),
-            ),
     );
   }
 }

@@ -21,6 +21,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   }) async {
     if (!forceUpdate) {
       isGettingLoadouts = true;
+      loadouts = null;
       utilities.postFrameCallback(notifyListeners);
     }
 

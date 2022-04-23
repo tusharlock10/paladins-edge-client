@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/friends/friend_selected.dart';
+import 'package:paladinsedge/screens/friends/friends_app_bar.dart';
 import 'package:paladinsedge/screens/friends/friends_list.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -48,7 +50,7 @@ class Friends extends HookConsumerWidget {
         // get the playerStatus from the provider
         selectedFriend.value = friend;
 
-        playersProvider.getPlayerStatus(friend.playerId);
+        playersProvider.getPlayerStatus(playerId: friend.playerId);
       },
       [],
     );
@@ -64,15 +66,11 @@ class Friends extends HookConsumerWidget {
           // user already has max number of friends
           // show a toast displaying this info
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              behavior: SnackBarBehavior.floating,
-              elevation: 10,
-              content: Text(
+          widgets.showToast(
+            context: context,
+            text:
                 "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
-                textAlign: TextAlign.center,
-              ),
-            ),
+            type: widgets.ToastType.info,
           );
         } else if (result == data_classes.FavouriteFriendResult.added) {
           // player is added in list
@@ -84,21 +82,29 @@ class Friends extends HookConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Friends'),
+      body: CustomScrollView(
+        slivers: [
+          const FriendsAppBar(),
+          FriendSelected(
+            selectedFriend: selectedFriend.value,
+            onFavouriteFriend: onFavouriteFriend,
+          ),
+          isLoading.value
+              ? const SliverToBoxAdapter(
+                  child: Center(
+                    child: widgets.LoadingIndicator(
+                      size: 36,
+                    ),
+                  ),
+                )
+              : FriendsList(
+                  friendsListKey: _friendsListKey,
+                  selectedFriend: selectedFriend.value,
+                  onFavouriteFriend: onFavouriteFriend,
+                  onSelectFriend: onSelectFriend,
+                ),
+        ],
       ),
-      body: isLoading.value
-          ? const Center(
-              child: widgets.LoadingIndicator(
-                size: 36,
-              ),
-            )
-          : FriendsList(
-              friendsListKey: _friendsListKey,
-              selectedFriend: selectedFriend.value,
-              onFavouriteFriend: onFavouriteFriend,
-              onSelectFriend: onSelectFriend,
-            ),
     );
   }
 }

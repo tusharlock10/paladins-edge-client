@@ -69,7 +69,7 @@ class ChampionsList extends HookConsumerWidget {
                 mainAxisSpacing: 5,
               ),
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                (_, index) {
                   final combinedChampion = filteredCombinedChampions[index];
 
                   return ChampionItem(

@@ -7,6 +7,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
+  bool isLoadingPlayerStatus = false;
   String? playerId;
   String? playerStatusPlayerId;
   models.Player? playerData;
@@ -61,9 +62,18 @@ class _PlayersNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
   }
 
-  Future<void> getPlayerStatus(String playerId) async {
+  Future<void> getPlayerStatus({
+    required String playerId,
+    bool forceUpdate = false,
+  }) async {
+    if (!forceUpdate) {
+      isLoadingPlayerStatus = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
+
     playerStatus = await api.PlayersRequests.playerStatus(playerId: playerId);
 
+    if (!forceUpdate) isLoadingPlayerStatus = false;
     utilities.postFrameCallback(notifyListeners);
   }
 

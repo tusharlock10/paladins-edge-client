@@ -43,88 +43,89 @@ class FriendSelected extends HookConsumerWidget {
       [selectedFriend],
     );
 
-    return Column(
-      children: [
-        selectedFriend != null
-            ? Card(
-                elevation: 7,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: 10, right: 15, left: 15),
+      sliver: SliverToBoxAdapter(
+        child: selectedFriend != null
+            ? Column(
+                children: [
+                  Card(
+                    elevation: 7,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
-                                onTap: onPressFriend,
-                                child: Text(
-                                  selectedFriend!.name,
-                                  style: theme.textTheme.headline3?.copyWith(
-                                    decoration: TextDecoration.underline,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: onPressFriend,
+                                    child: Text(
+                                      selectedFriend!.name,
+                                      style:
+                                          theme.textTheme.headline3?.copyWith(
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
                                   ),
+                                  Text(
+                                    'Level ${selectedFriend!.level}',
+                                    style: theme.textTheme.bodyText2,
+                                  ),
+                                  Text(
+                                    selectedFriend!.platform,
+                                    style: theme.textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    widgets.Ripple(
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      onTap: onFavouriteFriend,
+                                      child: Icon(
+                                        isFavourite
+                                            ? Icons.star
+                                            : Icons.star_outline_outlined,
+                                        size: 20,
+                                        color: isFavourite
+                                            ? Colors.yellow
+                                            : theme.textTheme.bodyText1?.color,
+                                      ),
+                                    ),
+                                    playerStatus != null
+                                        ? FriendStatusIndicator(
+                                            status: playerStatus.status,
+                                          )
+                                        : const widgets.LoadingIndicator(
+                                            size: 16,
+                                            lineWidth: 1.5,
+                                          ),
+                                  ],
                                 ),
-                              ),
-                              Text(
-                                'Level ${selectedFriend!.level}',
-                                style: theme.textTheme.bodyText2,
-                              ),
-                              Text(
-                                selectedFriend!.platform,
-                                style: theme.textTheme.bodyText1,
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                widgets.Ripple(
-                                  margin: const EdgeInsets.only(bottom: 5),
-                                  onTap: onFavouriteFriend,
-                                  child: Icon(
-                                    isFavourite
-                                        ? Icons.star
-                                        : Icons.star_outline_outlined,
-                                    size: 20,
-                                    color: isFavourite
-                                        ? Colors.yellow
-                                        : theme.textTheme.bodyText1?.color,
-                                  ),
-                                ),
-                                playerStatus != null
-                                    ? FriendStatusIndicator(
-                                        status: playerStatus.status,
-                                      )
-                                    : const widgets.LoadingIndicator(
-                                        size: 16,
-                                        lineWidth: 1.5,
-                                      ),
-                              ],
-                            ),
-                          ),
+                          FriendActiveMatch(match: playerStatus?.match),
                         ],
                       ),
-                      FriendActiveMatch(match: playerStatus?.match),
-                    ],
+                    ),
                   ),
-                ),
-              )
-            : Column(
-                children: const [
-                  Text('* Select a friend to know his online status'),
-                  Text('* Slide the friend card left to mark favourite'),
+                  const SizedBox(height: 10),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
                 ],
-              ),
-        const SizedBox(height: 10),
-        const Divider(
-          height: 1,
-          thickness: 1,
-        ),
-      ],
+              )
+            : const SizedBox(),
+      ),
     );
   }
 }
