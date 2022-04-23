@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _LoadoutNotifier extends ChangeNotifier {
   bool isGettingLoadouts = false;
@@ -22,7 +21,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     if (!forceUpdate) {
       isGettingLoadouts = true;
       loadouts = null;
-      utilities.postFrameCallback(notifyListeners);
+      notifyListeners();
     }
 
     final response = await api.LoadoutRequests.playerLoadouts(
@@ -34,7 +33,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     if (!forceUpdate) isGettingLoadouts = false;
     if (response != null) loadouts = response.loadouts;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Deletes the loadouts
@@ -75,7 +74,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Sets the value of loadoutCard level when user changes the slider
@@ -92,7 +91,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Sets the loadoutName in draftLoadout and also validates the name
@@ -146,7 +145,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     final loadout = models.Loadout.fromDraftLoadout(draftLoadout);
 
     isSavingLoadout = true;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     final result = isEditingLoadout
         ? await api.LoadoutRequests.updatePlayerLoadout(loadout: loadout)
@@ -157,7 +156,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     }
 
     isSavingLoadout = false;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return result != null;
   }

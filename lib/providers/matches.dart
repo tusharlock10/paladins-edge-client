@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;
@@ -15,7 +14,7 @@ class _MatchesNotifier extends ChangeNotifier {
   }) async {
     if (!forceUpdate) {
       isPlayerMatchesLoading = true;
-      utilities.postFrameCallback(notifyListeners);
+      notifyListeners();
     }
 
     final response = await api.MatchRequests.playerMatches(
@@ -36,18 +35,18 @@ class _MatchesNotifier extends ChangeNotifier {
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void resetPlayerMatches() {
     playerMatches = null;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   Future<void> getMatchDetails(String matchId) async {
     isMatchDetailsLoading = true;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
 
@@ -57,13 +56,13 @@ class _MatchesNotifier extends ChangeNotifier {
     // sort players based on their team
     matchDetails?.matchPlayers.sort((a, b) => a.team.compareTo(b.team));
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void resetMatchDetails() {
     matchDetails = null;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Clears all user sensitive data upon logout

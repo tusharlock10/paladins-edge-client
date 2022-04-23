@@ -25,7 +25,7 @@ class _BountyStoreNotifier extends ChangeNotifier {
 
     if (!forceUpdate) isLoading = false;
     bountyStore = response.bountyStore;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     // save bountyStore locally for future use
     // clear bountyStore first if forceUpdate

@@ -16,10 +16,13 @@ class FriendItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    // Providers
     final favouriteFriends =
         ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
 
+    // Variables
+    const double itemHeight = 85;
+    final theme = Theme.of(context);
     final bool isFavourite =
         favouriteFriends?.contains(friend.playerId) ?? false;
 
@@ -34,7 +37,7 @@ class FriendItem extends ConsumerWidget {
       ),
       child: widgets.Ripple(
         onTap: () => onSelectFriend(friend),
-        height: 85,
+        height: itemHeight,
         child: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Row(
@@ -81,7 +84,7 @@ class FriendItem extends ConsumerWidget {
               const SizedBox(width: 10),
               Container(
                 color: isFavourite ? Colors.yellow : Colors.transparent,
-                height: 80,
+                height: itemHeight,
                 width: 10,
               ),
             ],

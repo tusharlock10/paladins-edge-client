@@ -90,11 +90,19 @@ class Friends extends HookConsumerWidget {
             onFavouriteFriend: onFavouriteFriend,
           ),
           isLoading.value
-              ? const SliverToBoxAdapter(
-                  child: Center(
-                    child: widgets.LoadingIndicator(
-                      size: 36,
-                    ),
+              ? SliverList(
+                  delegate: SliverChildListDelegate.fixed(
+                    [
+                      SizedBox(
+                        height: utilities.getBodyHeight(context),
+                        child: const Center(
+                          child: widgets.LoadingIndicator(
+                            size: 36,
+                            label: Text('Getting friends'),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : FriendsList(
