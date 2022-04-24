@@ -47,7 +47,7 @@ class _QueueState extends ChangeNotifier {
     _getQueue();
     _selectTimelineQueue(selectedQueueId);
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void selectTimelineQueue(int queueId) {
@@ -61,7 +61,7 @@ class _QueueState extends ChangeNotifier {
 
     _selectTimelineQueue(selectedQueueId);
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   void _selectTimelineQueue(int queueId) {

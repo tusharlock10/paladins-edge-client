@@ -66,8 +66,9 @@ class MatchDetailList extends HookConsumerWidget {
               height: utilities.getBodyHeight(context),
               child: const Center(
                 child: widgets.LoadingIndicator(
-                  size: 36,
-                  label: Text('Getting match details'),
+                  lineWidth: 2,
+                  size: 28,
+                  label: Text('Getting match'),
                 ),
               ),
             ),

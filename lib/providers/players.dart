@@ -8,6 +8,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   bool isLoadingPlayerStatus = false;
+  bool isLoadingFriends = false;
   String? playerId;
   String? playerStatusPlayerId;
   models.Player? playerData;
@@ -30,12 +31,20 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getFriendsList(
-    String playerId,
-    List<String>? favouriteFriends,
-  ) async {
+  Future<void> getFriendsList({
+    required String playerId,
+    required List<String>? favouriteFriends,
+    bool forceUpdate = false,
+  }) async {
+    if (!forceUpdate) {
+      isLoadingFriends = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
+
     final response = await api.PlayersRequests.friendsList(playerId: playerId);
     if (response == null) return;
+
+    if (!forceUpdate) isLoadingFriends = false;
     friends = response.friends;
 
     if (favouriteFriends != null) {
@@ -112,7 +121,7 @@ class _PlayersNotifier extends ChangeNotifier {
     // sort search history on basis of time
     searchHistory.sort((a, b) => b.time.compareTo(a.time));
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   Future<void> insertSearchHistory({

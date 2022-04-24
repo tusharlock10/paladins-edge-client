@@ -22,8 +22,7 @@ class ActiveMatchLoading extends StatelessWidget {
                 ? const widgets.LoadingIndicator(
                     lineWidth: 2,
                     size: 28,
-                    label: Text('Loading Active Match'),
-                    center: true,
+                    label: Text('Getting active match'),
                   )
                 : Center(
                     child: Text(

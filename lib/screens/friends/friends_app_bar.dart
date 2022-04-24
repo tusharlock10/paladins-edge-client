@@ -9,6 +9,8 @@ class FriendsAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final friends = ref.watch(providers.players.select((_) => _.friends));
+    final isLoadingFriends =
+        ref.watch(providers.players.select((_) => _.isLoadingFriends));
 
     return SliverAppBar(
       snap: true,
@@ -17,10 +19,11 @@ class FriendsAppBar extends ConsumerWidget {
       title: Column(
         children: [
           const Text('Friends'),
-          Text(
-            'You have ${friends.length}',
-            style: const TextStyle(fontSize: 12),
-          ),
+          if (!isLoadingFriends)
+            Text(
+              'You have ${friends.length}',
+              style: const TextStyle(fontSize: 12),
+            ),
         ],
       ),
     );

@@ -48,11 +48,10 @@ class HomeQueueDetails extends HookConsumerWidget {
 
     return isLoading
         ? const widgets.LoadingIndicator(
-            size: 20,
             lineWidth: 2,
-            center: true,
+            size: 28,
             margin: EdgeInsets.all(20),
-            label: Text('Loading Queue'),
+            label: Text('Getting queue'),
           )
         : SizedBox(
             width: width,
