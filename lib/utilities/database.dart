@@ -221,21 +221,21 @@ abstract class Database {
 
   // clear all the boxes
   static Future<void> clear() async {
-    await Future.wait(
-      [
-        _tokenBox?.clear(),
-        _userBox?.clear(),
-        _playerBox?.clear(),
-        _settingsBox?.clear(),
-        _essentialsBox?.clear(),
-        _searchHistoryBox?.clear(),
-        _championBox?.clear(),
-        _recordExpiryBox?.clear(),
-        _bountyStoreBox?.clear(),
-        _playerChampionBox?.clear(),
-        _queueTimelineBox?.clear(),
-      ].where((_) => _ != null) as List<Future>,
-    );
+    final boxes = [
+      _tokenBox,
+      _userBox,
+      _playerBox,
+      _settingsBox,
+      _essentialsBox,
+      _searchHistoryBox,
+      _championBox,
+      _recordExpiryBox,
+      _bountyStoreBox,
+      _playerChampionBox,
+      _queueTimelineBox,
+    ];
+    final futures = boxes.where((_) => _ != null).map((_) => _!.clear());
+    await Future.wait(futures);
 
     return;
   }

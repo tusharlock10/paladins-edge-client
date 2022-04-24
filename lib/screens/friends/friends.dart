@@ -19,23 +19,27 @@ class Friends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
     final playersProvider = ref.read(providers.players);
+    final authProvider = ref.read(providers.auth);
+    final favouriteFriends =
+        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final playerId =
+        ref.watch(providers.auth.select((_) => _.player?.playerId));
+    final isLoadingFriends =
+        ref.watch(providers.players.select((_) => _.isLoadingFriends));
+    final friends = ref.watch(providers.players.select((_) => _.friends));
 
     // State
-    final isLoading = useState(true);
     final selectedFriend = useState<models.Player?>(null);
 
     // Effects
     useEffect(
       () {
-        if (authProvider.player?.playerId != null) {
-          playersProvider
-              .getFriendsList(
-                authProvider.player!.playerId,
-                authProvider.user?.favouriteFriends,
-              )
-              .then((_) => isLoading.value = false);
+        if (playerId != null && friends.isEmpty) {
+          playersProvider.getFriendsList(
+            playerId: playerId,
+            favouriteFriends: favouriteFriends,
+          );
         }
 
         return null;
@@ -81,37 +85,57 @@ class Friends extends HookConsumerWidget {
       [],
     );
 
+    final onRefresh = useCallback(
+      () {
+        if (playerId != null) {
+          return playersProvider.getFriendsList(
+            playerId: playerId,
+            favouriteFriends: favouriteFriends,
+            forceUpdate: true,
+          );
+        }
+
+        return Future.value(null);
+      },
+      [],
+    );
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const FriendsAppBar(),
-          FriendSelected(
-            selectedFriend: selectedFriend.value,
-            onFavouriteFriend: onFavouriteFriend,
-          ),
-          isLoading.value
-              ? SliverList(
-                  delegate: SliverChildListDelegate.fixed(
-                    [
-                      SizedBox(
-                        height: utilities.getBodyHeight(context),
-                        child: const Center(
-                          child: widgets.LoadingIndicator(
-                            size: 36,
-                            label: Text('Getting friends'),
+      body: widgets.Refresh(
+        onRefresh: onRefresh,
+        edgeOffset: utilities.getTopEdgeOffset(context),
+        child: CustomScrollView(
+          slivers: [
+            const FriendsAppBar(),
+            FriendSelected(
+              selectedFriend: selectedFriend.value,
+              onFavouriteFriend: onFavouriteFriend,
+            ),
+            isLoadingFriends
+                ? SliverList(
+                    delegate: SliverChildListDelegate.fixed(
+                      [
+                        SizedBox(
+                          height: utilities.getBodyHeight(context),
+                          child: const Center(
+                            child: widgets.LoadingIndicator(
+                              lineWidth: 2,
+                              size: 28,
+                              label: Text('Getting friends'),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  )
+                : FriendsList(
+                    friendsListKey: _friendsListKey,
+                    selectedFriend: selectedFriend.value,
+                    onFavouriteFriend: onFavouriteFriend,
+                    onSelectFriend: onSelectFriend,
                   ),
-                )
-              : FriendsList(
-                  friendsListKey: _friendsListKey,
-                  selectedFriend: selectedFriend.value,
-                  onFavouriteFriend: onFavouriteFriend,
-                  onSelectFriend: onSelectFriend,
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

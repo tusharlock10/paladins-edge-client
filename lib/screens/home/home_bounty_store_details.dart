@@ -38,11 +38,10 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
 
     return isLoading
         ? const widgets.LoadingIndicator(
-            size: 20,
             lineWidth: 2,
-            center: true,
+            size: 28,
             margin: EdgeInsets.all(20),
-            label: Text('Loading Bounty Store'),
+            label: Text('Getting bounty store'),
           )
         : bountyStore == null
             ? const Card(

@@ -47,8 +47,8 @@ class GoogleButton extends StatelessWidget {
             children: [
               isLoggingIn
                   ? const widgets.LoadingIndicator(
-                      lineWidth: 3,
-                      size: 36,
+                      lineWidth: 2,
+                      size: 28,
                       color: theme.themeMaterialColor,
                     )
                   : Assets.icons.googleColored.image(

@@ -168,7 +168,8 @@ class Login extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const widgets.LoadingIndicator(
-                    size: 36,
+                    lineWidth: 2,
+                    size: 28,
                     color: Colors.white,
                   ),
                   const SizedBox(height: 15),

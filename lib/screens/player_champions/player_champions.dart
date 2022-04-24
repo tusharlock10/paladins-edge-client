@@ -50,7 +50,9 @@ class PlayerChampions extends HookConsumerWidget {
       body: _playerChampionsDataSource.value == null
           ? const Center(
               child: widgets.LoadingIndicator(
-                size: 32,
+                lineWidth: 2,
+                size: 28,
+                label: Text('Getting champions'),
               ),
             )
           : SfDataGrid(

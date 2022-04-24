@@ -188,8 +188,9 @@ class Loadouts extends HookConsumerWidget {
                           height: utilities.getBodyHeight(context),
                           child: isGettingLoadouts
                               ? const widgets.LoadingIndicator(
-                                  size: 36,
-                                  center: true,
+                                  lineWidth: 2,
+                                  size: 28,
+                                  label: Text('Getting loadouts'),
                                 )
                               : const Center(
                                   child: Text('Unable to fetch loadouts'),

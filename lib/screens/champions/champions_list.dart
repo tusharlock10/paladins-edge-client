@@ -49,7 +49,9 @@ class ChampionsList extends HookConsumerWidget {
                 ),
                 isLoadingCombinedChampions
                     ? const widgets.LoadingIndicator(
-                        size: 36,
+                        lineWidth: 2,
+                        size: 28,
+                        label: Text('Getting champions'),
                       )
                     : const Center(
                         child: Text('Unable to load champions data'),

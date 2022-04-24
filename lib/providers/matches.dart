@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;
@@ -14,7 +15,7 @@ class _MatchesNotifier extends ChangeNotifier {
   }) async {
     if (!forceUpdate) {
       isPlayerMatchesLoading = true;
-      notifyListeners();
+      utilities.postFrameCallback(notifyListeners);
     }
 
     final response = await api.MatchRequests.playerMatches(
@@ -46,7 +47,7 @@ class _MatchesNotifier extends ChangeNotifier {
 
   Future<void> getMatchDetails(String matchId) async {
     isMatchDetailsLoading = true;
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
 
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
 
