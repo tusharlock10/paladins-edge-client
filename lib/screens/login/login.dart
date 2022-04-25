@@ -34,7 +34,7 @@ class Login extends HookConsumerWidget {
     // Methods
     final checkLogin = useCallback(
       () async {
-        final loggedIn = await authProvider.login();
+        final loggedIn = await authProvider.checkLogin();
 
         if (loggedIn) {
           // after the user is logged in, send the device fcm token to the server
