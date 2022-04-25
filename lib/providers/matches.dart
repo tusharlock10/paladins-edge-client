@@ -36,13 +36,13 @@ class _MatchesNotifier extends ChangeNotifier {
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void resetPlayerMatches() {
     playerMatches = null;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   Future<void> getMatchDetails(String matchId) async {
@@ -57,13 +57,13 @@ class _MatchesNotifier extends ChangeNotifier {
     // sort players based on their team
     matchDetails?.matchPlayers.sort((a, b) => a.team.compareTo(b.team));
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void resetMatchDetails() {
     matchDetails = null;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Clears all user sensitive data upon logout

@@ -25,7 +25,7 @@ class _GetFirebaseUserResponse {
 
 class _AuthNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_AuthNotifier> ref;
-  bool isGuest = false;
+  bool isGuest = true;
   String? token;
   models.User? user;
   models.Player? player;
@@ -36,7 +36,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
@@ -62,16 +62,20 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Checks if the user is already logged in
-  Future<bool> login() async {
+  Future<bool> checkLogin() async {
     token = utilities.Database.getToken();
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
     if (token != null) {
+      isGuest = false;
       utilities.api.options.headers["authorization"] = token;
 
       return true;
     } else {
+      // if not logged in, then consider the user as a guest
+      isGuest = true;
+
       return false;
     }
   }
@@ -122,7 +126,7 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.api.options.headers["authorization"] = token;
 
     isGuest = false;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return data_classes.SignInProviderResponse(result: true);
   }
@@ -133,7 +137,7 @@ class _AuthNotifier extends ChangeNotifier {
     FirebaseAuth.instance.signInAnonymously();
     isGuest = true;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Logs out the user, also sends this info to server
@@ -203,7 +207,7 @@ class _AuthNotifier extends ChangeNotifier {
       if (user != null) utilities.Database.saveUser(user!);
       if (player != null) utilities.Database.savePlayer(player!);
 
-      utilities.postFrameCallback(notifyListeners);
+      notifyListeners();
     }
 
     return response;
@@ -232,7 +236,7 @@ class _AuthNotifier extends ChangeNotifier {
       user!.favouriteFriends.remove(playerId);
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     // after we update the UI, update the list in backend
     // update the UI for the latest changes
@@ -248,7 +252,7 @@ class _AuthNotifier extends ChangeNotifier {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return data_classes.FavouriteFriendResult.added;
   }
@@ -259,7 +263,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     // save the settings after changing the theme
     utilities.Database.saveSettings(settings);
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void clearData() {

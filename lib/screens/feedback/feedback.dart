@@ -78,6 +78,7 @@ class Feedback extends HookConsumerWidget {
           Center(
             child: isSubmitting
                 ? const widgets.LoadingIndicator(
+                    lineWidth: 2,
                     size: 28,
                     label: Text('Submitting'),
                   )

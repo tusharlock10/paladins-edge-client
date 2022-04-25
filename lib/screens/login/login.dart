@@ -34,7 +34,7 @@ class Login extends HookConsumerWidget {
     // Methods
     final checkLogin = useCallback(
       () async {
-        final loggedIn = await authProvider.login();
+        final loggedIn = await authProvider.checkLogin();
 
         if (loggedIn) {
           // after the user is logged in, send the device fcm token to the server
@@ -168,7 +168,8 @@ class Login extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const widgets.LoadingIndicator(
-                    size: 36,
+                    lineWidth: 2,
+                    size: 28,
                     color: Colors.white,
                   ),
                   const SizedBox(height: 15),

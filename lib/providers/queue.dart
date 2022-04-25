@@ -53,7 +53,7 @@ class _QueueState extends ChangeNotifier {
   void selectTimelineQueue(int queueId) {
     _selectTimelineQueue(queueId);
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   void changeTimelineGranularity(int _smallestUnit) {

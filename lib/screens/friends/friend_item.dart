@@ -16,24 +16,34 @@ class FriendItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    // Providers
     final favouriteFriends =
         ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
 
+    // Variables
+    const double itemHeight = 85;
+    final theme = Theme.of(context);
     final bool isFavourite =
         favouriteFriends?.contains(friend.playerId) ?? false;
 
-    return widgets.Ripple(
-      onTap: () => onSelectFriend(friend),
-      height: 80,
-      child: Card(
-        elevation: 7,
+    return Card(
+      elevation: 7,
+      margin: const EdgeInsets.only(top: 5, bottom: 10),
+      clipBehavior: Clip.hardEdge,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      child: widgets.Ripple(
+        onTap: () => onSelectFriend(friend),
+        height: itemHeight,
         child: Padding(
-          padding: const EdgeInsets.only(left: 15),
+          padding: const EdgeInsets.only(left: 10),
           child: Row(
             children: [
               widgets.ElevatedAvatar(
-                size: 24,
+                size: 32,
                 borderRadius: 5,
                 imageUrl: friend.avatarUrl,
               ),
@@ -71,10 +81,11 @@ class FriendItem extends ConsumerWidget {
                       imageUrl: friend.ranked.rankIconUrl,
                     )
                   : const SizedBox(),
+              const SizedBox(width: 10),
               Container(
                 color: isFavourite ? Colors.yellow : Colors.transparent,
-                height: 80,
-                width: 3,
+                height: itemHeight,
+                width: 10,
               ),
             ],
           ),

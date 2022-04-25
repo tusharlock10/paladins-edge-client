@@ -48,7 +48,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     if (result.first == null) {
       if (!forceUpdate) {
         isLoadingCombinedChampions = false;
-        utilities.postFrameCallback(notifyListeners);
+        notifyListeners();
       }
 
       return;
@@ -80,7 +80,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       sort: selectedSort,
     );
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Get the `playerChampions` data for the playerId
@@ -93,7 +93,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     isLoadingPlayerChampions = false;
     if (response != null) playerChampions = response.playerChampions;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Get the batch `playerChampions` data for the playerId and championId
@@ -109,7 +109,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     isLoadingPlayerChampions = false;
     if (response != null) playerChampions = response.playerChampions;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Deletes the plyerChampions
@@ -132,14 +132,14 @@ class _ChampionsNotifier extends ChangeNotifier {
       search,
     );
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Set the name of filter
   void setFilterName(String filterName) {
     selectedFilter = data_classes.SelectedChampionsFilter(name: filterName);
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Set value of filter and apply the filter
@@ -156,7 +156,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       );
     }
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Set value of sort and apply sorting
@@ -169,7 +169,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       sort: sort,
     );
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Clears all applied filters and sort on combinedChampions
@@ -187,7 +187,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
     selectedSort = data_classes.ChampionsSort.defaultSort;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Clears all user sensitive data upon logout

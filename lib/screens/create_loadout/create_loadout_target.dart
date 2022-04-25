@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -50,8 +51,8 @@ class CreateLoadoutTarget extends HookConsumerWidget {
         int points = 0;
         Color color = Colors.orange;
 
-        for (var _ in draftLoadout.loadoutCards) {
-          points += _?.level ?? 0;
+        for (var loadoutCard in draftLoadout.loadoutCards) {
+          points += loadoutCard?.level ?? 0;
         }
 
         if (points == 15) color = Colors.green;
@@ -128,37 +129,13 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                           onChanged: onChangeLoadoutName,
                         ),
                       ),
-                      SizedBox(
-                        width: 72,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: draftLoadout.isImported
-                              ? const Text(
-                                  'In Game',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.green,
-                                  ),
-                                )
-                              : const SizedBox(
-                                  width: 72,
-                                ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
                 Row(
-                  children: List.generate(
-                    draftLoadout.loadoutCards.length,
-                    (_) => _,
-                    growable: false,
-                  ).map(
-                    (index) {
-                      final loadoutCard = draftLoadout.loadoutCards[index];
-
+                  children: draftLoadout.loadoutCards.mapIndexed(
+                    (index, loadoutCard) {
                       return DragTarget<models.Card>(
                         onWillAccept: (_) => true,
                         onAccept: (card) =>
@@ -187,13 +164,11 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                             );
                           }
 
-                          final _index = champion.cards.indexWhere(
+                          final _card = champion.cards.firstOrNullWhere(
                             (_) => _.cardId2 == loadoutCard?.cardId2,
                           );
 
-                          if (_index != -1) {
-                            final _card = champion.cards[_index];
-
+                          if (_card != null) {
                             return widgets.LoadoutDeckCard(
                               imageHeight: imageHeight,
                               imageWidth: imageWidth,

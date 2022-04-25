@@ -21,6 +21,8 @@ class PlayerChampions extends HookConsumerWidget {
 
     // Variables
     final champions = championsProvider.champions;
+    final headerTextStyle =
+        Theme.of(context).textTheme.headline1?.copyWith(fontSize: 16);
 
     // State
     final _playerChampionsDataSource =
@@ -48,70 +50,74 @@ class PlayerChampions extends HookConsumerWidget {
       body: _playerChampionsDataSource.value == null
           ? const Center(
               child: widgets.LoadingIndicator(
-                size: 32,
+                lineWidth: 2,
+                size: 28,
+                label: Text('Getting champions'),
               ),
             )
           : SfDataGrid(
               allowSorting: true,
               rowHeight: 60,
+              frozenColumnsCount: 1,
               source: _playerChampionsDataSource.value!,
               columnWidthMode: ColumnWidthMode.fitByColumnName,
               headerGridLinesVisibility: GridLinesVisibility.both,
               gridLinesVisibility: GridLinesVisibility.both,
+              horizontalScrollPhysics: const ClampingScrollPhysics(),
               columns: [
                 GridColumn(
                   columnName: 'Champ',
-                  label: const Center(
-                    child: Text('Champs'),
+                  label: Center(
+                    child: Text('Champ', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Matches',
-                  label: const Center(
-                    child: Text('Matches'),
+                  label: Center(
+                    child: Text('Matches', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Kills',
-                  label: const Center(
-                    child: Text('Kills'),
+                  label: Center(
+                    child: Text('Kills', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Deaths',
-                  label: const Center(
-                    child: Text('Deaths'),
+                  label: Center(
+                    child: Text('Deaths', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'KDA',
-                  label: const Center(
-                    child: Text('KDA'),
+                  label: Center(
+                    child: Text('KDA', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Win Rate',
-                  label: const Center(
-                    child: Text('Win Rate'),
+                  label: Center(
+                    child: Text('Win Rate', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Play Time',
                   autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  label: const Center(
-                    child: Text('Play Time'),
+                  label: Center(
+                    child: Text('Play Time', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Level',
-                  label: const Center(
-                    child: Text('Level'),
+                  label: Center(
+                    child: Text('Level', style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
                   columnName: 'Last Played',
-                  label: const Center(
-                    child: Text('Last Played'),
+                  label: Center(
+                    child: Text('Last Played', style: headerTextStyle),
                   ),
                 ),
               ],

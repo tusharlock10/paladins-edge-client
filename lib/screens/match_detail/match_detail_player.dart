@@ -59,7 +59,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
       child: Row(
         children: [
           champion == null

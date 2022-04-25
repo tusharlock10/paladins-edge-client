@@ -18,7 +18,8 @@ class PlayerDetailMatches extends ConsumerWidget {
 
     if (isPlayerMatchesLoading) {
       return const widgets.LoadingIndicator(
-        size: 36,
+        lineWidth: 2,
+        size: 28,
         label: Text('Getting matches'),
       );
     }

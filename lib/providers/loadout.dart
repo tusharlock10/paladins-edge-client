@@ -21,6 +21,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   }) async {
     if (!forceUpdate) {
       isGettingLoadouts = true;
+      loadouts = null;
       utilities.postFrameCallback(notifyListeners);
     }
 
@@ -33,7 +34,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     if (!forceUpdate) isGettingLoadouts = false;
     if (response != null) loadouts = response.loadouts;
 
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Deletes the loadouts
@@ -74,7 +75,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Sets the value of loadoutCard level when user changes the slider
@@ -91,7 +92,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     draftLoadout = draftLoadout.copyWith(loadoutCards: loadoutCardsClone);
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Sets the loadoutName in draftLoadout and also validates the name
@@ -145,7 +146,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     final loadout = models.Loadout.fromDraftLoadout(draftLoadout);
 
     isSavingLoadout = true;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     final result = isEditingLoadout
         ? await api.LoadoutRequests.updatePlayerLoadout(loadout: loadout)
@@ -156,7 +157,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     }
 
     isSavingLoadout = false;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
 
     return result != null;
   }

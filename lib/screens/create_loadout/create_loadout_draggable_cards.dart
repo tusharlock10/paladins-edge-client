@@ -8,7 +8,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class CreateLoadoutDraggableCards extends HookConsumerWidget {
+class CreateLoadoutDraggableCards extends ConsumerWidget {
   const CreateLoadoutDraggableCards({Key? key}) : super(key: key);
 
   @override
@@ -48,8 +48,9 @@ class CreateLoadoutDraggableCards extends HookConsumerWidget {
           }
 
           return Draggable<models.Card>(
-            affinity: Axis.vertical,
             data: card,
+            affinity: Axis.vertical,
+            maxSimultaneousDrags: 1,
             feedback: widgets.ChampionLoadoutCard(
               card: card,
               champion: champion,

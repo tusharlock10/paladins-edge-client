@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champions_list.dart';
 import 'package:paladinsedge/screens/champions/champions_search_bar.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Champions extends HookConsumerWidget {
@@ -28,7 +29,7 @@ class Champions extends HookConsumerWidget {
     );
 
     return widgets.Refresh(
-      edgeOffset: MediaQuery.of(context).padding.top + kToolbarHeight,
+      edgeOffset: utilities.getTopEdgeOffset(context),
       onRefresh: () => championsProvider.loadCombinedChampions(true),
       child: const CustomScrollView(
         slivers: [

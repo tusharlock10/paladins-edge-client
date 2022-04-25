@@ -119,11 +119,11 @@ class PlayerDetail extends HookConsumerWidget {
             : const Text('Loading'),
       ),
       body: player == null
-          ? const Center(
-              child: widgets.LoadingIndicator(
-                size: 36,
-                label: Text('Loading player'),
-              ),
+          ? const widgets.LoadingIndicator(
+              lineWidth: 2,
+              size: 28,
+              center: true,
+              label: Text('Loading player'),
             )
           : widgets.Refresh(
               onRefresh: onRefresh,

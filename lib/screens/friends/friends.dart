@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/friends/friend_selected.dart';
+import 'package:paladinsedge/screens/friends/friends_app_bar.dart';
 import 'package:paladinsedge/screens/friends/friends_list.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -17,23 +19,27 @@ class Friends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
     final playersProvider = ref.read(providers.players);
+    final authProvider = ref.read(providers.auth);
+    final favouriteFriends =
+        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final playerId =
+        ref.watch(providers.auth.select((_) => _.player?.playerId));
+    final isLoadingFriends =
+        ref.watch(providers.players.select((_) => _.isLoadingFriends));
+    final friends = ref.watch(providers.players.select((_) => _.friends));
 
     // State
-    final isLoading = useState(true);
     final selectedFriend = useState<models.Player?>(null);
 
     // Effects
     useEffect(
       () {
-        if (authProvider.player?.playerId != null) {
-          playersProvider
-              .getFriendsList(
-                authProvider.player!.playerId,
-                authProvider.user?.favouriteFriends,
-              )
-              .then((_) => isLoading.value = false);
+        if (playerId != null && friends.isEmpty) {
+          playersProvider.getFriendsList(
+            playerId: playerId,
+            favouriteFriends: favouriteFriends,
+          );
         }
 
         return null;
@@ -48,7 +54,7 @@ class Friends extends HookConsumerWidget {
         // get the playerStatus from the provider
         selectedFriend.value = friend;
 
-        playersProvider.getPlayerStatus(friend.playerId);
+        playersProvider.getPlayerStatus(playerId: friend.playerId);
       },
       [],
     );
@@ -64,15 +70,11 @@ class Friends extends HookConsumerWidget {
           // user already has max number of friends
           // show a toast displaying this info
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              behavior: SnackBarBehavior.floating,
-              elevation: 10,
-              content: Text(
+          widgets.showToast(
+            context: context,
+            text:
                 "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
-                textAlign: TextAlign.center,
-              ),
-            ),
+            type: widgets.ToastType.info,
           );
         } else if (result == data_classes.FavouriteFriendResult.added) {
           // player is added in list
@@ -83,22 +85,58 @@ class Friends extends HookConsumerWidget {
       [],
     );
 
+    final onRefresh = useCallback(
+      () {
+        if (playerId != null) {
+          return playersProvider.getFriendsList(
+            playerId: playerId,
+            favouriteFriends: favouriteFriends,
+            forceUpdate: true,
+          );
+        }
+
+        return Future.value(null);
+      },
+      [],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Friends'),
-      ),
-      body: isLoading.value
-          ? const Center(
-              child: widgets.LoadingIndicator(
-                size: 36,
-              ),
-            )
-          : FriendsList(
-              friendsListKey: _friendsListKey,
+      body: widgets.Refresh(
+        onRefresh: onRefresh,
+        edgeOffset: utilities.getTopEdgeOffset(context),
+        child: CustomScrollView(
+          slivers: [
+            const FriendsAppBar(),
+            FriendSelected(
               selectedFriend: selectedFriend.value,
               onFavouriteFriend: onFavouriteFriend,
-              onSelectFriend: onSelectFriend,
             ),
+            isLoadingFriends
+                ? SliverList(
+                    delegate: SliverChildListDelegate.fixed(
+                      [
+                        SizedBox(
+                          height: utilities.getBodyHeight(context),
+                          child: const Center(
+                            child: widgets.LoadingIndicator(
+                              lineWidth: 2,
+                              size: 28,
+                              label: Text('Getting friends'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : FriendsList(
+                    friendsListKey: _friendsListKey,
+                    selectedFriend: selectedFriend.value,
+                    onFavouriteFriend: onFavouriteFriend,
+                    onSelectFriend: onSelectFriend,
+                  ),
+          ],
+        ),
+      ),
     );
   }
 }

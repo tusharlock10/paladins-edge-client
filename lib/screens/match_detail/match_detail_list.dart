@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/match_detail/match_detail_player.dart';
 import 'package:paladinsedge/screens/match_detail/match_detail_stats.dart';
 import 'package:paladinsedge/screens/match_detail/match_detail_team_header.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
@@ -20,7 +22,6 @@ class MatchDetailList extends HookConsumerWidget {
         ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading));
     final matchDetails =
         ref.watch(providers.matches.select((_) => _.matchDetails));
-    final List<Widget> matchPlayerWidgets = [];
 
     // Effects
     useEffect(
@@ -58,46 +59,65 @@ class MatchDetailList extends HookConsumerWidget {
     );
 
     if (isMatchDetailsLoading) {
-      return const Center(
-        child: widgets.LoadingIndicator(
-          size: 36,
+      return SliverList(
+        delegate: SliverChildListDelegate.fixed(
+          [
+            SizedBox(
+              height: utilities.getBodyHeight(context),
+              child: const Center(
+                child: widgets.LoadingIndicator(
+                  lineWidth: 2,
+                  size: 28,
+                  label: Text('Getting match'),
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
 
     if (matchDetails == null) {
-      return const Center(
-        child: Text('Unable to fetch details for this match'),
+      return SliverList(
+        delegate: SliverChildListDelegate.fixed(
+          [
+            SizedBox(
+              height: utilities.getBodyHeight(context),
+              child: const Center(
+                child: Text('Unable to fetch details for this match'),
+              ),
+            ),
+          ],
+        ),
       );
     }
 
-    // TODO: Optimize this shitty code
-    matchPlayerWidgets.add(const MatchDetailStats());
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (_, index) {
+          final matchPlayer = matchDetails.matchPlayers[index];
+          final previousMatchPlayer =
+              matchDetails.matchPlayers.elementAtOrNull(index - 1);
 
-    for (int index = 0; index < matchDetails.matchPlayers.length; index++) {
-      final matchPlayer = matchDetails.matchPlayers[index];
-
-      if (index == 0 || index == 5) {
-        final teamStats =
-            calculateTeamStats(matchPlayer.team, matchDetails.matchPlayers);
-        final isWinningTeam =
-            matchDetails.match.winningTeam == matchPlayer.team;
-
-        matchPlayerWidgets.add(
-          MatchDetailTeamHeader(
-            teamStats: teamStats,
-            isWinningTeam: isWinningTeam,
-            matchPlayer: matchPlayer,
-          ),
-        );
-        matchPlayerWidgets.add(MatchDetailPlayer(matchPlayer: matchPlayer));
-      } else {
-        matchPlayerWidgets.add(MatchDetailPlayer(matchPlayer: matchPlayer));
-      }
-    }
-
-    return ListView(
-      children: matchPlayerWidgets,
+          return Column(
+            children: [
+              if (index == 0) const MatchDetailStats(),
+              if (matchPlayer.team != previousMatchPlayer?.team)
+                MatchDetailTeamHeader(
+                  teamStats: calculateTeamStats(
+                    matchPlayer.team,
+                    matchDetails.matchPlayers,
+                  ),
+                  isWinningTeam:
+                      matchDetails.match.winningTeam == matchPlayer.team,
+                  matchPlayer: matchPlayer,
+                ),
+              MatchDetailPlayer(matchPlayer: matchPlayer),
+            ],
+          );
+        },
+        childCount: matchDetails.matchPlayers.length,
+      ),
     );
   }
 }
