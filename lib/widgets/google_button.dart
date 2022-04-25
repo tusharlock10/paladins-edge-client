@@ -29,6 +29,7 @@ class GoogleButton extends StatelessWidget {
         widgets.Ripple(
           margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
           width: width - 30,
+          height: 56,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -46,10 +47,14 @@ class GoogleButton extends StatelessWidget {
           child: Row(
             children: [
               isLoggingIn
-                  ? const widgets.LoadingIndicator(
-                      lineWidth: 2,
-                      size: 28,
-                      color: theme.themeMaterialColor,
+                  ? const SizedBox(
+                      width: 36,
+                      height: 36,
+                      child: widgets.LoadingIndicator(
+                        lineWidth: 2,
+                        size: 28,
+                        color: theme.themeMaterialColor,
+                      ),
                     )
                   : Assets.icons.googleColored.image(
                       width: 36,
