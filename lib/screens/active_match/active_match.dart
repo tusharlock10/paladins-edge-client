@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/active_match/active_match_list.dart';
@@ -86,6 +87,7 @@ class ActiveMatch extends HookConsumerWidget {
               forceElevated: true,
               floating: true,
               snap: true,
+              pinned: constants.isWeb,
               title: Text('Active Match'),
             ),
             playerStatus == null

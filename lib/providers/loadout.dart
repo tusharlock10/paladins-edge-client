@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _LoadoutNotifier extends ChangeNotifier {
   bool isGettingLoadouts = false;
@@ -21,7 +22,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     if (!forceUpdate) {
       isGettingLoadouts = true;
       loadouts = null;
-      notifyListeners();
+      utilities.postFrameCallback(notifyListeners);
     }
 
     final response = await api.LoadoutRequests.playerLoadouts(

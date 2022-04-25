@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
 
 class MatchDetailAppBar extends ConsumerWidget {
@@ -18,6 +19,7 @@ class MatchDetailAppBar extends ConsumerWidget {
       snap: true,
       floating: true,
       forceElevated: true,
+      pinned: constants.isWeb,
       title: Column(
         children: [
           Text(

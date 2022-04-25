@@ -8,7 +8,9 @@ class TextChip extends StatelessWidget {
   final bool? hidden;
   final double? spacing;
   final IconData? icon;
+  final IconData? trailingIcon;
   final double iconSize;
+  final double trailingIconSize;
   final double? width;
   final double? height;
   final void Function()? onTap;
@@ -20,7 +22,9 @@ class TextChip extends StatelessWidget {
     this.spacing = 0,
     this.hidden = false,
     this.icon,
+    this.trailingIcon,
     this.iconSize = 12,
+    this.trailingIconSize = 12,
     this.width,
     this.height,
     this.onTap,
@@ -57,16 +61,15 @@ class TextChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              icon != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 3),
-                      child: Icon(
-                        icon,
-                        color: color2,
-                        size: iconSize,
-                      ),
-                    )
-                  : const SizedBox(),
+              if (icon != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 3),
+                  child: Icon(
+                    icon,
+                    color: color2,
+                    size: iconSize,
+                  ),
+                ),
               Text(
                 text!,
                 style: Theme.of(context).textTheme.headline2?.copyWith(
@@ -75,6 +78,15 @@ class TextChip extends StatelessWidget {
                       fontWeight: FontWeight.normal,
                     ),
               ),
+              if (trailingIcon != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 3),
+                  child: Icon(
+                    trailingIcon,
+                    color: color2,
+                    size: trailingIconSize,
+                  ),
+                ),
             ],
           ),
         ),
