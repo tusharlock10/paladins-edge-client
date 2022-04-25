@@ -129,20 +129,6 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                           onChanged: onChangeLoadoutName,
                         ),
                       ),
-                      SizedBox(
-                        width: 72,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: draftLoadout.isImported
-                              ? const widgets.TextChip(
-                                  text: 'In Game',
-                                  color: Colors.green,
-                                )
-                              : const SizedBox(
-                                  width: 72,
-                                ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

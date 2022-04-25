@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -32,24 +33,28 @@ class ChampionDetailAppBar extends StatelessWidget {
       forceElevated: true,
       floating: true,
       snap: true,
+      pinned: constants.isWeb,
       backgroundColor: theme.darkThemeMaterialColor,
-      leading: IconButton(
-        iconSize: 20,
-        hoverColor: Colors.blueGrey.shade100.withOpacity(0.5),
-        icon: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white38,
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-          ),
-          child: const Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
-        ),
-        onPressed: () => Navigator.pop(context),
-      ),
+      leading: constants.isWeb
+          ? null
+          : IconButton(
+              iconSize: 20,
+              hoverColor: Colors.blueGrey.shade100.withOpacity(0.5),
+              icon: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Colors.white38,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
       expandedHeight: headerHeight,
+      collapsedHeight: constants.isWeb ? headerHeight : null,
       flexibleSpace: FlexibleSpaceBar(
         background: showSplash
             ? widgets.FastImage(
@@ -60,7 +65,8 @@ class ChampionDetailAppBar extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: widgets.FastImage(
                   imageUrl: champion.headerUrl,
-                  fit: BoxFit.contain,
+                  height: headerHeight,
+                  width: headerHeight * 2,
                 ),
               ),
       ),

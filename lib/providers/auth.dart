@@ -25,7 +25,7 @@ class _GetFirebaseUserResponse {
 
 class _AuthNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_AuthNotifier> ref;
-  bool isGuest = false;
+  bool isGuest = true;
   String? token;
   models.User? user;
   models.Player? player;
@@ -62,16 +62,20 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Checks if the user is already logged in
-  Future<bool> login() async {
+  Future<bool> checkLogin() async {
     token = utilities.Database.getToken();
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
     if (token != null) {
+      isGuest = false;
       utilities.api.options.headers["authorization"] = token;
 
       return true;
     } else {
+      // if not logged in, then consider the user as a guest
+      isGuest = true;
+
       return false;
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -138,6 +139,7 @@ class Loadouts extends HookConsumerWidget {
               forceElevated: true,
               floating: true,
               snap: true,
+              pinned: constants.isWeb,
               title: Column(
                 children: [
                   const Text('Loadouts'),
@@ -167,9 +169,11 @@ class Loadouts extends HookConsumerWidget {
                           final loadout = loadouts[index];
 
                           return GestureDetector(
-                            onTap: () => onEdit(loadout),
+                            onTap: loadout.isImported
+                                ? null
+                                : () => onEdit(loadout),
                             child: AbsorbPointer(
-                              absorbing: true,
+                              absorbing: !loadout.isImported,
                               child: LoadoutItem(
                                 loadout: loadout,
                                 champion: champion,
