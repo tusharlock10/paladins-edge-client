@@ -4,6 +4,7 @@ enum FavouriteFriendResult {
   removed,
   added,
   limitReached,
+  unauthorized,
 }
 
 class ShowLoginModalOptions {

@@ -27,9 +27,11 @@ abstract class Urls {
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
+  static const batchPlayerDetails = "/players/batchPlayerDetails"; // POST
   static const playerStatus = "/players/playerStatus"; // GET
-  static const friendsList = "/players/friendsList"; // GET
-  static const favouriteFriend = "/players/favouriteFriend"; // PUT
+  static const friends = "/players/friends"; // GET
+  static const favouriteFriends = "/players/favouriteFriends"; // GET
+  static const updateFavouriteFriend = "/players/updateFavouriteFriend"; // PUT
   static const searchHistory = "/players/searchHistory"; // GET
 
   // queue

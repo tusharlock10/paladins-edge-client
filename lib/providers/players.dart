@@ -3,35 +3,44 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/providers/auth.dart' as auth_provider;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   bool isLoadingPlayerStatus = false;
   bool isLoadingFriends = false;
+  bool isLoadingFavouriteFriends = false;
+  bool fetchedAllFriends = false;
   String? playerId;
   String? playerStatusPlayerId;
   models.Player? playerData;
   api.PlayerStatusResponse? playerStatus;
   List<api.LowerSearch> lowerSearchList = [];
-  List<models.Player> friends = [];
+  List<models.Player>? friends;
   List<models.Player> topSearchList = [];
   List<models.SearchHistory> searchHistory = [];
+  final ChangeNotifierProviderRef<_PlayersNotifier> ref;
+
+  _PlayersNotifier({required this.ref});
 
   void moveFriendToTop(String playerId) {
+    if (friends == null) return;
+    final _friends = friends!;
     // the player to move to top of the friends list
     final player =
-        friends.firstOrNullWhere((friend) => friend.playerId == playerId);
+        _friends.firstOrNullWhere((friend) => friend.playerId == playerId);
 
     if (player == null) return;
 
-    friends.removeWhere((friend) => friend.playerId == playerId);
-    friends.insert(0, player);
+    _friends.removeWhere((friend) => friend.playerId == playerId);
+    _friends.insert(0, player);
+    friends = _friends;
 
     notifyListeners();
   }
 
-  Future<void> getFriendsList({
+  Future<void> getFriends({
     required String playerId,
     required List<String>? favouriteFriends,
     bool forceUpdate = false,
@@ -41,21 +50,26 @@ class _PlayersNotifier extends ChangeNotifier {
       utilities.postFrameCallback(notifyListeners);
     }
 
-    final response = await api.PlayersRequests.friendsList(playerId: playerId);
-    if (response == null) return;
+    final response = await api.PlayersRequests.friends(playerId: playerId);
+    if (response == null) {
+      isLoadingFriends = false;
+      notifyListeners();
+
+      return;
+    }
 
     if (!forceUpdate) isLoadingFriends = false;
-    friends = response.friends;
+    final _friends = response.friends;
 
     if (favouriteFriends != null) {
       // sort the friends on the basis on name
-      friends.sort(
+      _friends.sort(
         (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
       );
 
-      // find favourite players
-      final List<models.Player> favouritePlayers = [];
-      friends.removeWhere((friend) {
+      // find favourite friends
+      final favouritePlayers = List<models.Player>.empty();
+      _friends.removeWhere((friend) {
         if (favouriteFriends.contains(friend.playerId)) {
           favouritePlayers.add(friend);
 
@@ -65,8 +79,10 @@ class _PlayersNotifier extends ChangeNotifier {
         return false;
       });
 
-      friends = favouritePlayers + friends;
+      friends = favouritePlayers + _friends;
     }
+
+    fetchedAllFriends = true;
 
     notifyListeners();
   }
@@ -237,9 +253,50 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getFavouriteFriends([bool forceUpdate = false]) async {
+    if (!forceUpdate) {
+      isLoadingFavouriteFriends = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
+
+    final response = await api.PlayersRequests.favouriteFriends();
+
+    if (response == null) {
+      if (!forceUpdate) {
+        isLoadingFavouriteFriends = false;
+        notifyListeners();
+      }
+
+      return;
+    }
+
+    final _friends = friends ?? [];
+    final favouriteFriendsFromApi =
+        response.favouriteFriends.map((_) => _.playerId).toList();
+
+    // find favourite players
+    _friends.removeWhere(
+      (friend) => favouriteFriendsFromApi.contains(friend.playerId),
+    );
+
+    friends = response.favouriteFriends + _friends;
+
+    final user = ref.read(auth_provider.auth).user;
+    user!.favouriteFriends =
+        response.favouriteFriends.map((_) => _.playerId).toList();
+    utilities.Database.saveUser(user);
+
+    if (!forceUpdate) isLoadingFavouriteFriends = false;
+    notifyListeners();
+  }
+
   /// Clears all user sensitive data upon logout
   void clearData() {
     isLoadingPlayerData = false;
+    isLoadingPlayerStatus = false;
+    isLoadingFriends = false;
+    isLoadingFavouriteFriends = false;
+    fetchedAllFriends = false;
     playerId = null;
     playerStatusPlayerId = null;
     playerData = null;
@@ -252,4 +309,4 @@ class _PlayersNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle players
-final players = ChangeNotifierProvider((_) => _PlayersNotifier());
+final players = ChangeNotifierProvider((ref) => _PlayersNotifier(ref: ref));
