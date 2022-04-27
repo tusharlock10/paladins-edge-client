@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/home/home_bounty_store_details.dart';
+import 'package:paladinsedge/screens/home/home_favourite_friends.dart';
 import 'package:paladinsedge/screens/home/home_queue_chart.dart';
 import 'package:paladinsedge/screens/home/home_queue_details.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -17,8 +18,12 @@ class Home extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
+    final favouriteFriends =
+        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);
+    final playersProvider = ref.read(providers.players);
 
     // Effects
     useEffect(
@@ -37,17 +42,19 @@ class Home extends HookConsumerWidget {
         return await Future.wait([
           bountyStoreProvider.loadBountyStore(true),
           queueProvider.getQueueTimeline(true),
+          if (favouriteFriends != null)
+            playersProvider.getFavouriteFriends(true),
         ]);
       },
-      [],
+      [favouriteFriends],
     );
 
     return widgets.Refresh(
       onRefresh: onRefresh,
       edgeOffset: utilities.getTopEdgeOffset(context),
-      child: const CustomScrollView(
+      child: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             snap: true,
             floating: true,
             forceElevated: true,
@@ -60,11 +67,15 @@ class Home extends HookConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                SizedBox(height: 20),
-                HomeQueueDetails(),
-                HomeQueueChart(),
-                HomeBountyStoreDetails(),
-                SizedBox(height: 20),
+                if (!isGuest) const SizedBox(height: 20),
+                if (!isGuest) const HomeFavouriteFriends(),
+                const SizedBox(height: 20),
+                const HomeQueueDetails(),
+                const SizedBox(height: 20),
+                const HomeQueueChart(),
+                const SizedBox(height: 20),
+                const HomeBountyStoreDetails(),
+                const SizedBox(height: 20),
               ],
             ),
           ),

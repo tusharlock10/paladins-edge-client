@@ -217,7 +217,7 @@ class _AuthNotifier extends ChangeNotifier {
   Future<data_classes.FavouriteFriendResult> markFavouriteFriend(
     String playerId,
   ) async {
-    if (user == null) return data_classes.FavouriteFriendResult.removed;
+    if (user == null) return data_classes.FavouriteFriendResult.unauthorized;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
 
@@ -238,11 +238,12 @@ class _AuthNotifier extends ChangeNotifier {
 
     notifyListeners();
 
-    // after we update the UI, update the list in backend
-    // update the UI for the latest changes
+    // after we update the UI
+    // update the favourite friends in backend
+    // update the UI for the latest changes from backend
 
     final response =
-        await api.PlayersRequests.favouriteFriend(playerId: playerId);
+        await api.PlayersRequests.updateFavouriteFriend(playerId: playerId);
 
     if (response == null) {
       // if the response fails for some reason, revert back the change
@@ -251,6 +252,8 @@ class _AuthNotifier extends ChangeNotifier {
     } else {
       user!.favouriteFriends = response.favouriteFriends;
     }
+
+    utilities.Database.saveUser(user!);
 
     notifyListeners();
 

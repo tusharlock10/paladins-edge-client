@@ -64,6 +64,17 @@ class PlayerDetailResponse {
 }
 
 @JsonSerializable()
+class BatchPlayerDetailsResponse {
+  final List<Player> players;
+
+  BatchPlayerDetailsResponse({required this.players});
+
+  factory BatchPlayerDetailsResponse.fromJson(Map<String, dynamic> json) =>
+      _$BatchPlayerDetailsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$BatchPlayerDetailsResponseToJson(this);
+}
+
+@JsonSerializable()
 class PlayerStatusResponse {
   final String status;
   final ActiveMatch? match;
@@ -76,25 +87,36 @@ class PlayerStatusResponse {
 }
 
 @JsonSerializable()
-class FriendsListResponse {
+class FriendsResponse {
   final List<Player> friends;
 
-  FriendsListResponse({required this.friends});
+  FriendsResponse({required this.friends});
 
-  factory FriendsListResponse.fromJson(Map<String, dynamic> json) =>
-      _$FriendsListResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$FriendsListResponseToJson(this);
+  factory FriendsResponse.fromJson(Map<String, dynamic> json) =>
+      _$FriendsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$FriendsResponseToJson(this);
 }
 
 @JsonSerializable()
-class FavouriteFriendResponse {
+class FavouriteFriendsResponse {
+  final List<Player> favouriteFriends;
+
+  FavouriteFriendsResponse({required this.favouriteFriends});
+
+  factory FavouriteFriendsResponse.fromJson(Map<String, dynamic> json) =>
+      _$FavouriteFriendsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$FavouriteFriendsResponseToJson(this);
+}
+
+@JsonSerializable()
+class UpdateFavouriteFriendResponse {
   final List<String> favouriteFriends;
 
-  FavouriteFriendResponse({required this.favouriteFriends});
+  UpdateFavouriteFriendResponse({required this.favouriteFriends});
 
-  factory FavouriteFriendResponse.fromJson(Map<String, dynamic> json) =>
-      _$FavouriteFriendResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$FavouriteFriendResponseToJson(this);
+  factory UpdateFavouriteFriendResponse.fromJson(Map<String, dynamic> json) =>
+      _$UpdateFavouriteFriendResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UpdateFavouriteFriendResponseToJson(this);
 }
 
 @JsonSerializable()

@@ -21,7 +21,7 @@ class FriendsAppBar extends ConsumerWidget {
       title: Column(
         children: [
           const Text('Friends'),
-          if (!isLoadingFriends)
+          if (!isLoadingFriends && friends != null)
             Text(
               'You have ${friends.length}',
               style: const TextStyle(fontSize: 12),

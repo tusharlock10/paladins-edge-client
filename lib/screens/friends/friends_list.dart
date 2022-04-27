@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friend_item.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class FriendsList extends ConsumerWidget {
   final GlobalKey<AnimatedListState> friendsListKey;
@@ -22,28 +23,43 @@ class FriendsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final friends = ref.watch(providers.players.select((_) => _.friends));
 
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      sliver: SliverAnimatedList(
-        key: friendsListKey,
-        initialItemCount: friends.length,
-        itemBuilder: (context, index, animation) {
-          final friend = friends[index];
-
-          return SlideTransition(
-            position: animation.drive(
-              Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: const Offset(0, 0),
-              ),
+    return friends == null
+        ? SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                SizedBox(
+                  height: utilities.getBodyHeight(context),
+                  child: const Center(
+                    child: Center(
+                      child: Text('Sorry we were unable to fetch your friends'),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            child: FriendItem(
-              friend: friend,
-              onSelectFriend: onSelectFriend,
+          )
+        : SliverPadding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            sliver: SliverAnimatedList(
+              key: friendsListKey,
+              initialItemCount: friends.length,
+              itemBuilder: (context, index, animation) {
+                final friend = friends[index];
+
+                return SlideTransition(
+                  position: animation.drive(
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: const Offset(0, 0),
+                    ),
+                  ),
+                  child: FriendItem(
+                    friend: friend,
+                    onSelectFriend: onSelectFriend,
+                  ),
+                );
+              },
             ),
           );
-        },
-      ),
-    );
   }
 }

@@ -27,7 +27,8 @@ class Friends extends HookConsumerWidget {
         ref.watch(providers.auth.select((_) => _.player?.playerId));
     final isLoadingFriends =
         ref.watch(providers.players.select((_) => _.isLoadingFriends));
-    final friends = ref.watch(providers.players.select((_) => _.friends));
+    final fetchedAllFriends =
+        ref.watch(providers.players.select((_) => _.fetchedAllFriends));
 
     // State
     final selectedFriend = useState<models.Player?>(null);
@@ -35,8 +36,8 @@ class Friends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (playerId != null && friends.isEmpty) {
-          playersProvider.getFriendsList(
+        if (playerId != null && !fetchedAllFriends) {
+          playersProvider.getFriends(
             playerId: playerId,
             favouriteFriends: favouriteFriends,
           );
@@ -44,7 +45,7 @@ class Friends extends HookConsumerWidget {
 
         return null;
       },
-      [],
+      [playerId, fetchedAllFriends],
     );
 
     // Methods
@@ -88,7 +89,7 @@ class Friends extends HookConsumerWidget {
     final onRefresh = useCallback(
       () {
         if (playerId != null) {
-          return playersProvider.getFriendsList(
+          return playersProvider.getFriends(
             playerId: playerId,
             favouriteFriends: favouriteFriends,
             forceUpdate: true,
