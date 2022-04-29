@@ -12,11 +12,11 @@ class HomeFavouriteFriends extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final isLoadingFavouriteFriends =
-        ref.watch(providers.players.select((_) => _.isLoadingFavouriteFriends));
-    final friends = ref.watch(providers.players.select((_) => _.friends));
+        ref.watch(providers.friends.select((_) => _.isLoadingFavouriteFriends));
+    final friends = ref.watch(providers.friends.select((_) => _.friends));
     final favouriteFriends =
         ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
-    final playersProvider = ref.read(providers.players);
+    final friendsProvider = ref.read(providers.friends);
 
     // Variables
     final headingText =
@@ -39,7 +39,7 @@ class HomeFavouriteFriends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        playersProvider.getFavouriteFriends();
+        friendsProvider.getFavouriteFriends();
 
         return;
       },

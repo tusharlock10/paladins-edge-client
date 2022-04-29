@@ -14,9 +14,8 @@ class PlayerDetailHeader extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
+    final friendsProvider = ref.read(providers.friends);
     final player = ref.watch(providers.players.select((_) => _.playerData));
-    final isLoadingPlayerData =
-        ref.watch(providers.players.select((_) => _.isLoadingPlayerData));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -33,9 +32,15 @@ class PlayerDetailHeader extends HookConsumerWidget {
       [],
     );
 
-    final onForceUpdate = useCallback(
-      () => playersProvider.getPlayerData(forceUpdate: true),
-      [playersProvider.playerData],
+    final onPressFriends = useCallback(
+      () {
+        if (player == null) return;
+
+        // set otherPlayerId
+        friendsProvider.setOtherPlayer(player);
+        Navigator.of(context).pushNamed(screens.Friends.routeName);
+      },
+      [],
     );
 
     return player == null
@@ -97,10 +102,10 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                 const SizedBox(height: 5),
                                 Row(
                                   children: [
-                                    widgets.UpdateButton(
-                                      lastUpdated: player.lastUpdatedPlayer,
-                                      onPressed: onForceUpdate,
-                                      isLoading: isLoadingPlayerData,
+                                    widgets.Button(
+                                      label: 'Friends',
+                                      color: Colors.green,
+                                      onPressed: onPressFriends,
                                     ),
                                     const SizedBox(width: 10),
                                     widgets.Button(

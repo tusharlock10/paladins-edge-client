@@ -23,7 +23,7 @@ class Home extends HookConsumerWidget {
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);
-    final playersProvider = ref.read(providers.players);
+    final friendsProvider = ref.read(providers.friends);
 
     // Effects
     useEffect(
@@ -43,7 +43,7 @@ class Home extends HookConsumerWidget {
           bountyStoreProvider.loadBountyStore(true),
           queueProvider.getQueueTimeline(true),
           if (favouriteFriends != null)
-            playersProvider.getFavouriteFriends(true),
+            friendsProvider.getFavouriteFriends(true),
         ]);
       },
       [favouriteFriends],
