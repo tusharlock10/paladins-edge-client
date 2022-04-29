@@ -7,31 +7,40 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class FriendsList extends ConsumerWidget {
   final GlobalKey<AnimatedListState> friendsListKey;
-  final models.Player? selectedFriend;
-  final void Function() onFavouriteFriend;
   final void Function(models.Player) onSelectFriend;
 
   const FriendsList({
     required this.friendsListKey,
-    required this.selectedFriend,
-    required this.onFavouriteFriend,
     required this.onSelectFriend,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final friends = ref.watch(providers.players.select((_) => _.friends));
+    // Providers
+    final otherPlayer =
+        ref.watch(providers.friends.select((_) => _.otherPlayer));
+    final friends = ref.watch(providers.friends.select((_) => _.friends));
+    final otherPlayerFriends =
+        ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
 
-    return friends == null
+    // Variables
+    final isOtherPlayer = otherPlayer != null;
+    final data = isOtherPlayer ? otherPlayerFriends : friends;
+
+    return data == null
         ? SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
                 SizedBox(
                   height: utilities.getBodyHeight(context),
-                  child: const Center(
+                  child: Center(
                     child: Center(
-                      child: Text('Sorry we were unable to fetch your friends'),
+                      child: Text(
+                        isOtherPlayer
+                            ? 'Sorry we were unable to fetch friends of this player'
+                            : 'Sorry we were unable to fetch your friends',
+                      ),
                     ),
                   ),
                 ),
@@ -42,9 +51,9 @@ class FriendsList extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             sliver: SliverAnimatedList(
               key: friendsListKey,
-              initialItemCount: friends.length,
+              initialItemCount: data.length,
               itemBuilder: (context, index, animation) {
-                final friend = friends[index];
+                final friend = data[index];
 
                 return SlideTransition(
                   position: animation.drive(
@@ -55,7 +64,8 @@ class FriendsList extends ConsumerWidget {
                   ),
                   child: FriendItem(
                     friend: friend,
-                    onSelectFriend: onSelectFriend,
+                    onSelectFriend:
+                        isOtherPlayer ? null : () => onSelectFriend(friend),
                   ),
                 );
               },

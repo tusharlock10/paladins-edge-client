@@ -6,7 +6,7 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class FriendItem extends ConsumerWidget {
   final models.Player friend;
-  final void Function(models.Player) onSelectFriend;
+  final void Function()? onSelectFriend;
 
   const FriendItem({
     required this.friend,
@@ -36,7 +36,7 @@ class FriendItem extends ConsumerWidget {
         ),
       ),
       child: widgets.Ripple(
-        onTap: () => onSelectFriend(friend),
+        onTap: onSelectFriend,
         height: itemHeight,
         child: Padding(
           padding: const EdgeInsets.only(left: 10),

@@ -69,7 +69,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     if (token != null) {
       isGuest = false;
-      utilities.api.options.headers["authorization"] = token;
+      utilities.api.options.headers["authorization"] = 'Bearer $token';
 
       return true;
     } else {
@@ -123,7 +123,7 @@ class _AuthNotifier extends ChangeNotifier {
       utilities.Database.savePlayer(response.player!);
     }
 
-    utilities.api.options.headers["authorization"] = token;
+    utilities.api.options.headers["authorization"] = 'Bearer $token';
 
     isGuest = false;
     notifyListeners();
