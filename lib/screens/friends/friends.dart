@@ -20,15 +20,21 @@ class Friends extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
+    final friendsProvider = ref.read(providers.friends);
     final authProvider = ref.read(providers.auth);
-    final favouriteFriends =
-        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
     final playerId =
         ref.watch(providers.auth.select((_) => _.player?.playerId));
+    final otherPlayer =
+        ref.watch(providers.friends.select((_) => _.otherPlayer));
+    final fetchedOtherPlayerId =
+        ref.watch(providers.friends.select((_) => _.fetchedOtherPlayerId));
     final isLoadingFriends =
-        ref.watch(providers.players.select((_) => _.isLoadingFriends));
+        ref.watch(providers.friends.select((_) => _.isLoadingFriends));
     final fetchedAllFriends =
-        ref.watch(providers.players.select((_) => _.fetchedAllFriends));
+        ref.watch(providers.friends.select((_) => _.fetchedAllFriends));
+
+    // Variables
+    final isOtherPlayer = otherPlayer != null;
 
     // State
     final selectedFriend = useState<models.Player?>(null);
@@ -36,21 +42,27 @@ class Friends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (playerId != null && !fetchedAllFriends) {
-          playersProvider.getFriends(
-            playerId: playerId,
-            favouriteFriends: favouriteFriends,
-          );
+        if (isOtherPlayer) {
+          // check if the previously fetched otherPlayer
+          // is the same as this otherPlayer
+          // do not fetch if they are the same
+          if (otherPlayer?.playerId != fetchedOtherPlayerId) {
+            friendsProvider.getOtherFriends();
+          }
+        } else if (playerId != null && !fetchedAllFriends) {
+          friendsProvider.getUserFriends();
         }
 
-        return null;
+        return isOtherPlayer ? friendsProvider.resetOtherPlayer : null;
       },
-      [playerId, fetchedAllFriends],
+      [otherPlayer, playerId, fetchedAllFriends],
     );
 
     // Methods
     final onSelectFriend = useCallback(
       (models.Player friend) {
+        if (isOtherPlayer) return;
+
         if (selectedFriend.value?.playerId == friend.playerId) return;
         // get the playerStatus from the provider
         selectedFriend.value = friend;
@@ -62,6 +74,7 @@ class Friends extends HookConsumerWidget {
 
     final onFavouriteFriend = useCallback(
       () async {
+        if (isOtherPlayer) return;
         if (selectedFriend.value == null) return;
 
         final result = await authProvider
@@ -79,7 +92,7 @@ class Friends extends HookConsumerWidget {
           );
         } else if (result == data_classes.FavouriteFriendResult.added) {
           // player is added in list
-          playersProvider.moveFriendToTop(selectedFriend.value!.playerId);
+          friendsProvider.moveFriendToTop(selectedFriend.value!.playerId);
           _friendsListKey.currentState?.insertItem(0);
         }
       },
@@ -88,12 +101,10 @@ class Friends extends HookConsumerWidget {
 
     final onRefresh = useCallback(
       () {
-        if (playerId != null) {
-          return playersProvider.getFriends(
-            playerId: playerId,
-            favouriteFriends: favouriteFriends,
-            forceUpdate: true,
-          );
+        if (isOtherPlayer) {
+          friendsProvider.getOtherFriends(true);
+        } else if (playerId != null) {
+          friendsProvider.getUserFriends(true);
         }
 
         return Future.value(null);
@@ -131,8 +142,6 @@ class Friends extends HookConsumerWidget {
                   )
                 : FriendsList(
                     friendsListKey: _friendsListKey,
-                    selectedFriend: selectedFriend.value,
-                    onFavouriteFriend: onFavouriteFriend,
                     onSelectFriend: onSelectFriend,
                   ),
           ],
