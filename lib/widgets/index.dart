@@ -14,5 +14,6 @@ export './refresh.dart';
 export './reversible_column.dart';
 export './reversible_row.dart';
 export './ripple.dart';
+export './share_button.dart';
 export './text_chip.dart';
 export './toast.dart';

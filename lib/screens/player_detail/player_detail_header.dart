@@ -19,7 +19,6 @@ class PlayerDetailHeader extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
     // Methods
     final onPressActiveMatch = useCallback(
@@ -45,7 +44,8 @@ class PlayerDetailHeader extends HookConsumerWidget {
 
     return player == null
         ? const SizedBox()
-        : IntrinsicHeight(
+        : SizedBox(
+            height: 104,
             child: ClipRRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(
@@ -53,73 +53,71 @@ class PlayerDetailHeader extends HookConsumerWidget {
                   sigmaY: 12.5,
                   tileMode: TileMode.mirror,
                 ),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: scaffoldBackgroundColor.withOpacity(0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            widgets.ElevatedAvatar(
-                              size: 42,
-                              borderRadius: 10,
-                              imageUrl: player.avatarUrl,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    widgets.FastImage(
-                                      imageUrl: player.ranked.rankIconUrl,
-                                      height: 36,
-                                      width: 36,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          player.ranked.rankName,
-                                          style: textTheme.bodyText2
-                                              ?.copyWith(fontSize: 14),
-                                        ),
-                                        Text(
-                                          '${player.ranked.points} TP',
-                                          style: textTheme.bodyText1
-                                              ?.copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    widgets.Button(
-                                      label: 'Friends',
-                                      color: Colors.green,
-                                      onPressed: onPressFriends,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    widgets.Button(
-                                      label: 'Active Match',
-                                      onPressed: onPressActiveMatch,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      widgets.ElevatedAvatar(
+                        size: 42,
+                        borderRadius: 10,
+                        imageUrl: player.avatarUrl,
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              widgets.FastImage(
+                                imageUrl: player.ranked.rankIconUrl,
+                                height: 36,
+                                width: 36,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    player.ranked.rankName,
+                                    style: textTheme.bodyText2
+                                        ?.copyWith(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '${player.ranked.points} TP',
+                                    style: textTheme.bodyText1
+                                        ?.copyWith(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              widgets.Button(
+                                label: 'Friends',
+                                color: Colors.green,
+                                onPressed: onPressFriends,
+                              ),
+                              const SizedBox(width: 10),
+                              widgets.Button(
+                                label: 'Active Match',
+                                onPressed: onPressActiveMatch,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Expanded(
+                            child: widgets.ShareButton(player: player),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

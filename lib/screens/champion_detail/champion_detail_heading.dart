@@ -35,49 +35,51 @@ class ChampionDetailHeading extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
             tag: '${champion.championId}Icon',
             child: widgets.ElevatedAvatar(
               imageUrl: champion.iconUrl,
-              size: 42,
+              size: 38,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  champion.name.toUpperCase(),
+                  style: textTheme.headline1?.copyWith(
+                    fontSize: 24,
+                  ),
+                ),
+                Text(
+                  champion.title.toUpperCase(),
+                  style: textTheme.headline1?.copyWith(
+                    color: isLightTheme
+                        ? const Color(0xff5c5c5c)
+                        : const Color(0xffb4fb26),
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '$dps DPS | $health Health | $range',
+                  style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                ),
+                Text(
+                  "B'day on $birthDay",
+                  style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                ),
+              ],
             ),
           ),
           Expanded(
             child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      champion.name.toUpperCase(),
-                      style: textTheme.headline1?.copyWith(
-                        fontSize: 24,
-                      ),
-                    ),
-                    Text(
-                      champion.title.toUpperCase(),
-                      style: textTheme.headline1?.copyWith(
-                        color: isLightTheme
-                            ? const Color(0xff5c5c5c)
-                            : const Color(0xffb4fb26),
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      '$dps DPS | $health Health | $range',
-                      style: textTheme.bodyText1?.copyWith(fontSize: 10),
-                    ),
-                    Text(
-                      "B'day on $birthDay",
-                      style: textTheme.bodyText1?.copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-              ),
+              alignment: Alignment.topRight,
+              child: widgets.ShareButton(champion: champion),
             ),
           ),
         ],

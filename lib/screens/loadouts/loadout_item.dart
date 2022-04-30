@@ -1,8 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class LoadoutItem extends StatelessWidget {
@@ -41,8 +41,24 @@ class LoadoutItem extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          const Expanded(
-                            child: SizedBox(),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: loadout.isImported
+                                    ? const widgets.TextChip(
+                                        text: 'In Game',
+                                        color: Colors.blueGrey,
+                                        width: 72,
+                                      )
+                                    : const widgets.TextChip(
+                                        text: 'Custom',
+                                        color: theme.themeMaterialColor,
+                                        width: 56,
+                                      ),
+                              ),
+                            ),
                           ),
                           Expanded(
                             flex: 3,
@@ -58,21 +74,7 @@ class LoadoutItem extends StatelessWidget {
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: loadout.isImported
-                                  ? const widgets.TextChip(
-                                      text: 'In Game',
-                                      color: Colors.green,
-                                      width: 72,
-                                    )
-                                  : const Padding(
-                                      padding: EdgeInsets.only(left: 16),
-                                      child: widgets.TextChip(
-                                        text: 'Edit',
-                                        color: Colors.blueGrey,
-                                        trailingIcon: FeatherIcons.chevronRight,
-                                        width: 56,
-                                      ),
-                                    ),
+                              child: widgets.ShareButton(loadout: loadout),
                             ),
                           ),
                         ],

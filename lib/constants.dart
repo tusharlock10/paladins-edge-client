@@ -272,11 +272,16 @@ abstract class RemoteConfigParams {
   static const enableGuestLogin = 'enableGuestLogin';
 }
 
-class PaladinsGuruSite {
-  static const _baseUrl = "https://paladins.guru";
+abstract class DynamicLinks {
+  static const linkUriHost = "paladinsedge.app";
+  static const urlPrefix = "https://paladinsedge.page.link";
+  static const packageName = "app.paladinsedge";
+  static const appImageKey = "assets/misc/pe_icon_small.png";
+}
 
-  static String match(String matchId) => "$_baseUrl/match/$matchId";
-
-  static String champions(String playerId) =>
-      "$_baseUrl/profile/$playerId/champions";
+abstract class DynamicLinkTypes {
+  static const player = "player";
+  static const match = "match";
+  static const loadout = "loadout";
+  static const champion = "champion";
 }

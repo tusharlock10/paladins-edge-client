@@ -109,7 +109,7 @@ class CreateLoadout extends HookConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: const [
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               CreateLoadoutTarget(),
               SizedBox(height: 30),
               Padding(

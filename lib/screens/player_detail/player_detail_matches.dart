@@ -30,7 +30,7 @@ class PlayerDetailMatches extends ConsumerWidget {
           )
         : ListView.builder(
             itemCount: playerMatches.matches.length,
-            padding: const EdgeInsets.only(top: 130, bottom: 50),
+            padding: const EdgeInsets.only(top: 108, bottom: 50),
             itemBuilder: (context, index) {
               final match = playerMatches.matches[index];
 

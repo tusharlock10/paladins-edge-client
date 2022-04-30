@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class MatchDetailAppBar extends ConsumerWidget {
   const MatchDetailAppBar({Key? key}) : super(key: key);
@@ -36,6 +37,11 @@ class MatchDetailAppBar extends ConsumerWidget {
             ),
         ],
       ),
+      actions: [
+        widgets.ShareButton(
+          match: match,
+        ),
+      ],
     );
   }
 }
