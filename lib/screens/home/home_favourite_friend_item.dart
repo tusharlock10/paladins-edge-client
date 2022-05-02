@@ -69,6 +69,7 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
                 builder: (_, constraints) {
                   return widgets.ElevatedAvatar(
                     imageUrl: friend.avatarUrl,
+                    imageBlurHash: friend.avatarBlurHash,
                     size: constraints.maxHeight / 2,
                     borderRadius: constraints.maxHeight / 3.5,
                   );

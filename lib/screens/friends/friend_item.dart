@@ -43,9 +43,10 @@ class FriendItem extends ConsumerWidget {
           child: Row(
             children: [
               widgets.ElevatedAvatar(
+                imageUrl: friend.avatarUrl,
+                imageBlurHash: friend.avatarBlurHash,
                 size: 32,
                 borderRadius: 5,
-                imageUrl: friend.avatarUrl,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -76,9 +77,10 @@ class FriendItem extends ConsumerWidget {
               ),
               friend.ranked.rank != 0
                   ? widgets.FastImage(
+                      imageUrl: friend.ranked.rankIconUrl,
+                      imageBlurHash: friend.ranked.rankIconBlurHash,
                       height: 36,
                       width: 36,
-                      imageUrl: friend.ranked.rankIconUrl,
                     )
                   : const SizedBox(),
               const SizedBox(width: 10),

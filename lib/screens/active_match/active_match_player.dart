@@ -207,6 +207,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                         ? const SizedBox(height: 24 * 2, width: 24 * 2)
                         : widgets.ElevatedAvatar(
                             imageUrl: champion.iconUrl,
+                            imageBlurHash: champion.iconBlurHash,
                             borderRadius: 7.5,
                             size: 24,
                           ),
@@ -218,6 +219,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                               children: [
                                 widgets.FastImage(
                                   imageUrl: playerInfo.ranked!.rankIconUrl,
+                                  imageBlurHash:
+                                      playerInfo.ranked!.rankIconBlurHash,
                                   height: 20,
                                   width: 20,
                                 ),

@@ -38,6 +38,7 @@ class ChampionDetailAbilities extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 10),
                         child: widgets.ElevatedAvatar(
                           imageUrl: ability.imageUrl,
+                          imageBlurHash: ability.imageBlurHash,
                           size: 36,
                           borderRadius: 10,
                         ),

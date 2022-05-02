@@ -82,6 +82,7 @@ class ChampionItem extends HookConsumerWidget {
                     child: LayoutBuilder(
                       builder: (context, constraints) => widgets.ElevatedAvatar(
                         imageUrl: champion.iconUrl,
+                        imageBlurHash: champion.iconBlurHash,
                         size: (constraints.maxHeight - 10) / 2,
                       ),
                     ),

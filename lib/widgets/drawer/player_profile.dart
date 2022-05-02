@@ -38,10 +38,11 @@ class PlayerProfile extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           widgets.ElevatedAvatar(
+            imageUrl: player.avatarUrl,
+            imageBlurHash: player.avatarBlurHash,
             size: 18,
             borderRadius: 0,
             elevation: 5,
-            imageUrl: player.avatarUrl,
           ),
           const SizedBox(width: 7),
           Column(

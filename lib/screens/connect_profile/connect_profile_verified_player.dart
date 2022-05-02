@@ -29,9 +29,10 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             widgets.ElevatedAvatar(
+              imageUrl: player.avatarUrl,
+              imageBlurHash: player.avatarBlurHash,
               size: 24,
               borderRadius: 10,
-              imageUrl: player.avatarUrl,
             ),
             const SizedBox(width: 10),
             Column(
