@@ -60,8 +60,9 @@ class LoadoutDeckCard extends HookWidget {
                 SizedBox(
                   height: imageHeight,
                   child: widgets.FastImage(
-                    fit: BoxFit.cover,
                     imageUrl: card.imageUrl,
+                    imageBlurHash: card.imageBlurHash,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 loadoutCard.level == 0

@@ -41,6 +41,7 @@ class PlayerChampionsDataSource extends DataGridSource {
               value: data_classes.PlayerChampionsSortData(
                 iconUrl: champion.iconUrl,
                 sortedIndex: championIndex,
+                iconBlurHash: champion.iconBlurHash,
               ),
             ),
             DataGridCell(columnName: 'Matches', value: matches),
@@ -116,6 +117,7 @@ class PlayerChampionsDataSource extends DataGridSource {
           children: [
             widgets.ElevatedAvatar(
               imageUrl: sortedData.iconUrl,
+              imageBlurHash: sortedData.iconBlurHash,
               size: 22,
             ),
           ],

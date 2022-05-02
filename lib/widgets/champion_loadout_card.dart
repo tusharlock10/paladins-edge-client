@@ -99,6 +99,7 @@ class _LoadoutCard extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: widgets.FastImage(
                 imageUrl: card.imageUrl,
+                imageBlurHash: card.imageBlurHash,
                 width: imageWidth,
                 height: imageHeight,
                 fit: BoxFit.cover,

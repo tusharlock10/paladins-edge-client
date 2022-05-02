@@ -66,6 +66,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
               ? const SizedBox(height: 50, width: 50)
               : widgets.FastImage(
                   imageUrl: champion.iconUrl,
+                  imageBlurHash: champion.iconBlurHash,
                   height: 50,
                   width: 50,
                   borderRadius: const BorderRadius.all(Radius.circular(12.5)),
@@ -78,6 +79,8 @@ class MatchDetailPlayer extends HookConsumerWidget {
                     children: [
                       widgets.FastImage(
                         imageUrl: matchPlayer.playerRanked!.rankIconUrl,
+                        imageBlurHash:
+                            matchPlayer.playerRanked!.rankIconBlurHash,
                         height: 20,
                         width: 20,
                       ),
@@ -124,6 +127,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                         ? const SizedBox(height: 32, width: 32)
                         : widgets.FastImage(
                             imageUrl: talentUsed.imageUrl,
+                            imageBlurHash: talentUsed.imageBlurHash,
                             height: 32,
                             width: 32,
                           ),
@@ -229,6 +233,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: widgets.FastImage(
                             imageUrl: card.imageUrl,
+                            imageBlurHash: card.imageBlurHash,
                             width: 32,
                             height:
                                 32 / constants.ImageAspectRatios.championCard,

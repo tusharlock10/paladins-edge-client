@@ -59,12 +59,14 @@ class ChampionDetailAppBar extends StatelessWidget {
         background: showSplash
             ? widgets.FastImage(
                 imageUrl: champion.splashUrl,
+                imageBlurHash: champion.splashBlurHash,
                 fit: BoxFit.cover,
               )
             : Align(
                 alignment: Alignment.centerRight,
                 child: widgets.FastImage(
                   imageUrl: champion.headerUrl,
+                  imageBlurHash: champion.headerBlurHash,
                   height: headerHeight,
                   width: headerHeight * 2,
                 ),

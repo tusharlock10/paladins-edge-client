@@ -40,6 +40,7 @@ class ChampionDetailHeading extends ConsumerWidget {
             tag: '${champion.championId}Icon',
             child: widgets.ElevatedAvatar(
               imageUrl: champion.iconUrl,
+              imageBlurHash: champion.iconBlurHash,
               size: 42,
             ),
           ),

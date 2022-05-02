@@ -90,6 +90,7 @@ class _LoadoutCardDetail extends HookWidget {
               children: [
                 widgets.ElevatedAvatar(
                   imageUrl: card.imageUrl,
+                  imageBlurHash: card.imageBlurHash,
                   size: 36,
                   fit: BoxFit.cover,
                   borderRadius: 10,
