@@ -1,7 +1,6 @@
 export './button.dart';
 export './champion_loadout_card.dart';
 export './debug_alert.dart';
-export './drawer/index.dart';
 export './elevated_avatar.dart';
 export './fast_image.dart';
 export './google_button.dart';

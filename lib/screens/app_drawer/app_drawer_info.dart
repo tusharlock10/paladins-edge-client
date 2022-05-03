@@ -5,8 +5,8 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:url_launcher/url_launcher.dart';
 
-class DrawerInfo extends StatelessWidget {
-  const DrawerInfo({Key? key}) : super(key: key);
+class AppDrawerInfo extends StatelessWidget {
+  const AppDrawerInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

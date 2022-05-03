@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/app_drawer/index.dart';
 import 'package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart';
 import 'package:paladinsedge/screens/connect_profile/connect_profile_search_list.dart';
 import 'package:paladinsedge/screens/connect_profile/connect_profile_status_indicator.dart';
@@ -104,7 +105,7 @@ class ConnectProfile extends HookConsumerWidget {
 
     // Build Widgets
     return Scaffold(
-      drawer: const widgets.AppDrawer(),
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Connect Profile'),
       ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class DrawerButton extends StatelessWidget {
+class AppDrawerButton extends StatelessWidget {
   final BuildContext context;
   final String label;
   final void Function() onPressed;
   final bool disabled;
   final String? subTitle;
 
-  const DrawerButton({
+  const AppDrawerButton({
     Key? key,
     required this.context,
     required this.label,
