@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class LoginDrawerButton extends StatelessWidget {
+class AppDrawerLoginButton extends StatelessWidget {
   final BuildContext context;
   final void Function() onPressed;
 
-  const LoginDrawerButton({
+  const AppDrawerLoginButton({
     Key? key,
     required this.context,
     required this.onPressed,

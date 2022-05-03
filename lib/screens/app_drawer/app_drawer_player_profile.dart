@@ -5,8 +5,8 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class PlayerProfile extends HookConsumerWidget {
-  const PlayerProfile({Key? key}) : super(key: key);
+class AppDrawerPlayerProfile extends HookConsumerWidget {
+  const AppDrawerPlayerProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
