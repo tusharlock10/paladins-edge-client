@@ -34,7 +34,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.PE_AWS_REGION }}
 
       - name: Download credential files
         run: |
@@ -97,7 +97,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.PE_AWS_REGION }}
 
       - name: Download credential files
         run: |
