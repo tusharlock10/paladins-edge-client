@@ -2,7 +2,7 @@
 
 const { S3 } = require('@aws-sdk/client-s3');
 const fs = require('fs');
-const { PE_PRIVATE_AWS_ACCESS_KEY_ID, PE_PRIVATE_AWS_SECRET_ACCESS_KEY, AWS_REGION, ENV_FILE, PE_PRIVATE_AWS_S3_BUCKET_NAME } = process.env;
+const { PE_PRIVATE_AWS_ACCESS_KEY_ID, PE_PRIVATE_AWS_SECRET_ACCESS_KEY, PE_AWS_REGION, ENV_FILE, PE_PRIVATE_AWS_S3_BUCKET_NAME } = process.env;
 
 const streamToString = async (stream) => {
   return await new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ const streamToString = async (stream) => {
 
 const getCredentials = async () => {
   const client = new S3({
-    region: AWS_REGION, credentials: {
+    region: PE_AWS_REGION, credentials: {
       accessKeyId: PE_PRIVATE_AWS_ACCESS_KEY_ID,
       secretAccessKey: PE_PRIVATE_AWS_SECRET_ACCESS_KEY
     }
