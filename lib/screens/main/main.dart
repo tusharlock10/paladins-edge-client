@@ -6,7 +6,7 @@ import 'package:paladinsedge/screens/app_drawer/index.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
-class BottomTabs extends HookWidget {
+class Main extends HookWidget {
   static const routeName = "/main";
 
   final _pages = [
@@ -27,7 +27,7 @@ class BottomTabs extends HookWidget {
     ),
   ];
 
-  BottomTabs({Key? key}) : super(key: key);
+  Main({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -60,7 +60,7 @@ class _LoginModal extends HookConsumerWidget {
             context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
-                : screens.BottomTabs.routeName,
+                : screens.Main.routeName,
           );
         } else {
           isLoggingIn.value = false;

@@ -2,7 +2,7 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 
 final routes = {
   screens.Login.routeName: (_) => const screens.Login(),
-  screens.BottomTabs.routeName: (_) => screens.BottomTabs(),
+  screens.Main.routeName: (_) => screens.Main(),
   screens.Search.routeName: (_) => const screens.Search(),
   screens.Champions.routeName: (_) => const screens.Champions(),
   screens.ChampionDetail.routeName: (_) => const screens.ChampionDetail(),
