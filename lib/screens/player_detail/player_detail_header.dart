@@ -65,9 +65,10 @@ class PlayerDetailHeader extends HookConsumerWidget {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             widgets.ElevatedAvatar(
+                              imageUrl: player.avatarUrl,
+                              imageBlurHash: player.avatarBlurHash,
                               size: 42,
                               borderRadius: 10,
-                              imageUrl: player.avatarUrl,
                             ),
                             const SizedBox(width: 10),
                             Column(

@@ -77,6 +77,7 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                     children: [
                       widgets.ElevatedAvatar(
                         imageUrl: champion.iconUrl,
+                        imageBlurHash: champion.iconBlurHash,
                         size: 28,
                         borderRadius: 28,
                       ),
@@ -114,6 +115,7 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: widgets.FastImage(
                               imageUrl: cardImageUrl,
+                              imageBlurHash: loadoutItem.card?.imageBlurHash,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5)),
                               height: 24,

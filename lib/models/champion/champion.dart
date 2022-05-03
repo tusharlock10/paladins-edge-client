@@ -20,22 +20,27 @@ class Ability {
   @HiveField(2)
   final String imageUrl;
 
-  /// Area or Direct damage
+  ///blur hash or the ability image
   @HiveField(3)
+  final String? imageBlurHash;
+
+  /// Area or Direct damage
+  @HiveField(4)
   final String damageType;
 
   /// Recharge time of the ability in seconds
-  @HiveField(4)
+  @HiveField(5)
   final double cooldown;
 
   /// Ability description
-  @HiveField(5)
+  @HiveField(6)
   final String description;
 
   Ability({
     required this.abilityId,
     required this.name,
     required String imageUrl,
+    required this.imageBlurHash,
     required this.damageType,
     required this.cooldown,
     required this.description,
@@ -110,16 +115,20 @@ class Card {
   @HiveField(3)
   final String imageUrl;
 
-  /// Recharge time of the card in seconds
+  /// blur hash of the card image
   @HiveField(4)
+  final String? imageBlurHash;
+
+  /// Recharge time of the card in seconds
+  @HiveField(5)
   final double cooldown;
 
   /// card description
-  @HiveField(5)
+  @HiveField(6)
   final String description;
 
   /// The ability that the card modifies eg. Nether Step/Reversal
-  @HiveField(6)
+  @HiveField(7)
   final String modifier;
 
   Card({
@@ -127,6 +136,7 @@ class Card {
     required this.cardId2,
     required this.name,
     required String imageUrl,
+    required this.imageBlurHash,
     required this.cooldown,
     required this.description,
     required this.modifier,
@@ -171,80 +181,90 @@ class Champion {
   @HiveField(2)
   final String iconUrl;
 
-  /// Header image of the champion
+  /// blur hash of the icon
   @HiveField(3)
+  final String? iconBlurHash;
+
+  /// Header image of the champion
+  @HiveField(4)
   final String headerUrl;
 
   /// Splash image of the champion
-  @HiveField(4)
+  @HiveField(5)
   final String splashUrl;
 
+  /// blur hash of the splash image
+  @HiveField(6)
+  final String? splashBlurHash;
+
   /// eg. The Godslayer
-  @HiveField(5)
+  @HiveField(7)
   final String title;
 
   /// eg. Flank
-  @HiveField(6)
+  @HiveField(8)
   final String role;
 
   /// release date of the champion
-  @HiveField(7)
+  @HiveField(9)
   final DateTime releaseDate;
 
   /// eg. 2100
-  @HiveField(8)
+  @HiveField(10)
   final double health;
 
   /// eg. 370
-  @HiveField(9)
+  @HiveField(11)
   final double movementSpeed;
 
   /// eg. 50 (units)
-  @HiveField(10)
+  @HiveField(12)
   final double damageFallOffRange;
 
   /// damage of the champion eg. 520
-  @HiveField(11)
+  @HiveField(13)
   final double weaponDamage;
 
   /// fire rate of the champion in sec eg. 0.36
-  @HiveField(12)
+  @HiveField(14)
   final double fireRate;
 
   /// lore of that champion,
-  @HiveField(13)
+  @HiveField(15)
   final String lore;
 
   /// List of all the abilities of th champion
-  @HiveField(14)
+  @HiveField(16)
   final List<Ability> abilities;
 
   /// List of all the talents of th champion
-  @HiveField(15)
+  @HiveField(17)
   final List<Talent> talents;
 
   /// List of all the cards of th champion
-  @HiveField(16)
+  @HiveField(18)
   final List<Card> cards;
 
   /// Whether the champion is newly added in the game
-  @HiveField(17)
+  @HiveField(19)
   final bool latestChampion;
 
   /// Whether the champion is on free rotation
-  @HiveField(18)
+  @HiveField(20)
   final bool onFreeRotation;
 
   /// For showing extra champion info
-  @HiveField(19)
+  @HiveField(21)
   final List<Tag> tags;
 
   Champion({
     required this.championId,
     required this.name,
     required String iconUrl,
+    required this.iconBlurHash,
     required String headerUrl,
     required String splashUrl,
+    required this.splashBlurHash,
     required this.title,
     required this.role,
     required this.releaseDate,

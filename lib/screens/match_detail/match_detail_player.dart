@@ -66,6 +66,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
               ? const SizedBox(height: 50, width: 50)
               : widgets.FastImage(
                   imageUrl: champion.iconUrl,
+                  imageBlurHash: champion.iconBlurHash,
                   height: 50,
                   width: 50,
                   borderRadius: const BorderRadius.all(Radius.circular(12.5)),
@@ -229,6 +230,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: widgets.FastImage(
                             imageUrl: card.imageUrl,
+                            imageBlurHash: card.imageBlurHash,
                             width: 32,
                             height:
                                 32 / constants.ImageAspectRatios.championCard,

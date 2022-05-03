@@ -68,70 +68,75 @@ class Player {
   @HiveField(4)
   final String avatarUrl;
 
-  /// total exp the player has
+  /// blur hash of the player avatar
   @HiveField(5)
+  final String? avatarBlurHash;
+
+  /// total exp the player has
+  @HiveField(6)
   final int totalXP;
 
   /// amount of hours the player has played
-  @HiveField(6)
+  @HiveField(7)
   final int hoursPlayed;
 
   /// Level of the player in the game
-  @HiveField(7)
+  @HiveField(8)
   final int level;
 
   /// number of total wins in paladins
-  @HiveField(8)
+  @HiveField(9)
   final int totalWins;
 
   /// number of total losses in paladins
-  @HiveField(9)
+  @HiveField(10)
   final int totalLosses;
 
   /// at which platform is he playing eg. Steam
-  @HiveField(10)
+  @HiveField(11)
   final String platform;
 
   /// from which region the player is eg. Europe
-  @HiveField(11)
+  @HiveField(12)
   final String region;
 
   /// the date at which the user created his paladins account
-  @HiveField(12)
+  @HiveField(13)
   final DateTime accountCreationDate;
 
   /// the date at which the user logged in last
-  @HiveField(13)
+  @HiveField(14)
   final DateTime lastLoginDate;
 
   /// ranked details of the player
-  @HiveField(14)
+  @HiveField(15)
   final Ranked ranked;
 
   /// last update date of friends
-  @HiveField(15)
+  @HiveField(16)
   final DateTime? lastUpdatedFriends;
 
   /// last update date of player profile
-  @HiveField(16)
+  @HiveField(17)
   final DateTime? lastUpdatedPlayer;
 
   /// last update date of player's matches
-  @HiveField(17)
+  @HiveField(18)
   final DateTime? lastUpdatedMatches;
 
   /// last update date of player's champion stats
-  @HiveField(18)
+  @HiveField(19)
   final DateTime? lastUpdatedChampions;
 
   /// last update date of player's loadouts
-  @HiveField(19)
+  @HiveField(20)
   final DateTime? lastUpdatedLoadouts;
 
   Player({
     required this.playerId,
     required this.name,
     required String avatarUrl,
+    required this.avatarBlurHash,
     required this.totalXP,
     required this.hoursPlayed,
     required this.level,

@@ -30,9 +30,9 @@ class _PlayerMatch extends StatelessWidget {
               shouldReverse: shouldReverse,
               children: [
                 widgets.ElevatedAvatar(
+                  imageUrl: player.championImageUrl,
                   size: 20,
                   borderRadius: 20,
-                  imageUrl: player.championImageUrl,
                 ),
                 Column(
                   crossAxisAlignment: !shouldReverse

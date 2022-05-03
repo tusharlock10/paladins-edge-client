@@ -69,30 +69,31 @@ class PlayerAdapter extends TypeAdapter<Player> {
       playerId: fields[0] as String,
       name: fields[2] as String,
       avatarUrl: fields[4] as String,
-      totalXP: fields[5] as int,
-      hoursPlayed: fields[6] as int,
-      level: fields[7] as int,
-      totalWins: fields[8] as int,
-      totalLosses: fields[9] as int,
-      platform: fields[10] as String,
-      region: fields[11] as String,
-      accountCreationDate: fields[12] as DateTime,
-      lastLoginDate: fields[13] as DateTime,
-      ranked: fields[14] as Ranked,
+      avatarBlurHash: fields[5] as String?,
+      totalXP: fields[6] as int,
+      hoursPlayed: fields[7] as int,
+      level: fields[8] as int,
+      totalWins: fields[9] as int,
+      totalLosses: fields[10] as int,
+      platform: fields[11] as String,
+      region: fields[12] as String,
+      accountCreationDate: fields[13] as DateTime,
+      lastLoginDate: fields[14] as DateTime,
+      ranked: fields[15] as Ranked,
       userId: fields[1] as String?,
       title: fields[3] as String?,
-      lastUpdatedFriends: fields[15] as DateTime?,
-      lastUpdatedPlayer: fields[16] as DateTime?,
-      lastUpdatedMatches: fields[17] as DateTime?,
-      lastUpdatedChampions: fields[18] as DateTime?,
-      lastUpdatedLoadouts: fields[19] as DateTime?,
+      lastUpdatedFriends: fields[16] as DateTime?,
+      lastUpdatedPlayer: fields[17] as DateTime?,
+      lastUpdatedMatches: fields[18] as DateTime?,
+      lastUpdatedChampions: fields[19] as DateTime?,
+      lastUpdatedLoadouts: fields[20] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Player obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(21)
       ..writeByte(0)
       ..write(obj.playerId)
       ..writeByte(1)
@@ -104,34 +105,36 @@ class PlayerAdapter extends TypeAdapter<Player> {
       ..writeByte(4)
       ..write(obj.avatarUrl)
       ..writeByte(5)
-      ..write(obj.totalXP)
+      ..write(obj.avatarBlurHash)
       ..writeByte(6)
-      ..write(obj.hoursPlayed)
+      ..write(obj.totalXP)
       ..writeByte(7)
-      ..write(obj.level)
+      ..write(obj.hoursPlayed)
       ..writeByte(8)
-      ..write(obj.totalWins)
+      ..write(obj.level)
       ..writeByte(9)
-      ..write(obj.totalLosses)
+      ..write(obj.totalWins)
       ..writeByte(10)
-      ..write(obj.platform)
+      ..write(obj.totalLosses)
       ..writeByte(11)
-      ..write(obj.region)
+      ..write(obj.platform)
       ..writeByte(12)
-      ..write(obj.accountCreationDate)
+      ..write(obj.region)
       ..writeByte(13)
-      ..write(obj.lastLoginDate)
+      ..write(obj.accountCreationDate)
       ..writeByte(14)
-      ..write(obj.ranked)
+      ..write(obj.lastLoginDate)
       ..writeByte(15)
-      ..write(obj.lastUpdatedFriends)
+      ..write(obj.ranked)
       ..writeByte(16)
-      ..write(obj.lastUpdatedPlayer)
+      ..write(obj.lastUpdatedFriends)
       ..writeByte(17)
-      ..write(obj.lastUpdatedMatches)
+      ..write(obj.lastUpdatedPlayer)
       ..writeByte(18)
-      ..write(obj.lastUpdatedChampions)
+      ..write(obj.lastUpdatedMatches)
       ..writeByte(19)
+      ..write(obj.lastUpdatedChampions)
+      ..writeByte(20)
       ..write(obj.lastUpdatedLoadouts);
   }
 
@@ -172,6 +175,7 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
       playerId: json['playerId'] as String,
       name: json['name'] as String,
       avatarUrl: json['avatarUrl'] as String,
+      avatarBlurHash: json['avatarBlurHash'] as String?,
       totalXP: json['totalXP'] as int,
       hoursPlayed: json['hoursPlayed'] as int,
       level: json['level'] as int,
@@ -208,6 +212,7 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'name': instance.name,
       'title': instance.title,
       'avatarUrl': instance.avatarUrl,
+      'avatarBlurHash': instance.avatarBlurHash,
       'totalXP': instance.totalXP,
       'hoursPlayed': instance.hoursPlayed,
       'level': instance.level,

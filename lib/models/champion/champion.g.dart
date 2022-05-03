@@ -20,16 +20,17 @@ class AbilityAdapter extends TypeAdapter<Ability> {
       abilityId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
-      damageType: fields[3] as String,
-      cooldown: fields[4] as double,
-      description: fields[5] as String,
+      imageBlurHash: fields[3] as String?,
+      damageType: fields[4] as String,
+      cooldown: fields[5] as double,
+      description: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Ability obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.abilityId)
       ..writeByte(1)
@@ -37,10 +38,12 @@ class AbilityAdapter extends TypeAdapter<Ability> {
       ..writeByte(2)
       ..write(obj.imageUrl)
       ..writeByte(3)
-      ..write(obj.damageType)
+      ..write(obj.imageBlurHash)
       ..writeByte(4)
-      ..write(obj.cooldown)
+      ..write(obj.damageType)
       ..writeByte(5)
+      ..write(obj.cooldown)
+      ..writeByte(6)
       ..write(obj.description);
   }
 
@@ -122,16 +125,17 @@ class CardAdapter extends TypeAdapter<Card> {
       cardId2: fields[1] as int,
       name: fields[2] as String,
       imageUrl: fields[3] as String,
-      cooldown: fields[4] as double,
-      description: fields[5] as String,
-      modifier: fields[6] as String,
+      imageBlurHash: fields[4] as String?,
+      cooldown: fields[5] as double,
+      description: fields[6] as String,
+      modifier: fields[7] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Card obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.cardId)
       ..writeByte(1)
@@ -141,10 +145,12 @@ class CardAdapter extends TypeAdapter<Card> {
       ..writeByte(3)
       ..write(obj.imageUrl)
       ..writeByte(4)
-      ..write(obj.cooldown)
+      ..write(obj.imageBlurHash)
       ..writeByte(5)
-      ..write(obj.description)
+      ..write(obj.cooldown)
       ..writeByte(6)
+      ..write(obj.description)
+      ..writeByte(7)
       ..write(obj.modifier);
   }
 
@@ -210,30 +216,32 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       championId: fields[0] as int,
       name: fields[1] as String,
       iconUrl: fields[2] as String,
-      headerUrl: fields[3] as String,
-      splashUrl: fields[4] as String,
-      title: fields[5] as String,
-      role: fields[6] as String,
-      releaseDate: fields[7] as DateTime,
-      health: fields[8] as double,
-      movementSpeed: fields[9] as double,
-      damageFallOffRange: fields[10] as double,
-      weaponDamage: fields[11] as double,
-      fireRate: fields[12] as double,
-      lore: fields[13] as String,
-      abilities: (fields[14] as List).cast<Ability>(),
-      talents: (fields[15] as List).cast<Talent>(),
-      cards: (fields[16] as List).cast<Card>(),
-      latestChampion: fields[17] as bool,
-      onFreeRotation: fields[18] as bool,
-      tags: (fields[19] as List).cast<Tag>(),
+      iconBlurHash: fields[3] as String?,
+      headerUrl: fields[4] as String,
+      splashUrl: fields[5] as String,
+      splashBlurHash: fields[6] as String?,
+      title: fields[7] as String,
+      role: fields[8] as String,
+      releaseDate: fields[9] as DateTime,
+      health: fields[10] as double,
+      movementSpeed: fields[11] as double,
+      damageFallOffRange: fields[12] as double,
+      weaponDamage: fields[13] as double,
+      fireRate: fields[14] as double,
+      lore: fields[15] as String,
+      abilities: (fields[16] as List).cast<Ability>(),
+      talents: (fields[17] as List).cast<Talent>(),
+      cards: (fields[18] as List).cast<Card>(),
+      latestChampion: fields[19] as bool,
+      onFreeRotation: fields[20] as bool,
+      tags: (fields[21] as List).cast<Tag>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Champion obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.championId)
       ..writeByte(1)
@@ -241,38 +249,42 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       ..writeByte(2)
       ..write(obj.iconUrl)
       ..writeByte(3)
-      ..write(obj.headerUrl)
+      ..write(obj.iconBlurHash)
       ..writeByte(4)
-      ..write(obj.splashUrl)
+      ..write(obj.headerUrl)
       ..writeByte(5)
-      ..write(obj.title)
+      ..write(obj.splashUrl)
       ..writeByte(6)
-      ..write(obj.role)
+      ..write(obj.splashBlurHash)
       ..writeByte(7)
-      ..write(obj.releaseDate)
+      ..write(obj.title)
       ..writeByte(8)
-      ..write(obj.health)
+      ..write(obj.role)
       ..writeByte(9)
-      ..write(obj.movementSpeed)
+      ..write(obj.releaseDate)
       ..writeByte(10)
-      ..write(obj.damageFallOffRange)
+      ..write(obj.health)
       ..writeByte(11)
-      ..write(obj.weaponDamage)
+      ..write(obj.movementSpeed)
       ..writeByte(12)
-      ..write(obj.fireRate)
+      ..write(obj.damageFallOffRange)
       ..writeByte(13)
-      ..write(obj.lore)
+      ..write(obj.weaponDamage)
       ..writeByte(14)
-      ..write(obj.abilities)
+      ..write(obj.fireRate)
       ..writeByte(15)
-      ..write(obj.talents)
+      ..write(obj.lore)
       ..writeByte(16)
-      ..write(obj.cards)
+      ..write(obj.abilities)
       ..writeByte(17)
-      ..write(obj.latestChampion)
+      ..write(obj.talents)
       ..writeByte(18)
-      ..write(obj.onFreeRotation)
+      ..write(obj.cards)
       ..writeByte(19)
+      ..write(obj.latestChampion)
+      ..writeByte(20)
+      ..write(obj.onFreeRotation)
+      ..writeByte(21)
       ..write(obj.tags);
   }
 
@@ -295,6 +307,7 @@ Ability _$AbilityFromJson(Map<String, dynamic> json) => Ability(
       abilityId: json['abilityId'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
+      imageBlurHash: json['imageBlurHash'] as String?,
       damageType: json['damageType'] as String,
       cooldown: (json['cooldown'] as num).toDouble(),
       description: json['description'] as String,
@@ -304,6 +317,7 @@ Map<String, dynamic> _$AbilityToJson(Ability instance) => <String, dynamic>{
       'abilityId': instance.abilityId,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
+      'imageBlurHash': instance.imageBlurHash,
       'damageType': instance.damageType,
       'cooldown': instance.cooldown,
       'description': instance.description,
@@ -334,6 +348,7 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
       cardId2: json['cardId2'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
+      imageBlurHash: json['imageBlurHash'] as String?,
       cooldown: (json['cooldown'] as num).toDouble(),
       description: json['description'] as String,
       modifier: json['modifier'] as String,
@@ -344,6 +359,7 @@ Map<String, dynamic> _$CardToJson(Card instance) => <String, dynamic>{
       'cardId2': instance.cardId2,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
+      'imageBlurHash': instance.imageBlurHash,
       'cooldown': instance.cooldown,
       'description': instance.description,
       'modifier': instance.modifier,
@@ -363,8 +379,10 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
       championId: json['championId'] as int,
       name: json['name'] as String,
       iconUrl: json['iconUrl'] as String,
+      iconBlurHash: json['iconBlurHash'] as String?,
       headerUrl: json['headerUrl'] as String,
       splashUrl: json['splashUrl'] as String,
+      splashBlurHash: json['splashBlurHash'] as String?,
       title: json['title'] as String,
       role: json['role'] as String,
       releaseDate: DateTime.parse(json['releaseDate'] as String),
@@ -394,8 +412,10 @@ Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'championId': instance.championId,
       'name': instance.name,
       'iconUrl': instance.iconUrl,
+      'iconBlurHash': instance.iconBlurHash,
       'headerUrl': instance.headerUrl,
       'splashUrl': instance.splashUrl,
+      'splashBlurHash': instance.splashBlurHash,
       'title': instance.title,
       'role': instance.role,
       'releaseDate': instance.releaseDate.toIso8601String(),

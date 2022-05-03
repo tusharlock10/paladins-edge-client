@@ -49,6 +49,7 @@ class SearchTopItem extends HookConsumerWidget {
                     padding: const EdgeInsets.only(right: 8),
                     child: widgets.ElevatedAvatar(
                       imageUrl: player.avatarUrl,
+                      imageBlurHash: player.avatarBlurHash,
                       size: 24,
                       borderRadius: 3,
                     ),
