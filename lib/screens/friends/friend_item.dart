@@ -78,7 +78,6 @@ class FriendItem extends ConsumerWidget {
               friend.ranked.rank != 0
                   ? widgets.FastImage(
                       imageUrl: friend.ranked.rankIconUrl,
-                      imageBlurHash: friend.ranked.rankIconBlurHash,
                       height: 36,
                       width: 36,
                     )

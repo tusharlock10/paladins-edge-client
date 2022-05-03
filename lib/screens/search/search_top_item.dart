@@ -81,7 +81,6 @@ class SearchTopItem extends HookConsumerWidget {
                   if (player.ranked.rank != 0)
                     widgets.FastImage(
                       imageUrl: player.ranked.rankIconUrl,
-                      imageBlurHash: player.ranked.rankIconBlurHash,
                       height: 32,
                       width: 32,
                     ),

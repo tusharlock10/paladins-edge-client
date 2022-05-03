@@ -219,8 +219,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                               children: [
                                 widgets.FastImage(
                                   imageUrl: playerInfo.ranked!.rankIconUrl,
-                                  imageBlurHash:
-                                      playerInfo.ranked!.rankIconBlurHash,
                                   height: 20,
                                   width: 20,
                                 ),

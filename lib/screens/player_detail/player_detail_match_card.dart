@@ -103,7 +103,6 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                           ? const SizedBox(height: 48, width: 48)
                           : widgets.FastImage(
                               imageUrl: talentUsed.imageUrl,
-                              imageBlurHash: talentUsed.imageBlurHash,
                               height: 48,
                               width: 48,
                             ),

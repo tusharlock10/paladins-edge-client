@@ -29,7 +29,6 @@ class ChampionDetailTalents extends StatelessWidget {
                 children: [
                   widgets.FastImage(
                     imageUrl: talent.imageUrl,
-                    imageBlurHash: talent.imageBlurHash,
                     height: 114,
                     width: 114,
                   ),

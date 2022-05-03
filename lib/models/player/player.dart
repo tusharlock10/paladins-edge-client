@@ -28,12 +28,8 @@ class Ranked {
   @HiveField(4)
   final String rankIconUrl;
 
-  /// blur hash of the rank icon
-  @HiveField(5)
-  final String? rankIconBlurHash;
-
   /// the tp of the player at the current ranks
-  @HiveField(6)
+  @HiveField(5)
   final int? points;
 
   Ranked({
@@ -42,7 +38,6 @@ class Ranked {
     required this.rank,
     required this.rankName,
     required String rankIconUrl,
-    required this.rankIconBlurHash,
     this.points,
   }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
 

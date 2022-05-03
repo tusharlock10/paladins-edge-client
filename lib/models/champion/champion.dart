@@ -70,20 +70,16 @@ class Talent {
   @HiveField(3)
   final String imageUrl;
 
-  /// blur hash of the talent image
-  @HiveField(4)
-  final String? imageBlurHash;
-
   /// Recharge time of the talent in seconds
-  @HiveField(5)
+  @HiveField(4)
   final double cooldown;
 
   /// Talent description
-  @HiveField(6)
+  @HiveField(5)
   final String description;
 
   /// The ability that the talent modifies eg. Weapon/Reversal
-  @HiveField(7)
+  @HiveField(6)
   final String modifier;
 
   Talent({
@@ -91,7 +87,6 @@ class Talent {
     required this.talentId2,
     required this.name,
     required String imageUrl,
-    required this.imageBlurHash,
     required this.cooldown,
     required this.description,
     required this.modifier,
@@ -194,76 +189,72 @@ class Champion {
   @HiveField(4)
   final String headerUrl;
 
-  /// blur hash of the header
-  @HiveField(5)
-  final String? headerBlurHash;
-
   /// Splash image of the champion
-  @HiveField(6)
+  @HiveField(5)
   final String splashUrl;
 
   /// blur hash of the splash image
-  @HiveField(7)
+  @HiveField(6)
   final String? splashBlurHash;
 
   /// eg. The Godslayer
-  @HiveField(8)
+  @HiveField(7)
   final String title;
 
   /// eg. Flank
-  @HiveField(9)
+  @HiveField(8)
   final String role;
 
   /// release date of the champion
-  @HiveField(10)
+  @HiveField(9)
   final DateTime releaseDate;
 
   /// eg. 2100
-  @HiveField(11)
+  @HiveField(10)
   final double health;
 
   /// eg. 370
-  @HiveField(12)
+  @HiveField(11)
   final double movementSpeed;
 
   /// eg. 50 (units)
-  @HiveField(13)
+  @HiveField(12)
   final double damageFallOffRange;
 
   /// damage of the champion eg. 520
-  @HiveField(14)
+  @HiveField(13)
   final double weaponDamage;
 
   /// fire rate of the champion in sec eg. 0.36
-  @HiveField(15)
+  @HiveField(14)
   final double fireRate;
 
   /// lore of that champion,
-  @HiveField(16)
+  @HiveField(15)
   final String lore;
 
   /// List of all the abilities of th champion
-  @HiveField(17)
+  @HiveField(16)
   final List<Ability> abilities;
 
   /// List of all the talents of th champion
-  @HiveField(18)
+  @HiveField(17)
   final List<Talent> talents;
 
   /// List of all the cards of th champion
-  @HiveField(19)
+  @HiveField(18)
   final List<Card> cards;
 
   /// Whether the champion is newly added in the game
-  @HiveField(20)
+  @HiveField(19)
   final bool latestChampion;
 
   /// Whether the champion is on free rotation
-  @HiveField(21)
+  @HiveField(20)
   final bool onFreeRotation;
 
   /// For showing extra champion info
-  @HiveField(22)
+  @HiveField(21)
   final List<Tag> tags;
 
   Champion({
@@ -272,7 +263,6 @@ class Champion {
     required String iconUrl,
     required this.iconBlurHash,
     required String headerUrl,
-    required this.headerBlurHash,
     required String splashUrl,
     required this.splashBlurHash,
     required this.title,

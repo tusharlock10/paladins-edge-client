@@ -73,17 +73,16 @@ class TalentAdapter extends TypeAdapter<Talent> {
       talentId2: fields[1] as int,
       name: fields[2] as String,
       imageUrl: fields[3] as String,
-      imageBlurHash: fields[4] as String?,
-      cooldown: fields[5] as double,
-      description: fields[6] as String,
-      modifier: fields[7] as String,
+      cooldown: fields[4] as double,
+      description: fields[5] as String,
+      modifier: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Talent obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.talentId)
       ..writeByte(1)
@@ -93,12 +92,10 @@ class TalentAdapter extends TypeAdapter<Talent> {
       ..writeByte(3)
       ..write(obj.imageUrl)
       ..writeByte(4)
-      ..write(obj.imageBlurHash)
-      ..writeByte(5)
       ..write(obj.cooldown)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.description)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.modifier);
   }
 
@@ -221,31 +218,30 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       iconUrl: fields[2] as String,
       iconBlurHash: fields[3] as String?,
       headerUrl: fields[4] as String,
-      headerBlurHash: fields[5] as String?,
-      splashUrl: fields[6] as String,
-      splashBlurHash: fields[7] as String?,
-      title: fields[8] as String,
-      role: fields[9] as String,
-      releaseDate: fields[10] as DateTime,
-      health: fields[11] as double,
-      movementSpeed: fields[12] as double,
-      damageFallOffRange: fields[13] as double,
-      weaponDamage: fields[14] as double,
-      fireRate: fields[15] as double,
-      lore: fields[16] as String,
-      abilities: (fields[17] as List).cast<Ability>(),
-      talents: (fields[18] as List).cast<Talent>(),
-      cards: (fields[19] as List).cast<Card>(),
-      latestChampion: fields[20] as bool,
-      onFreeRotation: fields[21] as bool,
-      tags: (fields[22] as List).cast<Tag>(),
+      splashUrl: fields[5] as String,
+      splashBlurHash: fields[6] as String?,
+      title: fields[7] as String,
+      role: fields[8] as String,
+      releaseDate: fields[9] as DateTime,
+      health: fields[10] as double,
+      movementSpeed: fields[11] as double,
+      damageFallOffRange: fields[12] as double,
+      weaponDamage: fields[13] as double,
+      fireRate: fields[14] as double,
+      lore: fields[15] as String,
+      abilities: (fields[16] as List).cast<Ability>(),
+      talents: (fields[17] as List).cast<Talent>(),
+      cards: (fields[18] as List).cast<Card>(),
+      latestChampion: fields[19] as bool,
+      onFreeRotation: fields[20] as bool,
+      tags: (fields[21] as List).cast<Tag>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Champion obj) {
     writer
-      ..writeByte(23)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.championId)
       ..writeByte(1)
@@ -257,40 +253,38 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       ..writeByte(4)
       ..write(obj.headerUrl)
       ..writeByte(5)
-      ..write(obj.headerBlurHash)
-      ..writeByte(6)
       ..write(obj.splashUrl)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.splashBlurHash)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.title)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.role)
-      ..writeByte(10)
+      ..writeByte(9)
       ..write(obj.releaseDate)
-      ..writeByte(11)
+      ..writeByte(10)
       ..write(obj.health)
-      ..writeByte(12)
+      ..writeByte(11)
       ..write(obj.movementSpeed)
-      ..writeByte(13)
+      ..writeByte(12)
       ..write(obj.damageFallOffRange)
-      ..writeByte(14)
+      ..writeByte(13)
       ..write(obj.weaponDamage)
-      ..writeByte(15)
+      ..writeByte(14)
       ..write(obj.fireRate)
-      ..writeByte(16)
+      ..writeByte(15)
       ..write(obj.lore)
-      ..writeByte(17)
+      ..writeByte(16)
       ..write(obj.abilities)
-      ..writeByte(18)
+      ..writeByte(17)
       ..write(obj.talents)
-      ..writeByte(19)
+      ..writeByte(18)
       ..write(obj.cards)
-      ..writeByte(20)
+      ..writeByte(19)
       ..write(obj.latestChampion)
-      ..writeByte(21)
+      ..writeByte(20)
       ..write(obj.onFreeRotation)
-      ..writeByte(22)
+      ..writeByte(21)
       ..write(obj.tags);
   }
 
@@ -334,7 +328,6 @@ Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
       talentId2: json['talentId2'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
-      imageBlurHash: json['imageBlurHash'] as String?,
       cooldown: (json['cooldown'] as num).toDouble(),
       description: json['description'] as String,
       modifier: json['modifier'] as String,
@@ -345,7 +338,6 @@ Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
       'talentId2': instance.talentId2,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
-      'imageBlurHash': instance.imageBlurHash,
       'cooldown': instance.cooldown,
       'description': instance.description,
       'modifier': instance.modifier,
@@ -389,7 +381,6 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
       iconUrl: json['iconUrl'] as String,
       iconBlurHash: json['iconBlurHash'] as String?,
       headerUrl: json['headerUrl'] as String,
-      headerBlurHash: json['headerBlurHash'] as String?,
       splashUrl: json['splashUrl'] as String,
       splashBlurHash: json['splashBlurHash'] as String?,
       title: json['title'] as String,
@@ -423,7 +414,6 @@ Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'iconUrl': instance.iconUrl,
       'iconBlurHash': instance.iconBlurHash,
       'headerUrl': instance.headerUrl,
-      'headerBlurHash': instance.headerBlurHash,
       'splashUrl': instance.splashUrl,
       'splashBlurHash': instance.splashBlurHash,
       'title': instance.title,
