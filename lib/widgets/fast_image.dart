@@ -25,8 +25,31 @@ class FastImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: borderRadius,
       child: CachedNetworkImage(
+        placeholderFadeInDuration: Duration.zero,
+        fadeInDuration: Duration.zero,
+        errorWidget: (_, __, ___) => imageBlurHash != null
+            ? SizedBox(
+                height: height,
+                width: width,
+                child: BlurHash(
+                  hash: imageBlurHash!,
+                  image: imageUrl,
+                ),
+              )
+            : SizedBox(
+                height: height,
+                width: width,
+              ),
+        fadeOutDuration: Duration.zero,
         placeholder: imageBlurHash != null
-            ? (_, __) => BlurHash(hash: imageBlurHash!)
+            ? (_, __) => SizedBox(
+                  height: height,
+                  width: width,
+                  child: BlurHash(
+                    hash: imageBlurHash!,
+                    image: imageUrl,
+                  ),
+                )
             : null,
         imageUrl: imageUrl,
         height: height,

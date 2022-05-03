@@ -79,8 +79,6 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                   children: [
                                     widgets.FastImage(
                                       imageUrl: player.ranked.rankIconUrl,
-                                      imageBlurHash:
-                                          player.ranked.rankIconBlurHash,
                                       height: 36,
                                       width: 36,
                                     ),

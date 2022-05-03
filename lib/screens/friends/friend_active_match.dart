@@ -51,7 +51,6 @@ class _PlayerMatch extends StatelessWidget {
                             children: [
                               widgets.FastImage(
                                 imageUrl: player.ranked!.rankIconUrl,
-                                imageBlurHash: player.ranked!.rankIconBlurHash,
                                 height: 16,
                                 width: 16,
                               ),
