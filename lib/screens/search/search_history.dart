@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:timer_builder/timer_builder.dart';
 
 class SearchHistory extends HookConsumerWidget {
@@ -23,6 +24,7 @@ class SearchHistory extends HookConsumerWidget {
     final onTap = useCallback(
       (String playerId) {
         playersProvider.setPlayerId(playerId);
+        utilities.unFocusKeyboard(context);
         Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
       },
       [],

@@ -21,13 +21,17 @@ class _PlayersNotifier extends ChangeNotifier {
   Future<void> getPlayerStatus({
     required String playerId,
     bool forceUpdate = false,
+    bool onlyStatus = false,
   }) async {
     if (!forceUpdate) {
       isLoadingPlayerStatus = true;
       utilities.postFrameCallback(notifyListeners);
     }
 
-    playerStatus = await api.PlayersRequests.playerStatus(playerId: playerId);
+    playerStatus = await api.PlayersRequests.playerStatus(
+      playerId: playerId,
+      onlyStatus: onlyStatus,
+    );
 
     if (!forceUpdate) isLoadingPlayerStatus = false;
     notifyListeners();
