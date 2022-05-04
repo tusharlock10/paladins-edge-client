@@ -60,7 +60,7 @@ class _LoginModal extends HookConsumerWidget {
             context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
-                : screens.BottomTabs.routeName,
+                : screens.Main.routeName,
           );
         } else {
           isLoggingIn.value = false;
@@ -123,6 +123,7 @@ class _LoginModal extends HookConsumerWidget {
           isLoggingIn: isLoggingIn.value,
           onGoogleSignIn: onGoogleSignIn,
         ),
+        const SizedBox(height: 15),
       ],
     );
   }

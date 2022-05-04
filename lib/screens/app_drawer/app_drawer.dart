@@ -4,12 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/app_drawer/app_drawer_button.dart';
+import 'package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart';
+import 'package:paladinsedge/screens/app_drawer/app_drawer_info.dart';
+import 'package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart';
+import 'package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/widgets/drawer/drawer_button.dart';
-import 'package:paladinsedge/widgets/drawer/drawer_info.dart';
-import 'package:paladinsedge/widgets/drawer/guest_profile.dart';
-import 'package:paladinsedge/widgets/drawer/login_drawer_button.dart';
-import 'package:paladinsedge/widgets/drawer/player_profile.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:paladinsedge/widgets/login_modal.dart';
 
@@ -153,27 +153,29 @@ class AppDrawer extends HookConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            isGuest ? const GuestProfile() : const PlayerProfile(),
+            isGuest
+                ? const AppDrawerGuestProfile()
+                : const AppDrawerPlayerProfile(),
             const SizedBox(height: 20),
-            DrawerButton(
+            AppDrawerButton(
               context: context,
               label: 'Change Theme',
               subTitle: getThemeName(),
               onPressed: onChangeTheme,
             ),
             if (showPlayerDependentButtons())
-              DrawerButton(
+              AppDrawerButton(
                 context: context,
                 label: 'Friends',
                 onPressed: onFriends,
               ),
             if (showPlayerDependentButtons())
-              DrawerButton(
+              AppDrawerButton(
                 context: context,
                 label: 'Active Match',
                 onPressed: onActiveMatch,
               ),
-            DrawerButton(
+            AppDrawerButton(
               context: context,
               label: 'Feedback',
               onPressed: onFeedback,
@@ -188,11 +190,11 @@ class AppDrawer extends HookConsumerWidget {
                       )
                     : const SizedBox(),
                 isGuest
-                    ? LoginDrawerButton(
+                    ? AppDrawerLoginButton(
                         context: context,
                         onPressed: onLogout,
                       )
-                    : DrawerButton(
+                    : AppDrawerButton(
                         context: context,
                         label: 'Logout',
                         disabled: isLoggingOut.value,
@@ -200,7 +202,7 @@ class AppDrawer extends HookConsumerWidget {
                       ),
               ],
             ),
-            const DrawerInfo(),
+            const AppDrawerInfo(),
             const SizedBox(height: 15),
           ],
         ),

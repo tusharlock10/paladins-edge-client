@@ -25,8 +25,9 @@ class FastImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: borderRadius,
       child: CachedNetworkImage(
-        placeholderFadeInDuration: Duration.zero,
-        fadeInDuration: Duration.zero,
+        placeholderFadeInDuration: const Duration(milliseconds: 250),
+        fadeInDuration: const Duration(milliseconds: 250),
+        fadeOutDuration: const Duration(milliseconds: 250),
         errorWidget: (_, __, ___) => imageBlurHash != null
             ? SizedBox(
                 height: height,
@@ -40,7 +41,6 @@ class FastImage extends StatelessWidget {
                 height: height,
                 width: width,
               ),
-        fadeOutDuration: Duration.zero,
         placeholder: imageBlurHash != null
             ? (_, __) => SizedBox(
                   height: height,

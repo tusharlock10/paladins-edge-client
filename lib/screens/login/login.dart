@@ -45,7 +45,7 @@ class Login extends HookConsumerWidget {
             context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
-                : screens.BottomTabs.routeName,
+                : screens.Main.routeName,
           );
         } else {
           isCheckingLogin.value = false;
@@ -114,7 +114,7 @@ class Login extends HookConsumerWidget {
             context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
-                : screens.BottomTabs.routeName,
+                : screens.Main.routeName,
           );
         } else {
           isLoggingIn.value = false;
@@ -134,7 +134,7 @@ class Login extends HookConsumerWidget {
     final onGuestLogin = useCallback(
       () {
         authProvider.loginAsGuest();
-        Navigator.pushReplacementNamed(context, screens.BottomTabs.routeName);
+        Navigator.pushReplacementNamed(context, screens.Main.routeName);
       },
       [],
     );

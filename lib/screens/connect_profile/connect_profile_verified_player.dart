@@ -56,7 +56,7 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
           child: TextButton(
             onPressed: () => Navigator.pushReplacementNamed(
               context,
-              screens.BottomTabs.routeName,
+              screens.Main.routeName,
             ),
             style: TextButton.styleFrom(
               side: BorderSide(width: 1.5, color: secondaryColor),

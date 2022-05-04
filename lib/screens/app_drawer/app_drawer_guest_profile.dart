@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
-class GuestProfile extends StatelessWidget {
-  const GuestProfile({Key? key}) : super(key: key);
+class AppDrawerGuestProfile extends StatelessWidget {
+  const AppDrawerGuestProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

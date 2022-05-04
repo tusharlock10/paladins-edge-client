@@ -67,4 +67,26 @@ abstract class LoadoutRequests {
       return null;
     }
   }
+
+  static Future<responses.DeletePlayerLoadoutResponse?> deletePlayerLoadout({
+    required String loadoutHash,
+    bool? dryRun,
+  }) async {
+    try {
+      final response = await utilities.api.delete<Map<String, dynamic>>(
+        constants.Urls.deletePlayerLoadout,
+        queryParameters: {
+          'loadoutHash': loadoutHash,
+          'dryRun': dryRun ?? false,
+        },
+      );
+      if (response.data != null) {
+        return responses.DeletePlayerLoadoutResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }
