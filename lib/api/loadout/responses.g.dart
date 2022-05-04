@@ -31,3 +31,15 @@ Map<String, dynamic> _$SavePlayerLoadoutResponseToJson(
     <String, dynamic>{
       'loadout': instance.loadout,
     };
+
+DeletePlayerLoadoutResponse _$DeletePlayerLoadoutResponseFromJson(
+        Map<String, dynamic> json) =>
+    DeletePlayerLoadoutResponse(
+      loadout: Loadout.fromJson(json['loadout'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$DeletePlayerLoadoutResponseToJson(
+        DeletePlayerLoadoutResponse instance) =>
+    <String, dynamic>{
+      'loadout': instance.loadout,
+    };

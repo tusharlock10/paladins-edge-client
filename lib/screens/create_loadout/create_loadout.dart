@@ -3,8 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/create_loadout/create_loadout_delete_button.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_draggable_cards.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
+import 'package:paladinsedge/screens/create_loadout/create_loadout_text.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
@@ -23,6 +25,7 @@ class CreateLoadout extends HookConsumerWidget {
     // Variables
     final arguments = ModalRoute.of(context)?.settings.arguments
         as data_classes.CreateLoadoutScreenArguments;
+    final loadout = arguments.loadout;
 
     // Effects
     useEffect(
@@ -30,7 +33,7 @@ class CreateLoadout extends HookConsumerWidget {
         loadoutProvider.createDraftLoadout(
           championId: arguments.champion.championId,
           playerId: authProvider.player!.playerId,
-          loadout: arguments.loadout,
+          loadout: loadout,
         );
 
         return loadoutProvider.resetDraftLoadout;
@@ -64,10 +67,19 @@ class CreateLoadout extends HookConsumerWidget {
       [],
     );
 
+    final onDelete = useCallback(
+      () {
+        if (loadout?.loadoutHash != null) {
+          loadoutProvider.deleteLoadout(loadout!.loadoutHash!);
+          Navigator.of(context).pop();
+        }
+      },
+      [],
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(arguments.loadout != null ? "Edit Loadout" : "Create Loadout"),
+        title: Text(loadout != null ? "Edit Loadout" : "Create Loadout"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -108,21 +120,18 @@ class CreateLoadout extends HookConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              SizedBox(height: 20),
-              CreateLoadoutTarget(),
-              SizedBox(height: 30),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Text('''
-* Select a card from the list and drag it in the loadout
-* Tap the card in the loadout to change its points
-* Rename the loadout to your liking and save
-'''),
-              ),
-              SizedBox(height: 30),
-              CreateLoadoutDraggableCards(),
-              SizedBox(height: 30),
+            children: [
+              const SizedBox(height: 20),
+              const CreateLoadoutTarget(),
+              const SizedBox(height: 30),
+              const CreateLoadoutText(),
+              const SizedBox(height: 30),
+              const CreateLoadoutDraggableCards(),
+              const SizedBox(height: 30),
+              if (loadout?.loadoutHash != null)
+                CreateLoadoutDeleteButton(
+                  onDelete: onDelete,
+                ),
             ],
           ),
         ),

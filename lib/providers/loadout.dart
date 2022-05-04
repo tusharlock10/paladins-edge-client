@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -160,6 +161,27 @@ class _LoadoutNotifier extends ChangeNotifier {
     notifyListeners();
 
     return result != null;
+  }
+
+  /// Deletes a loadout using its loadoutHash
+  Future<void> deleteLoadout(String loadoutHash) async {
+    if (loadouts == null) return;
+
+    final loadoutsClone = [...loadouts!];
+    // temporarily delete the loadout from loadouts
+    loadouts = loadouts!.where((_) => _.loadoutHash != loadoutHash).toList();
+    notifyListeners();
+
+    // make api call to delete loadout
+    final response = await api.LoadoutRequests.deletePlayerLoadout(
+      loadoutHash: loadoutHash,
+      dryRun: constants.isDebug,
+    );
+    if (response == null) {
+      // revert the changes in case of failure
+      loadouts = loadoutsClone;
+      notifyListeners();
+    }
   }
 
   /// Clears all user sensitive data upon logout

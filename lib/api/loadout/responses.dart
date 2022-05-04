@@ -24,3 +24,14 @@ class SavePlayerLoadoutResponse {
       _$SavePlayerLoadoutResponseFromJson(json);
   Map<String, dynamic> toJson() => _$SavePlayerLoadoutResponseToJson(this);
 }
+
+@JsonSerializable()
+class DeletePlayerLoadoutResponse {
+  final Loadout loadout;
+
+  DeletePlayerLoadoutResponse({required this.loadout});
+
+  factory DeletePlayerLoadoutResponse.fromJson(Map<String, dynamic> json) =>
+      _$DeletePlayerLoadoutResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$DeletePlayerLoadoutResponseToJson(this);
+}
