@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart';
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class PlayerDetailHeader extends HookConsumerWidget {
@@ -16,10 +17,16 @@ class PlayerDetailHeader extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final friendsProvider = ref.read(providers.friends);
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final playerStatus =
+        ref.watch(providers.players.select((_) => _.playerStatus));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final status = playerStatus?.status;
+    final isOnline = status?.toLowerCase() != "offline" &&
+        status?.toLowerCase() != "unknown" &&
+        status != null;
 
     // Methods
     final onPressActiveMatch = useCallback(
@@ -59,65 +66,64 @@ class PlayerDetailHeader extends HookConsumerWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            widgets.ElevatedAvatar(
-                              imageUrl: player.avatarUrl,
-                              imageBlurHash: player.avatarBlurHash,
-                              size: 42,
-                              borderRadius: 10,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    widgets.FastImage(
-                                      imageUrl: player.ranked.rankIconUrl,
-                                      height: 36,
-                                      width: 36,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          player.ranked.rankName,
-                                          style: textTheme.bodyText2
-                                              ?.copyWith(fontSize: 14),
-                                        ),
-                                        Text(
-                                          '${player.ranked.points} TP',
-                                          style: textTheme.bodyText1
-                                              ?.copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    widgets.Button(
-                                      label: 'Friends',
-                                      color: Colors.green,
-                                      onPressed: onPressFriends,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    widgets.Button(
-                                      label: 'Active Match',
-                                      onPressed: onPressActiveMatch,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        widgets.ElevatedAvatar(
+                          imageUrl: player.avatarUrl,
+                          imageBlurHash: player.avatarBlurHash,
+                          size: 42,
+                          borderRadius: 10,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  widgets.FastImage(
+                                    imageUrl: player.ranked.rankIconUrl,
+                                    height: 36,
+                                    width: 36,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        player.ranked.rankName,
+                                        style: textTheme.bodyText2
+                                            ?.copyWith(fontSize: 14),
+                                      ),
+                                      Text(
+                                        '${player.ranked.points} TP',
+                                        style: textTheme.bodyText1
+                                            ?.copyWith(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  const PlayerDetailStatusIndicator(),
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  widgets.Button(
+                                    label: 'Friends',
+                                    onPressed: onPressFriends,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  widgets.Button(
+                                    label: 'Active Match',
+                                    disabled: !isOnline,
+                                    onPressed: onPressActiveMatch,
+                                    color: Colors.green,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

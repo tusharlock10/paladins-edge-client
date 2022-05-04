@@ -33,6 +33,11 @@ class PlayerDetail extends HookConsumerWidget {
         if (player == null) {
           // fetch playerData from server
           playersProvider.getPlayerData(forceUpdate: false);
+          // fetch playerStatus from server
+          playersProvider.getPlayerStatus(
+            playerId: playerId,
+            onlyStatus: true,
+          );
         }
 
         return;
@@ -67,10 +72,20 @@ class PlayerDetail extends HookConsumerWidget {
       () async {
         if (playerId == null) return;
 
-        return matchesProvider.getPlayerMatches(
-          playerId: playerId,
-          forceUpdate: true,
-        );
+        final futures = [
+          playersProvider.getPlayerStatus(
+            playerId: playerId,
+            forceUpdate: true,
+            onlyStatus: true,
+          ),
+          matchesProvider.getPlayerMatches(
+            playerId: playerId,
+            forceUpdate: true,
+          ),
+        ];
+        await Future.wait(futures);
+
+        return;
       },
       [playerId],
     );

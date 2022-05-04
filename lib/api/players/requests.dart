@@ -64,11 +64,15 @@ abstract class PlayersRequests {
 
   static Future<responses.PlayerStatusResponse?> playerStatus({
     required String playerId,
+    bool onlyStatus = false,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerStatus,
-        queryParameters: {'playerId': playerId},
+        queryParameters: {
+          'playerId': playerId,
+          'onlyStatus': onlyStatus,
+        },
       );
       if (response.data != null) {
         return responses.PlayerStatusResponse.fromJson(response.data!);
