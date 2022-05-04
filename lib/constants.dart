@@ -49,6 +49,7 @@ abstract class Urls {
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET
   static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
   static const updatePlayerLoadout = '/loadout/updatePlayerLoadout'; // PUT
+  static const deletePlayerLoadout = '/loadout/deletePlayerLoadout'; // DELETE
 
   // feedback
   static const submitFeedback = "/feedback/submitFeedback"; // POST

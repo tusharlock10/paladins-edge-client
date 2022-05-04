@@ -123,6 +123,7 @@ class _LoginModal extends HookConsumerWidget {
           isLoggingIn: isLoggingIn.value,
           onGoogleSignIn: onGoogleSignIn,
         ),
+        const SizedBox(height: 15),
       ],
     );
   }
