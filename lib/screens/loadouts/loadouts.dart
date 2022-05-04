@@ -19,15 +19,21 @@ class Loadouts extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final loadoutProvider = ref.read(providers.loadout);
-    final playerId = ref.read(providers.auth).player?.playerId;
+    final userPlayerId = ref.read(providers.auth).player?.playerId;
     final loadouts = ref.watch(providers.loadout.select((_) => _.loadouts));
     final isGettingLoadouts =
         ref.watch(providers.loadout.select((_) => _.isGettingLoadouts));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final arguments = ModalRoute.of(context)?.settings.arguments
+        as data_classes.LoadoutScreenArguments;
+    final champion = arguments.champion;
+    final otherPlayer = arguments.player;
+    final otherPlayerId = otherPlayer?.playerId;
+    final isOtherPlayer = otherPlayerId != userPlayerId;
+    final playerId = otherPlayerId ?? userPlayerId;
+
     final crossAxisCount = utilities.responsiveCondition(
       context,
       desktop: 2,
@@ -61,23 +67,29 @@ class Loadouts extends HookConsumerWidget {
 
     // Methods
     final onCreate = useCallback(
-      () => Navigator.of(context).pushNamed(
-        screens.CreateLoadout.routeName,
-        arguments:
-            data_classes.CreateLoadoutScreenArguments(champion: champion),
-      ),
-      [],
+      () {
+        if (isOtherPlayer) return;
+        Navigator.of(context).pushNamed(
+          screens.CreateLoadout.routeName,
+          arguments:
+              data_classes.CreateLoadoutScreenArguments(champion: champion),
+        );
+      },
+      [isOtherPlayer],
     );
 
     final onEdit = useCallback(
-      (models.Loadout loadout) => Navigator.of(context).pushNamed(
-        screens.CreateLoadout.routeName,
-        arguments: data_classes.CreateLoadoutScreenArguments(
-          champion: champion,
-          loadout: loadout,
-        ),
-      ),
-      [],
+      (models.Loadout loadout) {
+        if (isOtherPlayer) return;
+        Navigator.of(context).pushNamed(
+          screens.CreateLoadout.routeName,
+          arguments: data_classes.CreateLoadoutScreenArguments(
+            champion: champion,
+            loadout: loadout,
+          ),
+        );
+      },
+      [isOtherPlayer],
     );
 
     final onRefresh = useCallback(
@@ -94,42 +106,45 @@ class Loadouts extends HookConsumerWidget {
     );
 
     return Scaffold(
-      floatingActionButton: SizedBox(
-        height: 40,
-        width: 90,
-        child: AnimatedSlide(
-          offset:
-              hideLoadoutFab.value ? const Offset(0, 2) : const Offset(0, 0),
-          duration: const Duration(milliseconds: 250),
-          child: FloatingActionButton(
-            onPressed: onCreate,
-            elevation: 4,
-            hoverElevation: 6,
-            focusElevation: 8,
-            backgroundColor: theme.themeMaterialColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.add,
-                  size: 18,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 2),
-                Text(
-                  'Create',
-                  style: textTheme.bodyText2?.copyWith(
-                    fontSize: 14,
-                    color: Colors.white,
+      floatingActionButton: isOtherPlayer
+          ? null
+          : SizedBox(
+              height: 40,
+              width: 90,
+              child: AnimatedSlide(
+                offset: hideLoadoutFab.value
+                    ? const Offset(0, 2)
+                    : const Offset(0, 0),
+                duration: const Duration(milliseconds: 250),
+                child: FloatingActionButton(
+                  onPressed: onCreate,
+                  elevation: 4,
+                  hoverElevation: 6,
+                  focusElevation: 8,
+                  backgroundColor: theme.themeMaterialColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        'Create',
+                        style: textTheme.bodyText2?.copyWith(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
                   ),
+                  isExtended: true,
                 ),
-                const SizedBox(width: 10),
-              ],
+              ),
             ),
-            isExtended: true,
-          ),
-        ),
-      ),
       body: widgets.Refresh(
         edgeOffset: utilities.getTopEdgeOffset(context),
         onRefresh: onRefresh,
@@ -142,9 +157,11 @@ class Loadouts extends HookConsumerWidget {
               pinned: constants.isWeb,
               title: Column(
                 children: [
-                  const Text('Loadouts'),
+                  const Text('Your Loadouts'),
                   Text(
-                    champion.name,
+                    isOtherPlayer
+                        ? '${otherPlayer!.name} - ${champion.name}'
+                        : champion.name,
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],

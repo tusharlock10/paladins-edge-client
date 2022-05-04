@@ -3,4 +3,5 @@ export './loadout.dart'
         CreateLoadoutScreenArguments,
         LoadoutValidationResult,
         DraftLoadout,
-        ShowLoadoutDetailsOptions;
+        ShowLoadoutDetailsOptions,
+        LoadoutScreenArguments;
