@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
-import "package:google_fonts/google_fonts.dart";
 import 'package:paladinsedge/theme/colors.dart';
+import 'package:paladinsedge/theme/fonts.dart';
 
 /// ThemeData for light theme
 final lightTheme = ThemeData(
@@ -23,12 +23,12 @@ final lightTheme = ThemeData(
     titleTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 20,
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
     ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 20,
-      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontFamily: Fonts.secondary,
       fontWeight: FontWeight.bold,
     ),
   ),
@@ -50,34 +50,34 @@ final lightTheme = ThemeData(
     cursorColor: themeMaterialColor.shade300,
   ),
   brightness: Brightness.light,
-  fontFamily: GoogleFonts.manrope().fontFamily,
+  fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
     headline1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
     headline2: TextStyle(
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
     headline3: TextStyle(
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
     bodyText1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: Colors.black54,
     ),
     bodyText2: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: Colors.black,
     ),
     subtitle1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),
   ),
@@ -95,13 +95,13 @@ final lightTheme = ThemeData(
   ),
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontWeight: FontWeight.bold,
       fontSize: 14,
     ),
     labelColor: themeMaterialColor,
     unselectedLabelStyle: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
     unselectedLabelColor: Colors.grey,
@@ -111,12 +111,12 @@ final lightTheme = ThemeData(
     headingRowColor: MaterialStateProperty.all(themeMaterialColor.shade100),
     dataTextStyle: TextStyle(
       fontSize: 14,
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
     ),
     headingTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
     ),
   ),
   bottomSheetTheme: BottomSheetThemeData(
@@ -157,12 +157,12 @@ final darkTheme = ThemeData(
     titleTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 20,
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
     ),
     toolbarTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 20,
-      fontFamily: GoogleFonts.raleway().fontFamily,
+      fontFamily: Fonts.secondary,
       fontWeight: FontWeight.bold,
     ),
   ),
@@ -183,34 +183,34 @@ final darkTheme = ThemeData(
     cursorColor: darkThemeMaterialColor.shade300,
   ),
   brightness: Brightness.dark,
-  fontFamily: GoogleFonts.manrope().fontFamily,
+  fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
     headline1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
     headline2: TextStyle(
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
     headline3: TextStyle(
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
     bodyText1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: Colors.white54,
     ),
     bodyText2: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
     ),
     subtitle1: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),
   ),
@@ -228,12 +228,12 @@ final darkTheme = ThemeData(
   ),
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
     labelColor: Colors.white,
     unselectedLabelStyle: TextStyle(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
     unselectedLabelColor: Colors.white60,
@@ -243,12 +243,12 @@ final darkTheme = ThemeData(
     headingRowColor: MaterialStateProperty.all(darkThemeMaterialColor.shade100),
     dataTextStyle: TextStyle(
       fontSize: 14,
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: Fonts.secondaryAccent,
     ),
     headingTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: Fonts.primary,
     ),
   ),
   bottomSheetTheme: BottomSheetThemeData(

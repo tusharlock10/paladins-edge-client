@@ -54,8 +54,14 @@ class ChampionDetail extends HookConsumerWidget {
     );
 
     final _onLoadoutPress = useCallback(
-      () => Navigator.of(context)
-          .pushNamed(screens.Loadouts.routeName, arguments: champion),
+      () {
+        Navigator.of(context).pushNamed(
+          screens.Loadouts.routeName,
+          arguments: data_classes.LoadoutScreenArguments(
+            champion: champion,
+          ),
+        );
+      },
       [],
     );
 

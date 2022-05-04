@@ -26,8 +26,8 @@ class FastImage extends StatelessWidget {
       borderRadius: borderRadius,
       child: CachedNetworkImage(
         placeholderFadeInDuration: const Duration(milliseconds: 250),
-        fadeInDuration: const Duration(milliseconds: 250),
-        fadeOutDuration: const Duration(milliseconds: 250),
+        fadeInDuration: Duration.zero,
+        fadeOutDuration: Duration.zero,
         errorWidget: (_, __, ___) => imageBlurHash != null
             ? SizedBox(
                 height: height,

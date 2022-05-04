@@ -25,16 +25,16 @@ class ElevatedAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderRadius = this.borderRadius ?? size / 2;
 
-    return Material(
-      color: Theme.of(context).cardTheme.color,
-      clipBehavior: Clip.antiAlias,
-      elevation: elevation ?? 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      child: SizedBox(
-        height: size * 2,
-        width: size * 2,
+    return SizedBox(
+      height: size * 2,
+      width: size * 2,
+      child: Material(
+        color: Theme.of(context).cardTheme.color,
+        clipBehavior: Clip.antiAlias,
+        elevation: elevation ?? 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
         child: widgets.FastImage(
           imageUrl: imageUrl,
           imageBlurHash: imageBlurHash,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Card;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:paladinsedge/models/index.dart'
-    show Champion, Loadout, LoadoutCard, Card;
+    show Champion, Loadout, LoadoutCard, Card, Player;
 
 part 'loadout.freezed.dart';
 
@@ -52,6 +52,16 @@ class DraftLoadout with _$DraftLoadout {
       loadoutHash: loadout.loadoutHash,
     );
   }
+}
+
+class LoadoutScreenArguments {
+  final Champion champion;
+  final Player? player;
+
+  LoadoutScreenArguments({
+    required this.champion,
+    this.player,
+  });
 }
 
 class ShowLoadoutDetailsOptions {
