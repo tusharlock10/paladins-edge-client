@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,7 @@ void main() async {
   utilities.Messaging.onBackgroundMessage();
   utilities.Messaging.registerLocalNotification();
 
+  Beamer.setPathUrlStrategy();
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
 
@@ -42,12 +44,16 @@ class PaladinsEdgeApp extends ConsumerWidget {
       toastTheme: ToastThemeData(alignment: Alignment.bottomCenter),
       child: GestureDetector(
         onTap: () => utilities.unFocusKeyboard(context),
-        child: MaterialApp(
+        child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
           theme: theme.lightTheme,
           darkTheme: theme.darkTheme,
-          routes: screens.routes,
+          routeInformationParser: BeamerParser(),
+          routerDelegate: screens.routerDelegate,
+          backButtonDispatcher: BeamerBackButtonDispatcher(
+            delegate: screens.routerDelegate,
+          ),
           title: "Paladins Edge",
           color: Colors.white,
           scrollBehavior: BouncingScrollBehavior(),

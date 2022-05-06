@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,8 +20,7 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
         ref.read(providers.champions).userPlayerChampions;
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final champion = context.currentBeamLocation.data as models.Champion;
     final playerChampion =
         utilities.findPlayerChampion(userPlayerChampions, champion.championId);
 

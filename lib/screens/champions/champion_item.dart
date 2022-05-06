@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -53,9 +54,9 @@ class ChampionItem extends HookConsumerWidget {
     final onTapChampion = useCallback(
       () {
         utilities.unFocusKeyboard(context);
-        Navigator.of(context).pushNamed(
+        context.beamToNamed(
           screens.ChampionDetail.routeName,
-          arguments: champion,
+          data: champion,
         );
       },
       [champion],

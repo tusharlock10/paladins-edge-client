@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -36,7 +37,7 @@ class AppDrawer extends HookConsumerWidget {
         final isLoggedOut = await ref.read(providers.auth).logout();
 
         if (isLoggedOut) {
-          Navigator.pushReplacementNamed(context, screens.Login.routeName);
+          context.beamToReplacementNamed(screens.Login.routeName);
         } else {
           widgets.showToast(
             context: context,
@@ -79,7 +80,7 @@ class AppDrawer extends HookConsumerWidget {
 
     final _onFriends = useCallback(
       () {
-        Navigator.of(context).popAndPushNamed(screens.Friends.routeName);
+        context.beamToNamed(screens.Friends.routeName);
       },
       [],
     );
@@ -87,7 +88,7 @@ class AppDrawer extends HookConsumerWidget {
     final onFriends = useCallback(
       () {
         if (isGuest) {
-          Navigator.of(context).pop();
+          Navigator.pop(context);
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
@@ -107,7 +108,8 @@ class AppDrawer extends HookConsumerWidget {
         if (player == null) return;
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
-        Navigator.of(context).popAndPushNamed(screens.ActiveMatch.routeName);
+        Navigator.pop(context);
+        context.beamToNamed(screens.ActiveMatch.routeName);
       },
       [player],
     );
@@ -115,7 +117,7 @@ class AppDrawer extends HookConsumerWidget {
     final onActiveMatch = useCallback(
       () {
         if (isGuest) {
-          Navigator.of(context).pop();
+          Navigator.pop(context);
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
@@ -132,7 +134,8 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFeedback = useCallback(
       () {
-        Navigator.of(context).popAndPushNamed(screens.Feedback.routeName);
+        Navigator.pop(context);
+        context.beamToNamed(screens.Feedback.routeName);
       },
       [player],
     );
