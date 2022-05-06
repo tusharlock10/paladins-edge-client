@@ -1,11 +1,13 @@
 import 'dart:ui';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class PlayerDetailHeader extends HookConsumerWidget {
@@ -34,7 +36,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
         if (player == null) return;
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
-        Navigator.of(context).pushNamed(screens.ActiveMatch.routeName);
+        context.beamToNamed(screens.ActiveMatch.routeName);
       },
       [],
     );
@@ -45,7 +47,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
 
         // set otherPlayerId
         friendsProvider.setOtherPlayer(player);
-        Navigator.of(context).pushNamed(screens.Friends.routeName);
+        context.beamToNamed(screens.Friends.routeName);
       },
       [],
     );
@@ -83,7 +85,9 @@ class PlayerDetailHeader extends HookConsumerWidget {
                               Row(
                                 children: [
                                   widgets.FastImage(
-                                    imageUrl: player.ranked.rankIconUrl,
+                                    imageUrl: utilities.getSmallAsset(
+                                      player.ranked.rankIconUrl,
+                                    ),
                                     height: 36,
                                     width: 36,
                                   ),

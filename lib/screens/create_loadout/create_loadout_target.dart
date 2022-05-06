@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class CreateLoadoutTarget extends HookConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.draftLoadout));
 
     // Variables
-    final arguments = ModalRoute.of(context)?.settings.arguments
+    final arguments = context.currentBeamLocation.data
         as data_classes.CreateLoadoutScreenArguments;
     final champion = arguments.champion;
     final screenWidth = MediaQuery.of(context).size.width;

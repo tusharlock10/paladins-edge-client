@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -54,8 +55,7 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
         SizedBox(
           width: 150,
           child: TextButton(
-            onPressed: () => Navigator.pushReplacementNamed(
-              context,
+            onPressed: () => context.beamToReplacementNamed(
               screens.Main.routeName,
             ),
             style: TextButton.styleFrom(

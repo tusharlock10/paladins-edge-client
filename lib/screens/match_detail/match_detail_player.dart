@@ -52,7 +52,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
       () {
         if (isPrivatePlayer) return null;
 
-        Navigator.of(context).pop();
+        Navigator.pop(context);
         playersProvider.setPlayerId(matchPlayer.playerId);
       },
       [],
@@ -65,7 +65,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
           champion == null
               ? const SizedBox(height: 50, width: 50)
               : widgets.FastImage(
-                  imageUrl: champion.iconUrl,
+                  imageUrl: utilities.getSmallAsset(champion.iconUrl),
                   imageBlurHash: champion.iconBlurHash,
                   height: 50,
                   width: 50,
@@ -78,7 +78,9 @@ class MatchDetailPlayer extends HookConsumerWidget {
                   child: Column(
                     children: [
                       widgets.FastImage(
-                        imageUrl: matchPlayer.playerRanked!.rankIconUrl,
+                        imageUrl: utilities.getSmallAsset(
+                          matchPlayer.playerRanked!.rankIconUrl,
+                        ),
                         height: 20,
                         width: 20,
                       ),
@@ -124,7 +126,8 @@ class MatchDetailPlayer extends HookConsumerWidget {
                     talentUsed == null
                         ? const SizedBox(height: 32, width: 32)
                         : widgets.FastImage(
-                            imageUrl: talentUsed.imageUrl,
+                            imageUrl:
+                                utilities.getSmallAsset(talentUsed.imageUrl),
                             height: 32,
                             width: 32,
                           ),
@@ -229,7 +232,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: widgets.FastImage(
-                            imageUrl: card.imageUrl,
+                            imageUrl: utilities.getSmallAsset(card.imageUrl),
                             imageBlurHash: card.imageBlurHash,
                             width: 32,
                             height:

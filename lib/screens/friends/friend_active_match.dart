@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/models/index.dart' as models;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class _PlayerMatch extends StatelessWidget {
@@ -30,7 +31,7 @@ class _PlayerMatch extends StatelessWidget {
               shouldReverse: shouldReverse,
               children: [
                 widgets.ElevatedAvatar(
-                  imageUrl: player.championImageUrl,
+                  imageUrl: utilities.getSmallAsset(player.championImageUrl),
                   size: 20,
                   borderRadius: 20,
                 ),
@@ -50,7 +51,9 @@ class _PlayerMatch extends StatelessWidget {
                             shouldReverse: shouldReverse,
                             children: [
                               widgets.FastImage(
-                                imageUrl: player.ranked!.rankIconUrl,
+                                imageUrl: utilities.getSmallAsset(
+                                  player.ranked!.rankIconUrl,
+                                ),
                                 height: 16,
                                 width: 16,
                               ),

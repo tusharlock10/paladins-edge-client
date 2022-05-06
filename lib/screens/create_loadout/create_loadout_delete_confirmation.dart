@@ -37,7 +37,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
     // Methods
     final onDeleteConfirm = useCallback(
       () {
-        Navigator.of(context).pop();
+        Navigator.pop(context);
         onDelete();
       },
       [],
@@ -85,7 +85,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
           children: [
             widgets.Button(
               label: 'Cancel',
-              onPressed: Navigator.of(context).pop,
+              onPressed: () => Navigator.pop(context),
               color: Colors.red,
               style: widgets.ButtonStyle.outlined,
             ),

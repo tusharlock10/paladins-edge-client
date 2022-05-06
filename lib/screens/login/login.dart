@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,7 @@ class Login extends HookConsumerWidget {
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
 
-          Navigator.pushReplacementNamed(
-            context,
+          context.beamToReplacementNamed(
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
@@ -110,8 +110,7 @@ class Login extends HookConsumerWidget {
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
 
-          Navigator.pushReplacementNamed(
-            context,
+          context.beamToReplacementNamed(
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
@@ -134,7 +133,7 @@ class Login extends HookConsumerWidget {
     final onGuestLogin = useCallback(
       () {
         authProvider.loginAsGuest();
-        Navigator.pushReplacementNamed(context, screens.Main.routeName);
+        context.beamToReplacementNamed(screens.Main.routeName);
       },
       [],
     );
@@ -174,7 +173,7 @@ class Login extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    isCheckingLogin.value ? 'Please Wait' : 'Initializing',
+                    'Please Wait',
                     style: textTheme.bodyText1?.copyWith(
                       fontSize: 16,
                       color: Colors.white.withOpacity(0.8),

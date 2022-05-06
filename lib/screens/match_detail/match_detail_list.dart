@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,7 +18,7 @@ class MatchDetailList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final matchesProvider = ref.read(providers.matches);
-    final matchId = ModalRoute.of(context)?.settings.arguments as String;
+    final matchId = context.currentBeamLocation.data as String;
     final isMatchDetailsLoading =
         ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading));
     final matchDetails =
