@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
         if (isPrivatePlayer) return;
 
         playersProvider.setPlayerId(playerInfo.player.playerId);
-        Navigator.of(context).pushNamed(screens.PlayerDetail.routeName);
+        context.beamToNamed(screens.PlayerDetail.routeName);
       },
       [],
     );

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,8 +14,7 @@ class ChampionDetailLoadoutCards extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final champion = context.currentBeamLocation.data as models.Champion;
     final width = MediaQuery.of(context).size.width;
     final imageWidth = min(width * 0.4, 156).toDouble();
     final imageHeight = (imageWidth / constants.ImageAspectRatios.championCard);

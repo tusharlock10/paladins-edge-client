@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class FriendItem extends ConsumerWidget {
@@ -77,7 +78,9 @@ class FriendItem extends ConsumerWidget {
               ),
               friend.ranked.rank != 0
                   ? widgets.FastImage(
-                      imageUrl: friend.ranked.rankIconUrl,
+                      imageUrl: utilities.getSmallAsset(
+                        friend.ranked.rankIconUrl,
+                      ),
                       height: 36,
                       width: 36,
                     )

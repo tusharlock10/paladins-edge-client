@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -18,7 +19,7 @@ class CreateLoadoutDraggableCards extends ConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.draftLoadout));
 
     // Variables
-    final arguments = ModalRoute.of(context)?.settings.arguments
+    final arguments = context.currentBeamLocation.data
         as data_classes.CreateLoadoutScreenArguments;
     final champion = arguments.champion;
     final width = MediaQuery.of(context).size.width;

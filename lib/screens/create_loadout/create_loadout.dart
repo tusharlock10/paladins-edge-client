@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,7 +24,7 @@ class CreateLoadout extends HookConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.isSavingLoadout));
 
     // Variables
-    final arguments = ModalRoute.of(context)?.settings.arguments
+    final arguments = context.currentBeamLocation.data
         as data_classes.CreateLoadoutScreenArguments;
     final loadout = arguments.loadout;
 
@@ -48,7 +49,7 @@ class CreateLoadout extends HookConsumerWidget {
         if (canSave.result) {
           final success = await loadoutProvider.saveLoadout();
           if (success) {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           } else {
             widgets.showToast(
               context: context,
@@ -71,7 +72,7 @@ class CreateLoadout extends HookConsumerWidget {
       () {
         if (loadout?.loadoutHash != null) {
           loadoutProvider.deleteLoadout(loadout!.loadoutHash!);
-          Navigator.of(context).pop();
+          Navigator.pop(context);
         }
       },
       [],

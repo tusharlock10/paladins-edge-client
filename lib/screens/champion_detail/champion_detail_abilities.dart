@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -11,8 +12,7 @@ class ChampionDetailAbilities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final champion = context.currentBeamLocation.data as models.Champion;
 
     return Column(
       children: champion.abilities.map(

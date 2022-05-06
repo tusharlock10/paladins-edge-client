@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -10,8 +11,7 @@ class ChampionDetailAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final champion = context.currentBeamLocation.data as models.Champion;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -51,7 +51,7 @@ class ChampionDetailAppBar extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.beamBack(),
             ),
       expandedHeight: headerHeight,
       collapsedHeight: constants.isWeb ? headerHeight : null,

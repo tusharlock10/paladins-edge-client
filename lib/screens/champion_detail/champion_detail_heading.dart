@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -11,8 +12,7 @@ class ChampionDetailHeading extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final champion =
-        ModalRoute.of(context)?.settings.arguments as models.Champion;
+    final champion = context.currentBeamLocation.data as models.Champion;
     final textTheme = Theme.of(context).textTheme;
     final isLightTheme =
         ref.read(providers.auth).settings.themeMode == ThemeMode.light;

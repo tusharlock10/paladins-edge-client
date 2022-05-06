@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -8,6 +9,7 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
 
@@ -24,10 +26,9 @@ class PlayerDetailMatchCard extends ConsumerWidget {
   }) : super(key: key);
 
   void onTap(BuildContext context) {
-    Navigator.pushNamed(
-      context,
+    context.beamToNamed(
       screens.MatchDetail.routeName,
-      arguments: match.matchId,
+      data: match.matchId,
     );
   }
 
@@ -76,7 +77,7 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                   Row(
                     children: [
                       widgets.ElevatedAvatar(
-                        imageUrl: champion.iconUrl,
+                        imageUrl: utilities.getSmallAsset(champion.iconUrl),
                         imageBlurHash: champion.iconBlurHash,
                         size: 28,
                         borderRadius: 28,
@@ -102,7 +103,8 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                       talentUsed == null
                           ? const SizedBox(height: 48, width: 48)
                           : widgets.FastImage(
-                              imageUrl: talentUsed.imageUrl,
+                              imageUrl:
+                                  utilities.getSmallAsset(talentUsed.imageUrl),
                               height: 48,
                               width: 48,
                             ),
@@ -114,7 +116,7 @@ class PlayerDetailMatchCard extends ConsumerWidget {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: widgets.FastImage(
-                              imageUrl: cardImageUrl,
+                              imageUrl: utilities.getSmallAsset(cardImageUrl),
                               imageBlurHash: loadoutItem.card?.imageBlurHash,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5)),

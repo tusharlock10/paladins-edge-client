@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,8 +57,7 @@ class _LoginModal extends HookConsumerWidget {
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
 
-          Navigator.pushReplacementNamed(
-            context,
+          context.beamToReplacementNamed(
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
