@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paladinsedge/screens/app_drawer/index.dart';
@@ -6,8 +7,12 @@ import 'package:paladinsedge/screens/main/main_pages_stack.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class Main extends HookWidget {
-  static const routeName = "/main";
+  static const routeName = "/";
+
   const Main({Key? key}) : super(key: key);
+
+  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
+      const BeamPage(child: Main(), title: 'Paladins Edge');
 
   @override
   Widget build(BuildContext context) {

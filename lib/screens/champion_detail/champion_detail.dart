@@ -20,7 +20,18 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetail extends HookConsumerWidget {
   static const routeName = '/champion';
+
   const ChampionDetail({Key? key}) : super(key: key);
+
+  static BeamPage routeBuilder(
+    BuildContext _,
+    BeamState __,
+    Object? ___,
+  ) =>
+      const BeamPage(
+        title: 'Champion • Paladins Edge',
+        child: ChampionDetail(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
