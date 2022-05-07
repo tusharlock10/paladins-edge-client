@@ -14,7 +14,11 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Loadouts extends HookConsumerWidget {
   static const routeName = '/loadouts';
+
   const Loadouts({Key? key}) : super(key: key);
+
+  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
+      const BeamPage(title: 'Loadouts • Paladins Edge', child: Loadouts());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

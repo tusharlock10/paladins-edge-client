@@ -15,6 +15,9 @@ class Search extends HookConsumerWidget {
 
   const Search({Key? key}) : super(key: key);
 
+  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
+      const BeamPage(title: 'Search • Paladins Edge', child: Search());
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers

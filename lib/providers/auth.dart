@@ -25,6 +25,12 @@ class _GetFirebaseUserResponse {
 
 class _AuthNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_AuthNotifier> ref;
+
+  /// checks if the app is initialized
+  /// if not, then call widgets.Initialization() widget
+  /// once set to true, cannot be false again
+  /// all screens are obliged to use this widget
+  bool isInitialized = false;
   bool isGuest = true;
   String? token;
   models.User? user;
@@ -32,6 +38,11 @@ class _AuthNotifier extends ChangeNotifier {
   models.Settings settings = models.Settings();
 
   _AuthNotifier({required this.ref});
+
+  void setAppInitialized() {
+    isInitialized = true;
+    notifyListeners();
+  }
 
   /// Loads the `settings` from local db
   void loadSettings() {

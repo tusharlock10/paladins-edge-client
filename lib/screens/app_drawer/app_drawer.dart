@@ -24,8 +24,9 @@ class AppDrawer extends HookConsumerWidget {
     final authProvider = ref.read(providers.auth);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final themeMode =
-        ref.watch(providers.auth.select((_) => _.settings.themeMode));
+    final themeMode = ref.watch(
+      providers.auth.select((_) => _.settings.themeMode),
+    );
 
     // State
     final isLoggingOut = useState(false);
@@ -80,6 +81,7 @@ class AppDrawer extends HookConsumerWidget {
 
     final _onFriends = useCallback(
       () {
+        Navigator.pop(context);
         context.beamToNamed(screens.Friends.routeName);
       },
       [],

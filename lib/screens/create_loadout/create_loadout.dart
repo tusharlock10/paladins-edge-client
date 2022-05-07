@@ -15,6 +15,16 @@ class CreateLoadout extends HookConsumerWidget {
 
   const CreateLoadout({Key? key}) : super(key: key);
 
+  static BeamPage routeBuilder(
+    BuildContext _,
+    BeamState __,
+    Object? ___,
+  ) =>
+      const BeamPage(
+        title: 'Create Loadout • Paladins Edge',
+        child: CreateLoadout(),
+      );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers

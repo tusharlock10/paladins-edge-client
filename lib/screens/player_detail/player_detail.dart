@@ -14,6 +14,9 @@ class PlayerDetail extends HookConsumerWidget {
 
   const PlayerDetail({Key? key}) : super(key: key);
 
+  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
+      const BeamPage(title: 'Player • Paladins Edge', child: PlayerDetail());
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
