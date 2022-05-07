@@ -6,25 +6,21 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 /// 2) navigate: () => context.beamTo(screen)
 
 final routes = {
-  screens.Login.routeName: (_, __, ___) => const screens.Login(),
-  screens.Main.routeName: (_, __, ___) => const screens.Main(),
-  screens.Search.routeName: (_, __, ___) => const screens.Search(),
-  screens.Champions.routeName: (_, __, ___) => const screens.Champions(),
-  screens.ChampionDetail.routeName: (_, __, ___) =>
-      const screens.ChampionDetail(),
-  screens.PlayerDetail.routeName: (_, __, ___) => const screens.PlayerDetail(),
-  screens.ConnectProfile.routeName: (_, __, ___) =>
-      const screens.ConnectProfile(),
-  screens.Home.routeName: (_, __, ___) => const screens.Home(),
-  screens.Friends.routeName: (_, __, ___) => screens.Friends(),
-  screens.MatchDetail.routeName: (_, __, ___) => const screens.MatchDetail(),
-  screens.ActiveMatch.routeName: (_, __, ___) => const screens.ActiveMatch(),
-  screens.Loadouts.routeName: (_, __, ___) => const screens.Loadouts(),
-  screens.CreateLoadout.routeName: (_, __, ___) =>
-      const screens.CreateLoadout(),
-  screens.PlayerChampions.routeName: (_, __, ___) =>
-      const screens.PlayerChampions(),
-  screens.Feedback.routeName: (_, __, ___) => const screens.Feedback(),
+  screens.Login.routeName: screens.Login.routeBuilder,
+  screens.Main.routeName: screens.Main.routeBuilder,
+  screens.Search.routeName: screens.Search.routeBuilder,
+  screens.Champions.routeName: screens.Champions.routeBuilder,
+  screens.ChampionDetail.routeName: screens.ChampionDetail.routeBuilder,
+  screens.PlayerDetail.routeName: screens.PlayerDetail.routeBuilder,
+  screens.ConnectProfile.routeName: screens.ConnectProfile.routeBuilder,
+  screens.Home.routeName: screens.Home.routeBuilder,
+  screens.Friends.routeName: screens.Friends.routeBuilder,
+  screens.MatchDetail.routeName: screens.MatchDetail.routeBuilder,
+  screens.ActiveMatch.routeName: screens.ActiveMatch.routeBuilder,
+  screens.Loadouts.routeName: screens.Loadouts.routeBuilder,
+  screens.CreateLoadout.routeName: screens.CreateLoadout.routeBuilder,
+  screens.PlayerChampions.routeName: screens.PlayerChampions.routeBuilder,
+  screens.Feedback.routeName: screens.Feedback.routeBuilder,
 };
 
 final routerDelegate = BeamerDelegate(

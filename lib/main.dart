@@ -10,6 +10,7 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
@@ -53,12 +54,15 @@ class PaladinsEdgeApp extends ConsumerWidget {
           routerDelegate: screens.routerDelegate,
           backButtonDispatcher: BeamerBackButtonDispatcher(
             delegate: screens.routerDelegate,
+            alwaysBeamBack: true,
           ),
           title: "Paladins Edge",
           color: Colors.white,
           scrollBehavior: BouncingScrollBehavior(),
           builder: (context, widget) => ResponsiveWrapper.builder(
-            widget,
+            widgets.ScreenInitialization(
+              screen: widget,
+            ),
             defaultScale: true,
             breakpoints: [
               const ResponsiveBreakpoint.resize(
