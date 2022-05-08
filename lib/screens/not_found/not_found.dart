@@ -51,7 +51,7 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 5),
             widgets.Button(
               label: 'Back to Home',
-              onPressed: () => context.popToNamed(screens.Main.routeName),
+              onPressed: () => context.beamToNamed(screens.Main.routeName),
             ),
             SizedBox(
               height: appBarHeight,

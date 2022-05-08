@@ -24,7 +24,7 @@ final routes = {
 };
 
 final routerDelegate = BeamerDelegate(
-  initialPath: screens.Login.routeName,
+  initialPath: screens.Main.routeName,
   notFoundPage: screens.NotFound.page,
   locationBuilder: RoutesLocationBuilder(
     routes: routes,
