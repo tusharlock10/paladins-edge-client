@@ -12,7 +12,6 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
 
     // Variables
@@ -23,8 +22,12 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
       () {
         if (player == null) return;
 
-        playersProvider.setPlayerId(player.playerId);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': player.playerId,
+          },
+        );
       },
       [],
     );

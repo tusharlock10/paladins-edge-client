@@ -17,12 +17,17 @@ class PlayerChampions extends HookConsumerWidget {
     path: routePath,
     builder: _routeBuilder,
   );
+  final String playerId;
 
-  const PlayerChampions({Key? key}) : super(key: key);
+  const PlayerChampions({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.players.select((_) => _.playerData));
     final playerChampions = ref.watch(
       providers.champions.select((_) => _.playerChampions),
@@ -38,16 +43,34 @@ class PlayerChampions extends HookConsumerWidget {
     final _playerChampionsDataSource =
         useState<PlayerChampionsDataSource?>(null);
 
+    // Effects
+    useEffect(
+      () {
+        // if player is null, get it from server
+        if (player == null) {
+          playersProvider.getPlayerData(
+            playerId: playerId,
+            forceUpdate: false,
+          );
+        }
+
+        return;
+      },
+      [player],
+    );
+
     // Methods
     final onLoadoutPress = useCallback(
       (models.Champion champion) {
+        if (player == null) return;
+
         context.goNamed(
           screens.Loadouts.routeName,
+          params: {
+            'championId': champion.championId.toString(),
+            'playerId': player.playerId,
+          },
         );
-        // data: data_classes.LoadoutScreenArguments(
-        // champion: champion,
-        // player: player,
-        // ), TODO: Add this in provider
       },
       [player],
     );
@@ -169,5 +192,15 @@ class PlayerChampions extends HookConsumerWidget {
     );
   }
 
-  static PlayerChampions _routeBuilder(_, __) => const PlayerChampions();
+  static Widget _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params['playerId'];
+    if (paramPlayerId == null) {
+      return const screens.NotFound();
+    }
+
+    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    final playerId = paramPlayerId;
+
+    return PlayerChampions(playerId: playerId);
+  }
 }

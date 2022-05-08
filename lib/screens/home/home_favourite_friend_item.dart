@@ -19,7 +19,6 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
-    final playersProvider = ref.read(providers.players);
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -27,8 +26,12 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
     // Methods
     final onPressFriend = useCallback(
       () {
-        playersProvider.setPlayerId(friend.playerId);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': friend.playerId,
+          },
+        );
       },
       [friend],
     );

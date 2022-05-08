@@ -7,7 +7,6 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   bool isLoadingPlayerStatus = false;
-  String? playerId;
   String? playerStatusPlayerId;
   models.Player? playerData;
   api.PlayerStatusResponse? playerStatus;
@@ -116,13 +115,12 @@ class _PlayersNotifier extends ChangeNotifier {
     }
 
     if (response.exactMatch) {
-      playerId = response.playerData!.playerId;
       playerData = response.playerData;
 
-      if (addInSearchHistory) {
+      if (addInSearchHistory && playerData != null) {
         await insertSearchHistory(
           playerName: playerData!.name,
-          playerId: playerId!,
+          playerId: playerData!.playerId,
         );
       }
     } else {
@@ -141,14 +139,6 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The the playerId of the player to be shown in profile detail screen
-  void setPlayerId(String _playerId) {
-    playerData = null;
-    playerId = _playerId;
-
-    notifyListeners();
-  }
-
   /// The the playerId of the player to be shown in active match screen
   void setPlayerStatusPlayerId(String _playerStatusPlayerId) {
     playerStatus = null;
@@ -158,11 +148,9 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   void getPlayerData({
-    String? playerId, // TODO: Make this reqired
+    required String playerId,
     required bool forceUpdate,
   }) async {
-    if (playerId == null) return;
-
     isLoadingPlayerData = true;
     utilities.postFrameCallback(notifyListeners);
 
@@ -189,11 +177,15 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetPlayerData() {
+    playerData = null;
+    utilities.postFrameCallback(notifyListeners);
+  }
+
   /// Clears all user sensitive data upon logout
   void clearData() {
     isLoadingPlayerData = false;
     isLoadingPlayerStatus = false;
-    playerId = null;
     playerStatusPlayerId = null;
     playerData = null;
     playerStatus = null;

@@ -1,6 +1,2 @@
 export './loadout.dart'
-    show
-        LoadoutValidationResult,
-        DraftLoadout,
-        ShowLoadoutDetailsOptions,
-        LoadoutScreenArguments;
+    show LoadoutValidationResult, DraftLoadout, ShowLoadoutDetailsOptions;

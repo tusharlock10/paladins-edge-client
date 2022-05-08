@@ -10,36 +10,38 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class PlayerDetail extends HookConsumerWidget {
-  static const routeName = 'playerDetail';
-  static const routePath = 'playerDetail';
-  static final goRoute = GoRoute(
-    name: routeName,
-    path: routePath,
-    builder: _routeBuilder,
-  );
+  static const routeName = 'player';
+  static const routePath = 'player/:playerId';
+  final String playerId;
 
-  const PlayerDetail({Key? key}) : super(key: key);
+  const PlayerDetail({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
+
+  static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
+        name: routeName,
+        path: routePath,
+        builder: _routeBuilder,
+        routes: routes,
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final player = ref.watch(providers.players.select((_) => _.playerData));
-    final playerId = ref.watch(providers.players.select((_) => _.playerId));
-    final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
+    final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
+    final player = ref.watch(providers.players.select((_) => _.playerData));
 
     // Effects
     useEffect(
       () {
-        // check if the playerId will should always be present in the provider
-        // before this screen is accessed
         // if player is null, then call getPlayerData
 
-        if (playerId == null) return;
         if (player == null) {
           // fetch playerData from server
-          playersProvider.getPlayerData(forceUpdate: false);
+          playersProvider.getPlayerData(playerId: playerId, forceUpdate: false);
           // fetch playerStatus from server
           playersProvider.getPlayerStatus(
             playerId: playerId,
@@ -49,12 +51,11 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [playerId, player],
+      [player],
     );
 
     useEffect(
       () {
-        if (playerId == null) return;
         if (player == null) return;
 
         // get the playerMatches and playerChampions from server
@@ -64,21 +65,32 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [playerId, player],
+      [player],
+    );
+
+    useEffect(
+      () {
+        // reset the player data in provider when unmounting
+        return playersProvider.resetPlayerData;
+      },
+      [],
     );
 
     // Methods
     final onTapChamps = useCallback(
       () {
-        context.goNamed(screens.PlayerChampions.routeName);
+        context.goNamed(
+          screens.PlayerChampions.routeName,
+          params: {
+            'playerId': playerId,
+          },
+        );
       },
       [],
     );
 
     final onRefresh = useCallback(
       () async {
-        if (playerId == null) return;
-
         final futures = [
           playersProvider.getPlayerStatus(
             playerId: playerId,
@@ -159,5 +171,15 @@ class PlayerDetail extends HookConsumerWidget {
     );
   }
 
-  static PlayerDetail _routeBuilder(_, __) => const PlayerDetail();
+  static Widget _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params['playerId'];
+    if (paramPlayerId == null) {
+      return const screens.NotFound();
+    }
+
+    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    final playerId = paramPlayerId;
+
+    return PlayerDetail(playerId: playerId);
+  }
 }
