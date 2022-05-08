@@ -21,6 +21,7 @@ class CreateLoadout extends HookConsumerWidget {
     Object? ___,
   ) =>
       const BeamPage(
+        key: ValueKey(routeName),
         title: 'Create Loadout • Paladins Edge',
         child: CreateLoadout(),
       );

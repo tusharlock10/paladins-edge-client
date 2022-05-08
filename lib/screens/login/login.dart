@@ -10,12 +10,17 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Login extends HookConsumerWidget {
-  static const routeName = 'login';
+  static const routeName = '/login';
+  static const page = BeamPage(
+    key: ValueKey(routeName),
+    child: Login(),
+    title: 'Login • Paladins Edge',
+  );
 
   const Login({Key? key}) : super(key: key);
 
   static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(child: Login(), title: 'Login • Paladins Edge');
+      page;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

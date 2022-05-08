@@ -11,12 +11,7 @@ import 'package:paladinsedge/screens/search/search_top_list.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class Search extends HookConsumerWidget {
-  static const routeName = '/search';
-
   const Search({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(title: 'Search • Paladins Edge', child: Search());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

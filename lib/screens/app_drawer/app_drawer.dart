@@ -38,6 +38,7 @@ class AppDrawer extends HookConsumerWidget {
         final isLoggedOut = await ref.read(providers.auth).logout();
 
         if (isLoggedOut) {
+          Navigator.pop(context);
           context.beamToReplacementNamed(screens.Login.routeName);
         } else {
           widgets.showToast(

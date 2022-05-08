@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,12 +8,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Champions extends HookConsumerWidget {
-  static const routeName = '/champions';
-
   const Champions({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(title: 'Champions • Paladins Edge', child: Champions());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
