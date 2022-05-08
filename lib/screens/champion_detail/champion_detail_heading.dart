@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -8,11 +7,14 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetailHeading extends ConsumerWidget {
-  const ChampionDetailHeading({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const ChampionDetailHeading({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final champion = context.currentBeamLocation.data as models.Champion;
     final textTheme = Theme.of(context).textTheme;
     final isLightTheme =
         ref.read(providers.auth).settings.themeMode == ThemeMode.light;

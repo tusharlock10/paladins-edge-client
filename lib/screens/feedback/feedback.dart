@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/feedback/feedback_input_landscape.dart';
@@ -10,16 +10,15 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Feedback extends HookConsumerWidget {
-  static const routeName = '/feedback';
+  static const routeName = 'feedback';
+  static const routePath = 'feedback';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
 
   const Feedback({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Feedback • Paladins Edge',
-        child: Feedback(),
-      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,4 +100,6 @@ class Feedback extends HookConsumerWidget {
       ),
     );
   }
+
+  static Feedback _routeBuilder(_, __) => const Feedback();
 }

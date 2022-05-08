@@ -1,17 +1,20 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetailAppBar extends StatelessWidget {
-  const ChampionDetailAppBar({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const ChampionDetailAppBar({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final champion = context.currentBeamLocation.data as models.Champion;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -51,7 +54,7 @@ class ChampionDetailAppBar extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () => context.beamBack(),
+              onPressed: () => context.pop(),
             ),
       expandedHeight: headerHeight,
       collapsedHeight: constants.isWeb ? headerHeight : null,

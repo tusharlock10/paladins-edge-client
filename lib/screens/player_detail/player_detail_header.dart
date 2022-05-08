@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -36,7 +36,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
         if (player == null) return;
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
-        context.beamToNamed(screens.ActiveMatch.routeName);
+        context.goNamed(screens.ActiveMatch.routeName);
       },
       [],
     );
@@ -47,7 +47,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
 
         // set otherPlayerId
         friendsProvider.setOtherPlayer(player);
-        context.beamToNamed(screens.Friends.routeName);
+        context.goNamed(screens.Friends.routeName);
       },
       [],
     );

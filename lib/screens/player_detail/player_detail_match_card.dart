@@ -1,8 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -26,10 +26,10 @@ class PlayerDetailMatchCard extends ConsumerWidget {
   }) : super(key: key);
 
   void onTap(BuildContext context) {
-    context.beamToNamed(
+    context.goNamed(
       screens.MatchDetail.routeName,
-      data: match.matchId,
     );
+    // data: match.matchId, TODO: send from path lparam
   }
 
   @override
