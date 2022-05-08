@@ -9,7 +9,11 @@ class MatchDetail extends StatelessWidget {
   const MatchDetail({Key? key}) : super(key: key);
 
   static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(title: 'Match • Paladins Edge', child: MatchDetail());
+      const BeamPage(
+        key: ValueKey(routeName),
+        title: 'Match • Paladins Edge',
+        child: MatchDetail(),
+      );
 
   @override
   Widget build(BuildContext context) {

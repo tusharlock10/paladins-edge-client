@@ -7,9 +7,9 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 
 final routes = {
   screens.Main.routeName: screens.Main.routeBuilder,
+  screens.Main.routeSearchName: screens.Main.routeBuilder,
+  screens.Main.routeChampionsName: screens.Main.routeBuilder,
   screens.Login.routeName: screens.Login.routeBuilder,
-  screens.Search.routeName: screens.Search.routeBuilder,
-  screens.Champions.routeName: screens.Champions.routeBuilder,
   screens.ChampionDetail.routeName: screens.ChampionDetail.routeBuilder,
   screens.PlayerDetail.routeName: screens.PlayerDetail.routeBuilder,
   screens.ConnectProfile.routeName: screens.ConnectProfile.routeBuilder,
@@ -21,12 +21,10 @@ final routes = {
   screens.CreateLoadout.routeName: screens.CreateLoadout.routeBuilder,
   screens.PlayerChampions.routeName: screens.PlayerChampions.routeBuilder,
   screens.Feedback.routeName: screens.Feedback.routeBuilder,
-  screens.NotFound.routeName: screens.NotFound.routeBuilder,
 };
 
 final routerDelegate = BeamerDelegate(
-  initialPath: screens.Main.routeName,
-  notFoundRedirectNamed: screens.NotFound.routeName,
+  initialPath: screens.Login.routeName,
   notFoundPage: screens.NotFound.page,
   locationBuilder: RoutesLocationBuilder(
     routes: routes,

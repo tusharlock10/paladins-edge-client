@@ -24,7 +24,11 @@ class ConnectProfile extends HookConsumerWidget {
     BeamState __,
     Object? ___,
   ) =>
-      const BeamPage(title: 'Connect • Paladins Edge', child: ConnectProfile());
+      const BeamPage(
+        key: ValueKey(routeName),
+        title: 'Connect • Paladins Edge',
+        child: ConnectProfile(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

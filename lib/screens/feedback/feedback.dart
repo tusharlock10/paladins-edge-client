@@ -15,7 +15,11 @@ class Feedback extends HookConsumerWidget {
   const Feedback({Key? key}) : super(key: key);
 
   static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(title: 'Feedback • Paladins Edge', child: Feedback());
+      const BeamPage(
+        key: ValueKey(routeName),
+        title: 'Feedback • Paladins Edge',
+        child: Feedback(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

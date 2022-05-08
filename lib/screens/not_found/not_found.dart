@@ -1,14 +1,13 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/gen/assets.gen.dart';
-import 'package:paladinsedge/screens/app_drawer/index.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class NotFound extends StatelessWidget {
-  static const routeName = '/notFound';
   static const pageTitle = '404 • Paladins Edge';
   static const page = BeamPage(
+    key: ValueKey('not-found'),
     title: pageTitle,
     child: NotFound(),
   );
@@ -31,7 +30,6 @@ class NotFound extends StatelessWidget {
       appBar: AppBar(
         title: const Text('404'),
       ),
-      drawer: const AppDrawer(),
       body: SizedBox(
         height: height,
         width: width,
@@ -53,9 +51,7 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 5),
             widgets.Button(
               label: 'Back to Home',
-              onPressed: () => context.beamToNamed(
-                screens.Main.routeName,
-              ),
+              onPressed: () => context.popToNamed(screens.Main.routeName),
             ),
             SizedBox(
               height: appBarHeight,

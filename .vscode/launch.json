@@ -20,11 +20,6 @@
       "name": "android",
       "request": "launch",
       "type": "dart",
-    },
-    {
-      "name": "android attach",
-      "request": "attach",
-      "type": "dart",
     }
   ]
 }
