@@ -158,6 +158,7 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   void getPlayerData({
+    String? playerId, // TODO: Make this reqired
     required bool forceUpdate,
   }) async {
     if (playerId == null) return;
@@ -166,7 +167,7 @@ class _PlayersNotifier extends ChangeNotifier {
     utilities.postFrameCallback(notifyListeners);
 
     final response = await api.PlayersRequests.playerDetail(
-      playerId: playerId!,
+      playerId: playerId,
       forceUpdate: forceUpdate,
     );
 
@@ -181,7 +182,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
     await insertSearchHistory(
       playerName: playerData!.name,
-      playerId: playerId!,
+      playerId: playerId,
     );
 
     isLoadingPlayerData = false;

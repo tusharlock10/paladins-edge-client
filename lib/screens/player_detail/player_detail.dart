@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -10,16 +10,15 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class PlayerDetail extends HookConsumerWidget {
-  static const routeName = '/playerDetail';
+  static const routeName = 'playerDetail';
+  static const routePath = 'playerDetail';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
 
   const PlayerDetail({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Player • Paladins Edge',
-        child: PlayerDetail(),
-      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +70,7 @@ class PlayerDetail extends HookConsumerWidget {
     // Methods
     final onTapChamps = useCallback(
       () {
-        context.beamToNamed(screens.PlayerChampions.routeName);
+        context.goNamed(screens.PlayerChampions.routeName);
       },
       [],
     );
@@ -159,4 +158,6 @@ class PlayerDetail extends HookConsumerWidget {
             ),
     );
   }
+
+  static PlayerDetail _routeBuilder(_, __) => const PlayerDetail();
 }

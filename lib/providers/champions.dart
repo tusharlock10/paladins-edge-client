@@ -31,6 +31,11 @@ class _ChampionsNotifier extends ChangeNotifier {
   /// holds the currently active filter
   String selectedSort = data_classes.ChampionsSort.defaultSort;
 
+  /// Finds and returns the champion from its championId
+  models.Champion? findChampion(int championId) {
+    return champions.firstOrNullWhere((_) => _.championId == championId);
+  }
+
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
   Future<void> loadCombinedChampions(bool forceUpdate) async {

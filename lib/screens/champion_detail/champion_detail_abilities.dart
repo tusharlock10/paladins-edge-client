@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -7,12 +6,15 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetailAbilities extends StatelessWidget {
-  const ChampionDetailAbilities({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const ChampionDetailAbilities({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final champion = context.currentBeamLocation.data as models.Champion;
 
     return Column(
       children: champion.abilities.map(

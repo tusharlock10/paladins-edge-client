@@ -1,8 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
@@ -103,7 +103,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
         if (isPrivatePlayer) return;
 
         playersProvider.setPlayerId(playerInfo.player.playerId);
-        context.beamToNamed(screens.PlayerDetail.routeName);
+        context.goNamed(screens.PlayerDetail.routeName);
       },
       [],
     );

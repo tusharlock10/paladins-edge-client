@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -55,7 +55,7 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
         SizedBox(
           width: 150,
           child: TextButton(
-            onPressed: () => context.beamToReplacementNamed(
+            onPressed: () => context.goNamed(
               screens.Main.routeName,
             ),
             style: TextButton.styleFrom(

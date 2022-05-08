@@ -1,11 +1,9 @@
-import 'package:beamer/beamer.dart';
 import 'package:dartx/dartx.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -13,8 +11,12 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadoutTarget extends HookConsumerWidget {
   static const loadoutAspectRatio = 15 / 9;
+  final models.Champion champion;
 
-  const CreateLoadoutTarget({Key? key}) : super(key: key);
+  const CreateLoadoutTarget({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +26,6 @@ class CreateLoadoutTarget extends HookConsumerWidget {
         ref.watch(providers.loadout.select((_) => _.draftLoadout));
 
     // Variables
-    final arguments = context.currentBeamLocation.data
-        as data_classes.CreateLoadoutScreenArguments;
-    final champion = arguments.champion;
     final screenWidth = MediaQuery.of(context).size.width;
     final loadoutWidth = utilities.responsiveCondition(
           context,

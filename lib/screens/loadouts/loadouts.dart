@@ -1,9 +1,9 @@
-import 'package:beamer/beamer.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -13,36 +13,50 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Loadouts extends HookConsumerWidget {
-  static const routeName = '/loadouts';
+  static const routeName = 'loadouts';
+  static const routePath = 'loadouts/:playerId';
+  final int championId;
+  final String playerId;
 
-  const Loadouts({Key? key}) : super(key: key);
+  const Loadouts({
+    required this.playerId,
+    required this.championId,
+    Key? key,
+  }) : super(key: key);
 
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Loadouts • Paladins Edge',
-        child: Loadouts(),
+  static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
+        name: routeName,
+        path: routePath,
+        builder: _routeBuilder,
+        routes: routes,
       );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final loadoutProvider = ref.read(providers.loadout);
+    final championsProvider = ref.read(providers.champions);
+    final playersProvider = ref.read(providers.players);
     final userPlayerId = ref.read(providers.auth).player?.playerId;
+    final champions = ref.read(providers.champions).champions;
+    final player = ref.watch(providers.players.select((_) => _.playerData));
     final loadouts = ref.watch(providers.loadout.select((_) => _.loadouts));
-    final isGettingLoadouts =
-        ref.watch(providers.loadout.select((_) => _.isGettingLoadouts));
+    final isGettingLoadouts = ref.watch(
+      providers.loadout.select((_) => _.isGettingLoadouts),
+    );
+    final isLoadingPlayerData = ref.watch(
+      providers.players.select((_) => _.isLoadingPlayerData),
+    );
+    final isLoadingCombinedChampions = ref.watch(
+      providers.champions.select((_) => _.isLoadingCombinedChampions),
+    );
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final arguments =
-        context.currentBeamLocation.data as data_classes.LoadoutScreenArguments;
-    final champion = arguments.champion;
-    final otherPlayer = arguments.player;
-    final otherPlayerId = otherPlayer?.playerId;
-    final isOtherPlayer =
-        otherPlayerId != null && otherPlayerId != userPlayerId;
-    final playerId = otherPlayerId ?? userPlayerId;
+    final champion = champions.firstOrNullWhere(
+      (_) => _.championId == championId,
+    );
+    final isOtherPlayer = userPlayerId != playerId;
 
     final crossAxisCount = utilities.responsiveCondition(
       context,
@@ -63,12 +77,39 @@ class Loadouts extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (playerId != null) {
-          loadoutProvider.getPlayerLoadouts(
+        // check if champions exists,
+        // if not, then get champions
+        if (champion == null) {
+          championsProvider.loadCombinedChampions(false);
+        }
+
+        return;
+      },
+      [],
+    );
+
+    useEffect(
+      () {
+        // check if player exists,
+        // if not, then get player
+        if (player == null) {
+          playersProvider.getPlayerData(
             playerId: playerId,
-            championId: champion.championId,
+            forceUpdate: false,
           );
         }
+
+        return;
+      },
+      [],
+    );
+
+    useEffect(
+      () {
+        loadoutProvider.getPlayerLoadouts(
+          playerId: playerId,
+          championId: championId,
+        );
 
         return loadoutProvider.resetPlayerLoadouts;
       },
@@ -79,9 +120,17 @@ class Loadouts extends HookConsumerWidget {
     final onCreate = useCallback(
       () {
         if (isOtherPlayer) return;
-        context.beamToNamed(
+        loadoutProvider.createDraftLoadout(
+          championId: championId,
+          playerId: playerId,
+          loadout: null,
+        );
+        context.goNamed(
           screens.CreateLoadout.routeName,
-          data: data_classes.CreateLoadoutScreenArguments(champion: champion),
+          params: {
+            'championId': championId.toString(),
+            'playerId': playerId,
+          },
         );
       },
       [isOtherPlayer],
@@ -89,13 +138,19 @@ class Loadouts extends HookConsumerWidget {
 
     final onEdit = useCallback(
       (models.Loadout loadout) {
-        if (isOtherPlayer) return;
-        context.beamToNamed(
+        final loadoutHash = loadout.loadoutHash;
+        if (isOtherPlayer || loadoutHash == null) return;
+        loadoutProvider.createDraftLoadout(
+          championId: championId,
+          playerId: playerId,
+          loadout: loadout,
+        );
+        context.goNamed(
           screens.CreateLoadout.routeName,
-          data: data_classes.CreateLoadoutScreenArguments(
-            champion: champion,
-            loadout: loadout,
-          ),
+          params: {
+            'championId': championId.toString(),
+            'playerId': playerId,
+          },
         );
       },
       [isOtherPlayer],
@@ -103,7 +158,7 @@ class Loadouts extends HookConsumerWidget {
 
     final onRefresh = useCallback(
       () async {
-        if (playerId != null) {
+        if (champion != null) {
           return await loadoutProvider.getPlayerLoadouts(
             playerId: playerId,
             championId: champion.championId,
@@ -166,17 +221,18 @@ class Loadouts extends HookConsumerWidget {
               pinned: constants.isWeb,
               title: Column(
                 children: [
-                  const Text('Your Loadouts'),
-                  Text(
-                    isOtherPlayer
-                        ? '${otherPlayer!.name} - ${champion.name}'
-                        : champion.name,
-                    style: const TextStyle(fontSize: 12),
-                  ),
+                  Text(isOtherPlayer ? 'Loadouts' : 'Your Loadouts'),
+                  if (champion != null && player != null)
+                    Text(
+                      isOtherPlayer
+                          ? '${player.name} - ${champion.name}'
+                          : champion.name,
+                      style: const TextStyle(fontSize: 12),
+                    ),
                 ],
               ),
             ),
-            loadouts != null
+            loadouts != null && champion != null
                 ? SliverPadding(
                     padding: EdgeInsets.only(
                       right: horizontalPadding,
@@ -216,7 +272,9 @@ class Loadouts extends HookConsumerWidget {
                       [
                         SizedBox(
                           height: utilities.getBodyHeight(context),
-                          child: isGettingLoadouts
+                          child: isGettingLoadouts ||
+                                  isLoadingCombinedChampions ||
+                                  isLoadingPlayerData
                               ? const widgets.LoadingIndicator(
                                   lineWidth: 2,
                                   size: 28,
@@ -233,5 +291,21 @@ class Loadouts extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  static Widget _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = state.params['championId'];
+    final paramPlayerId = state.params['playerId'];
+    if (paramChampionId == null || paramPlayerId == null) {
+      return const screens.NotFound();
+    }
+
+    final championId = int.tryParse(paramChampionId);
+    if (championId == null) return const screens.NotFound();
+
+    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    final playerId = paramPlayerId;
+
+    return Loadouts(playerId: playerId, championId: championId);
   }
 }

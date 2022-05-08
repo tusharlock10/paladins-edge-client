@@ -1,27 +1,27 @@
 import 'dart:math';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadoutDraggableCards extends ConsumerWidget {
-  const CreateLoadoutDraggableCards({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const CreateLoadoutDraggableCards({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final draftLoadout =
-        ref.watch(providers.loadout.select((_) => _.draftLoadout));
+    final draftLoadout = ref.watch(
+      providers.loadout.select((_) => _.draftLoadout),
+    );
 
     // Variables
-    final arguments = context.currentBeamLocation.data
-        as data_classes.CreateLoadoutScreenArguments;
-    final champion = arguments.champion;
     final width = MediaQuery.of(context).size.width;
     final imageWidth = min(width * 0.4, 156).toDouble();
     final imageHeight = (imageWidth / constants.ImageAspectRatios.championCard);

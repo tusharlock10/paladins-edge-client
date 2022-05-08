@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/firebase_options.dart' as firebase_options;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/router/index.dart' as router;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
@@ -29,7 +28,6 @@ void main() async {
   utilities.Messaging.onBackgroundMessage();
   utilities.Messaging.registerLocalNotification();
 
-  Beamer.setPathUrlStrategy();
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
 
@@ -50,12 +48,8 @@ class PaladinsEdgeApp extends ConsumerWidget {
           themeMode: themeMode,
           theme: theme.lightTheme,
           darkTheme: theme.darkTheme,
-          routeInformationParser: BeamerParser(),
-          routerDelegate: screens.routerDelegate,
-          backButtonDispatcher: BeamerBackButtonDispatcher(
-            delegate: screens.routerDelegate,
-            alwaysBeamBack: true,
-          ),
+          routeInformationParser: router.router.routeInformationParser,
+          routerDelegate: router.router.routerDelegate,
           title: "Paladins Edge",
           color: Colors.white,
           scrollBehavior: BouncingScrollBehavior(),

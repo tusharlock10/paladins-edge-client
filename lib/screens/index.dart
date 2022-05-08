@@ -13,5 +13,4 @@ export './match_detail/index.dart';
 export './not_found/index.dart';
 export './player_champions/index.dart';
 export './player_detail/index.dart';
-export './routes.dart';
 export './search/index.dart';

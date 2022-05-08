@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
@@ -39,7 +39,7 @@ class AppDrawer extends HookConsumerWidget {
 
         if (isLoggedOut) {
           Navigator.pop(context);
-          context.beamToReplacementNamed(screens.Login.routeName);
+          context.goNamed(screens.Login.routeName);
         } else {
           widgets.showToast(
             context: context,
@@ -83,7 +83,7 @@ class AppDrawer extends HookConsumerWidget {
     final _onFriends = useCallback(
       () {
         Navigator.pop(context);
-        context.beamToNamed(screens.Friends.routeName);
+        context.goNamed(screens.Friends.routeName);
       },
       [],
     );
@@ -112,7 +112,7 @@ class AppDrawer extends HookConsumerWidget {
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
         Navigator.pop(context);
-        context.beamToNamed(screens.ActiveMatch.routeName);
+        context.goNamed(screens.ActiveMatch.routeName);
       },
       [player],
     );
@@ -138,7 +138,7 @@ class AppDrawer extends HookConsumerWidget {
     final onFeedback = useCallback(
       () {
         Navigator.pop(context);
-        context.beamToNamed(screens.Feedback.routeName);
+        context.goNamed(screens.Feedback.routeName);
       },
       [player],
     );
