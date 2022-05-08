@@ -22,7 +22,6 @@ class FriendSelected extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final playerStatus =
         ref.watch(providers.players.select((_) => _.playerStatus));
     final favouriteFriends =
@@ -38,8 +37,12 @@ class FriendSelected extends HookConsumerWidget {
       () {
         if (selectedFriend == null) return;
 
-        playersProvider.setPlayerId(selectedFriend!.playerId);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': selectedFriend!.playerId,
+          },
+        );
       },
       [selectedFriend],
     );

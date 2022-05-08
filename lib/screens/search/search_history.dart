@@ -14,9 +14,9 @@ class SearchHistory extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.watch(providers.players);
-    final searchHistory =
-        ref.watch(providers.players.select((_) => _.searchHistory));
+    final searchHistory = ref.watch(
+      providers.players.select((_) => _.searchHistory),
+    );
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -24,9 +24,13 @@ class SearchHistory extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       (String playerId) {
-        playersProvider.setPlayerId(playerId);
         utilities.unFocusKeyboard(context);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': playerId,
+          },
+        );
       },
       [],
     );

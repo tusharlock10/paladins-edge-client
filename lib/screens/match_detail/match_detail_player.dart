@@ -2,11 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -22,7 +24,6 @@ class MatchDetailPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
-    final playersProvider = ref.watch(providers.players);
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -52,8 +53,12 @@ class MatchDetailPlayer extends HookConsumerWidget {
       () {
         if (isPrivatePlayer) return null;
 
-        Navigator.pop(context);
-        playersProvider.setPlayerId(matchPlayer.playerId);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': matchPlayer.playerId,
+          },
+        );
       },
       [],
     );

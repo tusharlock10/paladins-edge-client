@@ -10,15 +10,18 @@ final _championDetailRoutes = [
   screens.Loadouts.goRouteBuilder(_loadoutsRoutes),
 ];
 
+final _playerDetailRoutes = [
+  screens.PlayerChampions.goRoute,
+];
+
 final _mainRoutes = [
   screens.Login.goRoute,
   screens.ChampionDetail.goRouteBuilder(_championDetailRoutes),
-  screens.PlayerDetail.goRoute,
+  screens.PlayerDetail.goRouteBuilder(_playerDetailRoutes),
   screens.ConnectProfile.goRoute,
   screens.Friends.goRoute,
   screens.MatchDetail.goRoute,
   screens.ActiveMatch.goRoute,
-  screens.PlayerChampions.goRoute,
   screens.Feedback.goRoute,
 ];
 
@@ -26,6 +29,6 @@ final router = GoRouter(
   errorBuilder: screens.NotFound.routeBuilder,
   debugLogDiagnostics: constants.isDebug,
   initialLocation: screens.Main.routePath,
-  urlPathStrategy: UrlPathStrategy.hash,
+  urlPathStrategy: UrlPathStrategy.path,
   routes: [screens.Main.goRouteBuilder(_mainRoutes)],
 );
