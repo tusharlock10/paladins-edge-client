@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "paladins-edge-client-web",
+      "name": "web",
       "type": "dart",
       "request": "launch",
       "program": "lib/main.dart",
@@ -17,12 +17,12 @@
       ],
     },
     {
-      "name": "paladins-edge-client",
+      "name": "android",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
     },
     {
-      "name": "Flutter: Attach",
+      "name": "android attach",
       "request": "attach",
       "type": "dart",
     }

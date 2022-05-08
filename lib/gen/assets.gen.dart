@@ -29,6 +29,14 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/paladins.png');
 }
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/not-found.png
+  AssetGenImage get notFound =>
+      const AssetGenImage('assets/images/not-found.png');
+}
+
 class $AssetsKeysGen {
   const $AssetsKeysGen();
 
@@ -52,6 +60,7 @@ class Assets {
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsKeysGen keys = $AssetsKeysGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
 }
