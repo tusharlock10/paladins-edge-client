@@ -6,8 +6,8 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 /// 2) navigate: () => context.beamTo(screen)
 
 final routes = {
-  screens.Login.routeName: screens.Login.routeBuilder,
   screens.Main.routeName: screens.Main.routeBuilder,
+  screens.Login.routeName: screens.Login.routeBuilder,
   screens.Search.routeName: screens.Search.routeBuilder,
   screens.Champions.routeName: screens.Champions.routeBuilder,
   screens.ChampionDetail.routeName: screens.ChampionDetail.routeBuilder,
@@ -21,9 +21,13 @@ final routes = {
   screens.CreateLoadout.routeName: screens.CreateLoadout.routeBuilder,
   screens.PlayerChampions.routeName: screens.PlayerChampions.routeBuilder,
   screens.Feedback.routeName: screens.Feedback.routeBuilder,
+  screens.NotFound.routeName: screens.NotFound.routeBuilder,
 };
 
 final routerDelegate = BeamerDelegate(
+  initialPath: screens.Main.routeName,
+  notFoundRedirectNamed: screens.NotFound.routeName,
+  notFoundPage: screens.NotFound.page,
   locationBuilder: RoutesLocationBuilder(
     routes: routes,
   ),
