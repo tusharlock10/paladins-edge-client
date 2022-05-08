@@ -61,7 +61,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.read(providers.champions).champions;
-    final playersProvider = ref.read(providers.players);
     final playerChampions =
         ref.watch(providers.champions.select((_) => _.playerChampions));
 
@@ -102,8 +101,12 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       () {
         if (isPrivatePlayer) return;
 
-        playersProvider.setPlayerId(playerInfo.player.playerId);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': playerInfo.player.playerId,
+          },
+        );
       },
       [],
     );

@@ -232,7 +232,7 @@ class Loadouts extends HookConsumerWidget {
                 ],
               ),
             ),
-            loadouts != null && champion != null
+            loadouts != null && loadouts.isNotEmpty && champion != null
                 ? SliverPadding(
                     padding: EdgeInsets.only(
                       right: horizontalPadding,
@@ -280,9 +280,17 @@ class Loadouts extends HookConsumerWidget {
                                   size: 28,
                                   label: Text('Getting loadouts'),
                                 )
-                              : const Center(
-                                  child: Text('Unable to fetch loadouts'),
-                                ),
+                              : loadouts != null &&
+                                      champion != null &&
+                                      loadouts.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'No loadouts found for ${champion.name}',
+                                      ),
+                                    )
+                                  : const Center(
+                                      child: Text('Unable to fetch loadouts'),
+                                    ),
                         ),
                       ],
                     ),

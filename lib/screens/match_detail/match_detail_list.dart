@@ -12,12 +12,15 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
-  const MatchDetailList({Key? key}) : super(key: key);
+  final String matchId;
+  const MatchDetailList({
+    required this.matchId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final matchesProvider = ref.read(providers.matches);
-    final matchId = {} as String; // TODO: Get from provider
     final isMatchDetailsLoading =
         ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading));
     final matchDetails =

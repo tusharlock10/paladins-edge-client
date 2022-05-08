@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
-class SearchTopItem extends HookConsumerWidget {
+class SearchTopItem extends HookWidget {
   final models.Player player;
 
   const SearchTopItem({
@@ -18,10 +16,7 @@ class SearchTopItem extends HookConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Providers
-    final playersProvider = ref.read(providers.players);
-
+  Widget build(BuildContext context) {
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
@@ -29,8 +24,12 @@ class SearchTopItem extends HookConsumerWidget {
     final onTap = useCallback(
       () {
         utilities.unFocusKeyboard(context);
-        playersProvider.setPlayerId(player.playerId);
-        context.goNamed(screens.PlayerDetail.routeName);
+        context.goNamed(
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': player.playerId,
+          },
+        );
       },
       [],
     );

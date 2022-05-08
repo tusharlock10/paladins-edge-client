@@ -28,8 +28,10 @@ class PlayerDetailMatchCard extends ConsumerWidget {
   void onTap(BuildContext context) {
     context.goNamed(
       screens.MatchDetail.routeName,
+      params: {
+        'matchId': match.matchId,
+      },
     );
-    // data: match.matchId, TODO: send from path lparam
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -40,15 +39,29 @@ class ChampionDetail extends HookConsumerWidget {
     // Providers
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final player = ref.watch(providers.auth.select((_) => _.player));
-    final champions = ref.read(providers.champions).champions;
+    final championsProvider = ref.read(providers.champions);
+    final champions = ref.watch(providers.champions.select((_) => _.champions));
+    final isLoadingCombinedChampions = ref.watch(
+      providers.champions.select((_) => _.isLoadingCombinedChampions),
+    );
 
     // State
     final hideLoadoutFab = useState(false);
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final champion = champions.firstOrNullWhere(
-      (_) => _.championId == championId,
+    final champion = championsProvider.findChampion(championId);
+
+    // Effects
+    useEffect(
+      () {
+        if (champions.isEmpty) {
+          championsProvider.loadCombinedChampions(false);
+        }
+
+        return;
+      },
+      [champions],
     );
 
     // Methods
@@ -100,7 +113,15 @@ class ChampionDetail extends HookConsumerWidget {
     );
 
     return champion == null
-        ? const screens.NotFound()
+        ? isLoadingCombinedChampions
+            ? const Scaffold(
+                body: widgets.LoadingIndicator(
+                  lineWidth: 2,
+                  size: 28,
+                  label: Text('Getting champion'),
+                ),
+              )
+            : const screens.NotFound()
         : Scaffold(
             floatingActionButton: SizedBox(
               height: 40,
@@ -127,32 +148,44 @@ class ChampionDetail extends HookConsumerWidget {
                 ),
               ),
             ),
-            body: NotificationListener<ScrollNotification>(
-              onNotification: onScrollNotification,
-              child: CustomScrollView(
-                slivers: [
-                  ChampionDetailAppBar(champion: champion),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        ChampionDetailHeading(champion: champion),
-                        const ChampionDetailTitleLabel(label: 'Lore'),
-                        ChampionDetailLore(champion: champion),
-                        const ChampionDetailTitleLabel(label: 'Talents'),
-                        ChampionDetailTalents(champion: champion),
-                        const ChampionDetailTitleLabel(label: 'Abilities'),
-                        ChampionDetailAbilities(champion: champion),
-                        const ChampionDetailTitleLabel(label: 'Loadout Cards'),
-                        ChampionDetailLoadoutCards(champion: champion),
-                        const ChampionDetailTitleLabel(label: 'Your Stats'),
-                        ChampionDetailPlayerStats(champion: champion),
-                        const SizedBox(height: 50),
+            body: isLoadingCombinedChampions
+                ? const widgets.LoadingIndicator(
+                    lineWidth: 2,
+                    size: 28,
+                    label: Text('Getting champion'),
+                  )
+                : NotificationListener<ScrollNotification>(
+                    onNotification: onScrollNotification,
+                    child: CustomScrollView(
+                      slivers: [
+                        ChampionDetailAppBar(champion: champion),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              ChampionDetailHeading(champion: champion),
+                              const ChampionDetailTitleLabel(label: 'Lore'),
+                              ChampionDetailLore(champion: champion),
+                              const ChampionDetailTitleLabel(label: 'Talents'),
+                              ChampionDetailTalents(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: 'Abilities',
+                              ),
+                              ChampionDetailAbilities(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: 'Loadout Cards',
+                              ),
+                              ChampionDetailLoadoutCards(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: 'Your Stats',
+                              ),
+                              ChampionDetailPlayerStats(champion: champion),
+                              const SizedBox(height: 50),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
           );
   }
 

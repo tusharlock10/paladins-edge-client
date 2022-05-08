@@ -177,6 +177,7 @@ class _AuthNotifier extends ChangeNotifier {
     await utilities.Database.clear();
 
     // providers to clear data from
+    clearData();
     ref.read(champions_provider.champions).clearData();
     ref.read(loadout_provider.loadout).clearData();
     ref.read(matches_provider.matches).clearData();
