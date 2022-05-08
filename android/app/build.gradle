@@ -34,13 +34,13 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 31
+    ndkVersion "25.0.8355429"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "app.paladinsedge"
         minSdkVersion 19
         targetSdkVersion 30
@@ -60,6 +60,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
         }
     }
 }
