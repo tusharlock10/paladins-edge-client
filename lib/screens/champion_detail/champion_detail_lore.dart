@@ -1,15 +1,17 @@
-import 'package:beamer/beamer.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 
 class ChampionDetailLore extends StatelessWidget {
-  const ChampionDetailLore({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const ChampionDetailLore({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final champion = context.currentBeamLocation.data as models.Champion;
 
     return Card(
       shape: const RoundedRectangleBorder(

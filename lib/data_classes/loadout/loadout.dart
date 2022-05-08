@@ -6,14 +6,6 @@ import 'package:paladinsedge/models/index.dart'
 part 'loadout.freezed.dart';
 
 @freezed
-class CreateLoadoutScreenArguments with _$CreateLoadoutScreenArguments {
-  factory CreateLoadoutScreenArguments({
-    required Champion champion,
-    Loadout? loadout,
-  }) = _CreateLoadoutScreenArguments;
-}
-
-@freezed
 class LoadoutValidationResult with _$LoadoutValidationResult {
   factory LoadoutValidationResult({
     required bool result,

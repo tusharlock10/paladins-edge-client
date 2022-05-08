@@ -1,56 +1,54 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/create_loadout/create_loadout_delete_button.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_draggable_cards.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_text.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
-  static const routeName = '/createLoadout';
+  static const routeName = 'createLoadout';
+  static const routePath = 'createLoadout';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
+  final int championId;
 
-  const CreateLoadout({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(
-    BuildContext _,
-    BeamState __,
-    Object? ___,
-  ) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Create Loadout • Paladins Edge',
-        child: CreateLoadout(),
-      );
+  const CreateLoadout({
+    required this.championId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
     final loadoutProvider = ref.read(providers.loadout);
-    final isSavingLoadout =
-        ref.watch(providers.loadout.select((_) => _.isSavingLoadout));
+    final championsProvider = ref.read(providers.champions);
+    final draftLoadout = ref.watch(
+      providers.loadout.select((_) => _.draftLoadout),
+    );
+    final playerId = ref.watch(
+      providers.auth.select((_) => _.player?.playerId),
+    );
+    final isSavingLoadout = ref.watch(
+      providers.loadout.select((_) => _.isSavingLoadout),
+    );
 
     // Variables
-    final arguments = context.currentBeamLocation.data
-        as data_classes.CreateLoadoutScreenArguments;
-    final loadout = arguments.loadout;
+    final champion = championsProvider.findChampion(championId);
 
     // Effects
     useEffect(
       () {
-        loadoutProvider.createDraftLoadout(
-          championId: arguments.champion.championId,
-          playerId: authProvider.player!.playerId,
-          loadout: loadout,
-        );
-
         return loadoutProvider.resetDraftLoadout;
       },
-      [],
+      [playerId],
     );
 
     // Methods
@@ -81,73 +79,88 @@ class CreateLoadout extends HookConsumerWidget {
 
     final onDelete = useCallback(
       () {
-        if (loadout?.loadoutHash != null) {
-          loadoutProvider.deleteLoadout(loadout!.loadoutHash!);
+        if (draftLoadout.loadoutHash != null) {
+          loadoutProvider.deleteLoadout(draftLoadout.loadoutHash!);
           Navigator.pop(context);
         }
       },
       [],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(loadout != null ? "Edit Loadout" : "Create Loadout"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: InkWell(
-              onTap: isSavingLoadout ? null : onSave,
-              child: Center(
-                child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      isSavingLoadout
-                          ? const widgets.LoadingIndicator(
-                              size: 16,
-                              lineWidth: 1.5,
-                              color: Colors.white,
-                            )
-                          : const SizedBox(),
-                      isSavingLoadout
-                          ? const SizedBox(width: 10)
-                          : const SizedBox(),
-                      Text(
-                        isSavingLoadout ? 'Saving' : 'Save',
-                        style: const TextStyle(
-                          fontSize: 16,
+    return champion == null
+        ? const screens.NotFound()
+        : Scaffold(
+            appBar: AppBar(
+              title: Text(
+                draftLoadout.loadoutHash == null
+                    ? "Edit Loadout"
+                    : "Create Loadout",
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: InkWell(
+                    onTap: isSavingLoadout ? null : onSave,
+                    child: Center(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            isSavingLoadout
+                                ? const widgets.LoadingIndicator(
+                                    size: 16,
+                                    lineWidth: 1.5,
+                                    color: Colors.white,
+                                  )
+                                : const SizedBox(),
+                            isSavingLoadout
+                                ? const SizedBox(width: 10)
+                                : const SizedBox(),
+                            Text(
+                              isSavingLoadout ? 'Saving' : 'Save',
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
+                ),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const SizedBox(height: 20),
+                    CreateLoadoutTarget(champion: champion),
+                    const SizedBox(height: 30),
+                    const CreateLoadoutText(),
+                    const SizedBox(height: 30),
+                    CreateLoadoutDraggableCards(champion: champion),
+                    const SizedBox(height: 30),
+                    if (draftLoadout.loadoutHash != null)
+                      CreateLoadoutDeleteButton(
+                        onDelete: onDelete,
+                      ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(height: 20),
-              const CreateLoadoutTarget(),
-              const SizedBox(height: 30),
-              const CreateLoadoutText(),
-              const SizedBox(height: 30),
-              const CreateLoadoutDraggableCards(),
-              const SizedBox(height: 30),
-              if (loadout?.loadoutHash != null)
-                CreateLoadoutDeleteButton(
-                  onDelete: onDelete,
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
+          );
+  }
+
+  static Widget _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = state.params['championId'];
+    if (paramChampionId == null) return const screens.NotFound();
+    final championId = int.tryParse(paramChampionId);
+    if (championId == null) return const screens.NotFound();
+
+    return CreateLoadout(championId: championId);
   }
 }

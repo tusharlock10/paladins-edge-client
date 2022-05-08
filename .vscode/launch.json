@@ -17,9 +17,30 @@
       ],
     },
     {
+      "name": "web release",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "chrome",
+        "--web-port",
+        "9000",
+        "--release"
+      ],
+    },
+    {
       "name": "android",
       "request": "launch",
       "type": "dart",
+    },
+    {
+      "name": "android",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--release"
+      ]
     }
   ]
 }

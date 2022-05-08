@@ -1,8 +1,7 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -11,20 +10,15 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PlayerChampions extends HookConsumerWidget {
-  static const routeName = '/playerChampions';
+  static const routeName = 'playerChampions';
+  static const routePath = 'playerChampions';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
 
   const PlayerChampions({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(
-    BuildContext _,
-    BeamState __,
-    Object? ___,
-  ) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Player Champs • Paladins Edge',
-        child: PlayerChampions(),
-      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,13 +41,13 @@ class PlayerChampions extends HookConsumerWidget {
     // Methods
     final onLoadoutPress = useCallback(
       (models.Champion champion) {
-        context.beamToNamed(
+        context.goNamed(
           screens.Loadouts.routeName,
-          data: data_classes.LoadoutScreenArguments(
-            champion: champion,
-            player: player,
-          ),
         );
+        // data: data_classes.LoadoutScreenArguments(
+        // champion: champion,
+        // player: player,
+        // ), TODO: Add this in provider
       },
       [player],
     );
@@ -174,4 +168,6 @@ class PlayerChampions extends HookConsumerWidget {
             ),
     );
   }
+
+  static PlayerChampions _routeBuilder(_, __) => const PlayerChampions();
 }

@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
@@ -12,16 +12,15 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ActiveMatch extends HookConsumerWidget {
-  static const routeName = '/activeMatch';
+  static const routeName = 'activeMatch';
+  static const routePath = 'activeMatch';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
 
   const ActiveMatch({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Active Match • Paladins Edge',
-        child: ActiveMatch(),
-      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -114,4 +113,6 @@ class ActiveMatch extends HookConsumerWidget {
       ),
     );
   }
+
+  static ActiveMatch _routeBuilder(_, __) => const ActiveMatch();
 }

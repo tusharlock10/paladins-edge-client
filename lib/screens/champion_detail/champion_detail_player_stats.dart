@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +10,11 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:timer_builder/timer_builder.dart';
 
 class ChampionDetailPlayerStats extends HookConsumerWidget {
-  const ChampionDetailPlayerStats({Key? key}) : super(key: key);
+  final models.Champion champion;
+  const ChampionDetailPlayerStats({
+    required this.champion,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +23,6 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
         ref.read(providers.champions).userPlayerChampions;
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
-    final champion = context.currentBeamLocation.data as models.Champion;
     final playerChampion =
         utilities.findPlayerChampion(userPlayerChampions, champion.championId);
 

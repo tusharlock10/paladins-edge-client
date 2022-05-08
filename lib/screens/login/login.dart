@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -10,17 +10,15 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Login extends HookConsumerWidget {
-  static const routeName = '/login';
-  static const page = BeamPage(
-    key: ValueKey(routeName),
-    child: Login(),
-    title: 'Login • Paladins Edge',
+  static const routeName = 'login';
+  static const routePath = 'login';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
   );
 
   const Login({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      page;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +47,7 @@ class Login extends HookConsumerWidget {
           final fcmToken = await utilities.Messaging.initMessaging();
           if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
 
-          context.beamToReplacementNamed(
+          context.goNamed(
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
@@ -72,7 +70,7 @@ class Login extends HookConsumerWidget {
     final onGuestLogin = useCallback(
       () {
         authProvider.loginAsGuest();
-        context.beamToReplacementNamed(screens.Main.routeName);
+        context.goNamed(screens.Main.routeName);
       },
       [],
     );
@@ -103,4 +101,6 @@ class Login extends HookConsumerWidget {
       ),
     );
   }
+
+  static Login _routeBuilder(_, __) => const Login();
 }

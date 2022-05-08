@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/constants.dart' as constants;
@@ -15,20 +15,15 @@ import 'package:paladinsedge/screens/connect_profile/connect_profile_verified_pl
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
-  static const routeName = '/connectProfile';
+  static const routeName = 'connectProfile';
+  static const routePath = 'connectProfile';
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    builder: _routeBuilder,
+  );
 
   const ConnectProfile({Key? key}) : super(key: key);
-
-  static BeamPage routeBuilder(
-    BuildContext _,
-    BeamState __,
-    Object? ___,
-  ) =>
-      const BeamPage(
-        key: ValueKey(routeName),
-        title: 'Connect • Paladins Edge',
-        child: ConnectProfile(),
-      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -180,4 +175,6 @@ class ConnectProfile extends HookConsumerWidget {
       ),
     );
   }
+
+  static ConnectProfile _routeBuilder(_, __) => const ConnectProfile();
 }
