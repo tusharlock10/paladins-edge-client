@@ -21,6 +21,7 @@ class PlayerChampions extends HookConsumerWidget {
     Object? ___,
   ) =>
       const BeamPage(
+        key: ValueKey(routeName),
         title: 'Player Champs • Paladins Edge',
         child: PlayerChampions(),
       );

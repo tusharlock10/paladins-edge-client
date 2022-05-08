@@ -21,7 +21,11 @@ class Home extends HookConsumerWidget {
     BeamState __,
     Object? ___,
   ) =>
-      const BeamPage(title: 'Home • Paladins Edge', child: Home());
+      const BeamPage(
+        key: ValueKey(routeName),
+        title: 'Home • Paladins Edge',
+        child: Home(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -18,7 +18,11 @@ class Loadouts extends HookConsumerWidget {
   const Loadouts({Key? key}) : super(key: key);
 
   static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
-      const BeamPage(title: 'Loadouts • Paladins Edge', child: Loadouts());
+      const BeamPage(
+        key: ValueKey(routeName),
+        title: 'Loadouts • Paladins Edge',
+        child: Loadouts(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

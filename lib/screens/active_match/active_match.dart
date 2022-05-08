@@ -18,6 +18,7 @@ class ActiveMatch extends HookConsumerWidget {
 
   static BeamPage routeBuilder(BuildContext _, BeamState __, Object? ___) =>
       const BeamPage(
+        key: ValueKey(routeName),
         title: 'Active Match • Paladins Edge',
         child: ActiveMatch(),
       );

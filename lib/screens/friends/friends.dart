@@ -22,7 +22,11 @@ class Friends extends HookConsumerWidget {
     BeamState __,
     Object? ___,
   ) =>
-      BeamPage(title: 'Friends • Paladins Edge', child: Friends());
+      BeamPage(
+        key: const ValueKey(routeName),
+        title: 'Friends • Paladins Edge',
+        child: Friends(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
