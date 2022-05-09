@@ -28,7 +28,7 @@ String? getTimeRemaining({
 }
 
 String _getFormat(Duration diff) {
-  if (diff.inHours != 0) return "H:mm:ss";
+  if (diff.inHours != 0) return "H[h] m[m]";
   if (diff.inMinutes != 0) return "m[m] s[s]";
 
   return "s[s]";
