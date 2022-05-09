@@ -16,7 +16,7 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
   static const routeName = 'connectProfile';
-  static const routePath = 'connectProfile';
+  static const routePath = '/connectProfile';
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,

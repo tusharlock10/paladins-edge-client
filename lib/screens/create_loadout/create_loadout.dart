@@ -8,6 +8,7 @@ import 'package:paladinsedge/screens/create_loadout/create_loadout_draggable_car
 import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
 import 'package:paladinsedge/screens/create_loadout/create_loadout_text.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
@@ -58,7 +59,7 @@ class CreateLoadout extends HookConsumerWidget {
         if (canSave.result) {
           final success = await loadoutProvider.saveLoadout();
           if (success) {
-            Navigator.pop(context);
+            utilities.Navigation.pop(context);
           } else {
             widgets.showToast(
               context: context,
@@ -81,7 +82,7 @@ class CreateLoadout extends HookConsumerWidget {
       () {
         if (draftLoadout.loadoutHash != null) {
           loadoutProvider.deleteLoadout(draftLoadout.loadoutHash!);
-          Navigator.pop(context);
+          utilities.Navigation.pop(context);
         }
       },
       [],

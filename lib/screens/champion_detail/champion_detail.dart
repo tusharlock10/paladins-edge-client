@@ -15,6 +15,7 @@ import 'package:paladinsedge/screens/champion_detail/champion_detail_talents.dar
 import 'package:paladinsedge/screens/champion_detail/champion_detail_title_label.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetail extends HookConsumerWidget {
@@ -86,7 +87,8 @@ class ChampionDetail extends HookConsumerWidget {
     final _onLoadoutPress = useCallback(
       () {
         if (champion == null || player == null) return;
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.Loadouts.routeName,
           params: {
             'championId': champion.championId.toString(),

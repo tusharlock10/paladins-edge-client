@@ -6,6 +6,7 @@ import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/player_champions/player_champions_data_source.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -64,7 +65,8 @@ class PlayerChampions extends HookConsumerWidget {
       (models.Champion champion) {
         if (player == null) return;
 
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.Loadouts.routeName,
           params: {
             'championId': champion.championId.toString(),

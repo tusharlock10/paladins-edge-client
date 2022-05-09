@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:paladinsedge/gen/assets.gen.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class NotFound extends StatelessWidget {
@@ -41,7 +41,10 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 5),
             widgets.Button(
               label: 'Back to Home',
-              onPressed: () => context.goNamed(screens.Main.routeName),
+              onPressed: () => utilities.Navigation.navigate(
+                context,
+                screens.Main.routeName,
+              ),
             ),
             SizedBox(
               height: appBarHeight,

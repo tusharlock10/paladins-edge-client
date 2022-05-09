@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
@@ -10,6 +9,15 @@ import 'package:paladinsedge/widgets/google_button.dart';
 import 'package:paladinsedge/widgets/toast.dart';
 
 void showLoginModal(data_classes.ShowLoginModalOptions options) {
+  final context = options.context;
+  final screenWidth = MediaQuery.of(context).size.width;
+  final width = utilities.responsiveCondition(
+    context,
+    desktop: screenWidth / 2.5,
+    tablet: screenWidth / 1.5,
+    mobile: screenWidth,
+  );
+
   showModalBottomSheet(
     elevation: 10,
     shape: const RoundedRectangleBorder(
@@ -19,15 +27,18 @@ void showLoginModal(data_classes.ShowLoginModalOptions options) {
       ),
     ),
     context: options.context,
-    builder: (_) => _LoginModal(options: options),
+    builder: (_) => _LoginModal(width: width, options: options),
+    constraints: BoxConstraints(maxWidth: width),
   );
 }
 
 class _LoginModal extends HookConsumerWidget {
   final data_classes.ShowLoginModalOptions options;
+  final double width;
 
   const _LoginModal({
     required this.options,
+    required this.width,
     Key? key,
   }) : super(key: key);
 
@@ -53,11 +64,8 @@ class _LoginModal extends HookConsumerWidget {
 
         final response = await authProvider.signInWithGoogle();
         if (response.result) {
-          // after the user is logged in, send the device fcm token to the server
-          final fcmToken = await utilities.Messaging.initMessaging();
-          if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
-
-          context.goNamed(
+          utilities.Navigation.navigate(
+            context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
@@ -122,6 +130,7 @@ class _LoginModal extends HookConsumerWidget {
         GoogleButton(
           isLoggingIn: isLoggingIn.value,
           onGoogleSignIn: onGoogleSignIn,
+          width: width - 30,
         ),
         const SizedBox(height: 15),
       ],

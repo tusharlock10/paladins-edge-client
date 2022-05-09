@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 void showCreateLoadoutDeleteConfirmation({
@@ -37,7 +38,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
     // Methods
     final onDeleteConfirm = useCallback(
       () {
-        Navigator.pop(context);
+        utilities.Navigation.pop(context);
         onDelete();
       },
       [],
@@ -85,7 +86,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
           children: [
             widgets.Button(
               label: 'Cancel',
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => utilities.Navigation.pop(context),
               color: Colors.red,
               style: widgets.ButtonStyle.outlined,
             ),

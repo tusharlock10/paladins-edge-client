@@ -125,7 +125,8 @@ class Loadouts extends HookConsumerWidget {
           playerId: playerId,
           loadout: null,
         );
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.CreateLoadout.routeName,
           params: {
             'championId': championId.toString(),
@@ -145,7 +146,8 @@ class Loadouts extends HookConsumerWidget {
           playerId: playerId,
           loadout: loadout,
         );
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.CreateLoadout.routeName,
           params: {
             'championId': championId.toString(),

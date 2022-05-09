@@ -11,7 +11,7 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class Login extends HookConsumerWidget {
   static const routeName = 'login';
-  static const routePath = 'login';
+  static const routePath = '/login';
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
@@ -43,11 +43,8 @@ class Login extends HookConsumerWidget {
 
         final response = await authProvider.signInWithGoogle();
         if (response.result) {
-          // after the user is logged in, send the device fcm token to the server
-          final fcmToken = await utilities.Messaging.initMessaging();
-          if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
-
-          context.goNamed(
+          utilities.Navigation.navigate(
+            context,
             authProvider.user?.playerId == null
                 ? screens.ConnectProfile.routeName
                 : screens.Main.routeName,
@@ -70,7 +67,7 @@ class Login extends HookConsumerWidget {
     final onGuestLogin = useCallback(
       () {
         authProvider.loginAsGuest();
-        context.goNamed(screens.Main.routeName);
+        utilities.Navigation.navigate(context, screens.Main.routeName);
       },
       [],
     );

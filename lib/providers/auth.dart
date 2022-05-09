@@ -73,7 +73,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Checks if the user is already logged in
-  Future<bool> checkLogin() async {
+  bool checkLogin() {
     token = utilities.Database.getToken();
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
@@ -136,6 +136,9 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = 'Bearer $token';
 
+    // upon successful login, send FCM token to server
+    _sendFCMToken();
+
     isGuest = false;
     notifyListeners();
 
@@ -184,15 +187,6 @@ class _AuthNotifier extends ChangeNotifier {
     ref.read(players_provider.players).clearData();
 
     return true;
-  }
-
-  /// Send the FCM token to server, only works on `Android`
-  void sendFcmToken(String fcmToken) async {
-    // send the fcm token of the device to the server
-    // for sending notification fcm token is used only
-    // for the server, and not stored on the app/ browser
-
-    api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
   /// Claim a player profile and connect it to the user
@@ -335,6 +329,14 @@ class _AuthNotifier extends ChangeNotifier {
     }
 
     return _GetFirebaseUserResponse(firebaseUser: firebaseUser);
+  }
+
+  /// Send the FCM token to server, only works on `Android`
+  /// for sending notification fcm token is used only
+  /// for the server, and not stored on the app/ browser
+  Future<void> _sendFCMToken() async {
+    final fcmToken = await utilities.Messaging.initMessaging();
+    if (fcmToken != null) api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 }
 

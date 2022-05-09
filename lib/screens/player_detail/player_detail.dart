@@ -6,6 +6,7 @@ import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/screens/player_detail/player_detail_header.dart';
 import 'package:paladinsedge/screens/player_detail/player_detail_matches.dart';
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:touchable_opacity/touchable_opacity.dart';
 
@@ -79,7 +80,8 @@ class PlayerDetail extends HookConsumerWidget {
     // Methods
     final onTapChamps = useCallback(
       () {
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.PlayerChampions.routeName,
           params: {
             'playerId': playerId,

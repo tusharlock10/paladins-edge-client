@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionDetailAppBar extends StatelessWidget {
@@ -54,7 +54,7 @@ class ChampionDetailAppBar extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () => context.pop(),
+              onPressed: () => utilities.Navigation.pop(context),
             ),
       expandedHeight: headerHeight,
       collapsedHeight: constants.isWeb ? headerHeight : null,

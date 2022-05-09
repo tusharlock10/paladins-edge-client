@@ -2,7 +2,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
@@ -53,7 +52,8 @@ class MatchDetailPlayer extends HookConsumerWidget {
       () {
         if (isPrivatePlayer) return null;
 
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.PlayerDetail.routeName,
           params: {
             'playerId': matchPlayer.playerId,

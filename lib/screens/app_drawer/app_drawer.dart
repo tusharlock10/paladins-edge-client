@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
@@ -11,6 +10,7 @@ import 'package:paladinsedge/screens/app_drawer/app_drawer_info.dart';
 import 'package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart';
 import 'package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:paladinsedge/widgets/login_modal.dart';
 
@@ -38,8 +38,8 @@ class AppDrawer extends HookConsumerWidget {
         final isLoggedOut = await ref.read(providers.auth).logout();
 
         if (isLoggedOut) {
-          Navigator.pop(context);
-          context.goNamed(screens.Login.routeName);
+          utilities.Navigation.pop(context);
+          utilities.Navigation.navigate(context, screens.Login.routeName);
         } else {
           widgets.showToast(
             context: context,
@@ -82,8 +82,8 @@ class AppDrawer extends HookConsumerWidget {
 
     final _onFriends = useCallback(
       () {
-        Navigator.pop(context);
-        context.goNamed(screens.Friends.routeName);
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Friends.routeName);
       },
       [],
     );
@@ -91,7 +91,7 @@ class AppDrawer extends HookConsumerWidget {
     final onFriends = useCallback(
       () {
         if (isGuest) {
-          Navigator.pop(context);
+          utilities.Navigation.pop(context);
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
@@ -111,8 +111,8 @@ class AppDrawer extends HookConsumerWidget {
         if (player == null) return;
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
-        Navigator.pop(context);
-        context.goNamed(screens.ActiveMatch.routeName);
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.ActiveMatch.routeName);
       },
       [player],
     );
@@ -120,7 +120,7 @@ class AppDrawer extends HookConsumerWidget {
     final onActiveMatch = useCallback(
       () {
         if (isGuest) {
-          Navigator.pop(context);
+          utilities.Navigation.pop(context);
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
@@ -137,8 +137,8 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFeedback = useCallback(
       () {
-        Navigator.pop(context);
-        context.goNamed(screens.Feedback.routeName);
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Feedback.routeName);
       },
       [player],
     );
