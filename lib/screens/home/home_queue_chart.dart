@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:responsive_framework/responsive_framework.dart';
 
 class HomeQueueChart extends HookConsumerWidget {
   const HomeQueueChart({Key? key}) : super(key: key);
@@ -27,8 +26,18 @@ class HomeQueueChart extends HookConsumerWidget {
 
     // Variables
     const gradient = [Color(0xff6dd5ed), Color(0xff2193b0)];
-    final isLargerThanMobile =
-        ResponsiveWrapper.of(context).isLargerThan(MOBILE);
+    final smallestUnit = utilities.responsiveCondition(
+      context,
+      desktop: 12,
+      tablet: 16,
+      mobile: 24,
+    );
+    final intervals = utilities.responsiveCondition(
+      context,
+      desktop: 12,
+      tablet: 8,
+      mobile: 6,
+    );
     final secondaryColor = Theme.of(context).colorScheme.secondary;
     final brightness = Theme.of(context).brightness;
     final intervalY = (chartMaxY - chartMinY) / 5;
@@ -36,15 +45,11 @@ class HomeQueueChart extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        int smallestUnit = 28;
-        if (isLargerThanMobile) {
-          smallestUnit = 16;
-        }
         queueProvider.changeTimelineGranularity(smallestUnit);
 
         return;
       },
-      [isLargerThanMobile],
+      [smallestUnit],
     );
 
     // Methods
@@ -122,7 +127,7 @@ class HomeQueueChart extends HookConsumerWidget {
                 showTitles: true,
                 getTextStyles: (_, __) => const TextStyle(fontSize: 9),
                 getTitles: getQueueTimeTitle,
-                interval: selectedTimeline.length / 6,
+                interval: selectedTimeline.length / intervals,
               ),
               leftTitles: SideTitles(
                 showTitles: true,
