@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfileVerifiedPlayer extends ConsumerWidget {
@@ -55,7 +55,8 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
         SizedBox(
           width: 150,
           child: TextButton(
-            onPressed: () => context.goNamed(
+            onPressed: () => utilities.Navigation.navigate(
+              context,
               screens.Main.routeName,
             ),
             style: TextButton.styleFrom(

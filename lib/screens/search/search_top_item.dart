@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/screens/index.dart' as screens;
@@ -24,7 +23,8 @@ class SearchTopItem extends HookWidget {
     final onTap = useCallback(
       () {
         utilities.unFocusKeyboard(context);
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.PlayerDetail.routeName,
           params: {
             'playerId': player.playerId,
