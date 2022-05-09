@@ -95,7 +95,7 @@ class _PlayersNotifier extends ChangeNotifier {
     searchHistory.forEach(utilities.Database.saveSearchHistory);
   }
 
-  Future<bool> searchByName({
+  Future<api.SearchPlayersResponse?> searchByName({
     required String playerName,
     required bool simpleResults,
     required bool addInSearchHistory,
@@ -111,7 +111,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
     if (response == null) {
       // return false when api call is not successful
-      return false;
+      return null;
     }
 
     if (response.exactMatch) {
@@ -130,7 +130,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
     notifyListeners();
 
-    return response.exactMatch;
+    return response;
   }
 
   void clearSearchList() {

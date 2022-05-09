@@ -32,7 +32,7 @@ class Search extends HookConsumerWidget {
         isLoading.value = true;
 
         final searchProvider = ref.read(providers.players);
-        final exactMatch = await searchProvider.searchByName(
+        final response = await searchProvider.searchByName(
           playerName: playerName,
           simpleResults: false,
           addInSearchHistory: addInSearchHistory && !isGuest,
@@ -40,9 +40,14 @@ class Search extends HookConsumerWidget {
 
         isLoading.value = false;
 
-        if (exactMatch) {
+        if (response != null && response.exactMatch) {
           utilities.unFocusKeyboard(context);
-          context.goNamed(screens.PlayerDetail.routeName);
+          context.goNamed(
+            screens.PlayerDetail.routeName,
+            params: {
+              'playerId': response.playerData!.playerId,
+            },
+          );
         }
       },
       [],
