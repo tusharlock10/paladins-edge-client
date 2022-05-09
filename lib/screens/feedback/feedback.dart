@@ -53,7 +53,7 @@ class Feedback extends HookConsumerWidget {
           return;
         }
 
-        Navigator.pop(context);
+        utilities.Navigation.pop(context);
         widgets.showToast(
           context: context,
           text: 'Thank you for feedback',

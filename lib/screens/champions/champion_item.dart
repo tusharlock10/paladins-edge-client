@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
@@ -54,7 +53,8 @@ class ChampionItem extends HookConsumerWidget {
     final onTapChampion = useCallback(
       () {
         utilities.unFocusKeyboard(context);
-        context.goNamed(
+        utilities.Navigation.navigate(
+          context,
           screens.ChampionDetail.routeName,
           params: {'championId': champion.championId.toString()},
         );

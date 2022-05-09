@@ -37,20 +37,6 @@ class ScreenInitialization extends HookConsumerWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
-    // Methods
-    final checkLogin = useCallback(
-      () async {
-        final loggedIn = await authProvider.checkLogin();
-
-        if (loggedIn) {
-          // after the user is logged in, send the device fcm token to the server
-          final fcmToken = await utilities.Messaging.initMessaging();
-          if (fcmToken != null) authProvider.sendFcmToken(fcmToken);
-        }
-      },
-      [],
-    );
-
     final initApp = useCallback(
       () async {
         // first initialize all env variables and check
@@ -86,7 +72,7 @@ class ScreenInitialization extends HookConsumerWidget {
         await authProvider.loadEssentials();
         authProvider.loadSettings(); // load the settings from hive
 
-        checkLogin();
+        authProvider.checkLogin();
         authProvider.setAppInitialized();
       },
       [],
