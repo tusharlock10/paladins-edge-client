@@ -45,9 +45,7 @@ class Login extends HookConsumerWidget {
         if (response.result) {
           utilities.Navigation.navigate(
             context,
-            authProvider.user?.playerId == null
-                ? screens.ConnectProfile.routeName
-                : screens.Main.routeName,
+            screens.Main.routeName,
           );
         } else {
           isLoggingIn.value = false;

@@ -34,16 +34,20 @@ class PlayerDetail extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final playerStatus =
+        ref.watch(providers.players.select((_) => _.playerStatus));
 
     // Effects
     useEffect(
       () {
         // if player is null, then call getPlayerData
-
         if (player == null) {
           // fetch playerData from server
           playersProvider.getPlayerData(playerId: playerId, forceUpdate: false);
-          // fetch playerStatus from server
+        }
+
+        // fetch playerStatus from server
+        if (playerStatus == null) {
           playersProvider.getPlayerStatus(
             playerId: playerId,
             onlyStatus: true,

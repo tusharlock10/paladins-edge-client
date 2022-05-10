@@ -12,6 +12,8 @@ import 'package:paladinsedge/screens/connect_profile/connect_profile_loadout_ver
 import 'package:paladinsedge/screens/connect_profile/connect_profile_search_list.dart';
 import 'package:paladinsedge/screens/connect_profile/connect_profile_status_indicator.dart';
 import 'package:paladinsedge/screens/connect_profile/connect_profile_verified_player.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
@@ -21,6 +23,7 @@ class ConnectProfile extends HookConsumerWidget {
     name: routeName,
     path: routePath,
     builder: _routeBuilder,
+    redirect: _playerConnectedRedirect,
   );
 
   const ConnectProfile({Key? key}) : super(key: key);
@@ -177,4 +180,13 @@ class ConnectProfile extends HookConsumerWidget {
   }
 
   static ConnectProfile _routeBuilder(_, __) => const ConnectProfile();
+
+  static String? _playerConnectedRedirect(GoRouterState _) {
+    // check if user is authenticated
+    if (!utilities.Global.isAuthenticated) return screens.Login.routePath;
+    // check if user is not connected to a player
+    if (utilities.Global.isPlayerConnected) return screens.Main.routePath;
+
+    return null;
+  }
 }

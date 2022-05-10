@@ -28,7 +28,7 @@ class HomeQueueCard extends HookWidget {
       onEnter: (_) => isHovered.value = true,
       onExit: (_) => isHovered.value = false,
       child: Card(
-        elevation: isSelected ? 2 : 7,
+        elevation: isSelected ? 3 : 7,
         clipBehavior: Clip.antiAlias,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
