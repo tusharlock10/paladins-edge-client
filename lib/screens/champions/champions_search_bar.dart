@@ -6,7 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/champions/champions_filter_modal.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
+import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class ChampionsSearchBar extends HookConsumerWidget {
   const ChampionsSearchBar({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class ChampionsSearchBar extends HookConsumerWidget {
     final championsProvider = ref.read(providers.champions);
     final selectedFilter =
         ref.watch(providers.champions.select((_) => _.selectedFilter));
+    final combinedChampions =
+        ref.watch(providers.champions.select((_) => _.combinedChampions));
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -52,6 +56,24 @@ class ChampionsSearchBar extends HookConsumerWidget {
       [],
     );
 
+    final onSubmit = useCallback(
+      (String? _) {
+        if (combinedChampions == null) return;
+        final filteredCombinedChampions =
+            combinedChampions.where((_) => !_.hide);
+        if (filteredCombinedChampions.length == 1) {
+          final champion = filteredCombinedChampions.first.champion;
+          utilities.unFocusKeyboard(context);
+          utilities.Navigation.navigate(
+            context,
+            screens.ChampionDetail.routeName,
+            params: {'championId': champion.championId.toString()},
+          );
+        }
+      },
+      [combinedChampions],
+    );
+
     return SliverAppBar(
       snap: true,
       floating: true,
@@ -84,6 +106,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
         enableInteractiveSelection: true,
         style: textStyle,
         onChanged: championsProvider.filterChampionsBySearch,
+        onSubmitted: onSubmit,
         decoration: InputDecoration(
           hintText: 'Search champion',
           counterText: "",
