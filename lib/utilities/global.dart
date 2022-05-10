@@ -8,4 +8,12 @@ abstract class Global {
 
   /// Whether a toast is already being shown to the user
   static bool isToastShown = false;
+
+  /// Whether the user is logged into the app
+  static bool isAuthenticated = false;
+
+  /// Whether the user is connected to a player
+  /// If user is logged in and player=null,
+  /// then navigate to connectProfile
+  static bool isPlayerConnected = false;
 }

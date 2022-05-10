@@ -50,7 +50,7 @@ class ChampionsSortTab extends HookConsumerWidget {
                 onEnter: (_) => hoverSort.value = sort,
                 onExit: (_) => hoverSort.value = null,
                 child: Card(
-                  elevation: isSortSelected ? 7 : 0,
+                  elevation: isSortSelected ? 3 : 7,
                   margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),

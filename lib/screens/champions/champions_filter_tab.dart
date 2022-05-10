@@ -51,7 +51,7 @@ class ChampionsFilterTab extends HookConsumerWidget {
                 onEnter: (_) => hoverFilterName.value = filterName,
                 onExit: (_) => hoverFilterName.value = null,
                 child: Card(
-                  elevation: 7,
+                  elevation: isFilterNameSelected ? 3 : 7,
                   margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),

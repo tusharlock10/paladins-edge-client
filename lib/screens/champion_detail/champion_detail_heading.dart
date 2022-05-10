@@ -16,8 +16,9 @@ class ChampionDetailHeading extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final isLightTheme =
-        ref.read(providers.auth).settings.themeMode == ThemeMode.light;
+    final isLightTheme = ref.watch(
+      providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
+    );
 
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
@@ -64,8 +65,8 @@ class ChampionDetailHeading extends ConsumerWidget {
                       champion.title.toUpperCase(),
                       style: textTheme.headline1?.copyWith(
                         color: isLightTheme
-                            ? const Color(0xff5c5c5c)
-                            : const Color(0xffb4fb26),
+                            ? const Color.fromARGB(255, 88, 88, 88)
+                            : const Color.fromARGB(210, 145, 203, 28),
                         fontSize: 14,
                       ),
                     ),
