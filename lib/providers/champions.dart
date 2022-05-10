@@ -8,10 +8,13 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
   /// loading state for combinedChampions
-  var isLoadingCombinedChampions = false;
+  bool isLoadingCombinedChampions = false;
 
   /// loading state for playerChampions
-  var isLoadingPlayerChampions = false;
+  bool isLoadingPlayerChampions = false;
+
+  /// holds the search value for champions
+  String search = '';
 
   /// holds data for all champions
   List<models.Champion> champions = [];
@@ -26,7 +29,8 @@ class _ChampionsNotifier extends ChangeNotifier {
   List<models.PlayerChampion>? playerChampions;
 
   /// holds the value of currently active filter
-  var selectedFilter = data_classes.SelectedChampionsFilter();
+  data_classes.SelectedChampionsFilter selectedFilter =
+      data_classes.SelectedChampionsFilter();
 
   /// holds the currently active filter
   String selectedSort = data_classes.ChampionsSort.defaultSort;
@@ -123,8 +127,10 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Filters the champions based on the search provided
-  void filterChampionsBySearch(String search) {
+  void filterChampionsBySearch(String _search) {
     if (combinedChampions == null) return;
+
+    search = _search;
 
     // remove filters if search is done
     // but keep the previous filterName intact
@@ -183,6 +189,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   void clearAppliedFiltersAndSort() {
     if (combinedChampions == null) return;
 
+    search = '';
     combinedChampions = data_classes.ChampionsFilter.clearFilters(
       combinedChampions!,
     );
@@ -201,6 +208,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   void clearData() {
     isLoadingCombinedChampions = false;
     isLoadingPlayerChampions = false;
+    search = '';
     champions = [];
     userPlayerChampions = null;
     combinedChampions = null;
