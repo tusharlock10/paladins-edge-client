@@ -80,9 +80,12 @@ class _AuthNotifier extends ChangeNotifier {
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
+    utilities.Global.isPlayerConnected = player != null;
+
     if (token != null) {
       isGuest = false;
       utilities.api.options.headers["authorization"] = 'Bearer $token';
+      utilities.Global.isAuthenticated = true;
 
       return true;
     } else {
@@ -141,17 +144,16 @@ class _AuthNotifier extends ChangeNotifier {
 
     user = response.user;
     token = response.token;
-    utilities.Database.saveToken(response.token);
-    utilities.Database.saveUser(response.user);
-    if (response.player != null) {
-      player = response.player;
-      utilities.Database.savePlayer(response.player!);
-    }
+    player = response.player;
 
     utilities.api.options.headers["authorization"] = 'Bearer $token';
+    utilities.Global.isAuthenticated = true;
+    if (player != null) utilities.Global.isPlayerConnected = true;
 
     // upon successful login, send FCM token to server
     _sendFCMToken();
+    // save response in local db
+    _saveResponse(response);
 
     isGuest = false;
     notifyListeners();
@@ -190,10 +192,13 @@ class _AuthNotifier extends ChangeNotifier {
       }
     }
 
-    // clear values from the database and provider
+    // clear values from the database and utilities
     await utilities.Database.clear();
 
-    // providers to clear data from
+    utilities.api.options.headers["authorization"] = null;
+    utilities.Global.isAuthenticated = false;
+
+    // clear data from all providers
     clearData();
     ref.read(champions_provider.champions).clearData();
     ref.read(loadout_provider.loadout).clearData();
@@ -225,7 +230,10 @@ class _AuthNotifier extends ChangeNotifier {
       user = response.user;
       player = response.player;
       if (user != null) utilities.Database.saveUser(user!);
-      if (player != null) utilities.Database.savePlayer(player!);
+      if (player != null) {
+        utilities.Database.savePlayer(player!);
+        utilities.Global.isPlayerConnected = true;
+      }
 
       notifyListeners();
     }
@@ -358,6 +366,14 @@ class _AuthNotifier extends ChangeNotifier {
   Future<void> _sendFCMToken() async {
     final fcmToken = await utilities.Messaging.initMessaging();
     if (fcmToken != null) api.AuthRequests.fcmToken(fcmToken: fcmToken);
+  }
+
+  void _saveResponse(api.LoginResponse response) {
+    utilities.Database.saveUser(response.user);
+    utilities.Database.saveToken(response.token);
+    if (response.player != null) {
+      utilities.Database.savePlayer(response.player!);
+    }
   }
 }
 

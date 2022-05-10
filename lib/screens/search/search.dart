@@ -28,6 +28,8 @@ class Search extends HookConsumerWidget {
         String playerName, {
         bool addInSearchHistory = true,
       }) async {
+        if (playerName.trim() == '') return;
+
         isLoading.value = true;
 
         final searchProvider = ref.read(providers.players);
