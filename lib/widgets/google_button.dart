@@ -88,7 +88,7 @@ class GoogleButton extends HookWidget {
                     flex: width == null ? 0 : 1,
                     child: Center(
                       child: Text(
-                        'SignIn with Google',
+                        'Continue with Google',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.grey.shade800,

@@ -7,6 +7,14 @@ import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 void showChampionsFilterModal(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final width = utilities.responsiveCondition(
+    context,
+    desktop: screenWidth / 2.5,
+    tablet: screenWidth / 1.5,
+    mobile: screenWidth,
+  );
+
   utilities.unFocusKeyboard(context);
   showModalBottomSheet(
     elevation: 10,
@@ -18,6 +26,7 @@ void showChampionsFilterModal(BuildContext context) {
     ),
     context: context,
     builder: (_) => const _ChampionsFilterModal(),
+    constraints: BoxConstraints(maxWidth: width),
   );
 }
 

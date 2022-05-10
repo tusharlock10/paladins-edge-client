@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:paladinsedge/widgets/ripple.dart';
 
 class TextChip extends StatelessWidget {
-  final String? text;
-  final double? textSize;
-  final MaterialColor? color;
-  final bool? hidden;
-  final double? spacing;
+  final String text;
+  final double textSize;
+  final MaterialColor color;
+  final double spacing;
   final IconData? icon;
   final IconData? trailingIcon;
   final double iconSize;
@@ -16,37 +15,32 @@ class TextChip extends StatelessWidget {
   final void Function()? onTap;
 
   const TextChip({
-    this.text,
-    this.textSize = 10,
-    this.color = Colors.grey,
-    this.spacing = 0,
-    this.hidden = false,
+    required this.text,
     this.icon,
-    this.trailingIcon,
-    this.iconSize = 12,
-    this.trailingIconSize = 12,
     this.width,
     this.height,
     this.onTap,
+    this.textSize = 10,
+    this.color = Colors.grey,
+    this.spacing = 0,
+    this.trailingIcon,
+    this.iconSize = 12,
+    this.trailingIconSize = 12,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (hidden! || text == null) {
-      return const SizedBox();
-    }
-
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
-    final color1 = isLightTheme ? color!.shade50 : color!.shade700;
-    final color2 = isLightTheme ? color!.shade900 : color!.shade50;
+    final color1 = isLightTheme ? color.shade50 : color.shade700;
+    final color2 = isLightTheme ? color.shade900 : color.shade50;
 
     return Container(
       width: width,
       height: height,
       margin: EdgeInsets.symmetric(
-        horizontal: spacing! / 2,
-        vertical: spacing! / 2,
+        horizontal: spacing / 2,
+        vertical: spacing / 2,
       ),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -71,7 +65,7 @@ class TextChip extends StatelessWidget {
                   ),
                 ),
               Text(
-                text!,
+                text,
                 style: Theme.of(context).textTheme.headline2?.copyWith(
                       fontSize: textSize,
                       color: color2,
