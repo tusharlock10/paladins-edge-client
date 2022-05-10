@@ -8,6 +8,7 @@ import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
+import 'package:substring_highlight/substring_highlight.dart';
 
 class ChampionItem extends HookConsumerWidget {
   final models.Champion champion;
@@ -25,10 +26,16 @@ class ChampionItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final selectedSort =
-        ref.watch(providers.champions.select((_) => _.selectedSort));
+    final search = ref.watch(providers.champions.select((_) => _.search));
+    final selectedSort = ref.watch(
+      providers.champions.select((_) => _.selectedSort),
+    );
 
     // Variables
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final highlightColor = isLightTheme
+        ? theme.themeMaterialColor.shade50
+        : theme.darkThemeMaterialColor.shade50;
     final textTheme = Theme.of(context).textTheme;
     MaterialColor levelColor;
     levelColor = playerChampion?.level != null && playerChampion!.level > 49
@@ -59,7 +66,7 @@ class ChampionItem extends HookConsumerWidget {
           params: {'championId': champion.championId.toString()},
         );
       },
-      [champion],
+      [],
     );
 
     return SizedBox(
@@ -93,15 +100,34 @@ class ChampionItem extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Text(
-                          champion.name.toUpperCase(),
-                          style: textTheme.headline1?.copyWith(
-                            fontSize: 16,
-                          ),
+                      SubstringHighlight(
+                        text: champion.name.toUpperCase(),
+                        term: search,
+                        textStyle: textTheme.headline1!.copyWith(
+                          fontSize: 16,
+                        ),
+                        textStyleHighlight: textTheme.headline1!.copyWith(
+                          fontSize: 16,
+                          backgroundColor: highlightColor,
                         ),
                       ),
+                      const SizedBox(height: 2),
+                      if (search != '' &&
+                          champion.title
+                              .toLowerCase()
+                              .contains(search.toLowerCase()))
+                        SubstringHighlight(
+                          text: champion.title,
+                          term: search,
+                          textStyle: textTheme.bodyText1!.copyWith(
+                            fontSize: 12,
+                          ),
+                          textStyleHighlight: textTheme.bodyText1!.copyWith(
+                            fontSize: 12,
+                            backgroundColor: highlightColor,
+                          ),
+                        ),
+                      const SizedBox(height: 5),
                       Wrap(
                         children: [
                           widgets.TextChip(

@@ -88,8 +88,10 @@ abstract class ChampionsFilter {
     return combinedChampions
         .map(
           (combinedChampion) => combinedChampion.copyWith(
-            hide:
-                !combinedChampion.champion.name.toLowerCase().contains(search),
+            hide: !(combinedChampion.champion.name
+                    .toLowerCase()
+                    .contains(search) ||
+                combinedChampion.champion.title.toLowerCase().contains(search)),
           ),
         )
         .toList();

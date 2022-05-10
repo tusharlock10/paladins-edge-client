@@ -10,10 +10,12 @@ class ChampionsList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final combinedChampions =
-        ref.watch(providers.champions.select((_) => _.combinedChampions));
-    final isLoadingCombinedChampions = ref
-        .watch(providers.champions.select((_) => _.isLoadingCombinedChampions));
+    final combinedChampions = ref.watch(
+      providers.champions.select((_) => _.combinedChampions),
+    );
+    final isLoadingCombinedChampions = ref.watch(
+      providers.champions.select((_) => _.isLoadingCombinedChampions),
+    );
 
     // Variables
     int crossAxisCount;
