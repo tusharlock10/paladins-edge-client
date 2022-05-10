@@ -125,19 +125,19 @@ class _LoadoutCard extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          widgets.TextChip(
-                            hidden: card.cooldown == 0,
-                            spacing: 5,
-                            text: '${card.cooldown.toInt().toString()} sec',
-                            color: Colors.blueGrey,
-                            icon: Icons.timelapse,
-                          ),
-                          widgets.TextChip(
-                            hidden: card.modifier == "None",
-                            spacing: 5,
-                            text: card.modifier,
-                            color: Colors.teal,
-                          ),
+                          if (card.cooldown != 0)
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: '${card.cooldown.toInt().toString()} sec',
+                              color: Colors.blueGrey,
+                              icon: Icons.timelapse,
+                            ),
+                          if (card.modifier != "None")
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: card.modifier,
+                              color: Colors.teal,
+                            ),
                         ],
                       ),
                     ),

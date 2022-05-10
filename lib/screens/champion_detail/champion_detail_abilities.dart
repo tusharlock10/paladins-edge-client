@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -22,7 +23,7 @@ class ChampionDetailAbilities extends StatelessWidget {
           final damageTypeChips =
               ability.damageType.split(',').map((damageType) {
             return constants.championDamageType[damageType];
-          });
+          }).filterNotNull();
 
           return Card(
             shape: const RoundedRectangleBorder(
@@ -64,21 +65,19 @@ class ChampionDetailAbilities extends StatelessWidget {
                               ...damageTypeChips.map((damageTypeChip) {
                                 return widgets.TextChip(
                                   spacing: 5,
-                                  hidden: damageTypeChip == null,
-                                  color:
-                                      damageTypeChip?.color as MaterialColor?,
-                                  text: damageTypeChip?.name,
-                                  icon: damageTypeChip?.icon,
+                                  color: damageTypeChip.color,
+                                  text: damageTypeChip.name,
+                                  icon: damageTypeChip.icon,
                                 );
                               }),
-                              widgets.TextChip(
-                                hidden: ability.cooldown == 0,
-                                spacing: 5,
-                                text:
-                                    '${ability.cooldown.toInt().toString()} sec',
-                                color: Colors.blueGrey,
-                                icon: Icons.timelapse,
-                              ),
+                              if (ability.cooldown != 0)
+                                widgets.TextChip(
+                                  spacing: 5,
+                                  text:
+                                      '${ability.cooldown.toInt().toString()} sec',
+                                  color: Colors.blueGrey,
+                                  icon: Icons.timelapse,
+                                ),
                             ]),
                           ],
                         ),

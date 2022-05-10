@@ -148,18 +148,20 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Set value of filter and apply the filter
-  void setFilterValue(String filterValue) {
+  void setFilterValue(String? filterValue) {
+    if (combinedChampions == null) return;
+
     selectedFilter = data_classes.SelectedChampionsFilter(
       name: selectedFilter.name,
       value: filterValue,
     );
 
-    if (selectedFilter.isValid && combinedChampions != null) {
-      combinedChampions = data_classes.ChampionsFilter.getFilteredChampions(
-        combinedChampions: combinedChampions!,
-        filter: selectedFilter,
-      );
-    }
+    combinedChampions = selectedFilter.isValid
+        ? data_classes.ChampionsFilter.getFilteredChampions(
+            combinedChampions: combinedChampions!,
+            filter: selectedFilter,
+          )
+        : data_classes.ChampionsFilter.clearFilters(combinedChampions!);
 
     notifyListeners();
   }

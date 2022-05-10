@@ -109,32 +109,32 @@ class ChampionItem extends HookConsumerWidget {
                             text: champion.role,
                             color: theme.themeMaterialColor,
                           ),
-                          widgets.TextChip(
-                            spacing: 5,
-                            hidden: playerChampion?.level == null,
-                            text: 'Level ${playerChampion?.level.toString()}',
-                            color: levelColor,
-                          ),
-                          widgets.TextChip(
-                            spacing: 5,
-                            hidden: !champion.onFreeRotation,
-                            text: 'Free',
-                            icon: Icons.rotate_right,
-                            color: Colors.green,
-                          ),
-                          widgets.TextChip(
-                            spacing: 5,
-                            hidden: !champion.latestChampion,
-                            text: 'New',
-                            icon: Icons.star,
-                            color: Colors.orange,
-                          ),
-                          widgets.TextChip(
-                            spacing: 5,
-                            hidden: sortTextChip == null,
-                            text: sortTextChip,
-                            color: Colors.pink,
-                          ),
+                          if (playerChampion?.level != null)
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: 'Level ${playerChampion?.level.toString()}',
+                              color: levelColor,
+                            ),
+                          if (champion.onFreeRotation)
+                            const widgets.TextChip(
+                              spacing: 5,
+                              text: 'Free',
+                              icon: Icons.rotate_right,
+                              color: Colors.green,
+                            ),
+                          if (champion.latestChampion)
+                            const widgets.TextChip(
+                              spacing: 5,
+                              text: 'New',
+                              icon: Icons.star,
+                              color: Colors.orange,
+                            ),
+                          if (sortTextChip != null)
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: sortTextChip,
+                              color: Colors.pink,
+                            ),
                         ],
                       ),
                     ],

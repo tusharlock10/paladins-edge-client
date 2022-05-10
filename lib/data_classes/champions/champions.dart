@@ -20,7 +20,7 @@ class BatchPlayerChampionsPayload {
 
 class ChampionDamage {
   final String name;
-  final Color color;
+  final MaterialColor color;
   final IconData? icon;
 
   ChampionDamage({
