@@ -26,7 +26,7 @@ void showLoginModal(data_classes.ShowLoginModalOptions options) {
         topRight: Radius.circular(15),
       ),
     ),
-    context: options.context,
+    context: context,
     builder: (_) => _LoginModal(width: width, options: options),
     constraints: BoxConstraints(maxWidth: width),
   );

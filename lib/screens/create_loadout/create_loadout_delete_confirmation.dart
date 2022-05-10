@@ -8,6 +8,13 @@ void showCreateLoadoutDeleteConfirmation({
   required void Function() onDelete,
 }) {
   final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+  final screenWidth = MediaQuery.of(context).size.width;
+  final width = utilities.responsiveCondition(
+    context,
+    desktop: screenWidth / 2.5,
+    tablet: screenWidth / 1.5,
+    mobile: screenWidth,
+  );
 
   showModalBottomSheet(
     elevation: 10,
@@ -20,6 +27,7 @@ void showCreateLoadoutDeleteConfirmation({
     ),
     context: context,
     builder: (_) => _CreateLoadoutDeleteConfirmation(onDelete: onDelete),
+    constraints: BoxConstraints(maxWidth: width),
   );
 }
 

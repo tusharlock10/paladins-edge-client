@@ -27,7 +27,7 @@ final router = GoRouter(
   errorBuilder: screens.NotFound.routeBuilder,
   debugLogDiagnostics: constants.isDebug,
   initialLocation: screens.Main.routePath,
-  urlPathStrategy: UrlPathStrategy.path,
+  urlPathStrategy: UrlPathStrategy.hash,
   routes: [
     screens.Login.goRoute,
     screens.ConnectProfile.goRoute,

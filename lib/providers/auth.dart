@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paladinsedge/api/index.dart' as api;
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
+import 'package:paladinsedge/dev/index.dart' as dev;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/champions.dart' as champions_provider;
 import 'package:paladinsedge/providers/loadout.dart' as loadout_provider;
@@ -93,20 +95,32 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Sign-in the user with his/her `Google` account
   Future<data_classes.SignInProviderResponse> signInWithGoogle() async {
-    final firebaseUserResponse = await _getFirebaseUser();
-    final firebaseUser = firebaseUserResponse.firebaseUser;
+    final String uid, email, name;
+    if (dev.testUser == null) {
+      final firebaseUserResponse = await _getFirebaseUser();
+      final firebaseUser = firebaseUserResponse.firebaseUser;
 
-    if (firebaseUser == null) {
-      return data_classes.SignInProviderResponse(
-        result: false,
-        errorCode: firebaseUserResponse.errorCode,
-        errorMessage: firebaseUserResponse.errorMessage,
-      );
+      if (firebaseUserResponse.errorCode == 0) {
+        // user has closed the popup window
+        return data_classes.SignInProviderResponse(result: false);
+      }
+
+      if (firebaseUser == null) {
+        return data_classes.SignInProviderResponse(
+          result: false,
+          errorCode: firebaseUserResponse.errorCode,
+          errorMessage: firebaseUserResponse.errorMessage,
+        );
+      }
+      uid = firebaseUser.user!.uid;
+      email = firebaseUser.user!.email!;
+      name = firebaseUser.user!.displayName!;
+    } else {
+      // in development use test user
+      uid = dev.testUser!.uid;
+      email = dev.testUser!.email;
+      name = dev.testUser!.name;
     }
-
-    final uid = firebaseUser.user!.uid;
-    final email = firebaseUser.user!.email!;
-    final name = firebaseUser.user!.displayName!;
 
     final verification = utilities.RSACrypto.encryptRSA('$name$email$uid');
 
@@ -288,6 +302,13 @@ class _AuthNotifier extends ChangeNotifier {
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (error) {
+      if (error is PlatformException) {
+        return _GetFirebaseUserResponse(
+          errorCode: 0,
+          errorMessage: error.toString(),
+        );
+      }
+
       return _GetFirebaseUserResponse(
         errorCode: 1,
         errorMessage: error.toString(),

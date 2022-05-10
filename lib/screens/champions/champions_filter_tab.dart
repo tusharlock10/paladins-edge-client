@@ -21,6 +21,9 @@ class ChampionsFilterTab extends HookConsumerWidget {
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
 
+    // State
+    final hoverFilterName = useState<String?>(null);
+
     // Hooks
     final labelColor = useMemoized(
       () {
@@ -31,37 +34,33 @@ class ChampionsFilterTab extends HookConsumerWidget {
       [brightness],
     );
 
-    return Card(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(3),
-          topRight: Radius.circular(3),
-          bottomLeft: Radius.circular(15),
-          bottomRight: Radius.circular(15),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: ListView(
-          physics: const ClampingScrollPhysics(),
-          children: data_classes.ChampionsFilter.filterNames.map(
-            (filterName) {
-              final isFilterNameSelected = selectedFilter.name == filterName;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: ListView(
+        physics: const ClampingScrollPhysics(),
+        children: data_classes.ChampionsFilter.filterNames.map(
+          (filterName) {
+            final isFilterNameSelected = selectedFilter.name == filterName;
 
-              return TouchableOpacity(
-                onTap: isFilterNameSelected
-                    ? null
-                    : () => championsProvider.setFilterName(filterName),
-                activeOpacity: isFilterNameSelected ? 1 : 0.5,
+            return TouchableOpacity(
+              onTap: isFilterNameSelected
+                  ? null
+                  : () => championsProvider.setFilterName(filterName),
+              activeOpacity: isFilterNameSelected ? 1 : 0.5,
+              child: MouseRegion(
+                onEnter: (_) => hoverFilterName.value = filterName,
+                onExit: (_) => hoverFilterName.value = null,
                 child: Card(
-                  elevation: isFilterNameSelected ? 7 : 0,
+                  elevation: 7,
                   margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    side: BorderSide(
-                      color: labelColor,
-                      width: 2,
-                    ),
+                    side: hoverFilterName.value == filterName
+                        ? BorderSide(
+                            color: labelColor,
+                            width: 2,
+                          )
+                        : BorderSide.none,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -119,8 +118,9 @@ class ChampionsFilterTab extends HookConsumerWidget {
                                   color: isFilterValueSelected
                                       ? theme.themeMaterialColor
                                       : Colors.blueGrey,
-                                  onTap: () => championsProvider
-                                      .setFilterValue(filterValue),
+                                  onTap: () => championsProvider.setFilterValue(
+                                    isFilterValueSelected ? null : filterValue,
+                                  ),
                                 );
                               },
                             ).toList(),
@@ -129,10 +129,10 @@ class ChampionsFilterTab extends HookConsumerWidget {
                     ),
                   ),
                 ),
-              );
-            },
-          ).toList(),
-        ),
+              ),
+            );
+          },
+        ).toList(),
       ),
     );
   }

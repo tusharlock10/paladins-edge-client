@@ -46,20 +46,20 @@ class ChampionDetailTalents extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: Wrap(
                             children: [
-                              widgets.TextChip(
-                                hidden: talent.modifier == "None",
-                                spacing: 5,
-                                text: talent.modifier,
-                                color: Colors.teal,
-                              ),
-                              widgets.TextChip(
-                                hidden: talent.cooldown == 0,
-                                spacing: 5,
-                                text:
-                                    '${talent.cooldown.toInt().toString()} sec',
-                                color: Colors.blueGrey,
-                                icon: Icons.timelapse,
-                              ),
+                              if (talent.modifier != "None")
+                                widgets.TextChip(
+                                  spacing: 5,
+                                  text: talent.modifier,
+                                  color: Colors.teal,
+                                ),
+                              if (talent.cooldown != 0)
+                                widgets.TextChip(
+                                  spacing: 5,
+                                  text:
+                                      '${talent.cooldown.toInt().toString()} sec',
+                                  color: Colors.blueGrey,
+                                  icon: Icons.timelapse,
+                                ),
                             ],
                           ),
                         ),

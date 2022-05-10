@@ -9,6 +9,15 @@ import 'package:paladinsedge/widgets/index.dart' as widgets;
 void showLoadoutCardDetailSheet(
   data_classes.ShowLoadoutDetailsOptions options,
 ) {
+  final context = options.context;
+  final screenWidth = MediaQuery.of(context).size.width;
+  final width = utilities.responsiveCondition(
+    context,
+    desktop: screenWidth / 2.5,
+    tablet: screenWidth / 1.5,
+    mobile: screenWidth,
+  );
+
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -16,7 +25,7 @@ void showLoadoutCardDetailSheet(
         topRight: Radius.circular(15),
       ),
     ),
-    context: options.context,
+    context: context,
     builder: (_) {
       return _LoadoutCardDetail(
         card: options.card,
@@ -26,6 +35,7 @@ void showLoadoutCardDetailSheet(
         sliderFixed: options.sliderFixed,
       );
     },
+    constraints: BoxConstraints(maxWidth: width),
   );
 }
 
@@ -117,19 +127,19 @@ class _LoadoutCardDetail extends HookWidget {
                       Wrap(
                         direction: Axis.horizontal,
                         children: [
-                          widgets.TextChip(
-                            hidden: card.cooldown == 0,
-                            spacing: 5,
-                            text: '${card.cooldown.toInt().toString()} sec',
-                            color: Colors.blueGrey,
-                            icon: Icons.timelapse,
-                          ),
-                          widgets.TextChip(
-                            hidden: card.modifier == "None",
-                            spacing: 5,
-                            text: card.modifier,
-                            color: Colors.teal,
-                          ),
+                          if (card.cooldown != 0)
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: '${card.cooldown.toInt().toString()} sec',
+                              color: Colors.blueGrey,
+                              icon: Icons.timelapse,
+                            ),
+                          if (card.modifier != "None")
+                            widgets.TextChip(
+                              spacing: 5,
+                              text: card.modifier,
+                              color: Colors.teal,
+                            ),
                         ],
                       ),
                     ],
