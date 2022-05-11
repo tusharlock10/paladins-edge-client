@@ -126,15 +126,11 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
-              widgets.Ripple(
-                margin: const EdgeInsets.only(bottom: 5),
-                onTap: onFavouriteFriend,
-                child: const Icon(
-                  Icons.star,
-                  size: 24,
-                  color: Colors.yellow,
-                ),
+              widgets.IconButton(
+                iconSize: 28,
+                icon: Icons.star,
+                color: Colors.yellow,
+                onPressed: onFavouriteFriend,
               ),
             ],
           ),
