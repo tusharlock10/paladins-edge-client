@@ -5,9 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/friends/friend_selected.dart';
 import 'package:paladinsedge/screens/friends/friends_app_bar.dart';
 import 'package:paladinsedge/screens/friends/friends_list.dart';
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
@@ -19,30 +19,37 @@ class Friends extends HookConsumerWidget {
     path: routePath,
     builder: _routeBuilder,
   );
+  static const userRouteName = 'userFriends';
+  static const userRoutePath = 'userFriends';
+  static final userGoRoute = GoRoute(
+    name: userRouteName,
+    path: userRoutePath,
+    builder: _userRouteBuilder,
+    redirect: utilities.Navigation.protectedRouteRedirect,
+  );
+  final String? otherPlayerId;
 
-  final _friendsListKey = GlobalKey<AnimatedListState>();
-
-  Friends({Key? key}) : super(key: key);
+  const Friends({
+    this.otherPlayerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final friendsProvider = ref.read(providers.friends);
     final authProvider = ref.read(providers.auth);
-    final playerId =
+    final userPlayerId =
         ref.watch(providers.auth.select((_) => _.player?.playerId));
-    final otherPlayer =
-        ref.watch(providers.friends.select((_) => _.otherPlayer));
-    final fetchedOtherPlayerId =
-        ref.watch(providers.friends.select((_) => _.fetchedOtherPlayerId));
     final isLoadingFriends =
         ref.watch(providers.friends.select((_) => _.isLoadingFriends));
     final fetchedAllFriends =
         ref.watch(providers.friends.select((_) => _.fetchedAllFriends));
 
     // Variables
-    final isOtherPlayer = otherPlayer != null;
+    final isOtherPlayer =
+        otherPlayerId != userPlayerId && otherPlayerId != null;
+    final playerId = otherPlayerId ?? userPlayerId;
 
     // State
     final selectedFriend = useState<models.Player?>(null);
@@ -50,38 +57,42 @@ class Friends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (isOtherPlayer) {
-          // check if the previously fetched otherPlayer
-          // is the same as this otherPlayer
-          // do not fetch if they are the same
-          if (otherPlayer?.playerId != fetchedOtherPlayerId) {
-            friendsProvider.getOtherFriends();
-          }
+        if (playerId != null && isOtherPlayer) {
+          friendsProvider.getOtherFriends(playerId, false);
         } else if (playerId != null && !fetchedAllFriends) {
           friendsProvider.getUserFriends();
         }
 
-        return isOtherPlayer ? friendsProvider.resetOtherPlayer : null;
+        return;
       },
-      [otherPlayer, playerId, fetchedAllFriends],
+      [playerId, fetchedAllFriends, isOtherPlayer],
     );
 
     // Methods
-    final onSelectFriend = useCallback(
+    final onPressFriend = useCallback(
       (models.Player friend) {
-        if (isOtherPlayer) return;
+        if (!isOtherPlayer) {
+          selectedFriend.value = friend;
+        }
+      },
+      [],
+    );
 
-        if (selectedFriend.value?.playerId == friend.playerId) return;
-        // get the playerStatus from the provider
-        selectedFriend.value = friend;
-
-        playersProvider.getPlayerStatus(playerId: friend.playerId);
+    final onPressFriendName = useCallback(
+      (models.Player friend) {
+        utilities.Navigation.navigate(
+          context,
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': friend.playerId,
+          },
+        );
       },
       [],
     );
 
     final onFavouriteFriend = useCallback(
-      () async {
+      (models.Player friend) async {
         if (isOtherPlayer) return;
         if (selectedFriend.value == null) return;
 
@@ -98,10 +109,6 @@ class Friends extends HookConsumerWidget {
                 "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
             type: widgets.ToastType.info,
           );
-        } else if (result == data_classes.FavouriteFriendResult.added) {
-          // player is added in list
-          friendsProvider.moveFriendToTop(selectedFriend.value!.playerId);
-          _friendsListKey.currentState?.insertItem(0);
         }
       },
       [],
@@ -109,10 +116,10 @@ class Friends extends HookConsumerWidget {
 
     final onRefresh = useCallback(
       () {
-        if (isOtherPlayer) {
-          friendsProvider.getOtherFriends(true);
+        if (playerId != null && isOtherPlayer) {
+          return friendsProvider.getOtherFriends(playerId, true);
         } else if (playerId != null) {
-          friendsProvider.getUserFriends(true);
+          return friendsProvider.getUserFriends(true);
         }
 
         return Future.value(null);
@@ -126,10 +133,8 @@ class Friends extends HookConsumerWidget {
         edgeOffset: utilities.getTopEdgeOffset(context),
         child: CustomScrollView(
           slivers: [
-            const FriendsAppBar(),
-            FriendSelected(
-              selectedFriend: selectedFriend.value,
-              onFavouriteFriend: onFavouriteFriend,
+            FriendsAppBar(
+              isOtherPlayer: isOtherPlayer,
             ),
             isLoadingFriends
                 ? SliverList(
@@ -149,8 +154,11 @@ class Friends extends HookConsumerWidget {
                     ),
                   )
                 : FriendsList(
-                    friendsListKey: _friendsListKey,
-                    onSelectFriend: onSelectFriend,
+                    isOtherPlayer: isOtherPlayer,
+                    onPressFriend: onPressFriend,
+                    onPressFriendName: onPressFriendName,
+                    selectedFriend: selectedFriend.value,
+                    onFavouriteFriend: onFavouriteFriend,
                   ),
           ],
         ),
@@ -158,5 +166,19 @@ class Friends extends HookConsumerWidget {
     );
   }
 
-  static Friends _routeBuilder(_, __) => Friends();
+  static Widget _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params['playerId'];
+    if (paramPlayerId == null) {
+      return const screens.NotFound();
+    }
+
+    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    final otherPlayerId = paramPlayerId;
+
+    return Friends(
+      otherPlayerId: otherPlayerId,
+    );
+  }
+
+  static Friends _userRouteBuilder(_, __) => const Friends();
 }

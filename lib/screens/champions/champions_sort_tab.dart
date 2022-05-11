@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ChampionsSortTab extends HookConsumerWidget {
   const ChampionsSortTab({Key? key}) : super(key: key);
@@ -20,9 +20,6 @@ class ChampionsSortTab extends HookConsumerWidget {
     // Variables
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
-
-    // State
-    final hoverSort = useState<String?>(null);
 
     // Hooks
     final labelColor = useMemoized(
@@ -42,62 +39,44 @@ class ChampionsSortTab extends HookConsumerWidget {
           (sort) {
             final isSortSelected = selectedSort == sort;
 
-            return TouchableOpacity(
-              onTap:
-                  isSortSelected ? null : () => championsProvider.setSort(sort),
-              activeOpacity: isSortSelected ? 1 : 0.5,
-              child: MouseRegion(
-                onEnter: (_) => hoverSort.value = sort,
-                onExit: (_) => hoverSort.value = null,
-                child: Card(
-                  elevation: isSortSelected ? 3 : 7,
-                  margin: const EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    side: hoverSort.value == sort
-                        ? BorderSide(
-                            color: labelColor,
-                            width: 2,
-                          )
-                        : BorderSide.none,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              sort,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: labelColor,
-                              ),
-                            ),
-                            if (isSortSelected)
-                              Text(
-                                'Selected',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: labelColor,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                          ],
+            return widgets.InteractiveCard(
+              onTap: () => championsProvider.setSort(sort),
+              elevation: isSortSelected ? 2 : 7,
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              borderRadius: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        sort,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: labelColor,
                         ),
-                        if (isSortSelected)
-                          Text(
-                            data_classes.ChampionsSort.getSortDescription(
-                              sort,
-                            ),
-                            style: textTheme.bodyText1,
+                      ),
+                      if (isSortSelected)
+                        Text(
+                          'Selected',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: labelColor,
+                            fontStyle: FontStyle.italic,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ),
+                  if (isSortSelected)
+                    Text(
+                      data_classes.ChampionsSort.getSortDescription(
+                        sort,
+                      ),
+                      style: textTheme.bodyText1,
+                    ),
+                ],
               ),
             );
           },

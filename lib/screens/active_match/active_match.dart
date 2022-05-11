@@ -19,6 +19,14 @@ class ActiveMatch extends HookConsumerWidget {
     path: routePath,
     builder: _routeBuilder,
   );
+  static const userRouteName = 'userActiveMatch';
+  static const userRoutePath = 'userActiveMatch';
+  static final userGoRoute = GoRoute(
+    name: userRouteName,
+    path: userRoutePath,
+    builder: _routeBuilder,
+    redirect: utilities.Navigation.protectedRouteRedirect,
+  );
 
   const ActiveMatch({Key? key}) : super(key: key);
 

@@ -6,27 +6,48 @@ import 'package:paladinsedge/screens/friends/friend_item.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class FriendsList extends ConsumerWidget {
-  final GlobalKey<AnimatedListState> friendsListKey;
-  final void Function(models.Player) onSelectFriend;
+  final bool isOtherPlayer;
+  final void Function(models.Player) onPressFriend;
+  final void Function(models.Player) onPressFriendName;
+  final models.Player? selectedFriend;
+  final void Function(models.Player friend) onFavouriteFriend;
 
   const FriendsList({
-    required this.friendsListKey,
-    required this.onSelectFriend,
+    required this.isOtherPlayer,
+    required this.onPressFriend,
+    required this.onPressFriendName,
+    required this.selectedFriend,
+    required this.onFavouriteFriend,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final otherPlayer =
-        ref.watch(providers.friends.select((_) => _.otherPlayer));
     final friends = ref.watch(providers.friends.select((_) => _.friends));
     final otherPlayerFriends =
         ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
 
     // Variables
-    final isOtherPlayer = otherPlayer != null;
+    int crossAxisCount;
+    double horizontalPadding;
+    double width;
+    final size = MediaQuery.of(context).size;
+    const itemHeight = 90.0;
     final data = isOtherPlayer ? otherPlayerFriends : friends;
+    if (size.height < size.width) {
+      // for landscape mode
+      crossAxisCount = 2;
+      width = size.width * 0.75;
+      horizontalPadding = (size.width - width) / 2;
+    } else {
+      // for portrait mode
+      crossAxisCount = 1;
+      width = size.width;
+      horizontalPadding = 15;
+    }
+    final itemWidth = width / crossAxisCount;
+    double childAspectRatio = itemWidth / itemHeight;
 
     return data == null
         ? SliverList(
@@ -48,27 +69,32 @@ class FriendsList extends ConsumerWidget {
             ),
           )
         : SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            sliver: SliverAnimatedList(
-              key: friendsListKey,
-              initialItemCount: data.length,
-              itemBuilder: (context, index, animation) {
-                final friend = data[index];
+            padding: EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: horizontalPadding,
+            ),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                // mainAxisSpacing: 5,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (_, index) {
+                  final friend = data[index];
 
-                return SlideTransition(
-                  position: animation.drive(
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: const Offset(0, 0),
-                    ),
-                  ),
-                  child: FriendItem(
+                  return FriendItem(
+                    isSelected: selectedFriend?.playerId == friend.playerId,
                     friend: friend,
-                    onSelectFriend:
-                        isOtherPlayer ? null : () => onSelectFriend(friend),
-                  ),
-                );
-              },
+                    onPressFriend:
+                        isOtherPlayer ? null : () => onPressFriend(friend),
+                    onPressFriendName: () => onPressFriendName(friend),
+                    onFavouriteFriend:
+                        isOtherPlayer ? null : () => onFavouriteFriend(friend),
+                  );
+                },
+                childCount: data.length,
+              ),
             ),
           );
   }

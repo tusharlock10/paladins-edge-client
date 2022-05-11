@@ -13,14 +13,16 @@ final _championDetailRoutes = [
 
 final _playerDetailRoutes = [
   screens.PlayerChampions.goRoute,
+  screens.Friends.goRoute,
+  screens.MatchDetail.goRoute,
+  screens.ActiveMatch.goRoute,
 ];
 
 final _mainRoutes = [
   screens.ChampionDetail.goRouteBuilder(_championDetailRoutes),
   screens.PlayerDetail.goRouteBuilder(_playerDetailRoutes),
-  screens.Friends.goRoute,
-  screens.MatchDetail.goRoute,
-  screens.ActiveMatch.goRoute,
+  screens.Friends.userGoRoute,
+  screens.ActiveMatch.userGoRoute,
   screens.Feedback.goRoute,
 ];
 

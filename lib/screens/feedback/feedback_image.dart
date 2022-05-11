@@ -23,6 +23,7 @@ class FeedbackImage extends HookConsumerWidget {
     final feedbackProvider = ref.read(providers.feedback);
     final selectedImageBytes =
         ref.watch(providers.feedback.select((_) => _.selectedImageBytes));
+    final isImageSelected = selectedImageBytes != null;
 
     return SizedBox(
       width: width,
@@ -36,93 +37,85 @@ class FeedbackImage extends HookConsumerWidget {
             imageWidth / constants.ImageAspectRatios.feedbackImage;
 
         return SizedBox(
-          height: selectedImageBytes == null ? imageHeight / 2 : imageHeight,
+          height: !isImageSelected ? imageHeight / 2 : imageHeight,
           width: imageWidth,
-          child: Card(
+          child: widgets.InteractiveCard(
             elevation: 10,
-            clipBehavior: Clip.hardEdge,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: widgets.Ripple(
-              onTap: selectedImageBytes != null
-                  ? () => {}
-                  : feedbackProvider.pickFeedbackImage,
-              child: selectedImageBytes != null
-                  ? Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.memory(
-                          selectedImageBytes,
-                          fit: BoxFit.cover,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          // mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Flexible(
-                              flex: 3,
-                              fit: FlexFit.tight,
-                              child: SizedBox.expand(),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: widgets.Ripple(
-                                onTap: feedbackProvider.pickFeedbackImage,
-                                child: ClipRRect(
-                                  child: Container(
-                                    color: Colors.black87.withOpacity(0.25),
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                        sigmaX: 10,
-                                        sigmaY: 10,
-                                        tileMode: TileMode.mirror,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Change Image",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: theme
-                                                  .themeMaterialColor.shade50,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Icon(
-                                            FeatherIcons.image,
-                                            size: 22,
+            borderRadius: 10,
+            disableHover: isImageSelected,
+            onTap:
+                isImageSelected ? () => {} : feedbackProvider.pickFeedbackImage,
+            child: isImageSelected
+                ? Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.memory(
+                        selectedImageBytes!,
+                        fit: BoxFit.cover,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Flexible(
+                            flex: 3,
+                            fit: FlexFit.tight,
+                            child: SizedBox.expand(),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: InkWell(
+                              onTap: feedbackProvider.pickFeedbackImage,
+                              child: ClipRRect(
+                                child: Container(
+                                  color: Colors.black87.withOpacity(0.25),
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 10,
+                                      sigmaY: 10,
+                                      tileMode: TileMode.mirror,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Change Image",
+                                          style: TextStyle(
+                                            fontSize: 18,
                                             color: theme
                                                 .themeMaterialColor.shade50,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Icon(
+                                          FeatherIcons.image,
+                                          size: 22,
+                                          color:
+                                              theme.themeMaterialColor.shade50,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          FeatherIcons.image,
-                          size: 36,
-                        ),
-                        SizedBox(height: 5),
-                        Text("Select an Image"),
-                      ],
-                    ),
-            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        FeatherIcons.image,
+                        size: 36,
+                      ),
+                      SizedBox(height: 5),
+                      Text("Select an Image"),
+                    ],
+                  ),
           ),
         );
       }),
