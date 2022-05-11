@@ -72,103 +72,96 @@ class ChampionItem extends HookConsumerWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Card(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-        ),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          onTap: onTapChampion,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Hero(
-                    tag: '${champion.championId}Icon',
-                    child: LayoutBuilder(
-                      builder: (context, constraints) => widgets.ElevatedAvatar(
-                        imageUrl: champion.iconUrl,
-                        imageBlurHash: champion.iconBlurHash,
-                        size: (constraints.maxHeight - 10) / 2,
-                      ),
+      child: widgets.InteractiveCard(
+        borderRadius: 25,
+        padding: const EdgeInsets.all(10),
+        onTap: onTapChampion,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10, left: 5),
+              child: Hero(
+                tag: '${champion.championId}Icon',
+                child: LayoutBuilder(
+                  builder: (context, constraints) => widgets.ElevatedAvatar(
+                    imageUrl: champion.iconUrl,
+                    imageBlurHash: champion.iconBlurHash,
+                    size: (constraints.maxHeight - 10) / 2,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubstringHighlight(
+                    text: champion.name.toUpperCase(),
+                    term: search,
+                    textStyle: textTheme.headline1!.copyWith(
+                      fontSize: 16,
+                    ),
+                    textStyleHighlight: textTheme.headline1!.copyWith(
+                      fontSize: 16,
+                      backgroundColor: highlightColor,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 2),
+                  if (search != '' &&
+                      champion.title
+                          .toLowerCase()
+                          .contains(search.toLowerCase()))
+                    SubstringHighlight(
+                      text: champion.title,
+                      term: search,
+                      textStyle: textTheme.bodyText1!.copyWith(
+                        fontSize: 12,
+                      ),
+                      textStyleHighlight: textTheme.bodyText1!.copyWith(
+                        fontSize: 12,
+                        backgroundColor: highlightColor,
+                      ),
+                    ),
+                  const SizedBox(height: 5),
+                  Wrap(
                     children: [
-                      SubstringHighlight(
-                        text: champion.name.toUpperCase(),
-                        term: search,
-                        textStyle: textTheme.headline1!.copyWith(
-                          fontSize: 16,
-                        ),
-                        textStyleHighlight: textTheme.headline1!.copyWith(
-                          fontSize: 16,
-                          backgroundColor: highlightColor,
-                        ),
+                      widgets.TextChip(
+                        spacing: 5,
+                        text: champion.role,
+                        color: theme.themeMaterialColor,
                       ),
-                      const SizedBox(height: 2),
-                      if (search != '' &&
-                          champion.title
-                              .toLowerCase()
-                              .contains(search.toLowerCase()))
-                        SubstringHighlight(
-                          text: champion.title,
-                          term: search,
-                          textStyle: textTheme.bodyText1!.copyWith(
-                            fontSize: 12,
-                          ),
-                          textStyleHighlight: textTheme.bodyText1!.copyWith(
-                            fontSize: 12,
-                            backgroundColor: highlightColor,
-                          ),
+                      if (playerChampion?.level != null)
+                        widgets.TextChip(
+                          spacing: 5,
+                          text: 'Level ${playerChampion?.level.toString()}',
+                          color: levelColor,
                         ),
-                      const SizedBox(height: 5),
-                      Wrap(
-                        children: [
-                          widgets.TextChip(
-                            spacing: 5,
-                            text: champion.role,
-                            color: theme.themeMaterialColor,
-                          ),
-                          if (playerChampion?.level != null)
-                            widgets.TextChip(
-                              spacing: 5,
-                              text: 'Level ${playerChampion?.level.toString()}',
-                              color: levelColor,
-                            ),
-                          if (champion.onFreeRotation)
-                            const widgets.TextChip(
-                              spacing: 5,
-                              text: 'Free',
-                              icon: Icons.rotate_right,
-                              color: Colors.green,
-                            ),
-                          if (champion.latestChampion)
-                            const widgets.TextChip(
-                              spacing: 5,
-                              text: 'New',
-                              icon: Icons.star,
-                              color: Colors.orange,
-                            ),
-                          if (sortTextChip != null)
-                            widgets.TextChip(
-                              spacing: 5,
-                              text: sortTextChip,
-                              color: Colors.pink,
-                            ),
-                        ],
-                      ),
+                      if (champion.onFreeRotation)
+                        const widgets.TextChip(
+                          spacing: 5,
+                          text: 'Free',
+                          icon: Icons.rotate_right,
+                          color: Colors.green,
+                        ),
+                      if (champion.latestChampion)
+                        const widgets.TextChip(
+                          spacing: 5,
+                          text: 'New',
+                          icon: Icons.star,
+                          color: Colors.orange,
+                        ),
+                      if (sortTextChip != null)
+                        widgets.TextChip(
+                          spacing: 5,
+                          text: sortTextChip,
+                          color: Colors.pink,
+                        ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
