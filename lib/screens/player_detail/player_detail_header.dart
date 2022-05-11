@@ -16,7 +16,6 @@ class PlayerDetailHeader extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
-    final friendsProvider = ref.read(providers.friends);
     final player = ref.watch(providers.players.select((_) => _.playerData));
     final playerStatus =
         ref.watch(providers.players.select((_) => _.playerStatus));
@@ -44,9 +43,13 @@ class PlayerDetailHeader extends HookConsumerWidget {
       () {
         if (player == null) return;
 
-        // set otherPlayerId
-        friendsProvider.setOtherPlayer(player);
-        utilities.Navigation.navigate(context, screens.Friends.routeName);
+        utilities.Navigation.navigate(
+          context,
+          screens.Friends.routeName,
+          params: {
+            'playerId': player.playerId,
+          },
+        );
       },
       [],
     );

@@ -32,6 +32,11 @@ class _PlayersNotifier extends ChangeNotifier {
       onlyStatus: onlyStatus,
     );
 
+    playerStatus ??= api.PlayerStatusResponse(
+      status: 'Unknown',
+      match: null,
+    );
+
     if (!forceUpdate) isLoadingPlayerStatus = false;
     notifyListeners();
   }

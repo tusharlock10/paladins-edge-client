@@ -1,4 +1,3 @@
-import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paladinsedge/api/index.dart' as api;
@@ -18,37 +17,10 @@ class _FriendsNotifier extends ChangeNotifier {
   /// List of friends for user's player
   List<models.Player>? friends;
 
-  /// The non-user player whose friends we want to show
-  models.Player? otherPlayer;
-
-  /// id of otherPlayer whose friends are stored in otherPlayerFriends
-  /// when player goes back from Friends screen, otherPlayer is reset
-  /// but otherPlayerFriends and fetchedOtherPlayerId is not reset
-  /// this acts as a cache, when the user goes back and immediately visits
-  /// the Friends screen of this player again, otherPlayerFriends will be shown
-  /// instead of fetching it again from BE
-  String? fetchedOtherPlayerId;
-
   /// List of friends of otherPlayer
   List<models.Player>? otherPlayerFriends;
 
   _FriendsNotifier({required this.ref});
-
-  void moveFriendToTop(String playerId) {
-    if (friends == null) return;
-    final _friends = friends!;
-    // the player to move to top of the friends list
-    final player =
-        _friends.firstOrNullWhere((friend) => friend.playerId == playerId);
-
-    if (player == null) return;
-
-    _friends.removeWhere((friend) => friend.playerId == playerId);
-    _friends.insert(0, player);
-    friends = _friends;
-
-    notifyListeners();
-  }
 
   Future<void> getUserFriends([bool forceUpdate = false]) async {
     final playerId = ref.read(auth_provider.auth).player?.playerId;
@@ -98,18 +70,10 @@ class _FriendsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setOtherPlayer(models.Player player) {
-    otherPlayer = player;
-  }
-
-  void resetOtherPlayer() {
-    otherPlayer = null;
-  }
-
-  Future<void> getOtherFriends([bool forceUpdate = false]) async {
-    final playerId = otherPlayer?.playerId;
-    if (playerId == null) return;
-
+  Future<void> getOtherFriends(
+    String playerId, [
+    bool forceUpdate = false,
+  ]) async {
     if (!forceUpdate) {
       isLoadingFriends = true;
       utilities.postFrameCallback(notifyListeners);
@@ -125,7 +89,6 @@ class _FriendsNotifier extends ChangeNotifier {
 
     if (!forceUpdate) isLoadingFriends = false;
     otherPlayerFriends = response.friends;
-    fetchedOtherPlayerId = playerId;
 
     notifyListeners();
   }

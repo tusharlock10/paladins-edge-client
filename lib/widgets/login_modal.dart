@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/google_button.dart';
 import 'package:paladinsedge/widgets/toast.dart';
@@ -64,10 +63,7 @@ class _LoginModal extends HookConsumerWidget {
 
         final response = await authProvider.signInWithGoogle();
         if (response.result) {
-          utilities.Navigation.navigate(
-            context,
-            screens.Main.routeName,
-          );
+          utilities.Navigation.pop(context);
         } else {
           isLoggingIn.value = false;
           if (response.errorCode == null && response.errorMessage == null) {

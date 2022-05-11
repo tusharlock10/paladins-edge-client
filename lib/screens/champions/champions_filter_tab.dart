@@ -5,7 +5,6 @@ import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:touchable_opacity/touchable_opacity.dart';
 
 class ChampionsFilterTab extends HookConsumerWidget {
   const ChampionsFilterTab({Key? key}) : super(key: key);
@@ -20,9 +19,6 @@ class ChampionsFilterTab extends HookConsumerWidget {
     // Variables
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
-
-    // State
-    final hoverFilterName = useState<String?>(null);
 
     // Hooks
     final labelColor = useMemoized(
@@ -42,92 +38,74 @@ class ChampionsFilterTab extends HookConsumerWidget {
           (filterName) {
             final isFilterNameSelected = selectedFilter.name == filterName;
 
-            return TouchableOpacity(
+            return widgets.InteractiveCard(
               onTap: isFilterNameSelected
                   ? null
                   : () => championsProvider.setFilterName(filterName),
-              activeOpacity: isFilterNameSelected ? 1 : 0.5,
-              child: MouseRegion(
-                onEnter: (_) => hoverFilterName.value = filterName,
-                onExit: (_) => hoverFilterName.value = null,
-                child: Card(
-                  elevation: isFilterNameSelected ? 3 : 7,
-                  margin: const EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    side: hoverFilterName.value == filterName
-                        ? BorderSide(
-                            color: labelColor,
-                            width: 2,
-                          )
-                        : BorderSide.none,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              elevation: isFilterNameSelected ? 2 : 7,
+              margin: const EdgeInsets.all(10),
+              borderRadius: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              filterName,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: labelColor,
-                              ),
-                            ),
-                            if (isFilterNameSelected)
-                              Text(
-                                'Selected',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: labelColor,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                          ],
+                        Text(
+                          filterName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: labelColor,
+                          ),
                         ),
                         if (isFilterNameSelected)
                           Text(
-                            data_classes.ChampionsFilter.getFilterDescription(
-                              filterName,
+                            'Selected',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: labelColor,
+                              fontStyle: FontStyle.italic,
                             ),
-                            style: textTheme.bodyText1,
-                          ),
-                        if (isFilterNameSelected) const SizedBox(height: 10),
-                        if (isFilterNameSelected)
-                          Wrap(
-                            children:
-                                data_classes.ChampionsFilter.getFilterValues(
-                              filterName,
-                            )!
-                                    .map(
-                              (filterValue) {
-                                final isFilterValueSelected =
-                                    selectedFilter.value == filterValue;
-
-                                return widgets.TextChip(
-                                  spacing: 5,
-                                  textSize: 12,
-                                  iconSize: 14,
-                                  text: filterValue,
-                                  icon: isFilterValueSelected
-                                      ? Icons.check
-                                      : null,
-                                  color: isFilterValueSelected
-                                      ? theme.themeMaterialColor
-                                      : Colors.blueGrey,
-                                  onTap: () => championsProvider.setFilterValue(
-                                    isFilterValueSelected ? null : filterValue,
-                                  ),
-                                );
-                              },
-                            ).toList(),
                           ),
                       ],
                     ),
-                  ),
+                    if (isFilterNameSelected)
+                      Text(
+                        data_classes.ChampionsFilter.getFilterDescription(
+                          filterName,
+                        ),
+                        style: textTheme.bodyText1,
+                      ),
+                    if (isFilterNameSelected) const SizedBox(height: 10),
+                    if (isFilterNameSelected)
+                      Wrap(
+                        children: data_classes.ChampionsFilter.getFilterValues(
+                          filterName,
+                        )!
+                            .map(
+                          (filterValue) {
+                            final isFilterValueSelected =
+                                selectedFilter.value == filterValue;
+
+                            return widgets.TextChip(
+                              spacing: 5,
+                              textSize: 12,
+                              iconSize: 14,
+                              text: filterValue,
+                              icon: isFilterValueSelected ? Icons.check : null,
+                              color: isFilterValueSelected
+                                  ? theme.themeMaterialColor
+                                  : Colors.blueGrey,
+                              onTap: () => championsProvider.setFilterValue(
+                                isFilterValueSelected ? null : filterValue,
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                  ],
                 ),
               ),
             );

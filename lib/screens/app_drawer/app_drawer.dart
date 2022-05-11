@@ -83,7 +83,7 @@ class AppDrawer extends HookConsumerWidget {
     final _onFriends = useCallback(
       () {
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Friends.routeName);
+        utilities.Navigation.navigate(context, screens.Friends.userRouteName);
       },
       [],
     );
@@ -112,7 +112,10 @@ class AppDrawer extends HookConsumerWidget {
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.ActiveMatch.routeName);
+        utilities.Navigation.navigate(
+          context,
+          screens.ActiveMatch.userRouteName,
+        );
       },
       [player],
     );
