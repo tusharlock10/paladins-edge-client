@@ -1,7 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/constants.dart' as constants;
@@ -12,7 +13,7 @@ import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:timer_builder/timer_builder.dart';
 
-class PlayerDetailMatchCard extends ConsumerWidget {
+class PlayerDetailMatchCard extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
   final models.Champion champion;
   final models.Match match;
@@ -24,21 +25,11 @@ class PlayerDetailMatchCard extends ConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  void onTap(BuildContext context) {
-    utilities.Navigation.navigate(
-      context,
-      screens.MatchDetail.routeName,
-      params: {
-        'matchId': match.matchId,
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Variables
     final textTheme = Theme.of(context).textTheme;
     final playerStats = matchPlayer.playerStats;
-
     final talentUsed = champion.talents
         .firstOrNullWhere((_) => _.talentId2 == matchPlayer.talentId2);
     final loadout = matchPlayer.playerChampionCards.map(
@@ -54,136 +45,149 @@ class PlayerDetailMatchCard extends ConsumerWidget {
       },
     );
 
-    return InkWell(
-      onTap: () => onTap(context),
-      child: Card(
-        elevation: 5,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-        clipBehavior: Clip.antiAlias,
-        child: SizedBox(
-          height: 120,
-          child: Row(
-            children: [
-              Container(
-                height: double.infinity,
-                width: 10,
-                color: match.winningTeam == matchPlayer.team
-                    ? Colors.green
-                    : Colors.red,
-              ),
-              const SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      widgets.ElevatedAvatar(
-                        imageUrl: utilities.getSmallAsset(champion.iconUrl),
-                        imageBlurHash: champion.iconBlurHash,
-                        size: 28,
-                        borderRadius: 28,
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}',
-                            style: textTheme.bodyText1?.copyWith(fontSize: 18),
-                          ),
-                          Text(
-                            match.map.replaceFirst('LIVE ', ''),
-                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      talentUsed == null
-                          ? const SizedBox(height: 48, width: 48)
-                          : widgets.FastImage(
-                              imageUrl:
-                                  utilities.getSmallAsset(talentUsed.imageUrl),
-                              height: 48,
-                              width: 48,
-                            ),
-                      ...loadout.map(
-                        (loadoutItem) {
-                          final cardImageUrl = loadoutItem.card?.imageUrl;
-                          if (cardImageUrl == null) return const SizedBox();
+    // Methods
+    final onTap = useCallback(
+      () {
+        utilities.Navigation.navigate(
+          context,
+          screens.MatchDetail.routeName,
+          params: {
+            'matchId': match.matchId,
+            'playerId': matchPlayer.playerId,
+          },
+        );
+      },
+      [],
+    );
 
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: widgets.FastImage(
-                              imageUrl: utilities.getSmallAsset(cardImageUrl),
-                              imageBlurHash: loadoutItem.card?.imageBlurHash,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5)),
-                              height: 24,
-                              width:
-                                  24 * constants.ImageAspectRatios.championCard,
+    return widgets.InteractiveCard(
+      onTap: onTap,
+      elevation: 5,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      borderRadius: 10,
+      child: SizedBox(
+        height: 120,
+        child: Row(
+          children: [
+            Container(
+              height: double.infinity,
+              width: 10,
+              color: match.winningTeam == matchPlayer.team
+                  ? Colors.green
+                  : Colors.red,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    widgets.ElevatedAvatar(
+                      imageUrl: utilities.getSmallAsset(champion.iconUrl),
+                      imageBlurHash: champion.iconBlurHash,
+                      size: 28,
+                      borderRadius: 28,
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}',
+                          style: textTheme.bodyText1?.copyWith(fontSize: 18),
+                        ),
+                        Text(
+                          match.map.replaceFirst('LIVE ', ''),
+                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    talentUsed == null
+                        ? const SizedBox(height: 48, width: 48)
+                        : widgets.FastImage(
+                            imageUrl:
+                                utilities.getSmallAsset(talentUsed.imageUrl),
+                            height: 48,
+                            width: 48,
+                          ),
+                    ...loadout.map(
+                      (loadoutItem) {
+                        final cardImageUrl = loadoutItem.card?.imageUrl;
+                        if (cardImageUrl == null) return const SizedBox();
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: widgets.FastImage(
+                            imageUrl: utilities.getSmallAsset(cardImageUrl),
+                            imageBlurHash: loadoutItem.card?.imageBlurHash,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            height: 24,
+                            width:
+                                24 * constants.ImageAspectRatios.championCard,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ],
+                ),
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      match.queue,
+                      style: textTheme.headline2?.copyWith(fontSize: 14),
+                    ),
+                    TimerBuilder.periodic(
+                      const Duration(minutes: 1),
+                      builder: (_) {
+                        return Text(
+                          Jiffy(match.matchStartTime).fromNow(),
+                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        );
+                      },
+                    ),
+                    matchPlayer.playerStats.biggestKillStreak > 5
+                        ? widgets.TextChip(
+                            icon: FeatherIcons.zap,
+                            color: Colors.orange,
+                            text:
+                                '${matchPlayer.playerStats.biggestKillStreak} streak',
+                          )
+                        : const SizedBox(),
+                    matchPlayer.playerStats.totalDamageDealt >
+                            matchPlayer.playerStats.healingDone
+                        ? Text(
+                            '${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg',
+                            style: textTheme.bodyText1?.copyWith(
+                              fontSize: 12,
+                              color: Colors.red.shade400,
+                              fontStyle: FontStyle.italic,
                             ),
-                          );
-                        },
-                      ).toList(),
-                    ],
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        match.queue,
-                        style: textTheme.headline2?.copyWith(fontSize: 14),
-                      ),
-                      TimerBuilder.periodic(
-                        const Duration(minutes: 1),
-                        builder: (_) {
-                          return Text(
-                            Jiffy(match.matchStartTime).fromNow(),
-                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                          );
-                        },
-                      ),
-                      matchPlayer.playerStats.biggestKillStreak > 5
-                          ? widgets.TextChip(
-                              icon: FeatherIcons.zap,
-                              color: Colors.orange,
-                              text:
-                                  '${matchPlayer.playerStats.biggestKillStreak} streak',
-                            )
-                          : const SizedBox(),
-                      matchPlayer.playerStats.totalDamageDealt >
-                              matchPlayer.playerStats.healingDone
-                          ? Text(
-                              '${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg',
-                              style: textTheme.bodyText1?.copyWith(
-                                fontSize: 12,
-                                color: Colors.red.shade400,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            )
-                          : Text(
-                              '${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal',
-                              style: textTheme.bodyText1?.copyWith(
-                                fontSize: 12,
-                                color: Colors.green.shade400,
-                                fontStyle: FontStyle.italic,
-                              ),
+                          )
+                        : Text(
+                            '${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal',
+                            style: textTheme.bodyText1?.copyWith(
+                              fontSize: 12,
+                              color: Colors.green.shade400,
+                              fontStyle: FontStyle.italic,
                             ),
-                    ],
-                  ),
+                          ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

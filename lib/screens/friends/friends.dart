@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friends_app_bar.dart';
 import 'package:paladinsedge/screens/friends/friends_list.dart';
@@ -38,7 +36,6 @@ class Friends extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final friendsProvider = ref.read(providers.friends);
-    final authProvider = ref.read(providers.auth);
     final userPlayerId =
         ref.watch(providers.auth.select((_) => _.player?.playerId));
     final isLoadingFriends =
@@ -50,9 +47,6 @@ class Friends extends HookConsumerWidget {
     final isOtherPlayer =
         otherPlayerId != userPlayerId && otherPlayerId != null;
     final playerId = otherPlayerId ?? userPlayerId;
-
-    // State
-    final selectedFriend = useState<models.Player?>(null);
 
     // Effects
     useEffect(
@@ -66,52 +60,6 @@ class Friends extends HookConsumerWidget {
         return;
       },
       [playerId, fetchedAllFriends, isOtherPlayer],
-    );
-
-    // Methods
-    final onPressFriend = useCallback(
-      (models.Player friend) {
-        if (!isOtherPlayer) {
-          selectedFriend.value = friend;
-        }
-      },
-      [],
-    );
-
-    final onPressFriendName = useCallback(
-      (models.Player friend) {
-        utilities.Navigation.navigate(
-          context,
-          screens.PlayerDetail.routeName,
-          params: {
-            'playerId': friend.playerId,
-          },
-        );
-      },
-      [],
-    );
-
-    final onFavouriteFriend = useCallback(
-      (models.Player friend) async {
-        if (isOtherPlayer) return;
-        if (selectedFriend.value == null) return;
-
-        final result = await authProvider
-            .markFavouriteFriend(selectedFriend.value!.playerId);
-
-        if (result == data_classes.FavouriteFriendResult.limitReached) {
-          // user already has max number of friends
-          // show a toast displaying this info
-
-          widgets.showToast(
-            context: context,
-            text:
-                "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
-            type: widgets.ToastType.info,
-          );
-        }
-      },
-      [],
     );
 
     final onRefresh = useCallback(
@@ -155,10 +103,6 @@ class Friends extends HookConsumerWidget {
                   )
                 : FriendsList(
                     isOtherPlayer: isOtherPlayer,
-                    onPressFriend: onPressFriend,
-                    onPressFriendName: onPressFriendName,
-                    selectedFriend: selectedFriend.value,
-                    onFavouriteFriend: onFavouriteFriend,
                   ),
           ],
         ),

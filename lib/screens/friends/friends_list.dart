@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/friends/friend_item.dart';
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class FriendsList extends ConsumerWidget {
   final bool isOtherPlayer;
-  final void Function(models.Player) onPressFriend;
-  final void Function(models.Player) onPressFriendName;
-  final models.Player? selectedFriend;
-  final void Function(models.Player friend) onFavouriteFriend;
 
   const FriendsList({
     required this.isOtherPlayer,
-    required this.onPressFriend,
-    required this.onPressFriendName,
-    required this.selectedFriend,
-    required this.onFavouriteFriend,
     Key? key,
   }) : super(key: key);
 
@@ -84,13 +75,8 @@ class FriendsList extends ConsumerWidget {
                   final friend = data[index];
 
                   return FriendItem(
-                    isSelected: selectedFriend?.playerId == friend.playerId,
+                    isOtherPlayer: isOtherPlayer,
                     friend: friend,
-                    onPressFriend:
-                        isOtherPlayer ? null : () => onPressFriend(friend),
-                    onPressFriendName: () => onPressFriendName(friend),
-                    onFavouriteFriend:
-                        isOtherPlayer ? null : () => onFavouriteFriend(friend),
                   );
                 },
                 childCount: data.length,

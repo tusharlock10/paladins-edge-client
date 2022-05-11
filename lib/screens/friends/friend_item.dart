@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paladinsedge/data_classes/index.dart' as data_classes;
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class FriendItem extends HookConsumerWidget {
-  final bool isSelected;
+  final bool isOtherPlayer;
   final models.Player friend;
-  final void Function()? onPressFriend;
-  final void Function()? onPressFriendName;
-  final void Function()? onFavouriteFriend;
 
-  // TODO: Refactor friends to use hooks in FriendsItem, instead of using callbacks
   const FriendItem({
-    required this.isSelected,
+    required this.isOtherPlayer,
     required this.friend,
-    required this.onPressFriend,
-    required this.onPressFriendName,
-    required this.onFavouriteFriend,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final authProvider = ref.read(providers.auth);
     final favouriteFriends =
         ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
 
@@ -34,10 +31,48 @@ class FriendItem extends HookConsumerWidget {
     final bool isFavourite =
         favouriteFriends?.contains(friend.playerId) ?? false;
 
+    // State
+    final isSelected = useState(false);
+
+    // Methods
+    final onFavouriteFriend = useCallback(
+      () async {
+        if (isOtherPlayer) return;
+
+        final result = await authProvider.markFavouriteFriend(friend.playerId);
+
+        if (result == data_classes.FavouriteFriendResult.limitReached) {
+          // user already has max number of friends
+          // show a toast displaying this info
+
+          widgets.showToast(
+            context: context,
+            text:
+                "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
+            type: widgets.ToastType.info,
+          );
+        }
+      },
+      [isOtherPlayer, friend],
+    );
+
+    final onPressFriendName = useCallback(
+      () {
+        utilities.Navigation.navigate(
+          context,
+          screens.PlayerDetail.routeName,
+          params: {
+            'playerId': friend.playerId,
+          },
+        );
+      },
+      [friend],
+    );
+
     return widgets.InteractiveCard(
       elevation: 7,
       borderRadius: 10,
-      onTap: onPressFriend,
+      onTap: () => isSelected.value = !isSelected.value,
       padding: const EdgeInsets.only(left: 10),
       child: SizedBox(
         height: itemHeight,
@@ -92,7 +127,7 @@ class FriendItem extends HookConsumerWidget {
                   )
                 : const SizedBox(),
             const SizedBox(width: 10),
-            !isSelected
+            !isSelected.value
                 ? Container(
                     color: isFavourite ? Colors.yellow : Colors.transparent,
                     height: itemHeight,
