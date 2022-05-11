@@ -5,6 +5,7 @@ export './elevated_avatar.dart';
 export './fast_image.dart';
 export './google_button.dart';
 export './info_alert.dart';
+export './interactive_card.dart';
 export './loading_indicator.dart';
 export './loadout_card_detail.dart';
 export './loadout_deck_card.dart';

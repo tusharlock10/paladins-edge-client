@@ -4,7 +4,11 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/providers/index.dart' as providers;
 
 class FriendsAppBar extends ConsumerWidget {
-  const FriendsAppBar({Key? key}) : super(key: key);
+  final bool isOtherPlayer;
+  const FriendsAppBar({
+    required this.isOtherPlayer,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,10 +19,9 @@ class FriendsAppBar extends ConsumerWidget {
     final isLoadingFriends =
         ref.watch(providers.friends.select((_) => _.isLoadingFriends));
     final otherPlayer =
-        ref.watch(providers.friends.select((_) => _.otherPlayer));
+        ref.watch(providers.players.select((_) => _.playerData));
 
     // Variables
-    final isOtherPlayer = otherPlayer != null;
     final data = isOtherPlayer ? otherPlayerFriends : friends;
 
     return SliverAppBar(
