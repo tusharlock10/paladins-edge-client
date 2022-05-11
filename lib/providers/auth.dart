@@ -179,6 +179,12 @@ class _AuthNotifier extends ChangeNotifier {
     // 3) Notify backend about logout
     // 4) remove user, player, token from provider
 
+    // clear values from the database and utilities
+    await utilities.Database.clear();
+
+    utilities.api.options.headers["authorization"] = null;
+    utilities.Global.isAuthenticated = false;
+
     try {
       await GoogleSignIn().signOut();
     } catch (_) {
@@ -191,12 +197,6 @@ class _AuthNotifier extends ChangeNotifier {
         return false;
       }
     }
-
-    // clear values from the database and utilities
-    await utilities.Database.clear();
-
-    utilities.api.options.headers["authorization"] = null;
-    utilities.Global.isAuthenticated = false;
 
     // clear data from all providers
     clearData();
