@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paladinsedge/widgets/ripple.dart';
 
 class TextChip extends StatelessWidget {
   final String text;
@@ -35,53 +34,56 @@ class TextChip extends StatelessWidget {
     final color1 = isLightTheme ? color.shade50 : color.shade700;
     final color2 = isLightTheme ? color.shade900 : color.shade50;
 
-    return Container(
+    return SizedBox(
       width: width,
       height: height,
-      margin: EdgeInsets.symmetric(
-        horizontal: spacing / 2,
-        vertical: spacing / 2,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.symmetric(
+          horizontal: spacing / 2,
+          vertical: spacing / 2,
+        ),
         color: color1,
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Ripple(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: 3),
-                  child: Icon(
-                    icon,
-                    color: color2,
-                    size: iconSize,
-                  ),
-                ),
-              Text(
-                text,
-                style: Theme.of(context).textTheme.headline2?.copyWith(
-                      fontSize: textSize,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (icon != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 3),
+                    child: Icon(
+                      icon,
                       color: color2,
-                      fontWeight: FontWeight.normal,
+                      size: iconSize,
                     ),
-              ),
-              if (trailingIcon != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 3),
-                  child: Icon(
-                    trailingIcon,
-                    color: color2,
-                    size: trailingIconSize,
                   ),
+                Text(
+                  text,
+                  style: Theme.of(context).textTheme.headline2?.copyWith(
+                        fontSize: textSize,
+                        color: color2,
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
-            ],
+                if (trailingIcon != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: Icon(
+                      trailingIcon,
+                      color: color2,
+                      size: trailingIconSize,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
