@@ -66,7 +66,9 @@ class InteractiveCard extends HookWidget {
             isInteractive && isHovering.value ? hoverElevation : elevation,
         margin: margin,
         shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: borderRadius == null
+              ? BorderRadius.zero
+              : BorderRadius.all(Radius.circular(borderRadius!)),
           side: isInteractive && isHovering.value
               ? BorderSide(
                   color: _hoverBorderColor,
