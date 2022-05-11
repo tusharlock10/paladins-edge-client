@@ -18,6 +18,7 @@ class CreateLoadout extends HookConsumerWidget {
     name: routeName,
     path: routePath,
     builder: _routeBuilder,
+    redirect: utilities.Navigation.protectedRouteRedirect,
   );
   final int championId;
 

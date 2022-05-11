@@ -34,7 +34,11 @@ class PlayerDetailHeader extends HookConsumerWidget {
         if (player == null) return;
 
         playersProvider.setPlayerStatusPlayerId(player.playerId);
-        utilities.Navigation.navigate(context, screens.ActiveMatch.routeName);
+        utilities.Navigation.navigate(
+          context,
+          screens.ActiveMatch.routeName,
+          params: {'playerId': player.playerId},
+        );
       },
       [],
     );
