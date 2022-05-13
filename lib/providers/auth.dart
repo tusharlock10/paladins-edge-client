@@ -172,18 +172,10 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Logs out the user, also sends this info to server
   Future<bool> logout() async {
-    // 1) Clear user's storage first so,
-    //    if the logout fails in the steps below
-    //    he can still login
-    // 2) Sign-out from google
-    // 3) Notify backend about logout
-    // 4) remove user, player, token from provider
-
-    // clear values from the database and utilities
-    await utilities.Database.clear();
-
-    utilities.api.options.headers["authorization"] = null;
-    utilities.Global.isAuthenticated = false;
+    // 1) Sign-out from google
+    // 2) Notify backend about logout
+    // 3) remove user, player, token from provider
+    // 4) Clear user's storage
 
     try {
       await GoogleSignIn().signOut();
@@ -204,6 +196,12 @@ class _AuthNotifier extends ChangeNotifier {
     ref.read(loadout_provider.loadout).clearData();
     ref.read(matches_provider.matches).clearData();
     ref.read(players_provider.players).clearData();
+
+    // clear values from the database and utilities
+    await utilities.Database.clear();
+
+    utilities.api.options.headers["authorization"] = null;
+    utilities.Global.isAuthenticated = false;
 
     return true;
   }

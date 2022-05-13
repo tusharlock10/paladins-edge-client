@@ -16,6 +16,7 @@ class Login extends HookConsumerWidget {
     name: routeName,
     path: routePath,
     builder: _routeBuilder,
+    redirect: _routeRedirect,
   );
 
   const Login({Key? key}) : super(key: key);
@@ -98,4 +99,12 @@ class Login extends HookConsumerWidget {
   }
 
   static Login _routeBuilder(_, __) => const Login();
+
+  static String? _routeRedirect(GoRouterState _) {
+    // check if user is authenticated
+    // send him to main if authenticated
+    if (utilities.Global.isAuthenticated) return screens.Main.routePath;
+
+    return null;
+  }
 }
