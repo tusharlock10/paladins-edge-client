@@ -16,4 +16,7 @@ abstract class Global {
   /// If user is logged in and player=null,
   /// then navigate to connectProfile
   static bool isPlayerConnected = false;
+
+  /// used to detect if the route is being accessed initially
+  static bool isInitialRoute = true;
 }
