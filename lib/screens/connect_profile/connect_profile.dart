@@ -31,9 +31,9 @@ class ConnectProfile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final name = ref.watch(providers.auth.select((_) => _.user?.name));
     final authProvider = ref.read(providers.auth);
-    final searchProvider = ref.read(providers.players);
+    final playersProvider = ref.read(providers.players);
+    final name = ref.watch(providers.auth.select((_) => _.user?.name));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -45,6 +45,7 @@ class ConnectProfile extends HookConsumerWidget {
           : (Random().nextInt(899999) + 100000).toString(),
     );
     final isLoading = useState(false);
+    final isCheckingPlayer = useState<String?>(null);
     final isVerifying = useState(false);
     final step = useState(0); // at which step of the process the user is at
     final selectedPlayer =
@@ -52,9 +53,29 @@ class ConnectProfile extends HookConsumerWidget {
 
     // Methods
     final onTapSearchItem = useCallback(
-      (api.LowerSearch searchItem) {
-        step.value++;
-        selectedPlayer.value = searchItem;
+      (api.LowerSearch searchItem) async {
+        isCheckingPlayer.value = searchItem.playerId;
+        final exists = await authProvider.checkPlayerClaimed(
+          searchItem.playerId,
+        );
+        if (exists == null) {
+          widgets.showToast(
+            context: context,
+            text: 'Something went wrong',
+            type: widgets.ToastType.error,
+          );
+        } else if (exists) {
+          widgets.showToast(
+            context: context,
+            text: 'Player is already claimed',
+            type: widgets.ToastType.info,
+          );
+        } else {
+          step.value++;
+          selectedPlayer.value = searchItem;
+        }
+
+        isCheckingPlayer.value = null;
       },
       [],
     );
@@ -100,9 +121,12 @@ class ConnectProfile extends HookConsumerWidget {
         // lowerSearchList will contain all the search data
         // even for a single item
 
+        playerName = playerName.trim();
+        if (playerName.isEmpty) return;
+
         isLoading.value = true;
 
-        await searchProvider.searchByName(
+        await playersProvider.searchByName(
           playerName: playerName,
           simpleResults: true,
           addInSearchHistory: false,
@@ -161,6 +185,7 @@ class ConnectProfile extends HookConsumerWidget {
                     isLoading: isLoading.value,
                     onSearch: (search) => onSearch(search, ref),
                     onTap: onTapSearchItem,
+                    isCheckingPlayer: isCheckingPlayer.value,
                   ),
                   CreateProfileLoadoutVerifier(
                     isVerifying: isVerifying.value,
