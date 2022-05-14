@@ -3,6 +3,26 @@ import 'package:paladinsedge/constants.dart' as constants;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 abstract class AuthRequests {
+  static Future<responses.CheckPlayerClaimedResponse?> checkPlayerClaimed({
+    required String playerId,
+  }) async {
+    try {
+      final response = await utilities.api.get<Map<String, dynamic>>(
+        constants.Urls.checkPlayerClaimed,
+        queryParameters: {
+          'playerId': playerId,
+        },
+      );
+      if (response.data != null) {
+        return responses.CheckPlayerClaimedResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   static Future<responses.ClaimPlayerResponse?> claimPlayer({
     required String playerId,
     required String verification,
