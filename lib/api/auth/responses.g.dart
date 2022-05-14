@@ -22,6 +22,18 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'player': instance.player,
     };
 
+CheckPlayerClaimedResponse _$CheckPlayerClaimedResponseFromJson(
+        Map<String, dynamic> json) =>
+    CheckPlayerClaimedResponse(
+      exists: json['exists'] as bool,
+    );
+
+Map<String, dynamic> _$CheckPlayerClaimedResponseToJson(
+        CheckPlayerClaimedResponse instance) =>
+    <String, dynamic>{
+      'exists': instance.exists,
+    };
+
 ClaimPlayerResponse _$ClaimPlayerResponseFromJson(Map<String, dynamic> json) =>
     ClaimPlayerResponse(
       verified: json['verified'] as bool,

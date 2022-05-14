@@ -21,6 +21,19 @@ class LoginResponse {
 }
 
 @JsonSerializable()
+class CheckPlayerClaimedResponse {
+  final bool exists;
+
+  CheckPlayerClaimedResponse({
+    required this.exists,
+  });
+
+  factory CheckPlayerClaimedResponse.fromJson(Map<String, dynamic> json) =>
+      _$CheckPlayerClaimedResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$CheckPlayerClaimedResponseToJson(this);
+}
+
+@JsonSerializable()
 class ClaimPlayerResponse {
   final bool verified;
   final User? user;

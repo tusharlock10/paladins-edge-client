@@ -26,7 +26,8 @@ final _mainRoutes = [
   screens.Feedback.goRoute,
 ];
 
-String? _routeRedirect(GoRouterState _) {
+String? _routeRedirect(GoRouterState state) {
+  if (state.subloc == screens.ConnectProfile.routePath) return null;
   if (utilities.Global.isAuthenticated && !utilities.Global.isPlayerConnected) {
     return screens.ConnectProfile.routePath;
   }

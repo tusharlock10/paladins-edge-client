@@ -198,12 +198,22 @@ class _AuthNotifier extends ChangeNotifier {
     ref.read(players_provider.players).clearData();
 
     // clear values from the database and utilities
-    await utilities.Database.clear();
+    utilities.Database.clear();
 
     utilities.api.options.headers["authorization"] = null;
     utilities.Global.isAuthenticated = false;
 
     return true;
+  }
+
+  Future<bool?> checkPlayerClaimed(
+    String playerId,
+  ) async {
+    final response = await api.AuthRequests.checkPlayerClaimed(
+      playerId: playerId,
+    );
+
+    return response?.exists;
   }
 
   /// Claim a player profile and connect it to the user
