@@ -226,13 +226,9 @@ abstract class Database {
       _userBox,
       _playerBox,
       _settingsBox,
-      _essentialsBox,
       _searchHistoryBox,
-      _championBox,
       _recordExpiryBox,
-      _bountyStoreBox,
       _playerChampionBox,
-      _queueTimelineBox,
     ];
     final futures = boxes.where((_) => _ != null).map((_) => _!.clear());
     await Future.wait(futures);

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:paladinsedge/api/index.dart' as api;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class ConnectProfileSearchItem extends StatelessWidget {
   final api.LowerSearch searchItem;
+  final String? isCheckingPlayer;
   final void Function(api.LowerSearch) onTap;
 
   const ConnectProfileSearchItem({
     required this.searchItem,
+    required this.isCheckingPlayer,
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -17,12 +20,22 @@ class ConnectProfileSearchItem extends StatelessWidget {
   ) {
     return ListTile(
       onTap: () => onTap(searchItem),
-      title: Text(
-        searchItem.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
+      title: Row(
+        children: [
+          if (isCheckingPlayer == searchItem.playerId)
+            const widgets.LoadingIndicator(
+              lineWidth: 1.5,
+              size: 18,
+            ),
+          if (isCheckingPlayer == searchItem.playerId) const SizedBox(width: 8),
+          Text(
+            searchItem.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ],
       ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
