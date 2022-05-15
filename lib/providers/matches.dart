@@ -39,12 +39,6 @@ class _MatchesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetPlayerMatches() {
-    playerMatches = null;
-
-    notifyListeners();
-  }
-
   Future<void> getMatchDetails(String matchId) async {
     isMatchDetailsLoading = true;
     utilities.postFrameCallback(notifyListeners);
@@ -63,7 +57,7 @@ class _MatchesNotifier extends ChangeNotifier {
   void resetMatchDetails() {
     matchDetails = null;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Clears all user sensitive data upon logout

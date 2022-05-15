@@ -56,7 +56,7 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [player],
+      [player, playerId],
     );
 
     useEffect(
@@ -70,7 +70,7 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [player],
+      [player, playerId],
     );
 
     useEffect(
@@ -78,7 +78,7 @@ class PlayerDetail extends HookConsumerWidget {
         // reset the player data in provider when unmounting
         return playersProvider.resetPlayerData;
       },
-      [],
+      [playerId],
     );
 
     // Methods
