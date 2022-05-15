@@ -3,6 +3,7 @@ export './champion_loadout_card.dart';
 export './debug_alert.dart';
 export './elevated_avatar.dart';
 export './fast_image.dart';
+export './foreground_notification.dart';
 export './google_button.dart';
 export './icon_button.dart';
 export './info_alert.dart';
