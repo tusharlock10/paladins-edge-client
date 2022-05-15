@@ -1,13 +1,10 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:overlay_support/overlay_support.dart';
 import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:path_provider/path_provider.dart';
 
@@ -45,33 +42,25 @@ abstract class Messaging {
       final title = data['title'];
       final body = data['body'];
 
-      if (imageUrl == null) return;
+      if (imageUrl == null || title == null || body == null) return;
 
       HapticFeedback.vibrate();
-      showSimpleNotification(
-        Column(
-          children: [Text("$title"), Text("$body")],
-        ),
-        trailing: widgets.ElevatedAvatar(
-          size: 24,
-          borderRadius: 5,
-          imageUrl: imageUrl,
-        ),
-        duration: const Duration(seconds: 5),
-        background: theme.themeMaterialColor,
+      widgets.showForegroundNotification(
+        title: title,
+        body: body,
+        imageUrl: imageUrl,
       );
     });
   }
 
   static void onBackgroundMessage() async {
-    // register in main() before runApp()
     FirebaseMessaging.instance
         .getInitialMessage()
         .then(_backgroundMessageHandler);
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 
-  static void createNewNotif({
+  static void createNotification({
     String? title,
     String? body,
     String? imageUrl,
@@ -112,7 +101,7 @@ abstract class Messaging {
     final data =
         message.data.map((key, value) => MapEntry(key, value?.toString()));
 
-    createNewNotif(
+    createNotification(
       imageUrl: data['imageUrl'],
       title: data['title'],
       body: data['body'],
@@ -121,7 +110,7 @@ abstract class Messaging {
 
   static Future<FilePathAndroidBitmap> _getFileAndroidBitmap(String url) async {
     final Directory directory = await getApplicationDocumentsDirectory();
-    final String filePath = '${directory.path}/notifLargeIcon';
+    final String filePath = '${directory.path}/notificationLargeIcon';
     final http.Response response = await http.get(Uri.parse(url));
     final File file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
