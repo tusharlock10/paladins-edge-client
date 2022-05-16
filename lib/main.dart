@@ -27,6 +27,7 @@ void main() async {
   utilities.Messaging.onMessage();
   utilities.Messaging.onBackgroundMessage();
   utilities.Messaging.registerLocalNotification();
+  utilities.RealtimeGlobalChat.keepChatSynced();
 
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }

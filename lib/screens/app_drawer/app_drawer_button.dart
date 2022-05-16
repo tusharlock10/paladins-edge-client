@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppDrawerButton extends StatelessWidget {
-  final BuildContext context;
   final String label;
   final void Function() onPressed;
   final bool disabled;
@@ -9,7 +8,6 @@ class AppDrawerButton extends StatelessWidget {
 
   const AppDrawerButton({
     Key? key,
-    required this.context,
     required this.label,
     required this.onPressed,
     this.disabled = false,

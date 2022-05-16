@@ -5,6 +5,7 @@ export './connect_profile/index.dart';
 export './create_loadout/index.dart';
 export './feedback/index.dart';
 export './friends/index.dart';
+export './global_chat/index.dart';
 export './home/index.dart';
 export './loadouts/index.dart';
 export './login/login.dart';
