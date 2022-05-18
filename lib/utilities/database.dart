@@ -33,7 +33,7 @@ abstract class Database {
       _playerChampionBox;
   static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
 
-  static Future<void> initDatabase() async {
+  static Future<void> initialize() async {
     if (_init) return;
     await Hive.initFlutter();
     // register the generated adapters here

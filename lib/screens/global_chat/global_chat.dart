@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
+import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as app_theme;
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 import 'package:paladinsedge/widgets/index.dart' as widgets;
 import 'package:uuid/uuid.dart';
@@ -28,26 +27,52 @@ class GlobalChat extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final player = ref.watch(providers.auth.select((_) => _.player));
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // Variables
-    final theme = Theme.of(context);
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
 
     // State
-    final user = useState<types.User?>(null);
-    final _messages = useState<List<types.TextMessage>>([]);
+    final user = useState<types.User>(
+      player == null
+          ? types.User(id: const Uuid().v4())
+          : types.User(
+              id: player.playerId,
+              imageUrl: utilities.getSmallAsset(player.avatarUrl),
+              firstName: player.name,
+            ),
+    );
+    final messages = useState<List<types.TextMessage>>([]);
 
     // Methods
     final initMessages = useCallback(
       () async {
-        if (!constants.isWeb) return null;
-        _messages.value = await utilities.RealtimeGlobalChat.readAllMessages();
+        messages.value = await utilities.RealtimeGlobalChat.getMessages();
+      },
+      [],
+    );
+
+    final initPlayerOnline = useCallback(
+      (models.Player player) {
+        user.value = types.User(
+          id: player.playerId,
+          imageUrl: player.avatarUrl,
+          firstName: player.name,
+          metadata: const {
+            'typing': false,
+          },
+        );
+
+        return utilities.RealtimeGlobalChat.connectionListener(user.value);
       },
       [],
     );
 
     final onMessage = useCallback(
       (types.TextMessage message) {
-        _messages.value = [message, ..._messages.value];
+        if (message.author.id != player?.playerId) {
+          messages.value = [message, ...messages.value];
+        }
       },
       [],
     );
@@ -65,32 +90,40 @@ class GlobalChat extends HookConsumerWidget {
       [],
     );
 
-    final onMessageTap = useCallback(
-      (BuildContext context, types.Message message) {
-        final author = message.author;
-        utilities.Navigation.navigate(
-          context,
-          screens.PlayerDetail.routeName,
-          params: {
-            'playerId': author.id,
-          },
-        );
-      },
-      [],
-    );
-
     final onSendPressed = useCallback(
-      (types.PartialText partialMessage) {
-        if (user.value == null) return;
+      (types.PartialText partialMessage) async {
+        if (isGuest) return;
 
-        final message = types.TextMessage(
-          author: user.value!,
+        // create a message with status = sending
+        var message = types.TextMessage.fromPartial(
+          partialText: partialMessage,
+          author: user.value,
           createdAt: DateTime.now().millisecondsSinceEpoch,
           id: const Uuid().v4(),
-          text: partialMessage.text,
+          status: types.Status.sending,
         );
 
-        utilities.RealtimeGlobalChat.sendMessage(message);
+        // add this message in messages
+        messages.value = [message, ...messages.value];
+
+        // set status = sent and deliver the message
+        message =
+            message.copyWith(status: types.Status.sent) as types.TextMessage;
+        final isSuccessful =
+            await utilities.RealtimeGlobalChat.sendMessage(message);
+        await Future.delayed(const Duration(seconds: 2));
+
+        if (!isSuccessful) {
+          message =
+              message.copyWith(status: types.Status.error) as types.TextMessage;
+        }
+
+        // find the messageIndex from messages
+        final messageIndex = messages.value.indexWhere(
+          (_) => _.id == message.id,
+        );
+        messages.value[messageIndex] = message;
+        messages.value = [...messages.value];
       },
       [],
     );
@@ -99,9 +132,11 @@ class GlobalChat extends HookConsumerWidget {
     useEffect(
       () {
         initMessages();
-        final listener = utilities.RealtimeGlobalChat.listenData(onMessage);
+        final listener =
+            utilities.RealtimeGlobalChat.messageListener(onMessage);
+        if (listener != null) return listener.cancel;
 
-        return listener.cancel;
+        return null;
       },
       [],
     );
@@ -109,14 +144,15 @@ class GlobalChat extends HookConsumerWidget {
     useEffect(
       () {
         if (player != null) {
-          user.value = types.User(
-            id: player.playerId,
-            imageUrl: player.avatarUrl,
-            firstName: player.name,
-          );
+          final connectionListener = initPlayerOnline(player);
+
+          return () {
+            connectionListener.cancel();
+            utilities.RealtimeGlobalChat.disconnect();
+          };
         }
 
-        return;
+        return null;
       },
       [player],
     );
@@ -125,34 +161,26 @@ class GlobalChat extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('Global Chat'),
       ),
-      body: user.value == null
-          ? const SizedBox()
-          : Chat(
-              messages: _messages.value,
-              showUserAvatars: true,
-              showUserNames: true,
-              onSendPressed: onSendPressed,
-              user: user.value!,
-              onAvatarTap: onAvatarTap,
-              onMessageTap: onMessageTap,
-              emptyState: const widgets.LoadingIndicator(
-                lineWidth: 1.5,
-                size: 28,
-                label: Text('Getting messages'),
-              ),
-              theme: DefaultChatTheme(
-                primaryColor: app_theme.darkThemeMaterialColor.shade50,
-                inputBackgroundColor: app_theme.darkThemeMaterialColor.shade300,
-                inputBorderRadius: const BorderRadius.all(Radius.circular(10)),
-                backgroundColor: app_theme.darkThemeMaterialColor.shade500,
-                secondaryColor: app_theme.darkThemeMaterialColor.shade300,
-                inputMargin: const EdgeInsets.all(10),
-                sendButtonIcon: const Icon(
-                  FeatherIcons.cornerDownLeft,
-                  size: 20,
-                ),
-              ),
-            ),
+      body: Chat(
+        messages: messages.value,
+        showUserAvatars: true,
+        showUserNames: true,
+        onSendPressed: onSendPressed,
+        user: user.value,
+        onAvatarTap: onAvatarTap,
+        emptyState: const widgets.LoadingIndicator(
+          lineWidth: 1.5,
+          size: 28,
+          label: Text('Getting messages'),
+        ),
+        hideBackgroundOnEmojiMessages: false,
+        emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
+        customBottomWidget:
+            isGuest ? const Text('Login to send messages') : null,
+        theme: isLightTheme
+            ? theme.lightGlobalChatTheme
+            : theme.darkGlobalChatTheme,
+      ),
     );
   }
 

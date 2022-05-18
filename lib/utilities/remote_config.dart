@@ -13,7 +13,7 @@ abstract class RemoteConfig {
 
   /// Setup for Remote Config
 
-  static Future<bool> setupRemoteConfig() {
+  static Future<bool> initialize() {
     _firebaseRemoteConfig.setDefaults(_remoteConfigDefaults);
 
     return _firebaseRemoteConfig.fetchAndActivate();

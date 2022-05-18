@@ -11,7 +11,7 @@ abstract class RSACrypto {
   static final _cipher = PKCS1Encoding(RSAEngine());
 
   /// Loads the public key from the assets.
-  static Future<void> setupRSAPublicKey() async {
+  static Future<void> initialize() async {
     final publicKey = await rootBundle.loadString('assets/keys/publicKey.pem');
 
     final parser = RSAKeyParser();

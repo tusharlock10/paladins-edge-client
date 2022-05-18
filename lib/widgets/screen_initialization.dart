@@ -58,20 +58,22 @@ class ScreenInitialization extends HookConsumerWidget {
         }
 
         await Future.wait([
-          utilities.RSACrypto.setupRSAPublicKey(),
-          utilities.Database.initDatabase(),
-          utilities.RemoteConfig.setupRemoteConfig(),
-          FirebasePerformance.instance
-              .setPerformanceCollectionEnabled(!constants.isDebug),
-          FirebaseAnalytics.instance
-              .setAnalyticsCollectionEnabled(!constants.isDebug),
+          utilities.RSACrypto.initialize(),
+          utilities.Database.initialize(),
+          utilities.RemoteConfig.initialize(),
+          FirebasePerformance.instance.setPerformanceCollectionEnabled(
+            !constants.isDebug,
+          ),
+          FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+            !constants.isDebug,
+          ),
         ]);
+        utilities.RealtimeGlobalChat.initialize();
 
         // load the essentials from hive
         // this depends on initDatabase to be completed
         await authProvider.loadEssentials();
         authProvider.loadSettings(); // load the settings from hive
-
         authProvider.checkLogin();
         authProvider.setAppInitialized();
       },
