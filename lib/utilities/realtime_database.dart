@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:paladinsedge/constants.dart' as constants;
 
+enum ChatConnectionState { connected, disconnected, unknown }
+
 class RealtimeGlobalChat {
   static final _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
   static DatabaseReference? _globalChatRef;
@@ -27,10 +29,19 @@ class RealtimeGlobalChat {
   /// user would be connected to RTDB, so [_setPlayerOnline] is called
   /// when user disconnects unintentionally, [_registerDisconnect] is called from db
   /// and player online data is removed from RTDB.
-  static StreamSubscription connectionListener(types.User user) {
+  static StreamSubscription<DatabaseEvent> connectionListener({
+    required types.User user,
+    required void Function()? onConnected,
+    required void Function()? onDisconnected,
+  }) {
     return _connectedRef.onValue.listen((event) {
       final connected = event.snapshot.value as bool? ?? false;
-      if (connected) _setPlayerOnline(user);
+      if (connected) {
+        _setPlayerOnline(user);
+        onConnected?.call();
+      } else {
+        onDisconnected?.call();
+      }
     });
   }
 
@@ -43,7 +54,7 @@ class RealtimeGlobalChat {
     _playerRef = null;
   }
 
-  /// read contents of database
+  /// read messages from database
   static Future<List<types.TextMessage>> getMessages() async {
     if (_messagesRef == null) return [];
 
@@ -60,8 +71,28 @@ class RealtimeGlobalChat {
     return messages;
   }
 
-  /// add listener to database events
-  static StreamSubscription? messageListener(
+  /// read players online from database
+  static Future<Map<String, types.User>> getPlayersOnline() async {
+    if (_playersOnlineRef == null) return {};
+
+    final snapshot = await _playersOnlineRef!.get();
+    if (!snapshot.exists) return {};
+    final json = snapshot.value as Map;
+    final jsonKeys = json.keys;
+
+    final Map<String, types.User> playersOnline = {};
+    for (var jsonKey in jsonKeys) {
+      final jsonUser = json[jsonKey];
+      final user = _convertSnapshotToUser(jsonUser);
+
+      if (user != null) playersOnline[jsonKey as String] = user;
+    }
+
+    return playersOnline;
+  }
+
+  /// add listener to message events
+  static StreamSubscription<DatabaseEvent>? messageListener(
     String lastReadMessageKey,
     void Function(types.TextMessage) onEvent,
   ) {
@@ -83,6 +114,41 @@ class RealtimeGlobalChat {
     );
   }
 
+  /// add listener to players online events
+  static StreamSubscription<DatabaseEvent>? playersOnlineListener(
+    void Function(types.User) onEvent,
+  ) {
+    if (_playersOnlineRef == null) return null;
+
+    // start listening for players online
+    return _playersOnlineRef!.onChildAdded.listen(
+      (event) {
+        if (!event.snapshot.exists) return;
+        final playerOnline = _convertSnapshotToUser(event.snapshot.value);
+        if (playerOnline != null) onEvent(playerOnline);
+      },
+    );
+  }
+
+  /// add listener to players online remove events
+  static StreamSubscription<DatabaseEvent>? playersOnlineRemoveListener(
+    void Function(String id) onEvent,
+  ) {
+    if (_playersOnlineRef == null) return null;
+
+    // start listening for players online being removed
+    return _playersOnlineRef!.onChildRemoved.listen(
+      (event) {
+        if (!event.snapshot.exists) return;
+        final data = event.snapshot.value as Map?;
+        if (data == null) return;
+
+        final id = data["id"] as String?;
+        if (id != null) onEvent(id);
+      },
+    );
+  }
+
   /// writes some json data to realtime database
   /// returns true if message successfully delivered
   static Future<bool> sendMessage(types.TextMessage data) async {
@@ -100,33 +166,51 @@ class RealtimeGlobalChat {
     }
   }
 
-  /// converts weird fucking crap coming from
-  /// firebase into something that makes sense
+  /// converts snapshot data from firebase to messages
   static types.TextMessage? _convertSnapshotToMessages(
     Object? snapshotValue,
   ) {
     final data = snapshotValue as Map?;
     if (data == null) return null;
-    final authorId = data["author"]?["id"];
+    final author = _convertSnapshotToUser(data["author"]);
     final id = data['id'];
     final createdAt = data["createdAt"];
     final text = data["text"];
 
     // check if any of the above values are null
-    if ([createdAt, id, authorId, text].mapNotNull((_) => _).length != 4) {
+    if ([createdAt, id, author, text].mapNotNull((_) => _).length != 4) {
       return null;
     }
 
     return types.TextMessage(
-      author: types.User(
-        id: authorId as String,
-        firstName: data["author"]["firstName"] as String?,
-        imageUrl: data["author"]["imageUrl"] as String?,
-      ),
+      author: author!,
       id: id as String,
       createdAt: createdAt as int,
       text: text as String,
       status: _getStatus(data["status"] as String?),
+    );
+  }
+
+  /// converts snapshot data from firebase to user
+  static types.User? _convertSnapshotToUser(
+    Object? snapshotValue,
+  ) {
+    final data = snapshotValue as Map?;
+    if (data == null) return null;
+
+    final id = data["id"];
+    final metadata = data['metadata'];
+    Map<String, dynamic>? metadataMap;
+    if (id == null) return null;
+    if (metadata != null) {
+      metadataMap = {'typing': metadata['typing']};
+    }
+
+    return types.User(
+      id: id as String,
+      imageUrl: data["imageUrl"] as String?,
+      firstName: data["firstName"] as String?,
+      metadata: metadataMap,
     );
   }
 

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/screens/global_chat/global_chat_connection.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -36,24 +37,34 @@ class GlobalChat extends HookConsumerWidget {
     final isInit = useState(false);
     final lastReadMessageKey = useState<String?>(null);
     final messages = useState<List<types.TextMessage>>([]);
+    final playersOnline = useState<Map<String, types.User>>({});
+    final connectionState = useState(utilities.ChatConnectionState.unknown);
     final user = useState<types.User>(
       player == null
           ? types.User(id: const Uuid().v4())
           : types.User(
               id: player.playerId,
-              imageUrl: utilities.getSmallAsset(player.avatarUrl),
+              imageUrl: player.avatarUrl,
               firstName: player.name,
+              metadata: const {
+                'typing': false,
+              },
             ),
     );
 
     // Methods
-    final initMessages = useCallback(
+    final initChat = useCallback(
       () async {
-        final _messages = await utilities.RealtimeGlobalChat.getMessages();
+        final results = await Future.wait([
+          utilities.RealtimeGlobalChat.getMessages(),
+          utilities.RealtimeGlobalChat.getPlayersOnline(),
+        ]);
 
-        messages.value = _messages;
-        lastReadMessageKey.value =
-            _messages.isNotEmpty ? _messages.first.createdAt.toString() : null;
+        messages.value = results.first as List<types.TextMessage>;
+        playersOnline.value = results[1] as Map<String, types.User>;
+        lastReadMessageKey.value = messages.value.isNotEmpty
+            ? messages.value.first.createdAt.toString()
+            : null;
         isInit.value = true;
       },
       [],
@@ -70,7 +81,13 @@ class GlobalChat extends HookConsumerWidget {
           },
         );
 
-        return utilities.RealtimeGlobalChat.connectionListener(user.value);
+        return utilities.RealtimeGlobalChat.connectionListener(
+          user: user.value,
+          onConnected: () =>
+              connectionState.value = utilities.ChatConnectionState.connected,
+          onDisconnected: () => connectionState.value =
+              utilities.ChatConnectionState.disconnected,
+        );
       },
       [],
     );
@@ -80,6 +97,21 @@ class GlobalChat extends HookConsumerWidget {
         if (message.author.id != player?.playerId) {
           messages.value = [message, ...messages.value];
         }
+      },
+      [],
+    );
+
+    final onPlayerOnline = useCallback(
+      (types.User user) {
+        playersOnline.value = {...playersOnline.value, user.id: user};
+      },
+      [],
+    );
+
+    final onPlayerOnlineRemove = useCallback(
+      (String id) {
+        playersOnline.value.remove(id);
+        playersOnline.value = {...playersOnline.value};
       },
       [],
     );
@@ -140,7 +172,7 @@ class GlobalChat extends HookConsumerWidget {
       () {
         // initialize when not init
         if (!isInit.value) {
-          initMessages();
+          initChat();
         }
 
         return null;
@@ -153,13 +185,26 @@ class GlobalChat extends HookConsumerWidget {
         if (lastReadMessageKey.value == null) return null;
 
         // pass the lastReadMessageKey to start listening from that point
-        final listener = utilities.RealtimeGlobalChat.messageListener(
+        final messageListener = utilities.RealtimeGlobalChat.messageListener(
           lastReadMessageKey.value!,
           onMessage,
         );
-        if (listener != null) return listener.cancel;
+        final playersOnlineListener =
+            utilities.RealtimeGlobalChat.playersOnlineListener(
+          onPlayerOnline,
+        );
+        final playersOnlineRemoveListener =
+            utilities.RealtimeGlobalChat.playersOnlineRemoveListener(
+          onPlayerOnlineRemove,
+        );
 
-        return null;
+        return () {
+          if (messageListener != null) messageListener.cancel();
+          if (playersOnlineListener != null) playersOnlineListener.cancel();
+          if (playersOnlineRemoveListener != null) {
+            playersOnlineRemoveListener.cancel();
+          }
+        };
       },
       [lastReadMessageKey.value],
     );
@@ -182,7 +227,22 @@ class GlobalChat extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Global Chat'),
+        title: Column(children: [
+          const Text('Chat'),
+          Text(
+            playersOnline.value.isEmpty
+                ? 'No one online'
+                : playersOnline.value.length == 1
+                    ? 'Only you are online'
+                    : '${playersOnline.value.length} players online',
+            style: const TextStyle(fontSize: 12),
+          ),
+        ]),
+        actions: [
+          GlobalChatConnection(
+            connectionState: connectionState.value,
+          ),
+        ],
       ),
       body: !isInit.value
           ? const widgets.LoadingIndicator(
