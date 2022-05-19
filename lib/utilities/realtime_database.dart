@@ -4,7 +4,6 @@ import 'package:dartx/dartx.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:paladinsedge/constants.dart' as constants;
-import 'package:uuid/uuid.dart';
 
 class RealtimeGlobalChat {
   static final _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
@@ -53,16 +52,29 @@ class RealtimeGlobalChat {
     final json = snapshot.value as Map;
     final jsonMessages = json.values;
 
-    return jsonMessages.mapNotNull(_convertSnapshotToMessages).toList();
+    final messages = jsonMessages
+        .mapNotNull(_convertSnapshotToMessages)
+        .sortedByDescending((_) => _.createdAt!)
+        .toList();
+
+    return messages;
   }
 
   /// add listener to database events
   static StreamSubscription? messageListener(
+    String lastReadMessageKey,
     void Function(types.TextMessage) onEvent,
   ) {
     if (_messagesRef == null) return null;
 
-    return _messagesRef!.onChildAdded.listen(
+    // start listening for messages that are after the key last read
+    return _messagesRef!
+        .startAt(
+          null,
+          key: lastReadMessageKey,
+        )
+        .onChildAdded
+        .listen(
       (event) {
         if (!event.snapshot.exists) return;
         final message = _convertSnapshotToMessages(event.snapshot.value);
@@ -78,7 +90,7 @@ class RealtimeGlobalChat {
 
     try {
       await _messagesRef!
-          .child(const Uuid().v4())
+          .child(data.createdAt.toString())
           .set(data.toJson())
           .timeout(const Duration(seconds: 10));
 
@@ -95,16 +107,25 @@ class RealtimeGlobalChat {
   ) {
     final data = snapshotValue as Map?;
     if (data == null) return null;
+    final authorId = data["author"]?["id"];
+    final id = data['id'];
+    final createdAt = data["createdAt"];
+    final text = data["text"];
+
+    // check if any of the above values are null
+    if ([createdAt, id, authorId, text].mapNotNull((_) => _).length != 4) {
+      return null;
+    }
 
     return types.TextMessage(
       author: types.User(
-        id: data["author"]["id"] as String,
+        id: authorId as String,
         firstName: data["author"]["firstName"] as String?,
         imageUrl: data["author"]["imageUrl"] as String?,
       ),
-      id: data["id"] as String,
-      createdAt: data["createdAt"] as int?,
-      text: data["text"] as String,
+      id: id as String,
+      createdAt: createdAt as int,
+      text: text as String,
       status: _getStatus(data["status"] as String?),
     );
   }

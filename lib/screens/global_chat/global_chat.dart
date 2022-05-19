@@ -33,6 +33,9 @@ class GlobalChat extends HookConsumerWidget {
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
 
     // State
+    final isInit = useState(false);
+    final lastReadMessageKey = useState<String?>(null);
+    final messages = useState<List<types.TextMessage>>([]);
     final user = useState<types.User>(
       player == null
           ? types.User(id: const Uuid().v4())
@@ -42,12 +45,16 @@ class GlobalChat extends HookConsumerWidget {
               firstName: player.name,
             ),
     );
-    final messages = useState<List<types.TextMessage>>([]);
 
     // Methods
     final initMessages = useCallback(
       () async {
-        messages.value = await utilities.RealtimeGlobalChat.getMessages();
+        final _messages = await utilities.RealtimeGlobalChat.getMessages();
+
+        messages.value = _messages;
+        lastReadMessageKey.value =
+            _messages.isNotEmpty ? _messages.first.createdAt.toString() : null;
+        isInit.value = true;
       },
       [],
     );
@@ -131,14 +138,30 @@ class GlobalChat extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        initMessages();
-        final listener =
-            utilities.RealtimeGlobalChat.messageListener(onMessage);
+        // initialize when not init
+        if (!isInit.value) {
+          initMessages();
+        }
+
+        return null;
+      },
+      [isInit.value],
+    );
+
+    useEffect(
+      () {
+        if (lastReadMessageKey.value == null) return null;
+
+        // pass the lastReadMessageKey to start listening from that point
+        final listener = utilities.RealtimeGlobalChat.messageListener(
+          lastReadMessageKey.value!,
+          onMessage,
+        );
         if (listener != null) return listener.cancel;
 
         return null;
       },
-      [],
+      [lastReadMessageKey.value],
     );
 
     useEffect(
@@ -161,26 +184,27 @@ class GlobalChat extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('Global Chat'),
       ),
-      body: Chat(
-        messages: messages.value,
-        showUserAvatars: true,
-        showUserNames: true,
-        onSendPressed: onSendPressed,
-        user: user.value,
-        onAvatarTap: onAvatarTap,
-        emptyState: const widgets.LoadingIndicator(
-          lineWidth: 1.5,
-          size: 28,
-          label: Text('Getting messages'),
-        ),
-        hideBackgroundOnEmojiMessages: false,
-        emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
-        customBottomWidget:
-            isGuest ? const Text('Login to send messages') : null,
-        theme: isLightTheme
-            ? theme.lightGlobalChatTheme
-            : theme.darkGlobalChatTheme,
-      ),
+      body: !isInit.value
+          ? const widgets.LoadingIndicator(
+              lineWidth: 1.5,
+              size: 28,
+              label: Text('Getting messages'),
+            )
+          : Chat(
+              messages: messages.value,
+              showUserAvatars: true,
+              showUserNames: true,
+              onSendPressed: onSendPressed,
+              user: user.value,
+              onAvatarTap: onAvatarTap,
+              hideBackgroundOnEmojiMessages: false,
+              emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
+              customBottomWidget:
+                  isGuest ? const Text('Login to send messages') : null,
+              theme: isLightTheme
+                  ? theme.lightGlobalChatTheme
+                  : theme.darkGlobalChatTheme,
+            ),
     );
   }
 
