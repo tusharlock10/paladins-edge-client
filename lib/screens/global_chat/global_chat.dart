@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -7,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paladinsedge/models/index.dart' as models;
 import 'package:paladinsedge/providers/index.dart' as providers;
 import 'package:paladinsedge/screens/global_chat/global_chat_connection.dart';
+import 'package:paladinsedge/screens/global_chat/global_chat_input.dart';
 import 'package:paladinsedge/screens/index.dart' as screens;
 import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
@@ -32,6 +34,8 @@ class GlobalChat extends HookConsumerWidget {
 
     // Variables
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final chatTheme =
+        isLightTheme ? theme.lightGlobalChatTheme : theme.darkGlobalChatTheme;
 
     // State
     final isInit = useState(false);
@@ -92,6 +96,19 @@ class GlobalChat extends HookConsumerWidget {
       [],
     );
 
+    final onTyping = useCallback(
+      (bool isTyping) {
+        user.value = user.value.copyWith(
+          metadata: {
+            ...?user.value.metadata,
+            'typing': isTyping,
+          },
+        );
+        utilities.RealtimeGlobalChat.setPlayer(user.value);
+      },
+      [],
+    );
+
     final onMessage = useCallback(
       (types.TextMessage message) {
         if (message.author.id != player?.playerId) {
@@ -101,7 +118,34 @@ class GlobalChat extends HookConsumerWidget {
       [],
     );
 
+    final onMessageChanged = useCallback(
+      (types.TextMessage message) {
+        final index = messages.value.indexWhere((_) => _.id == message.id);
+        if (index == -1) return;
+        messages.value[index] = message;
+        messages.value = [...messages.value];
+      },
+      [],
+    );
+
+    final onMessageRemove = useCallback(
+      (String id) {
+        final index = messages.value.indexWhere((_) => _.id == id);
+        if (index == -1) return;
+        messages.value.removeAt(index);
+        messages.value = [...messages.value];
+      },
+      [],
+    );
+
     final onPlayerOnline = useCallback(
+      (types.User user) {
+        playersOnline.value = {...playersOnline.value, user.id: user};
+      },
+      [],
+    );
+
+    final onPlayerOnlineChanged = useCallback(
       (types.User user) {
         playersOnline.value = {...playersOnline.value, user.id: user};
       },
@@ -129,13 +173,13 @@ class GlobalChat extends HookConsumerWidget {
       [],
     );
 
-    final onSendPressed = useCallback(
-      (types.PartialText partialMessage) async {
+    final void Function(String) onSendPressed = useCallback(
+      (text) async {
         if (isGuest) return;
 
         // create a message with status = sending
-        var message = types.TextMessage.fromPartial(
-          partialText: partialMessage,
+        var message = types.TextMessage(
+          text: text,
           author: user.value,
           createdAt: DateTime.now().millisecondsSinceEpoch,
           id: const Uuid().v4(),
@@ -148,16 +192,17 @@ class GlobalChat extends HookConsumerWidget {
         // set status = sent and deliver the message
         message =
             message.copyWith(status: types.Status.sent) as types.TextMessage;
-        final isSuccessful =
-            await utilities.RealtimeGlobalChat.sendMessage(message);
-        await Future.delayed(const Duration(seconds: 2));
+        final isSuccessful = await utilities.RealtimeGlobalChat.sendMessage(
+          message,
+        );
 
         if (!isSuccessful) {
-          message =
-              message.copyWith(status: types.Status.error) as types.TextMessage;
+          // if cannot send message, change status to error
+          message = message.copyWith(
+            status: types.Status.error,
+          ) as types.TextMessage;
         }
 
-        // find the messageIndex from messages
         final messageIndex = messages.value.indexWhere(
           (_) => _.id == message.id,
         );
@@ -182,6 +227,7 @@ class GlobalChat extends HookConsumerWidget {
 
     useEffect(
       () {
+        //
         if (lastReadMessageKey.value == null) return null;
 
         // pass the lastReadMessageKey to start listening from that point
@@ -189,21 +235,38 @@ class GlobalChat extends HookConsumerWidget {
           lastReadMessageKey.value!,
           onMessage,
         );
+        final messageChangedListener =
+            utilities.RealtimeGlobalChat.messageChangedListener(
+          onMessageChanged,
+        );
+        final messageRemoveListener =
+            utilities.RealtimeGlobalChat.messageRemoveListener(
+          onMessageRemove,
+        );
         final playersOnlineListener =
             utilities.RealtimeGlobalChat.playersOnlineListener(
           onPlayerOnline,
+        );
+        final playersOnlineChangedListener =
+            utilities.RealtimeGlobalChat.playersOnlineChangedListener(
+          onPlayerOnlineChanged,
         );
         final playersOnlineRemoveListener =
             utilities.RealtimeGlobalChat.playersOnlineRemoveListener(
           onPlayerOnlineRemove,
         );
 
-        return () {
-          if (messageListener != null) messageListener.cancel();
-          if (playersOnlineListener != null) playersOnlineListener.cancel();
-          if (playersOnlineRemoveListener != null) {
-            playersOnlineRemoveListener.cancel();
-          }
+        return () async {
+          final futures = [
+            messageListener,
+            messageChangedListener,
+            messageRemoveListener,
+            playersOnlineListener,
+            playersOnlineChangedListener,
+            playersOnlineRemoveListener,
+          ].mapNotNull((_) => _?.cancel());
+          await Future.wait(futures);
+          utilities.RealtimeGlobalChat.disconnect();
         };
       },
       [lastReadMessageKey.value],
@@ -216,7 +279,6 @@ class GlobalChat extends HookConsumerWidget {
 
           return () {
             connectionListener.cancel();
-            utilities.RealtimeGlobalChat.disconnect();
           };
         }
 
@@ -227,17 +289,19 @@ class GlobalChat extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(children: [
-          const Text('Chat'),
-          Text(
-            playersOnline.value.isEmpty
-                ? 'No one online'
-                : playersOnline.value.length == 1
-                    ? 'Only you are online'
-                    : '${playersOnline.value.length} players online',
-            style: const TextStyle(fontSize: 12),
-          ),
-        ]),
+        title: Column(
+          children: [
+            const Text('Chat'),
+            Text(
+              playersOnline.value.isEmpty
+                  ? 'No one online'
+                  : playersOnline.value.length == 1
+                      ? 'Only you are online'
+                      : '${playersOnline.value.length} players online',
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
         actions: [
           GlobalChatConnection(
             connectionState: connectionState.value,
@@ -254,16 +318,20 @@ class GlobalChat extends HookConsumerWidget {
               messages: messages.value,
               showUserAvatars: true,
               showUserNames: true,
-              onSendPressed: onSendPressed,
               user: user.value,
+              onSendPressed: (_) => 0,
               onAvatarTap: onAvatarTap,
               hideBackgroundOnEmojiMessages: false,
               emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
-              customBottomWidget:
-                  isGuest ? const Text('Login to send messages') : null,
-              theme: isLightTheme
-                  ? theme.lightGlobalChatTheme
-                  : theme.darkGlobalChatTheme,
+              customBottomWidget: isGuest
+                  ? const Text('Login to send messages')
+                  : GlobalChatInput(
+                      user: user.value,
+                      playersOnline: playersOnline.value,
+                      onSendPressed: onSendPressed,
+                      onTyping: onTyping,
+                    ),
+              theme: chatTheme,
             ),
     );
   }

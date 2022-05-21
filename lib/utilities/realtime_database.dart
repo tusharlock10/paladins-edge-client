@@ -100,7 +100,7 @@ class RealtimeGlobalChat {
 
     // start listening for messages that are after the key last read
     return _messagesRef!
-        .startAt(
+        .startAfter(
           null,
           key: lastReadMessageKey,
         )
@@ -114,6 +114,41 @@ class RealtimeGlobalChat {
     );
   }
 
+  /// add listener to message change events
+  static StreamSubscription<DatabaseEvent>? messageChangedListener(
+    void Function(types.TextMessage) onEvent,
+  ) {
+    if (_messagesRef == null) return null;
+
+    // start listening for message being changed
+    return _messagesRef!.onChildChanged.listen(
+      (event) {
+        if (!event.snapshot.exists) return;
+        final message = _convertSnapshotToMessages(event.snapshot.value);
+        if (message != null) onEvent(message);
+      },
+    );
+  }
+
+  /// add listener to message remove events
+  static StreamSubscription<DatabaseEvent>? messageRemoveListener(
+    void Function(String id) onEvent,
+  ) {
+    if (_messagesRef == null) return null;
+
+    // start listening for message being removed
+    return _messagesRef!.onChildRemoved.listen(
+      (event) {
+        if (!event.snapshot.exists) return;
+        final data = event.snapshot.value as Map?;
+        if (data == null) return;
+
+        final id = data["id"] as String?;
+        if (id != null) onEvent(id);
+      },
+    );
+  }
+
   /// add listener to players online events
   static StreamSubscription<DatabaseEvent>? playersOnlineListener(
     void Function(types.User) onEvent,
@@ -122,6 +157,22 @@ class RealtimeGlobalChat {
 
     // start listening for players online
     return _playersOnlineRef!.onChildAdded.listen(
+      (event) {
+        if (!event.snapshot.exists) return;
+        final playerOnline = _convertSnapshotToUser(event.snapshot.value);
+        if (playerOnline != null) onEvent(playerOnline);
+      },
+    );
+  }
+
+  /// add listener to players online change events
+  static StreamSubscription<DatabaseEvent>? playersOnlineChangedListener(
+    void Function(types.User) onEvent,
+  ) {
+    if (_playersOnlineRef == null) return null;
+
+    // start listening for players online being changed
+    return _playersOnlineRef!.onChildChanged.listen(
       (event) {
         if (!event.snapshot.exists) return;
         final playerOnline = _convertSnapshotToUser(event.snapshot.value);
@@ -159,6 +210,19 @@ class RealtimeGlobalChat {
           .child(data.createdAt.toString())
           .set(data.toJson())
           .timeout(const Duration(seconds: 10));
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// sets the player in database
+  static Future<bool> setPlayer(types.User player) async {
+    if (_playersOnlineRef == null) return false;
+
+    try {
+      await _playersOnlineRef!.child(player.id).set(player.toJson());
 
       return true;
     } catch (e) {

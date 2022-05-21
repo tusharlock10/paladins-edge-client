@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
+import 'package:paladinsedge/widgets/index.dart' as widgets;
 
 class GlobalChatConnection extends StatelessWidget {
   final utilities.ChatConnectionState connectionState;
@@ -18,26 +18,17 @@ class GlobalChatConnection extends StatelessWidget {
 
     if (isUnknown) return const SizedBox();
 
-    return Row(
-      children: [
-        Container(
-          height: 10,
-          width: 10,
-          decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          widgets.TextChip(
             color: isConnected ? Colors.green : Colors.red,
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            text: isConnected ? 'Online' : 'Offline',
           ),
-        ),
-        const SizedBox(width: 3),
-        Text(
-          isConnected ? 'Online' : 'Offline',
-          style: TextStyle(
-            fontSize: 12,
-            fontFamily: theme.Fonts.secondaryAccent,
-          ),
-        ),
-        const SizedBox(width: 10),
-      ],
+        ],
+      ),
     );
   }
 }
