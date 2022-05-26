@@ -3,6 +3,7 @@ export './bounty_store.dart';
 export './champions.dart';
 export './feedback.dart';
 export './friends.dart';
+export './global_chat.dart';
 export './loadout.dart';
 export './matches.dart';
 export './players.dart';

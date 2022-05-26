@@ -146,6 +146,14 @@ class AppDrawer extends HookConsumerWidget {
       [player],
     );
 
+    final onGlobalChat = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.GlobalChat.routeName);
+      },
+      [],
+    );
+
     final showPlayerDependentButtons = useCallback(
       () {
         // to show or hide buttons dependant on player info
@@ -167,27 +175,27 @@ class AppDrawer extends HookConsumerWidget {
                 : const AppDrawerPlayerProfile(),
             const SizedBox(height: 20),
             AppDrawerButton(
-              context: context,
               label: 'Change Theme',
               subTitle: getThemeName(),
               onPressed: onChangeTheme,
             ),
             if (showPlayerDependentButtons())
               AppDrawerButton(
-                context: context,
                 label: 'Friends',
                 onPressed: onFriends,
               ),
             if (showPlayerDependentButtons())
               AppDrawerButton(
-                context: context,
                 label: 'Active Match',
                 onPressed: onActiveMatch,
               ),
             AppDrawerButton(
-              context: context,
               label: 'Feedback',
               onPressed: onFeedback,
+            ),
+            AppDrawerButton(
+              label: 'Global Chat',
+              onPressed: onGlobalChat,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +212,6 @@ class AppDrawer extends HookConsumerWidget {
                         onPressed: onLogout,
                       )
                     : AppDrawerButton(
-                        context: context,
                         label: 'Logout',
                         disabled: isLoggingOut.value,
                         onPressed: onLogout,
