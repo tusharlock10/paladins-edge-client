@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 class TextChip extends StatelessWidget {
   final String text;
@@ -11,6 +12,7 @@ class TextChip extends StatelessWidget {
   final double trailingIconSize;
   final double? width;
   final double? height;
+  final String? highlightText;
   final void Function()? onTap;
 
   const TextChip({
@@ -25,14 +27,17 @@ class TextChip extends StatelessWidget {
     this.trailingIcon,
     this.iconSize = 12,
     this.trailingIconSize = 12,
+    this.highlightText,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final textStyle = Theme.of(context).textTheme.headline2;
     final color1 = isLightTheme ? color.shade50 : color.shade700;
     final color2 = isLightTheme ? color.shade900 : color.shade50;
+    final color3 = color2.withOpacity(0.25);
 
     return SizedBox(
       width: width,
@@ -65,14 +70,30 @@ class TextChip extends StatelessWidget {
                       size: iconSize,
                     ),
                   ),
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.headline2?.copyWith(
-                        fontSize: textSize,
-                        color: color2,
-                        fontWeight: FontWeight.normal,
+                highlightText != null && textStyle != null
+                    ? SubstringHighlight(
+                        text: text,
+                        term: highlightText,
+                        textStyle: textStyle.copyWith(
+                          fontSize: textSize,
+                          color: color2,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        textStyleHighlight: textStyle.copyWith(
+                          fontSize: textSize,
+                          color: color2,
+                          fontWeight: FontWeight.normal,
+                          backgroundColor: color3,
+                        ),
+                      )
+                    : Text(
+                        text,
+                        style: textStyle?.copyWith(
+                          fontSize: textSize,
+                          color: color2,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                ),
                 if (trailingIcon != null)
                   Padding(
                     padding: const EdgeInsets.only(left: 3),

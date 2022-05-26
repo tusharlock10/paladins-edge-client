@@ -21,11 +21,13 @@ class _$CombinedChampionTearOff {
   _CombinedChampion call(
       {required Champion champion,
       PlayerChampion? playerChampion,
-      bool hide = false}) {
+      bool hide = false,
+      ChampionsSearchCondition? searchCondition = null}) {
     return _CombinedChampion(
       champion: champion,
       playerChampion: playerChampion,
       hide: hide,
+      searchCondition: searchCondition,
     );
   }
 }
@@ -37,7 +39,9 @@ const $CombinedChampion = _$CombinedChampionTearOff();
 mixin _$CombinedChampion {
   Champion get champion => throw _privateConstructorUsedError;
   PlayerChampion? get playerChampion => throw _privateConstructorUsedError;
-  bool get hide => throw _privateConstructorUsedError;
+  bool get hide => throw _privateConstructorUsedError; // used for filtering
+  ChampionsSearchCondition? get searchCondition =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CombinedChampionCopyWith<CombinedChampion> get copyWith =>
@@ -49,7 +53,11 @@ abstract class $CombinedChampionCopyWith<$Res> {
   factory $CombinedChampionCopyWith(
           CombinedChampion value, $Res Function(CombinedChampion) then) =
       _$CombinedChampionCopyWithImpl<$Res>;
-  $Res call({Champion champion, PlayerChampion? playerChampion, bool hide});
+  $Res call(
+      {Champion champion,
+      PlayerChampion? playerChampion,
+      bool hide,
+      ChampionsSearchCondition? searchCondition});
 }
 
 /// @nodoc
@@ -66,6 +74,7 @@ class _$CombinedChampionCopyWithImpl<$Res>
     Object? champion = freezed,
     Object? playerChampion = freezed,
     Object? hide = freezed,
+    Object? searchCondition = freezed,
   }) {
     return _then(_value.copyWith(
       champion: champion == freezed
@@ -80,6 +89,10 @@ class _$CombinedChampionCopyWithImpl<$Res>
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchCondition: searchCondition == freezed
+          ? _value.searchCondition
+          : searchCondition // ignore: cast_nullable_to_non_nullable
+              as ChampionsSearchCondition?,
     ));
   }
 }
@@ -91,7 +104,11 @@ abstract class _$CombinedChampionCopyWith<$Res>
           _CombinedChampion value, $Res Function(_CombinedChampion) then) =
       __$CombinedChampionCopyWithImpl<$Res>;
   @override
-  $Res call({Champion champion, PlayerChampion? playerChampion, bool hide});
+  $Res call(
+      {Champion champion,
+      PlayerChampion? playerChampion,
+      bool hide,
+      ChampionsSearchCondition? searchCondition});
 }
 
 /// @nodoc
@@ -110,6 +127,7 @@ class __$CombinedChampionCopyWithImpl<$Res>
     Object? champion = freezed,
     Object? playerChampion = freezed,
     Object? hide = freezed,
+    Object? searchCondition = freezed,
   }) {
     return _then(_CombinedChampion(
       champion: champion == freezed
@@ -124,6 +142,10 @@ class __$CombinedChampionCopyWithImpl<$Res>
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchCondition: searchCondition == freezed
+          ? _value.searchCondition
+          : searchCondition // ignore: cast_nullable_to_non_nullable
+              as ChampionsSearchCondition?,
     ));
   }
 }
@@ -132,7 +154,10 @@ class __$CombinedChampionCopyWithImpl<$Res>
 
 class _$_CombinedChampion implements _CombinedChampion {
   _$_CombinedChampion(
-      {required this.champion, this.playerChampion, this.hide = false});
+      {required this.champion,
+      this.playerChampion,
+      this.hide = false,
+      this.searchCondition = null});
 
   @override
   final Champion champion;
@@ -141,10 +166,13 @@ class _$_CombinedChampion implements _CombinedChampion {
   @JsonKey()
   @override
   final bool hide;
+  @JsonKey()
+  @override // used for filtering
+  final ChampionsSearchCondition? searchCondition;
 
   @override
   String toString() {
-    return 'CombinedChampion(champion: $champion, playerChampion: $playerChampion, hide: $hide)';
+    return 'CombinedChampion(champion: $champion, playerChampion: $playerChampion, hide: $hide, searchCondition: $searchCondition)';
   }
 
   @override
@@ -155,7 +183,9 @@ class _$_CombinedChampion implements _CombinedChampion {
             const DeepCollectionEquality().equals(other.champion, champion) &&
             const DeepCollectionEquality()
                 .equals(other.playerChampion, playerChampion) &&
-            const DeepCollectionEquality().equals(other.hide, hide));
+            const DeepCollectionEquality().equals(other.hide, hide) &&
+            const DeepCollectionEquality()
+                .equals(other.searchCondition, searchCondition));
   }
 
   @override
@@ -163,7 +193,8 @@ class _$_CombinedChampion implements _CombinedChampion {
       runtimeType,
       const DeepCollectionEquality().hash(champion),
       const DeepCollectionEquality().hash(playerChampion),
-      const DeepCollectionEquality().hash(hide));
+      const DeepCollectionEquality().hash(hide),
+      const DeepCollectionEquality().hash(searchCondition));
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +206,8 @@ abstract class _CombinedChampion implements CombinedChampion {
   factory _CombinedChampion(
       {required Champion champion,
       PlayerChampion? playerChampion,
-      bool hide}) = _$_CombinedChampion;
+      bool hide,
+      ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
 
   @override
   Champion get champion;
@@ -183,6 +215,8 @@ abstract class _CombinedChampion implements CombinedChampion {
   PlayerChampion? get playerChampion;
   @override
   bool get hide;
+  @override // used for filtering
+  ChampionsSearchCondition? get searchCondition;
   @override
   @JsonKey(ignore: true)
   _$CombinedChampionCopyWith<_CombinedChampion> get copyWith =>

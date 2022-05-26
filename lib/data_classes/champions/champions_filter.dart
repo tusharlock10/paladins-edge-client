@@ -72,7 +72,10 @@ abstract class ChampionsFilter {
   ) =>
       combinedChampions
           .map(
-            (combinedChampion) => combinedChampion.copyWith(hide: false),
+            (combinedChampion) => combinedChampion.copyWith(
+              hide: false,
+              searchCondition: null,
+            ),
           )
           .toList();
 
@@ -84,17 +87,54 @@ abstract class ChampionsFilter {
     // if a champion is already hidden due to other filters,
     // those filters should be removed
     search = search.toLowerCase().trim();
+    List<CombinedChampion> result = combinedChampions;
 
-    return combinedChampions
-        .map(
-          (combinedChampion) => combinedChampion.copyWith(
-            hide: !(combinedChampion.champion.name
-                    .toLowerCase()
-                    .contains(search) ||
-                combinedChampion.champion.title.toLowerCase().contains(search)),
-          ),
-        )
-        .toList();
+    for (final searchCondition in ChampionsSearchCondition.values) {
+      bool isValidResult = false;
+
+      result = combinedChampions.map(
+        (combinedChampion) {
+          final canShowChampion = _filterBySearchCondition(
+            search,
+            combinedChampion,
+            searchCondition,
+          );
+
+          // set isValidResult to true if we can show a champion
+          if (!isValidResult) isValidResult = canShowChampion;
+
+          return combinedChampion.copyWith(
+            hide: !canShowChampion,
+            searchCondition: searchCondition,
+          );
+        },
+      ).toList();
+      if (isValidResult) return result.toList();
+    }
+
+    return result.toList();
+  }
+
+  static bool _filterBySearchCondition(
+    String search,
+    CombinedChampion combinedChampion,
+    ChampionsSearchCondition searchCondition,
+  ) {
+    final playerChampion = combinedChampion.playerChampion;
+    final champion = combinedChampion.champion;
+
+    if (searchCondition == ChampionsSearchCondition.name &&
+        champion.name.toLowerCase().contains(search)) return true;
+    if (searchCondition == ChampionsSearchCondition.championId &&
+        champion.championId.toString().contains(search)) return true;
+    if (searchCondition == ChampionsSearchCondition.title &&
+        champion.title.toLowerCase().contains(search)) return true;
+    if (searchCondition == ChampionsSearchCondition.role &&
+        champion.role.toLowerCase().contains(search)) return true;
+    if (searchCondition == ChampionsSearchCondition.level &&
+        'level ${playerChampion?.level}'.contains(search)) return true;
+
+    return false;
   }
 
   static List<CombinedChampion> _filterByRole(
@@ -105,6 +145,7 @@ abstract class ChampionsFilter {
           .map(
             (combinedChampion) => combinedChampion.copyWith(
               hide: combinedChampion.champion.role != filter.value,
+              searchCondition: null,
             ),
           )
           .toList();
@@ -118,6 +159,7 @@ abstract class ChampionsFilter {
             (combinedChampion) => combinedChampion.copyWith(
               hide: combinedChampion.champion.onFreeRotation.toString() !=
                   filter.value,
+              searchCondition: null,
             ),
           )
           .toList();
@@ -133,6 +175,7 @@ abstract class ChampionsFilter {
             (combinedChampion) => combinedChampion.copyWith(
               hide: combinedChampion.champion.abilities.first.damageType !=
                   filter.value,
+              searchCondition: null,
             ),
           )
           .toList();
