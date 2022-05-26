@@ -79,6 +79,7 @@ class ChampionsList extends HookConsumerWidget {
                   return ChampionItem(
                     champion: combinedChampion.champion,
                     playerChampion: combinedChampion.playerChampion,
+                    searchCondition: combinedChampion.searchCondition,
                     height: itemHeight,
                     width: itemWidth,
                   );

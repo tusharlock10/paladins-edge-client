@@ -13,11 +13,13 @@ import 'package:substring_highlight/substring_highlight.dart';
 class ChampionItem extends HookConsumerWidget {
   final models.Champion champion;
   final models.PlayerChampion? playerChampion;
+  final data_classes.ChampionsSearchCondition? searchCondition;
   final double height;
   final double width;
   const ChampionItem({
     required this.champion,
     required this.playerChampion,
+    required this.searchCondition,
     required this.height,
     required this.width,
     Key? key,
@@ -53,7 +55,53 @@ class ChampionItem extends HookConsumerWidget {
           ),
         );
       },
-      [selectedSort],
+      [selectedSort, champion, playerChampion],
+    );
+
+    final nameSearch = useMemoized(
+      () {
+        return searchCondition == data_classes.ChampionsSearchCondition.name
+            ? search
+            : '';
+      },
+      [search, searchCondition],
+    );
+
+    final titleSearch = useMemoized(
+      () {
+        return searchCondition == data_classes.ChampionsSearchCondition.title
+            ? search
+            : '';
+      },
+      [search, searchCondition],
+    );
+
+    final championIdSearch = useMemoized(
+      () {
+        return searchCondition ==
+                data_classes.ChampionsSearchCondition.championId
+            ? search
+            : '';
+      },
+      [search, searchCondition],
+    );
+
+    final levelSearch = useMemoized(
+      () {
+        return searchCondition == data_classes.ChampionsSearchCondition.level
+            ? search
+            : '';
+      },
+      [search, searchCondition],
+    );
+
+    final roleSearch = useMemoized(
+      () {
+        return searchCondition == data_classes.ChampionsSearchCondition.role
+            ? search
+            : '';
+      },
+      [search, searchCondition],
     );
 
     // Methods
@@ -66,7 +114,7 @@ class ChampionItem extends HookConsumerWidget {
           params: {'championId': champion.championId.toString()},
         );
       },
-      [],
+      [champion],
     );
 
     return SizedBox(
@@ -97,7 +145,7 @@ class ChampionItem extends HookConsumerWidget {
                 children: [
                   SubstringHighlight(
                     text: champion.name.toUpperCase(),
-                    term: search,
+                    term: nameSearch,
                     textStyle: textTheme.headline1!.copyWith(
                       fontSize: 16,
                     ),
@@ -107,13 +155,22 @@ class ChampionItem extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  if (search != '' &&
-                      champion.title
-                          .toLowerCase()
-                          .contains(search.toLowerCase()))
+                  if (championIdSearch.isNotEmpty)
+                    SubstringHighlight(
+                      text: 'Champion ID ${champion.championId}',
+                      term: championIdSearch,
+                      textStyle: textTheme.bodyText1!.copyWith(
+                        fontSize: 12,
+                      ),
+                      textStyleHighlight: textTheme.bodyText1!.copyWith(
+                        fontSize: 12,
+                        backgroundColor: highlightColor,
+                      ),
+                    ),
+                  if (titleSearch.isNotEmpty)
                     SubstringHighlight(
                       text: champion.title,
-                      term: search,
+                      term: titleSearch,
                       textStyle: textTheme.bodyText1!.copyWith(
                         fontSize: 12,
                       ),
@@ -128,11 +185,13 @@ class ChampionItem extends HookConsumerWidget {
                       widgets.TextChip(
                         spacing: 5,
                         text: champion.role,
+                        highlightText: roleSearch,
                         color: theme.themeMaterialColor,
                       ),
                       if (playerChampion?.level != null)
                         widgets.TextChip(
                           spacing: 5,
+                          highlightText: levelSearch,
                           text: 'Level ${playerChampion?.level.toString()}',
                           color: levelColor,
                         ),
