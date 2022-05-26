@@ -15,7 +15,7 @@ class RealtimeGlobalChat {
   static DatabaseReference? _playerRef;
 
   /// Used to initialize ref object
-  /// should be called Env is setup
+  /// should be called Env after is setup
   static void initialize() {
     _globalChatRef = FirebaseDatabase.instance.ref(
       "${constants.Env.appType}-global-chat",
