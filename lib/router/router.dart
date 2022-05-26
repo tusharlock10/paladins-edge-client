@@ -24,6 +24,7 @@ final _mainRoutes = [
   screens.Friends.userGoRoute,
   screens.ActiveMatch.userGoRoute,
   screens.Feedback.goRoute,
+  screens.GlobalChat.goRoute,
 ];
 
 String? _routeRedirect(GoRouterState state) {

@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '280154424805',
     projectId: 'paladins-edge',
     authDomain: 'paladins-edge.firebaseapp.com',
+    databaseURL: 'https://paladins-edge-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paladins-edge.appspot.com',
     measurementId: 'G-LQLMCT8NC9',
   );
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:280154424805:android:06755c7776c617c0aa1b0c',
     messagingSenderId: '280154424805',
     projectId: 'paladins-edge',
+    databaseURL: 'https://paladins-edge-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paladins-edge.appspot.com',
   );
 }
