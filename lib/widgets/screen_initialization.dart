@@ -45,7 +45,7 @@ class ScreenInitialization extends HookConsumerWidget {
         if (missingEnvs.isNotEmpty) {
           // if some variables are missing then open up an alert
           // and do not let the app proceed forward
-          WidgetsBinding.instance?.addPostFrameCallback(
+          WidgetsBinding.instance.addPostFrameCallback(
             (_) => widgets.showDebugAlert(
               context: context,
               isDismissible: false,

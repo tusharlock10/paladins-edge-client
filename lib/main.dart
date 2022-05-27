@@ -20,7 +20,10 @@ void main() async {
       DeviceOrientation.portraitDown,
     ]);
   }
+
+  print("INIT : ${Firebase.apps.length}");
   await Firebase.initializeApp(
+    name: 'root',
     options: firebase_options.DefaultFirebaseOptions.currentPlatform,
   );
 

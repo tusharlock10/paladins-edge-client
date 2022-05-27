@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:paladinsedge/providers/index.dart' as providers;
+import 'package:paladinsedge/theme/index.dart' as theme;
 import 'package:paladinsedge/utilities/index.dart' as utilities;
 
 class HomeQueueChart extends HookConsumerWidget {
@@ -15,10 +16,15 @@ class HomeQueueChart extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final queueProvider = ref.read(providers.queue);
-    final selectedTimeline =
-        ref.watch(providers.queue.select((_) => _.selectedTimeline));
-    final chartTimelineData =
-        ref.watch(providers.queue.select((_) => _.chartTimelineData));
+    final isLightTheme = ref.watch(
+      providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
+    );
+    final selectedTimeline = ref.watch(
+      providers.queue.select((_) => _.selectedTimeline),
+    );
+    final chartTimelineData = ref.watch(
+      providers.queue.select((_) => _.chartTimelineData),
+    );
     final chartMaxX = ref.watch(providers.queue.select((_) => _.chartMaxX));
     final chartMaxY = ref.watch(providers.queue.select((_) => _.chartMaxY));
     final chartMinX = ref.watch(providers.queue.select((_) => _.chartMinX));
@@ -52,27 +58,77 @@ class HomeQueueChart extends HookConsumerWidget {
       [smallestUnit],
     );
 
+    // Hooks
+    final tooltipBgColor = useMemoized(
+      () {
+        return isLightTheme
+            ? theme.themeMaterialColor.shade50.withOpacity(0.75)
+            : theme.darkThemeMaterialColor.shade50.withOpacity(0.75);
+      },
+      [isLightTheme],
+    );
+
+    final tooltipItemColor = useMemoized(
+      () {
+        return isLightTheme ? theme.darkThemeMaterialColor : Colors.white;
+      },
+      [isLightTheme],
+    );
+
     // Methods
-    final getQueueTimeTitle = useCallback(
-      (double _index) {
-        final index = _index.toInt();
-        final date = selectedTimeline[index].createdAt.toLocal();
+    final getQueueTime = useCallback(
+      (double index) {
+        final intIndex = index.toInt();
+        final date = selectedTimeline[intIndex].createdAt.toLocal();
 
         return Jiffy(date).format("h:mm a");
       },
       [selectedTimeline],
     );
 
+    final getQueueTimeTitle = useCallback(
+      (double index, TitleMeta _) {
+        final text = getQueueTime(index);
+
+        return Text(
+          text,
+          style: const TextStyle(fontSize: 9),
+        );
+      },
+      [],
+    );
+
+    final getQueuePlayerCount = useCallback(
+      (
+        double matchCount,
+        TitleMeta titleMeta,
+      ) {
+        final text = utilities
+            .roundToNearestTenth(
+              matchCount.toInt(),
+              offset: 1,
+              ceil: true,
+            )
+            .toString();
+
+        return Text(
+          text,
+          style: const TextStyle(fontSize: 10),
+        );
+      },
+      [],
+    );
+
     final getLineTooltipItem = useCallback(
       (List<LineBarSpot> touchedSpots) {
         return touchedSpots.map((LineBarSpot touchedSpot) {
           final textStyle = TextStyle(
-            color: touchedSpot.bar.colors.first,
+            color: tooltipItemColor,
             fontSize: 12,
           );
 
           return LineTooltipItem(
-            '${touchedSpot.y.toInt()} at ${getQueueTimeTitle(touchedSpot.x)}',
+            '${touchedSpot.y.toInt()} at ${getQueueTime(touchedSpot.x)}',
             textStyle,
           );
         }).toList();
@@ -94,6 +150,11 @@ class HomeQueueChart extends HookConsumerWidget {
               enabled: true,
               touchTooltipData: LineTouchTooltipData(
                 getTooltipItems: getLineTooltipItem,
+                tooltipRoundedRadius: 100,
+                fitInsideHorizontally: true,
+                fitInsideVertically: true,
+                tooltipMargin: 20,
+                tooltipBgColor: tooltipBgColor,
               ),
             ),
             clipData: FlClipData.all(),
@@ -121,29 +182,27 @@ class HomeQueueChart extends HookConsumerWidget {
             ),
             gridData: FlGridData(show: false),
             titlesData: FlTitlesData(
-              topTitles: SideTitles(showTitles: false),
-              rightTitles: SideTitles(showTitles: false),
-              bottomTitles: SideTitles(
-                showTitles: true,
-                getTextStyles: (_, __) => const TextStyle(fontSize: 9),
-                getTitles: getQueueTimeTitle,
-                interval: selectedTimeline.length / intervals,
-              ),
-              leftTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 28,
-                getTitles: (value) => defaultGetTitle(
-                  utilities
-                      .roundToNearestTenth(value.toInt(), offset: 1, ceil: true)
-                      .toDouble(),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              rightTitles:
+                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: getQueueTimeTitle,
+                  interval: selectedTimeline.length / intervals,
                 ),
-                getTextStyles: (_, __) => const TextStyle(fontSize: 10),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  reservedSize: 28,
+                  showTitles: true,
+                  getTitlesWidget: getQueuePlayerCount,
+                ),
               ),
             ),
             borderData: FlBorderData(show: false),
             lineBarsData: [
               LineChartBarData(
-                colors: gradient,
                 barWidth: 2.5,
                 isCurved: true,
                 isStrokeCapRound: true,
@@ -162,7 +221,12 @@ class HomeQueueChart extends HookConsumerWidget {
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(
                   show: true,
-                  colors: gradient.map((_) => _.withOpacity(0.4)).toList(),
+                  color: Colors.green,
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: gradient.map((_) => _.withOpacity(0.4)).toList(),
+                  ),
                 ),
                 spots: chartTimelineData,
               ),
