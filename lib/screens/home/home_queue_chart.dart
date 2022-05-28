@@ -31,7 +31,14 @@ class HomeQueueChart extends HookConsumerWidget {
     final chartMinY = ref.watch(providers.queue.select((_) => _.chartMinY));
 
     // Variables
-    const gradient = [Color(0xff6dd5ed), Color(0xff2193b0)];
+    const gradient = [Color(0xff4dbdd6), Color(0xff2193b0)];
+    final chartHeight = utilities.responsiveCondition(
+      context,
+      desktop: 260.0,
+      tablet: 240.0,
+      mobile: 220.0,
+    );
+    final titleHeightPercent = (chartHeight - 30) / 20;
     final smallestUnit = utilities.responsiveCondition(
       context,
       desktop: 12,
@@ -90,9 +97,12 @@ class HomeQueueChart extends HookConsumerWidget {
       (double index, TitleMeta _) {
         final text = getQueueTime(index);
 
-        return Text(
-          text,
-          style: const TextStyle(fontSize: 9),
+        return Padding(
+          padding: const EdgeInsets.only(top: 7),
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 9),
+          ),
         );
       },
       [],
@@ -103,18 +113,37 @@ class HomeQueueChart extends HookConsumerWidget {
         double matchCount,
         TitleMeta titleMeta,
       ) {
-        final text = utilities
-            .roundToNearestTenth(
-              matchCount.toInt(),
-              offset: 1,
-              ceil: true,
-            )
-            .toString();
+        bool hide = false;
+        final lowerTolerableValue =
+            titleMeta.min + (titleMeta.min * titleHeightPercent / 100);
+        final upperTolerableValue =
+            titleMeta.max - (titleMeta.max * titleHeightPercent / 100);
 
-        return Text(
-          text,
-          style: const TextStyle(fontSize: 10),
-        );
+        if (matchCount == titleMeta.max || matchCount == titleMeta.min) {
+          hide = false;
+        } else if (matchCount < lowerTolerableValue ||
+            matchCount > upperTolerableValue) {
+          hide = true;
+        }
+
+        final temp = double.tryParse(titleMeta.formattedValue);
+
+        final text = temp == null
+            ? titleMeta.formattedValue
+            : utilities
+                .roundToNearestTenth(
+                  temp.toInt(),
+                  offset: 1,
+                  ceil: true,
+                )
+                .toString();
+
+        return hide
+            ? const SizedBox()
+            : Text(
+                text,
+                style: const TextStyle(fontSize: 10),
+              );
       },
       [],
     );
@@ -143,7 +172,7 @@ class HomeQueueChart extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, right: 30, left: 10, top: 20),
       child: SizedBox(
-        height: 220,
+        height: chartHeight,
         child: LineChart(
           LineChartData(
             lineTouchData: LineTouchData(
@@ -157,7 +186,6 @@ class HomeQueueChart extends HookConsumerWidget {
                 tooltipBgColor: tooltipBgColor,
               ),
             ),
-            clipData: FlClipData.all(),
             minX: chartMinX,
             maxX: chartMaxX,
             minY: max(chartMinY - intervalY, 0),
@@ -221,10 +249,9 @@ class HomeQueueChart extends HookConsumerWidget {
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(
                   show: true,
-                  color: Colors.green,
                   gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                     colors: gradient.map((_) => _.withOpacity(0.4)).toList(),
                   ),
                 ),
