@@ -14,6 +14,7 @@ analyzer:
     - lib/**.g.dart
     - lib/**.gen.dart
     - lib/**.freezed.dart
+    - lib/generated_plugin_registrant.dart
   plugins:
     - dart_code_metrics
   strong-mode:
