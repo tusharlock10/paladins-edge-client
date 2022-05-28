@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/screens/main/main_pages.dart';
+import "package:flutter/material.dart";
+import "package:paladinsedge/screens/main/main_pages.dart";
 
 class MainPagesStack extends StatelessWidget {
   final int selectedIndex;
@@ -11,8 +11,8 @@ class MainPagesStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IndexedStack(
-      children: pages.map((page) => page.screen).toList(),
       index: selectedIndex,
+      children: pages.map((page) => page.screen).toList(),
     );
   }
 }

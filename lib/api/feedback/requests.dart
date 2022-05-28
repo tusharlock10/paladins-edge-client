@@ -1,7 +1,7 @@
-import 'package:paladinsedge/api/feedback/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/feedback/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class FeedbackRequests {
   static Future<responses.UploadImageUrlResponse?> uploadImageUrl({
@@ -10,7 +10,7 @@ abstract class FeedbackRequests {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.uploadImageUrl,
-        queryParameters: {'fileName': fileName},
+        queryParameters: {"fileName": fileName},
       );
       if (response.data != null) {
         return responses.UploadImageUrlResponse.fromJson(response.data!);
@@ -29,7 +29,7 @@ abstract class FeedbackRequests {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.submitFeedback,
         data: {
-          'feedback': feedback,
+          "feedback": feedback,
         },
       );
       if (response.data != null) {

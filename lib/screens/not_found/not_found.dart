@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/gen/assets.gen.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/gen/assets.gen.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class NotFound extends StatelessWidget {
   const NotFound({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class NotFound extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('404'),
+        title: const Text("404"),
       ),
       body: SizedBox(
         height: height,
@@ -35,12 +35,12 @@ class NotFound extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             Text(
-              'Hehe, did I trick you?',
+              "Hehe, did I trick you?",
               style: textTheme.headline1?.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 5),
             widgets.Button(
-              label: 'Back to Home',
+              label: "Back to Home",
               onPressed: () => utilities.Navigation.navigate(
                 context,
                 screens.Main.routeName,

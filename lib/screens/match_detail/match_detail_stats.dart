@@ -1,8 +1,8 @@
-import 'package:duration/duration.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
+import "package:duration/duration.dart";
+import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
 
 class MatchDetailStats extends HookConsumerWidget {
   const MatchDetailStats({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class MatchDetailStats extends HookConsumerWidget {
       Duration(seconds: match.matchDuration),
       abbreviated: true,
       upperTersity: DurationTersity.minute,
-      conjugation: ' ',
+      conjugation: " ",
     ).replaceAll("min", "m");
     final map = match.map.split(" ").sublist(1).join(" ");
     final region = match.region;

@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ActiveMatchLoading extends StatelessWidget {
   final bool isLoadingPlayerStatus;
@@ -22,7 +22,7 @@ class ActiveMatchLoading extends StatelessWidget {
                 ? const widgets.LoadingIndicator(
                     lineWidth: 2,
                     size: 28,
-                    label: Text('Getting active match'),
+                    label: Text("Getting active match"),
                   )
                 : Center(
                     child: Text(

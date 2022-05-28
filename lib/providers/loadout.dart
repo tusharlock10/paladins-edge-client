@@ -1,11 +1,11 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _LoadoutNotifier extends ChangeNotifier {
   bool isGettingLoadouts = false;
@@ -109,11 +109,11 @@ class _LoadoutNotifier extends ChangeNotifier {
     // check if loadout name is valid
 
     bool result = true;
-    String error = '';
+    String error = "";
 
     if (draftLoadout.name.trim().isEmpty) {
       result = false;
-      error = 'Loadout name cannot be empty';
+      error = "Loadout name cannot be empty";
     }
 
     // check if there are 5 loadout cards
@@ -121,18 +121,18 @@ class _LoadoutNotifier extends ChangeNotifier {
         draftLoadout.loadoutCards.where((_) => _ != null).toList();
     if (filteredCards.length < 5) {
       result = false;
-      error = 'Loadout should have 5 cards';
+      error = "Loadout should have 5 cards";
     }
 
     int points = 0;
-    for (var _ in filteredCards) {
-      points += _?.level ?? 0;
+    for (var temp in filteredCards) {
+      points += temp?.level ?? 0;
     }
 
     // check if loadout points are exactly 15
     if (points != 15) {
       result = false;
-      error = 'Loadout should have 15 points';
+      error = "Loadout should have 15 points";
     }
 
     return data_classes.LoadoutValidationResult(

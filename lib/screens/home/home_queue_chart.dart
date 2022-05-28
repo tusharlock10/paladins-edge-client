@@ -1,13 +1,13 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class HomeQueueChart extends HookConsumerWidget {
   const HomeQueueChart({Key? key}) : super(key: key);
@@ -157,7 +157,7 @@ class HomeQueueChart extends HookConsumerWidget {
           );
 
           return LineTooltipItem(
-            '${touchedSpot.y.toInt()} at ${getQueueTime(touchedSpot.x)}',
+            "${touchedSpot.y.toInt()} at ${getQueueTime(touchedSpot.x)}",
             textStyle,
           );
         }).toList();
@@ -203,7 +203,7 @@ class HomeQueueChart extends HookConsumerWidget {
                       fontSize: 10,
                       fontStyle: FontStyle.italic,
                     ),
-                    labelResolver: (_) => 'Peak ${_.y.round()}',
+                    labelResolver: (_) => "Peak ${_.y.round()}",
                   ),
                 ),
               ],

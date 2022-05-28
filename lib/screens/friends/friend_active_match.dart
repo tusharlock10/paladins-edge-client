@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class _PlayerMatch extends StatelessWidget {
   final models.ActiveMatch match;

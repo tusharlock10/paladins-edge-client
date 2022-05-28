@@ -1,16 +1,16 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/firebase_options.dart' as firebase_options;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/router/index.dart' as router;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:responsive_framework/responsive_framework.dart';
+import "package:firebase_core/firebase_core.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:overlay_support/overlay_support.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/firebase_options.dart" as firebase_options;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/router/index.dart" as router;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:responsive_framework/responsive_framework.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +21,8 @@ void main() async {
     ]);
   }
 
-  print("INIT : ${Firebase.apps.length}");
   await Firebase.initializeApp(
-    name: 'root',
+    name: "root",
     options: firebase_options.DefaultFirebaseOptions.currentPlatform,
   );
 

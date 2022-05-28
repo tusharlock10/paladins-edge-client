@@ -1,14 +1,14 @@
-import 'package:dartx/dartx.dart';
-import 'package:duration/duration.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
+import "package:dartx/dartx.dart";
+import "package:duration/duration.dart";
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:syncfusion_flutter_datagrid/datagrid.dart";
+import "package:touchable_opacity/touchable_opacity.dart";
 
 class PlayerChampionsDataSource extends DataGridSource {
   final models.Player player;
@@ -45,7 +45,7 @@ class PlayerChampionsDataSource extends DataGridSource {
         return DataGridRow(
           cells: [
             DataGridCell(
-              columnName: 'Champ',
+              columnName: "Champ",
               value: data_classes.PlayerChampionsSortData(
                 iconUrl: champion.iconUrl,
                 sortedIndex: championIndex,
@@ -53,15 +53,15 @@ class PlayerChampionsDataSource extends DataGridSource {
                 name: champion.name,
               ),
             ),
-            DataGridCell(columnName: 'Matches', value: matches),
-            DataGridCell(columnName: 'Kills', value: kills),
-            DataGridCell(columnName: 'Deaths', value: deaths),
-            DataGridCell(columnName: 'KDA', value: kda),
-            DataGridCell(columnName: 'Win Rate', value: winRate),
-            DataGridCell(columnName: 'Play Time', value: playTime),
-            DataGridCell(columnName: 'Level', value: level),
-            DataGridCell(columnName: 'Last Played', value: lastPlayed),
-            DataGridCell(columnName: 'Loadout', value: champion),
+            DataGridCell(columnName: "Matches", value: matches),
+            DataGridCell(columnName: "Kills", value: kills),
+            DataGridCell(columnName: "Deaths", value: deaths),
+            DataGridCell(columnName: "KDA", value: kda),
+            DataGridCell(columnName: "Win Rate", value: winRate),
+            DataGridCell(columnName: "Play Time", value: playTime),
+            DataGridCell(columnName: "Level", value: level),
+            DataGridCell(columnName: "Last Played", value: lastPlayed),
+            DataGridCell(columnName: "Loadout", value: champion),
           ],
         );
       },
@@ -181,7 +181,7 @@ class PlayerChampionsDataSource extends DataGridSource {
   Widget _getWinRateCellWidget(DataGridCell dataGridCell) {
     return Center(
       child: Text(
-        '${dataGridCell.value.toStringAsPrecision(3)}%',
+        "${dataGridCell.value.toStringAsPrecision(3)}%",
         style: _getWinRateStyle(dataGridCell.value as double),
       ),
     );
@@ -256,25 +256,25 @@ class PlayerChampionsDataSource extends DataGridSource {
   // ignore: long-method
   Widget _getCellWidget(DataGridCell dataGridCell) {
     switch (dataGridCell.columnName) {
-      case 'Champ':
+      case "Champ":
         return _getChampCellWidget(dataGridCell);
-      case 'Matches':
+      case "Matches":
         return _getMatchesCellWidget(dataGridCell);
-      case 'Kills':
+      case "Kills":
         return _getKillsCellWidget(dataGridCell);
-      case 'Deaths':
+      case "Deaths":
         return _getDeathsCellWidget(dataGridCell);
-      case 'KDA':
+      case "KDA":
         return _getKDACellWidget(dataGridCell);
-      case 'Win Rate':
+      case "Win Rate":
         return _getWinRateCellWidget(dataGridCell);
-      case 'Play Time':
+      case "Play Time":
         return _getPlayTimeCellWidget(dataGridCell);
-      case 'Level':
+      case "Level":
         return _getLevelCellWidget(dataGridCell);
-      case 'Last Played':
+      case "Last Played":
         return _getLastPlayedCellWidget(dataGridCell);
-      case 'Loadout':
+      case "Loadout":
         return _getLoadoutCellWidget(dataGridCell);
     }
 

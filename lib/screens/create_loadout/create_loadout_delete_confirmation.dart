@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 void showCreateLoadoutDeleteConfirmation({
   required BuildContext context,
@@ -71,7 +71,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
-                      'DELETE LOADOUT',
+                      "DELETE LOADOUT",
                       style: textTheme.headline1?.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
@@ -81,7 +81,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Are you sure, you want to delete this loadout?',
+                  "Are you sure, you want to delete this loadout?",
                   style: textTheme.bodyText1?.copyWith(fontSize: 16),
                 ),
               ],
@@ -93,13 +93,13 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             widgets.Button(
-              label: 'Cancel',
+              label: "Cancel",
               onPressed: () => utilities.Navigation.pop(context),
               color: Colors.red,
               style: widgets.ButtonStyle.outlined,
             ),
             widgets.Button(
-              label: 'Confirm',
+              label: "Confirm",
               onPressed: onDeleteConfirm,
               color: Colors.green,
             ),

@@ -1,15 +1,15 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailPlayer extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
@@ -41,7 +41,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
     final partyNumber = matchPlayer.partyNumber;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
-    String matchPosition = ' ${matchPlayer.matchPosition}th ';
+    String matchPosition = " ${matchPlayer.matchPosition}th ";
 
     if (matchPlayer.matchPosition == 1) matchPosition = "MVP";
     if (matchPlayer.matchPosition == 2) matchPosition = " 2nd ";
@@ -56,7 +56,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            'playerId': matchPlayer.playerId,
+            "playerId": matchPlayer.playerId,
           },
         );
       },
@@ -110,7 +110,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                   width: 160,
                   child: Text(
                     isPrivatePlayer
-                        ? 'Private Profile'
+                        ? "Private Profile"
                         : matchPlayer.playerName,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -141,7 +141,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Credits',
+                          "Credits",
                           style: textTheme.bodyText1?.copyWith(
                             fontSize: 9,
                             fontStyle: FontStyle.italic,
@@ -186,7 +186,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                     children: [
                       if (matchPlayer.partyNumber != null)
                         TextSpan(
-                          text: 'party ${matchPlayer.partyNumber}',
+                          text: "party ${matchPlayer.partyNumber}",
                           style: TextStyle(
                             color: partyColor,
                             fontWeight: FontWeight.normal,
@@ -195,14 +195,14 @@ class MatchDetailPlayer extends HookConsumerWidget {
                         )
                       else
                         const TextSpan(
-                          text: 'solo',
+                          text: "solo",
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                      TextSpan(text: '  $kills / $deaths / $assists  '),
+                      TextSpan(text: "  $kills / $deaths / $assists  "),
                       TextSpan(
-                        text: '($kda)',
+                        text: "($kda)",
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 12,

@@ -1,10 +1,10 @@
 // data related to essentials
 
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
+import "package:hive/hive.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
 
-part 'essentials.g.dart';
+part "essentials.g.dart";
 
 // model for storing app essentials locally
 @HiveType(typeId: TypeIds.essentials)

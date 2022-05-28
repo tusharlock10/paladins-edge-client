@@ -1,19 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/create_loadout/create_loadout_delete_button.dart';
-import 'package:paladinsedge/screens/create_loadout/create_loadout_draggable_cards.dart';
-import 'package:paladinsedge/screens/create_loadout/create_loadout_target.dart';
-import 'package:paladinsedge/screens/create_loadout/create_loadout_text.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/create_loadout/create_loadout_delete_button.dart";
+import "package:paladinsedge/screens/create_loadout/create_loadout_draggable_cards.dart";
+import "package:paladinsedge/screens/create_loadout/create_loadout_target.dart";
+import "package:paladinsedge/screens/create_loadout/create_loadout_text.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
-  static const routeName = 'createLoadout';
-  static const routePath = 'createLoadout';
+  static const routeName = "createLoadout";
+  static const routePath = "createLoadout";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
@@ -54,17 +54,23 @@ class CreateLoadout extends HookConsumerWidget {
     );
 
     // Methods
+    final goBack = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
     final onSave = useCallback(
       () async {
         final canSave = loadoutProvider.validateLoadout();
         if (canSave.result) {
           final success = await loadoutProvider.saveLoadout();
           if (success) {
-            utilities.Navigation.pop(context);
+            goBack();
           } else {
             widgets.showToast(
               context: context,
-              text: 'An error occurred while saving loadout',
+              text: "An error occurred while saving loadout",
               type: widgets.ToastType.error,
             );
           }
@@ -120,7 +126,7 @@ class CreateLoadout extends HookConsumerWidget {
                                 ? const SizedBox(width: 10)
                                 : const SizedBox(),
                             Text(
-                              isSavingLoadout ? 'Saving' : 'Save',
+                              isSavingLoadout ? "Saving" : "Save",
                               style: const TextStyle(
                                 fontSize: 16,
                               ),
@@ -158,7 +164,7 @@ class CreateLoadout extends HookConsumerWidget {
   }
 
   static Widget _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params['championId'];
+    final paramChampionId = state.params["championId"];
     if (paramChampionId == null) return const screens.NotFound();
     final championId = int.tryParse(paramChampionId);
     if (championId == null) return const screens.NotFound();

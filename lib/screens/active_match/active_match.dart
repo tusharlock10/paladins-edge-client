@@ -1,26 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/active_match/active_match_list.dart';
-import 'package:paladinsedge/screens/active_match/active_match_loading.dart';
-import 'package:paladinsedge/screens/active_match/active_match_not_in_match.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/active_match/active_match_list.dart";
+import "package:paladinsedge/screens/active_match/active_match_loading.dart";
+import "package:paladinsedge/screens/active_match/active_match_not_in_match.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ActiveMatch extends HookConsumerWidget {
-  static const routeName = 'activeMatch';
-  static const routePath = 'activeMatch';
+  static const routeName = "activeMatch";
+  static const routePath = "activeMatch";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     builder: _routeBuilder,
   );
-  static const userRouteName = 'userActiveMatch';
-  static const userRoutePath = 'userActiveMatch';
+  static const userRouteName = "userActiveMatch";
+  static const userRoutePath = "userActiveMatch";
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,
@@ -103,7 +103,7 @@ class ActiveMatch extends HookConsumerWidget {
               floating: true,
               snap: true,
               pinned: constants.isWeb,
-              title: Text('Active Match'),
+              title: Text("Active Match"),
             ),
             playerStatus == null
                 ? ActiveMatchLoading(

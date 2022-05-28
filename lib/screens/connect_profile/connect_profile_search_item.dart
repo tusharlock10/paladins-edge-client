@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfileSearchItem extends StatelessWidget {
   final api.LowerSearch searchItem;
@@ -42,7 +42,7 @@ class ConnectProfileSearchItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            'Player Id',
+            "Player Id",
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey.shade500,

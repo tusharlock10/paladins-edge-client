@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/home/home_favourite_friend_item.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/home/home_favourite_friend_item.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class HomeFavouriteFriends extends HookConsumerWidget {
   const HomeFavouriteFriends({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class HomeFavouriteFriends extends HookConsumerWidget {
         ? const widgets.LoadingIndicator(
             lineWidth: 2,
             size: 28,
-            label: Text('Loading friends'),
+            label: Text("Loading friends"),
           )
         : favouritePlayers == null
             ? const Card(
@@ -60,7 +60,7 @@ class HomeFavouriteFriends extends HookConsumerWidget {
                   padding: EdgeInsets.all(10),
                   child: Center(
                     child: Text(
-                      'Sorry we were unable to fetch your friends',
+                      "Sorry we were unable to fetch your friends",
                     ),
                   ),
                 ),
@@ -81,14 +81,14 @@ class HomeFavouriteFriends extends HookConsumerWidget {
                         child: Column(
                           children: [
                             Text(
-                              'Try adding some favourite friends',
+                              "Try adding some favourite friends",
                               style: headingText,
                             ),
                             const SizedBox(height: 5),
-                            Text('*Visit the friends section', style: bodyText),
-                            Text('*Select a friend', style: bodyText),
-                            Text('*Mark him favourite', style: bodyText),
-                            Text('*They will appear here', style: bodyText),
+                            Text("*Visit the friends section", style: bodyText),
+                            Text("*Select a friend", style: bodyText),
+                            Text("*Mark him favourite", style: bodyText),
+                            Text("*They will appear here", style: bodyText),
                           ],
                         ),
                       ),

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
 
 class FriendsAppBar extends ConsumerWidget {
   final bool isOtherPlayer;
@@ -32,13 +32,13 @@ class FriendsAppBar extends ConsumerWidget {
       title: Column(
         children: [
           Text(
-            isOtherPlayer ? otherPlayer!.name : 'Friends',
+            isOtherPlayer ? otherPlayer!.name : "Friends",
           ),
           if (!isLoadingFriends && data != null)
             Text(
               isOtherPlayer
-                  ? 'has ${data.length} friends'
-                  : 'you have ${data.length}',
+                  ? "has ${data.length} friends"
+                  : "you have ${data.length}",
               style: const TextStyle(fontSize: 12),
             ),
         ],

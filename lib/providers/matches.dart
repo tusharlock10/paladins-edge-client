@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;

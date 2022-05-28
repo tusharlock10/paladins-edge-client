@@ -1,1 +1,1 @@
-export './global_chat.dart';
+export "./global_chat.dart";

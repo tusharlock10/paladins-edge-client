@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/match_detail/match_detail_app_bar.dart';
-import 'package:paladinsedge/screens/match_detail/match_detail_list.dart';
+import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/match_detail/match_detail_app_bar.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_list.dart";
 
 class MatchDetail extends StatelessWidget {
-  static const routeName = 'match';
-  static const routePath = 'match/:matchId';
+  static const routeName = "match";
+  static const routePath = "match/:matchId";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
@@ -32,7 +32,7 @@ class MatchDetail extends StatelessWidget {
   }
 
   static Widget _routeBuilder(_, GoRouterState state) {
-    final paramMatchId = state.params['matchId'];
+    final paramMatchId = state.params["matchId"];
     if (paramMatchId == null) {
       return const screens.NotFound();
     }

@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/index.dart' show Match, MatchPlayer;
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/index.dart" show Match, MatchPlayer;
 
-part 'responses.g.dart';
+part "responses.g.dart";
 
 @JsonSerializable()
 class MatchDetailsResponse {

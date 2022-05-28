@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/home/home_bounty_store_card.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/home/home_bounty_store_card.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class HomeBountyStoreDetails extends HookConsumerWidget {
   const HomeBountyStoreDetails({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
             lineWidth: 2,
             size: 28,
             margin: EdgeInsets.all(20),
-            label: Text('Getting bounty store'),
+            label: Text("Getting bounty store"),
           )
         : bountyStore == null
             ? const Card(
@@ -51,7 +51,7 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
                   padding: EdgeInsets.all(10),
                   child: Center(
                     child: Text(
-                      'Sorry we were unable to fetch the bounty store',
+                      "Sorry we were unable to fetch the bounty store",
                     ),
                   ),
                 ),
@@ -61,7 +61,7 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Bounty Store Updates',
+                      "Bounty Store Updates",
                       style: textTheme.headline3,
                     ),
                     GridView.count(
@@ -75,8 +75,8 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
                       ),
                       children: bountyStore
                           .map(
-                            (_bountyStore) =>
-                                HomeBountyStoreCard(bountyStore: _bountyStore),
+                            (bountyStore) =>
+                                HomeBountyStoreCard(bountyStore: bountyStore),
                           )
                           .toList(),
                     ),

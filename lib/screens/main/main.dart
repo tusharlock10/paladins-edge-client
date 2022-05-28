@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:paladinsedge/screens/app_drawer/index.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/main/main_bottom_tabs.dart';
-import 'package:paladinsedge/screens/main/main_pages_stack.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:paladinsedge/screens/app_drawer/index.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/main/main_bottom_tabs.dart";
+import "package:paladinsedge/screens/main/main_pages_stack.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class Main extends HookWidget {
-  static const routeName = 'main';
-  static const routePath = '/';
+  static const routeName = "main";
+  static const routePath = "/";
   final int startIndex;
   const Main({
     this.startIndex = 0,

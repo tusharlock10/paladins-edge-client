@@ -1,1 +1,1 @@
-export './friends.dart';
+export "./friends.dart";

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/screens/champions/champions_filter_tab.dart';
-import 'package:paladinsedge/screens/champions/champions_sort_tab.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/screens/champions/champions_filter_tab.dart";
+import "package:paladinsedge/screens/champions/champions_sort_tab.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 void showChampionsFilterModal(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
@@ -75,7 +75,7 @@ class _ChampionsFilterModal extends HookWidget {
                     children: const [
                       Icon(FeatherIcons.filter, size: 18),
                       SizedBox(width: 10),
-                      Text('Filter', style: TextStyle(fontSize: 16)),
+                      Text("Filter", style: TextStyle(fontSize: 16)),
                     ],
                   ),
                 ),
@@ -85,7 +85,7 @@ class _ChampionsFilterModal extends HookWidget {
                     children: const [
                       Icon(FeatherIcons.arrowUp, size: 20),
                       SizedBox(width: 10),
-                      Text('Sort', style: TextStyle(fontSize: 16)),
+                      Text("Sort", style: TextStyle(fontSize: 16)),
                     ],
                   ),
                 ),

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ElevatedAvatar extends StatelessWidget {
   final String imageUrl;

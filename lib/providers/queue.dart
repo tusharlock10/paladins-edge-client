@@ -1,13 +1,13 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:dartx/dartx.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:dartx/dartx.dart";
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _QueueState extends ChangeNotifier {
   bool isLoading = true;

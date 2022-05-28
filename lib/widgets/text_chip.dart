@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:substring_highlight/substring_highlight.dart';
+import "package:flutter/material.dart";
+import "package:substring_highlight/substring_highlight.dart";
 
 class TextChip extends StatelessWidget {
   final String text;

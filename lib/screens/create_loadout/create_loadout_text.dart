@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class CreateLoadoutText extends StatelessWidget {
   const CreateLoadoutText({Key? key}) : super(key: key);
@@ -7,11 +7,11 @@ class CreateLoadoutText extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Text('''
+      child: Text("""
 * Select a card from the list and drag it in the loadout
 * Tap the card in the loadout to change its points
 * Rename the loadout to your liking and save
-'''),
+"""),
     );
   }
 }

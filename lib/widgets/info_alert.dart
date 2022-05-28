@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/widgets/loading_indicator.dart';
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:package_info_plus/package_info_plus.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/widgets/loading_indicator.dart";
 
 void showInfoAlert(BuildContext context) {
   showDialog(context: context, builder: (_) => const _InfoAlert());
@@ -22,8 +22,7 @@ class _InfoAlert extends HookWidget {
     // Effects
     useEffect(
       () {
-        PackageInfo.fromPlatform()
-            .then((_packageInfo) => packageInfo.value = _packageInfo);
+        PackageInfo.fromPlatform().then((temp) => packageInfo.value = temp);
 
         return null;
       },
@@ -51,15 +50,15 @@ class _InfoAlert extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Here is some info for ya',
+                      "Here is some info for ya",
                       style: textTheme.headline1?.copyWith(fontSize: 24),
                     ),
                     const SizedBox(height: 20),
-                    Text('App Name : ${packageInfo.value!.appName}'),
-                    Text('App Type : ${constants.Env.appType}'),
-                    Text('Package Name : ${packageInfo.value!.packageName}'),
-                    Text('Version: ${packageInfo.value!.version}'),
-                    Text('API Url : ${constants.Env.baseUrl}'),
+                    Text("App Name : ${packageInfo.value!.appName}"),
+                    Text("App Type : ${constants.Env.appType}"),
+                    Text("Package Name : ${packageInfo.value!.packageName}"),
+                    Text("Version: ${packageInfo.value!.version}"),
+                    Text("API Url : ${constants.Env.baseUrl}"),
                   ],
                 ),
         ),

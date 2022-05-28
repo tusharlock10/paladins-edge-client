@@ -1,20 +1,20 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/loadouts/loadout_item.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/loadouts/loadout_item.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Loadouts extends HookConsumerWidget {
-  static const routeName = 'loadouts';
-  static const routePath = 'loadouts/:playerId';
+  static const routeName = "loadouts";
+  static const routePath = "loadouts/:playerId";
   final int championId;
   final String playerId;
 
@@ -129,8 +129,8 @@ class Loadouts extends HookConsumerWidget {
           context,
           screens.CreateLoadout.routeName,
           params: {
-            'championId': championId.toString(),
-            'playerId': playerId,
+            "championId": championId.toString(),
+            "playerId": playerId,
           },
         );
       },
@@ -150,8 +150,8 @@ class Loadouts extends HookConsumerWidget {
           context,
           screens.CreateLoadout.routeName,
           params: {
-            'championId': championId.toString(),
-            'playerId': playerId,
+            "championId": championId.toString(),
+            "playerId": playerId,
           },
         );
       },
@@ -188,6 +188,7 @@ class Loadouts extends HookConsumerWidget {
                   hoverElevation: 6,
                   focusElevation: 8,
                   backgroundColor: theme.themeMaterialColor,
+                  isExtended: true,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -198,7 +199,7 @@ class Loadouts extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 2),
                       Text(
-                        'Create',
+                        "Create",
                         style: textTheme.bodyText2?.copyWith(
                           fontSize: 14,
                           color: Colors.white,
@@ -207,7 +208,6 @@ class Loadouts extends HookConsumerWidget {
                       const SizedBox(width: 10),
                     ],
                   ),
-                  isExtended: true,
                 ),
               ),
             ),
@@ -223,11 +223,11 @@ class Loadouts extends HookConsumerWidget {
               pinned: constants.isWeb,
               title: Column(
                 children: [
-                  Text(isOtherPlayer ? 'Loadouts' : 'Your Loadouts'),
+                  Text(isOtherPlayer ? "Loadouts" : "Your Loadouts"),
                   if (champion != null && player != null)
                     Text(
                       isOtherPlayer
-                          ? '${player.name} - ${champion.name}'
+                          ? "${player.name} - ${champion.name}"
                           : champion.name,
                       style: const TextStyle(fontSize: 12),
                     ),
@@ -280,18 +280,18 @@ class Loadouts extends HookConsumerWidget {
                               ? const widgets.LoadingIndicator(
                                   lineWidth: 2,
                                   size: 28,
-                                  label: Text('Getting loadouts'),
+                                  label: Text("Getting loadouts"),
                                 )
                               : loadouts != null &&
                                       champion != null &&
                                       loadouts.isEmpty
                                   ? Center(
                                       child: Text(
-                                        'No loadouts found for ${champion.name}',
+                                        "No loadouts found for ${champion.name}",
                                       ),
                                     )
                                   : const Center(
-                                      child: Text('Unable to fetch loadouts'),
+                                      child: Text("Unable to fetch loadouts"),
                                     ),
                         ),
                       ],
@@ -304,8 +304,8 @@ class Loadouts extends HookConsumerWidget {
   }
 
   static Widget _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params['championId'];
-    final paramPlayerId = state.params['playerId'];
+    final paramChampionId = state.params["championId"];
+    final paramPlayerId = state.params["playerId"];
     if (paramChampionId == null || paramPlayerId == null) {
       return const screens.NotFound();
     }

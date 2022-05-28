@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:paladinsedge/gen/assets.gen.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:paladinsedge/gen/assets.gen.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class LoginTagLine extends StatelessWidget {
   const LoginTagLine({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class LoginTagLine extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text(
-                  'Feature rich\nPaladins manager',
+                  "Feature rich\nPaladins manager",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: GoogleFonts.poppins().fontFamily,

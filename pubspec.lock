@@ -539,7 +539,7 @@ packages:
     source: hosted
     version: "3.3.0"
   flutter_chat_types:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_chat_types
       url: "https://pub.dartlang.org"
@@ -787,7 +787,7 @@ packages:
     source: hosted
     version: "0.15.0"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -857,7 +857,7 @@ packages:
     source: hosted
     version: "2.4.4"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/champions/champion_item.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/champions/champion_item.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionsList extends HookConsumerWidget {
   const ChampionsList({Key? key}) : super(key: key);
@@ -53,10 +53,10 @@ class ChampionsList extends HookConsumerWidget {
                     ? const widgets.LoadingIndicator(
                         lineWidth: 2,
                         size: 28,
-                        label: Text('Getting champions'),
+                        label: Text("Getting champions"),
                       )
                     : const Center(
-                        child: Text('Unable to load champions data'),
+                        child: Text("Unable to load champions data"),
                       ),
               ],
             ),

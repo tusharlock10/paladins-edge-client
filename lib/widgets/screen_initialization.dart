@@ -1,12 +1,12 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:firebase_analytics/firebase_analytics.dart";
+import "package:firebase_performance/firebase_performance.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 /// Screen initialization widget
 /// Wrap a screen with this widget
@@ -113,7 +113,7 @@ class ScreenInitialization extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  'Please Wait',
+                  "Please Wait",
                   style: textTheme.bodyText1?.copyWith(
                     fontSize: 16,
                     color: Colors.white.withOpacity(0.8),

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
 
 class FeedbackTypeSelector extends HookConsumerWidget {
   const FeedbackTypeSelector({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class FeedbackTypeSelector extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Select type of feedback',
+          "Select type of feedback",
           style: theme.textTheme.headline4?.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 20),

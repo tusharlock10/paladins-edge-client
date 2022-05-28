@@ -1,7 +1,7 @@
-import 'package:paladinsedge/api/loadout/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/loadout/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class LoadoutRequests {
   static Future<responses.PlayerLoadoutsResponse?> playerLoadouts({
@@ -13,9 +13,9 @@ abstract class LoadoutRequests {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerLoadouts,
         queryParameters: {
-          'playerId': playerId,
-          'championId': championId,
-          'forceUpdate': forceUpdate,
+          "playerId": playerId,
+          "championId": championId,
+          "forceUpdate": forceUpdate,
         },
       );
       if (response.data != null) {
@@ -35,7 +35,7 @@ abstract class LoadoutRequests {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.savePlayerLoadout,
         data: {
-          'loadout': loadout,
+          "loadout": loadout,
         },
       );
       if (response.data != null) {
@@ -55,7 +55,7 @@ abstract class LoadoutRequests {
       final response = await utilities.api.put<Map<String, dynamic>>(
         constants.Urls.updatePlayerLoadout,
         data: {
-          'loadout': loadout,
+          "loadout": loadout,
         },
       );
       if (response.data != null) {
@@ -76,8 +76,8 @@ abstract class LoadoutRequests {
       final response = await utilities.api.delete<Map<String, dynamic>>(
         constants.Urls.deletePlayerLoadout,
         queryParameters: {
-          'loadoutHash': loadoutHash,
-          'dryRun': dryRun ?? false,
+          "loadoutHash": loadoutHash,
+          "dryRun": dryRun ?? false,
         },
       );
       if (response.data != null) {

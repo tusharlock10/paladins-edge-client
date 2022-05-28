@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:paladinsedge/gen/assets.gen.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:paladinsedge/gen/assets.gen.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GoogleButton extends HookWidget {
   final bool isLoggingIn;
@@ -61,7 +61,7 @@ class GoogleButton extends HookWidget {
                   flex: width == null ? 0 : 1,
                   child: Center(
                     child: Text(
-                      'Sign in with Google',
+                      "Sign in with Google",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.grey.shade800,
@@ -80,7 +80,7 @@ class GoogleButton extends HookWidget {
           TextButton(
             onPressed: onGuestLogin,
             child: const Text(
-              'Continue as guest',
+              "Continue as guest",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,

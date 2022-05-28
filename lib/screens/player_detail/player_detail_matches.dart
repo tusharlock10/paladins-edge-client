@@ -1,9 +1,9 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/player_detail/player_detail_match_card.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/player_detail/player_detail_match_card.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailMatches extends ConsumerWidget {
   const PlayerDetailMatches({Key? key}) : super(key: key);
@@ -20,13 +20,13 @@ class PlayerDetailMatches extends ConsumerWidget {
       return const widgets.LoadingIndicator(
         lineWidth: 2,
         size: 28,
-        label: Text('Getting matches'),
+        label: Text("Getting matches"),
       );
     }
 
     return playerMatches == null
         ? const Center(
-            child: Text('Unable to fetch matches for this player'),
+            child: Text("Unable to fetch matches for this player"),
           )
         : ListView.builder(
             itemCount: playerMatches.matches.length,

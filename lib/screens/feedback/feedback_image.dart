@@ -1,12 +1,12 @@
-import 'dart:ui';
+import "dart:ui";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class FeedbackImage extends HookConsumerWidget {
   final double? width;

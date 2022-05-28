@@ -1,1 +1,1 @@
-export './player_champions.dart';
+export "./player_champions.dart";

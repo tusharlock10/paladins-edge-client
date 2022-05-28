@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import "package:flutter/material.dart";
+import "package:flutter_spinkit/flutter_spinkit.dart";
 
 class LoadingIndicator extends StatelessWidget {
   final double size;
@@ -36,8 +36,8 @@ class LoadingIndicator extends StatelessWidget {
           ),
           label != null
               ? Container(
-                  child: label,
                   margin: const EdgeInsets.only(top: 5),
+                  child: label,
                 )
               : const SizedBox(),
         ],

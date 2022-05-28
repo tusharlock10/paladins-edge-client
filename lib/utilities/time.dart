@@ -1,4 +1,4 @@
-import 'package:jiffy/jiffy.dart';
+import "package:jiffy/jiffy.dart";
 
 /// Gets the time remaining between [fromDate] and [toDate] i.e.
 /// toDate-fromDate in appropriately formatted string
@@ -41,12 +41,12 @@ String getLastPlayedTime(
   // if difference in lastPlayed and now is greater than 1 day,
   // show the full date
   // else from the from now duration
-  var lastPlayedTime = '';
+  var lastPlayedTime = "";
   final duration = DateTime.now().difference(lastPlayed);
   lastPlayedTime =
       const Duration(days: 1).compareTo(duration) < 0 || shortFormat
           ? Jiffy(lastPlayed).fromNow()
-          : Jiffy(lastPlayed).format('do MMM [at] HH:mm');
+          : Jiffy(lastPlayed).format("do MMM [at] HH:mm");
 
   return lastPlayedTime;
 }

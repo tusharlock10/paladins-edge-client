@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/friends/friend_item.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/friends/friend_item.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class FriendsList extends ConsumerWidget {
   final bool isOtherPlayer;
@@ -50,8 +50,8 @@ class FriendsList extends ConsumerWidget {
                     child: Center(
                       child: Text(
                         isOtherPlayer
-                            ? 'Sorry we were unable to fetch friends of this player'
-                            : 'Sorry we were unable to fetch your friends',
+                            ? "Sorry we were unable to fetch friends of this player"
+                            : "Sorry we were unable to fetch your friends",
                       ),
                     ),
                   ),

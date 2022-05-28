@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
+import "package:hive/hive.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
 
-part 'search_history.g.dart';
+part "search_history.g.dart";
 
 // model for storing user user's searchHistory locally
 @HiveType(typeId: TypeIds.searchHistory)

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_status_indicator_item.dart';
+import "package:flutter/material.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_status_indicator_item.dart";
 
 class ConnectProfileStatusIndicator extends StatelessWidget {
   final int currentStep;
@@ -19,17 +19,17 @@ class ConnectProfileStatusIndicator extends StatelessWidget {
           ConnectProfileStatusIndicatorItem(
             currentStep: currentStep,
             step: 0,
-            label: 'Search\nName',
+            label: "Search\nName",
           ),
           ConnectProfileStatusIndicatorItem(
             currentStep: currentStep,
             step: 1,
-            label: 'Create\nLoadout',
+            label: "Create\nLoadout",
           ),
           ConnectProfileStatusIndicatorItem(
             currentStep: currentStep,
             step: 2,
-            label: 'Get\nStarted',
+            label: "Get\nStarted",
           ),
         ],
       ),

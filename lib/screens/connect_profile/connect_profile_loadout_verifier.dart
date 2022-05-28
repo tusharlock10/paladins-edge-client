@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateProfileLoadoutVerifier extends StatelessWidget {
   final bool isVerifying;
@@ -31,14 +31,14 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
           const SizedBox(height: 15),
           RichText(
             text: TextSpan(
-              text: 'Verifying for ',
+              text: "Verifying for ",
               style: TextStyle(
                 color: headline6?.color,
                 fontFamily: headline6?.fontFamily,
               ),
               children: [
                 TextSpan(
-                  text: '${selectedPlayer?.name}',
+                  text: "${selectedPlayer?.name}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -46,7 +46,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
-              text: 'Create a loadout with the name ',
+              text: "Create a loadout with the name ",
               style: TextStyle(
                 color: headline6?.color,
                 fontFamily: headline6?.fontFamily,
@@ -60,7 +60,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
             ),
           ),
           const Text(
-            'Click verify once you have created and saved your loadout',
+            "Click verify once you have created and saved your loadout",
           ),
           const SizedBox(height: 15),
           SizedBox(
@@ -78,7 +78,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
                       color: secondaryColor,
                     )
                   : Text(
-                      'Verify',
+                      "Verify",
                       style: TextStyle(color: secondaryColor),
                     ),
             ),
@@ -92,7 +92,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
                 backgroundColor: theme.scaffoldBackgroundColor,
               ),
               child: Text(
-                'Change name',
+                "Change name",
                 style: TextStyle(color: secondaryColor),
               ),
             ),

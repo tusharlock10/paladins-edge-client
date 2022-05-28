@@ -1,4 +1,4 @@
-import 'package:paladinsedge/data_classes/champions/combined_champion.dart';
+import "package:paladinsedge/data_classes/champions/combined_champion.dart";
 
 class SelectedChampionsFilter {
   final String? name;
@@ -47,7 +47,7 @@ abstract class ChampionsFilter {
       case _freeRotation:
         return "Filter champions that are in free rotation";
       default:
-        return '';
+        return "";
     }
   }
 
@@ -132,7 +132,7 @@ abstract class ChampionsFilter {
     if (searchCondition == ChampionsSearchCondition.role &&
         champion.role.toLowerCase().contains(search)) return true;
     if (searchCondition == ChampionsSearchCondition.level &&
-        'level ${playerChampion?.level}'.contains(search)) return true;
+        "level ${playerChampion?.level}".contains(search)) return true;
 
     return false;
   }

@@ -1,10 +1,10 @@
 // The match that is currently live
 // different from a completed match
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/player/player.dart' show Ranked;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/player/player.dart" show Ranked;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
-part 'active_match.g.dart';
+part "active_match.g.dart";
 
 @JsonSerializable()
 class ActiveMatch {

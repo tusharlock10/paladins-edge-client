@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
+import "package:hive/hive.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
 
-part 'player_champion.g.dart';
+part "player_champion.g.dart";
 
 /// Stores stats for a champion played by the player
 @HiveType(typeId: TypeIds.playerChampion)

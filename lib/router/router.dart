@@ -1,7 +1,7 @@
-import 'package:go_router/go_router.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:go_router/go_router.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 final _loadoutsRoutes = [
   screens.CreateLoadout.goRoute,
