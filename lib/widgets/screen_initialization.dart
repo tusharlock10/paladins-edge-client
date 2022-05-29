@@ -45,8 +45,8 @@ class ScreenInitialization extends HookConsumerWidget {
         if (missingEnvs.isNotEmpty) {
           // if some variables are missing then open up an alert
           // and do not let the app proceed forward
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) => widgets.showDebugAlert(
+          utilities.postFrameCallback(
+            () => widgets.showDebugAlert(
               context: context,
               isDismissible: false,
               message: 'Env variable ${missingEnvs.join(", ")} not found',
@@ -57,6 +57,7 @@ class ScreenInitialization extends HookConsumerWidget {
           return;
         }
 
+        utilities.RealtimeGlobalChat.initialize();
         await Future.wait([
           utilities.RSACrypto.initialize(),
           utilities.Database.initialize(),
@@ -68,12 +69,11 @@ class ScreenInitialization extends HookConsumerWidget {
             !constants.isDebug,
           ),
         ]);
-        utilities.RealtimeGlobalChat.initialize();
 
         // load the essentials from hive
         // this depends on initDatabase to be completed
         await authProvider.loadEssentials();
-        authProvider.loadSettings(); // load the settings from hive
+        authProvider.loadSettings();
         authProvider.checkLogin();
         authProvider.setAppInitialized();
       },

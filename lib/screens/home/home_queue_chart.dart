@@ -1,5 +1,6 @@
 import "dart:math";
 
+import "package:dartx/dartx.dart";
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -86,7 +87,10 @@ class HomeQueueChart extends HookConsumerWidget {
     final getQueueTime = useCallback(
       (double index) {
         final intIndex = index.toInt();
-        final date = selectedTimeline[intIndex].createdAt.toLocal();
+        final queue = selectedTimeline.elementAtOrNull(intIndex);
+
+        if (queue == null) return null;
+        final date = queue.createdAt.toLocal();
 
         return Jiffy(date).format("h:mm a");
       },
@@ -97,13 +101,15 @@ class HomeQueueChart extends HookConsumerWidget {
       (double index, TitleMeta _) {
         final text = getQueueTime(index);
 
-        return Padding(
-          padding: const EdgeInsets.only(top: 7),
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 9),
-          ),
-        );
+        return text == null
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.only(top: 7),
+                child: Text(
+                  text,
+                  style: const TextStyle(fontSize: 9),
+                ),
+              );
       },
       [],
     );

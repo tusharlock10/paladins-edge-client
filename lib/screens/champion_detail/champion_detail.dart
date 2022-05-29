@@ -126,25 +126,26 @@ class ChampionDetail extends HookConsumerWidget {
             : const screens.NotFound()
         : Scaffold(
             floatingActionButton: SizedBox(
-              height: 40,
-              width: 90,
+              height: 50,
+              width: 108,
               child: AnimatedSlide(
                 offset: hideLoadoutFab.value
                     ? const Offset(0, 2)
                     : const Offset(0, 0),
-                duration: const Duration(milliseconds: 250),
-                child: FloatingActionButton(
-                  onPressed: onLoadoutPress,
+                duration: const Duration(milliseconds: 300),
+                child: widgets.InteractiveCard(
+                  onTap: onLoadoutPress,
                   elevation: 4,
                   hoverElevation: 6,
-                  focusElevation: 8,
-                  backgroundColor: theme.themeMaterialColor,
-                  isExtended: true,
-                  child: Text(
-                    "Loadouts",
-                    style: textTheme.bodyText2?.copyWith(
-                      fontSize: 14,
-                      color: Colors.white,
+                  color: theme.themeMaterialColor,
+                  borderRadius: 25,
+                  child: Center(
+                    child: Text(
+                      "Loadouts",
+                      style: textTheme.bodyText2?.copyWith(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

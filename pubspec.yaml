@@ -39,7 +39,7 @@ dependencies:
   firebase_performance: "^0.8.0+13"
   flutter_spinkit: ^5.1.0
   jiffy: ^5.0.0
-  hive: ^2.2.1
+  hive: 2.0.6
   hive_flutter: ^1.1.0
   overlay_support: ^2.0.0
   expand_widget: ^2.1.0

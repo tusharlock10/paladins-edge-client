@@ -16,8 +16,9 @@ class Home extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
-    final favouriteFriends =
-        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final favouriteFriends = ref.watch(
+      providers.auth.select((_) => _.user?.favouriteFriends),
+    );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);

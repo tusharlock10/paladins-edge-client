@@ -34,8 +34,9 @@ class PlayerDetail extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
     final player = ref.watch(providers.players.select((_) => _.playerData));
-    final playerStatus =
-        ref.watch(providers.players.select((_) => _.playerStatus));
+    final playerStatus = ref.watch(
+      providers.players.select((_) => _.playerStatus),
+    );
 
     // Effects
     useEffect(

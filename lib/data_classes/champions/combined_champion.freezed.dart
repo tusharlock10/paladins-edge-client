@@ -12,28 +12,7 @@ part of 'combined_champion.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$CombinedChampionTearOff {
-  const _$CombinedChampionTearOff();
-
-  _CombinedChampion call(
-      {required Champion champion,
-      PlayerChampion? playerChampion,
-      bool hide = false,
-      ChampionsSearchCondition? searchCondition = null}) {
-    return _CombinedChampion(
-      champion: champion,
-      playerChampion: playerChampion,
-      hide: hide,
-      searchCondition: searchCondition,
-    );
-  }
-}
-
-/// @nodoc
-const $CombinedChampion = _$CombinedChampionTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$CombinedChampion {
@@ -98,11 +77,11 @@ class _$CombinedChampionCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$CombinedChampionCopyWith<$Res>
+abstract class _$$_CombinedChampionCopyWith<$Res>
     implements $CombinedChampionCopyWith<$Res> {
-  factory _$CombinedChampionCopyWith(
-          _CombinedChampion value, $Res Function(_CombinedChampion) then) =
-      __$CombinedChampionCopyWithImpl<$Res>;
+  factory _$$_CombinedChampionCopyWith(
+          _$_CombinedChampion value, $Res Function(_$_CombinedChampion) then) =
+      __$$_CombinedChampionCopyWithImpl<$Res>;
   @override
   $Res call(
       {Champion champion,
@@ -112,15 +91,15 @@ abstract class _$CombinedChampionCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CombinedChampionCopyWithImpl<$Res>
+class __$$_CombinedChampionCopyWithImpl<$Res>
     extends _$CombinedChampionCopyWithImpl<$Res>
-    implements _$CombinedChampionCopyWith<$Res> {
-  __$CombinedChampionCopyWithImpl(
-      _CombinedChampion _value, $Res Function(_CombinedChampion) _then)
-      : super(_value, (v) => _then(v as _CombinedChampion));
+    implements _$$_CombinedChampionCopyWith<$Res> {
+  __$$_CombinedChampionCopyWithImpl(
+      _$_CombinedChampion _value, $Res Function(_$_CombinedChampion) _then)
+      : super(_value, (v) => _then(v as _$_CombinedChampion));
 
   @override
-  _CombinedChampion get _value => super._value as _CombinedChampion;
+  _$_CombinedChampion get _value => super._value as _$_CombinedChampion;
 
   @override
   $Res call({
@@ -129,7 +108,7 @@ class __$CombinedChampionCopyWithImpl<$Res>
     Object? hide = freezed,
     Object? searchCondition = freezed,
   }) {
-    return _then(_CombinedChampion(
+    return _then(_$_CombinedChampion(
       champion: champion == freezed
           ? _value.champion
           : champion // ignore: cast_nullable_to_non_nullable
@@ -163,11 +142,12 @@ class _$_CombinedChampion implements _CombinedChampion {
   final Champion champion;
   @override
   final PlayerChampion? playerChampion;
-  @JsonKey()
   @override
-  final bool hide;
   @JsonKey()
-  @override // used for filtering
+  final bool hide;
+// used for filtering
+  @override
+  @JsonKey()
   final ChampionsSearchCondition? searchCondition;
 
   @override
@@ -179,7 +159,7 @@ class _$_CombinedChampion implements _CombinedChampion {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _CombinedChampion &&
+            other is _$_CombinedChampion &&
             const DeepCollectionEquality().equals(other.champion, champion) &&
             const DeepCollectionEquality()
                 .equals(other.playerChampion, playerChampion) &&
@@ -198,27 +178,28 @@ class _$_CombinedChampion implements _CombinedChampion {
 
   @JsonKey(ignore: true)
   @override
-  _$CombinedChampionCopyWith<_CombinedChampion> get copyWith =>
-      __$CombinedChampionCopyWithImpl<_CombinedChampion>(this, _$identity);
+  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
+      __$$_CombinedChampionCopyWithImpl<_$_CombinedChampion>(this, _$identity);
 }
 
 abstract class _CombinedChampion implements CombinedChampion {
   factory _CombinedChampion(
-      {required Champion champion,
-      PlayerChampion? playerChampion,
-      bool hide,
-      ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
+      {required final Champion champion,
+      final PlayerChampion? playerChampion,
+      final bool hide,
+      final ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
 
   @override
-  Champion get champion;
+  Champion get champion => throw _privateConstructorUsedError;
   @override
-  PlayerChampion? get playerChampion;
+  PlayerChampion? get playerChampion => throw _privateConstructorUsedError;
   @override
-  bool get hide;
+  bool get hide => throw _privateConstructorUsedError;
   @override // used for filtering
-  ChampionsSearchCondition? get searchCondition;
+  ChampionsSearchCondition? get searchCondition =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$CombinedChampionCopyWith<_CombinedChampion> get copyWith =>
+  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
       throw _privateConstructorUsedError;
 }

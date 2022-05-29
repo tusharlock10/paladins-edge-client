@@ -14,17 +14,17 @@ import "package:responsive_framework/responsive_framework.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!constants.isDebug) {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
-  await Firebase.initializeApp(
-    name: "root",
-    options: firebase_options.DefaultFirebaseOptions.currentPlatform,
-  );
+  await Future.wait([
+    if (!constants.isDebug)
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]),
+    Firebase.initializeApp(
+      name: constants.isWeb ? null : "root",
+      options: firebase_options.DefaultFirebaseOptions.currentPlatform,
+    ),
+  ]);
 
   utilities.Messaging.onMessage();
   utilities.Messaging.onBackgroundMessage();
