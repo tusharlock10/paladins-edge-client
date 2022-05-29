@@ -16,13 +16,13 @@ class RealtimeGlobalChat {
 
   /// Used to initialize ref object
   /// should be called Env after is setup
-  static void initialize() {
+  static Future<void> initialize() async {
     _globalChatRef = FirebaseDatabase.instance.ref(
       "${constants.Env.appType}-global-chat",
     );
     _messagesRef = _globalChatRef!.child("messages");
     _playersOnlineRef = _globalChatRef!.child("players-online");
-    _keepChatMessagesSynced();
+    await _keepChatMessagesSynced();
   }
 
   /// Listens for connection events, initially when GlobalChat screen mounts
@@ -310,10 +310,10 @@ class RealtimeGlobalChat {
   }
 
   /// Keeps the chat synced offline
-  static void _keepChatMessagesSynced() {
+  static Future<void> _keepChatMessagesSynced() async {
     if (_messagesRef == null) return;
     if (constants.isWeb) return;
 
-    _messagesRef!.keepSynced(true);
+    return await _messagesRef!.keepSynced(true);
   }
 }

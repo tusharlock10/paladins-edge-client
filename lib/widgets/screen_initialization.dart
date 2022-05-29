@@ -39,6 +39,9 @@ class ScreenInitialization extends HookConsumerWidget {
 
     final initApp = useCallback(
       () async {
+        await utilities.Database.initialize();
+        authProvider.loadSettings();
+
         // first initialize all env variables and check
         // if all the env variables are loaded properly
         final missingEnvs = await constants.Env.loadEnv();
@@ -60,20 +63,19 @@ class ScreenInitialization extends HookConsumerWidget {
         utilities.RealtimeGlobalChat.initialize();
         await Future.wait([
           utilities.RSACrypto.initialize(),
-          utilities.Database.initialize(),
           utilities.RemoteConfig.initialize(),
+          utilities.RealtimeGlobalChat.initialize(),
           FirebasePerformance.instance.setPerformanceCollectionEnabled(
             !constants.isDebug,
           ),
           FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
             !constants.isDebug,
           ),
+          authProvider.loadEssentials(),
         ]);
 
         // load the essentials from hive
         // this depends on initDatabase to be completed
-        await authProvider.loadEssentials();
-        authProvider.loadSettings();
         authProvider.checkLogin();
         authProvider.setAppInitialized();
       },
