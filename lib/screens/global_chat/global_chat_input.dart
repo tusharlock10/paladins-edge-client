@@ -137,8 +137,8 @@ class GlobalChatInput extends HookConsumerWidget {
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             elevation: 7,
-            shadowColor: theme.themeMaterialColor.shade50,
             clipBehavior: Clip.hardEdge,
+            color: chatTheme.inputBackgroundColor,
             child: Row(
               children: [
                 Expanded(
@@ -150,12 +150,12 @@ class GlobalChatInput extends HookConsumerWidget {
                     style: const TextStyle(fontSize: 16),
                     onSubmitted: (_) => onSend(),
                     onChanged: onChanged,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,
                       ),
-                      fillColor: chatTheme.inputBackgroundColor,
+                      fillColor: Colors.transparent,
                       border: InputBorder.none,
                       filled: true,
                       counterText: "",
