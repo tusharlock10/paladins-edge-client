@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/gen/assets.gen.dart';
+import "package:flutter/material.dart";
+import "package:paladinsedge/gen/assets.gen.dart";
 
 class LoginBigIcon extends StatelessWidget {
   const LoginBigIcon({Key? key}) : super(key: key);

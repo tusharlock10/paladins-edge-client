@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class Refresh extends StatelessWidget {
   final Widget child;
@@ -15,11 +15,11 @@ class Refresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      child: child,
       onRefresh: onRefresh,
       edgeOffset: edgeOffset,
       backgroundColor: Theme.of(context).cardTheme.color,
       color: Theme.of(context).textTheme.headline1?.color,
+      child: child,
     );
   }
 }

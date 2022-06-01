@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfilePlayerInput extends StatelessWidget {
   final textController = TextEditingController();
@@ -46,8 +46,8 @@ class ConnectProfilePlayerInput extends StatelessWidget {
           splashRadius: 24,
           onPressed: isLoading ? null : () => onSearch(textController.text),
         ),
-        labelText: 'Player Name',
-        hintText: 'Enter your Paladins IGN',
+        labelText: "Player Name",
+        hintText: "Enter your Paladins IGN",
         labelStyle: TextStyle(color: secondaryColor),
       ),
     );

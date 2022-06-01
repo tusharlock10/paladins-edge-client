@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:paladinsedge/theme/colors.dart';
-import 'package:paladinsedge/theme/fonts.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_chat_ui/flutter_chat_ui.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:paladinsedge/theme/colors.dart";
+import "package:paladinsedge/theme/fonts.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 final lightGlobalChatTheme = DefaultChatTheme(
   receivedMessageBodyTextStyle: TextStyle(

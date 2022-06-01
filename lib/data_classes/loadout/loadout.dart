@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart' hide Card;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:paladinsedge/models/index.dart'
+import "package:flutter/material.dart" hide Card;
+import "package:freezed_annotation/freezed_annotation.dart";
+import "package:paladinsedge/models/index.dart"
     show Champion, Loadout, LoadoutCard, Card;
 
-part 'loadout.freezed.dart';
+part "loadout.freezed.dart";
 
 @freezed
 class LoadoutValidationResult with _$LoadoutValidationResult {
@@ -27,8 +27,8 @@ class DraftLoadout with _$DraftLoadout {
   factory DraftLoadout.empty() {
     return DraftLoadout(
       championId: 0,
-      playerId: '',
-      name: 'New Loadout',
+      playerId: "",
+      name: "New Loadout",
       loadoutCards: List<LoadoutCard?>.filled(5, null),
       isImported: false,
     );

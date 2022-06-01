@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:timer_builder/timer_builder.dart';
+import "package:flutter/material.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:timer_builder/timer_builder.dart";
 
 class HomeBountyStoreCard extends StatelessWidget {
   final models.BountyStore bountyStore;
@@ -41,7 +41,7 @@ class HomeBountyStoreCard extends StatelessWidget {
 
               if (timeRemaining == null) {
                 return Text(
-                  'Expired',
+                  "Expired",
                   style: textTheme.bodyText2?.copyWith(fontSize: 12),
                 );
               }

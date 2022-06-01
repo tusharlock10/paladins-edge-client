@@ -1,15 +1,15 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/match_detail/match_detail_player.dart';
-import 'package:paladinsedge/screens/match_detail/match_detail_stats.dart';
-import 'package:paladinsedge/screens/match_detail/match_detail_team_header.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/match_detail/match_detail_player.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_team_header.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
   final String matchId;
@@ -71,7 +71,7 @@ class MatchDetailList extends HookConsumerWidget {
                 child: widgets.LoadingIndicator(
                   lineWidth: 2,
                   size: 28,
-                  label: Text('Getting match'),
+                  label: Text("Getting match"),
                 ),
               ),
             ),
@@ -87,7 +87,7 @@ class MatchDetailList extends HookConsumerWidget {
             SizedBox(
               height: utilities.getBodyHeight(context),
               child: const Center(
-                child: Text('Unable to fetch details for this match'),
+                child: Text("Unable to fetch details for this match"),
               ),
             ),
           ],

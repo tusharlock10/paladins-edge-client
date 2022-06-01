@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionsFilterTab extends HookConsumerWidget {
   const ChampionsFilterTab({Key? key}) : super(key: key);
@@ -62,7 +62,7 @@ class ChampionsFilterTab extends HookConsumerWidget {
                         ),
                         if (isFilterNameSelected)
                           Text(
-                            'Selected',
+                            "Selected",
                             style: TextStyle(
                               fontSize: 12,
                               color: labelColor,

@@ -1,5 +1,5 @@
 String _getScaledAmount(String scale, int amount) {
-  final temp = scale.split('|');
+  final temp = scale.split("|");
 
   final base = double.tryParse(temp.first) ?? 0;
   final adder = double.tryParse(temp[1]) ?? 0;
@@ -23,7 +23,7 @@ List<String> getDescriptionParts(String desc) {
 }
 
 String getParsedDescription(List<String> descriptionParts, int amount) {
-  String desc = '';
+  String desc = "";
 
   for (int index = 0; index < descriptionParts.length; index++) {
     final descriptionPart = descriptionParts[index];

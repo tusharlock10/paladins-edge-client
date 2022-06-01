@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 /// Callback that is called after Flutter is done painting a frame
 /// eliminates the "markNeedsBuild" error
 void postFrameCallback(void Function() callback) {
-  WidgetsBinding.instance?.addPostFrameCallback((_) => callback());
+  WidgetsBinding.instance.addPostFrameCallback((_) => callback());
 }
 
 /// Un-focuses the keyboard

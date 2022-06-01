@@ -1,4 +1,4 @@
-import 'package:paladinsedge/models/index.dart' as models;
+import "package:paladinsedge/models/index.dart" as models;
 
 models.PlayerChampion? findPlayerChampion(
   List<models.PlayerChampion>? playerChampions,
@@ -31,5 +31,5 @@ String shortRankName(String rankName) {
   if (temp[1] == "IV") tierLevel = "4";
   if (temp[1] == "V") tierLevel = "5";
 
-  return '$shortTier$tierLevel';
+  return "$shortTier$tierLevel";
 }

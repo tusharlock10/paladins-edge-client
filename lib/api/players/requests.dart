@@ -1,6 +1,6 @@
-import 'package:paladinsedge/api/players/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/players/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class PlayersRequests {
   static Future<responses.SearchPlayersResponse?> searchPlayers({
@@ -11,8 +11,8 @@ abstract class PlayersRequests {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.searchPlayers,
         queryParameters: {
-          'playerName': playerName,
-          'simpleResults': simpleResults,
+          "playerName": playerName,
+          "simpleResults": simpleResults,
         },
       );
       if (response.data != null) {
@@ -32,7 +32,7 @@ abstract class PlayersRequests {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerDetail,
-        queryParameters: {'playerId': playerId, 'forceUpdate': forceUpdate},
+        queryParameters: {"playerId": playerId, "forceUpdate": forceUpdate},
       );
       if (response.data != null) {
         return responses.PlayerDetailResponse.fromJson(response.data!);
@@ -50,7 +50,7 @@ abstract class PlayersRequests {
     try {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.batchPlayerDetails,
-        data: {'playerIds': playerIds},
+        data: {"playerIds": playerIds},
       );
       if (response.data != null) {
         return responses.BatchPlayerDetailsResponse.fromJson(response.data!);
@@ -70,8 +70,8 @@ abstract class PlayersRequests {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerStatus,
         queryParameters: {
-          'playerId': playerId,
-          'onlyStatus': onlyStatus,
+          "playerId": playerId,
+          "onlyStatus": onlyStatus,
         },
       );
       if (response.data != null) {
@@ -90,7 +90,7 @@ abstract class PlayersRequests {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.friends,
-        queryParameters: {'playerId': playerId},
+        queryParameters: {"playerId": playerId},
       );
       if (response.data != null) {
         return responses.FriendsResponse.fromJson(response.data!);
@@ -124,7 +124,7 @@ abstract class PlayersRequests {
     try {
       final response = await utilities.api.put<Map<String, dynamic>>(
         constants.Urls.updateFavouriteFriend,
-        data: {'playerId': playerId},
+        data: {"playerId": playerId},
       );
       if (response.data != null) {
         return responses.UpdateFavouriteFriendResponse.fromJson(response.data!);

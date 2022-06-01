@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
+import "package:hive/hive.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
 
-part 'queue.g.dart';
+part "queue.g.dart";
 
 @HiveType(typeId: TypeIds.queue)
 @JsonSerializable()

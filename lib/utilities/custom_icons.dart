@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class CustomIcons {
   static const IconData movement =
@@ -19,7 +19,7 @@ class CustomIcons {
       IconData(0xf621, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
   static const String? _kFontPkg = null;
-  static const _kFontFam = 'CustomIcons';
+  static const _kFontFam = "CustomIcons";
 
   CustomIcons._();
 }

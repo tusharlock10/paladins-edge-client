@@ -1,6 +1,6 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
+import "package:hive_flutter/hive_flutter.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
 
 abstract class Database {
   static bool _init = false;

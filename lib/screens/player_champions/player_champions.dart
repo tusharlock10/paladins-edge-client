@@ -1,22 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/player_champions/player_champions_data_source.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/player_champions/player_champions_data_source.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:syncfusion_flutter_datagrid/datagrid.dart";
 
 class PlayerChampions extends HookConsumerWidget {
-  static const routeName = 'playerChampions';
-  static const routePath = 'playerChampions';
+  static const routeName = "playerChampions";
+  static const routePath = "playerChampions";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
   );
   final String playerId;
 
@@ -41,7 +42,7 @@ class PlayerChampions extends HookConsumerWidget {
         Theme.of(context).textTheme.headline1?.copyWith(fontSize: 16);
 
     // State
-    final _playerChampionsDataSource =
+    final playerChampionsDataSource =
         useState<PlayerChampionsDataSource?>(null);
 
     // Effects
@@ -69,8 +70,8 @@ class PlayerChampions extends HookConsumerWidget {
           context,
           screens.Loadouts.routeName,
           params: {
-            'championId': champion.championId.toString(),
-            'playerId': player.playerId,
+            "championId": champion.championId.toString(),
+            "playerId": player.playerId,
           },
         );
       },
@@ -82,7 +83,7 @@ class PlayerChampions extends HookConsumerWidget {
       () {
         if (player == null || playerChampions == null) return null;
 
-        _playerChampionsDataSource.value = PlayerChampionsDataSource(
+        playerChampionsDataSource.value = PlayerChampionsDataSource(
           player: player,
           onLoadoutPress: onLoadoutPress,
           champions: champions,
@@ -98,7 +99,7 @@ class PlayerChampions extends HookConsumerWidget {
       appBar: AppBar(
         title: Column(
           children: [
-            const Text('Player Champions'),
+            const Text("Player Champions"),
             if (player != null)
               Text(
                 player.name,
@@ -107,86 +108,86 @@ class PlayerChampions extends HookConsumerWidget {
           ],
         ),
       ),
-      body: _playerChampionsDataSource.value == null
+      body: playerChampionsDataSource.value == null
           ? const Center(
               child: widgets.LoadingIndicator(
                 lineWidth: 2,
                 size: 28,
-                label: Text('Getting champions'),
+                label: Text("Getting champions"),
               ),
             )
           : SfDataGrid(
               allowSorting: true,
               rowHeight: 60,
               frozenColumnsCount: 1,
-              source: _playerChampionsDataSource.value!,
+              source: playerChampionsDataSource.value!,
               columnWidthMode: ColumnWidthMode.fitByColumnName,
               headerGridLinesVisibility: GridLinesVisibility.both,
               gridLinesVisibility: GridLinesVisibility.both,
               horizontalScrollPhysics: const ClampingScrollPhysics(),
               columns: [
                 GridColumn(
-                  columnName: 'Champ',
+                  columnName: "Champ",
                   label: Center(
-                    child: Text('Champ', style: headerTextStyle),
+                    child: Text("Champ", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Matches',
+                  columnName: "Matches",
                   label: Center(
-                    child: Text('Matches', style: headerTextStyle),
+                    child: Text("Matches", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Kills',
+                  columnName: "Kills",
                   label: Center(
-                    child: Text('Kills', style: headerTextStyle),
+                    child: Text("Kills", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Deaths',
+                  columnName: "Deaths",
                   label: Center(
-                    child: Text('Deaths', style: headerTextStyle),
+                    child: Text("Deaths", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'KDA',
+                  columnName: "KDA",
                   label: Center(
-                    child: Text('KDA', style: headerTextStyle),
+                    child: Text("KDA", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Win Rate',
+                  columnName: "Win Rate",
                   label: Center(
-                    child: Text('Win Rate', style: headerTextStyle),
+                    child: Text("Win Rate", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Play Time',
+                  columnName: "Play Time",
                   width: 140,
                   autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
                   label: Center(
-                    child: Text('Play Time', style: headerTextStyle),
+                    child: Text("Play Time", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Level',
+                  columnName: "Level",
                   label: Center(
-                    child: Text('Level', style: headerTextStyle),
+                    child: Text("Level", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Last Played',
+                  columnName: "Last Played",
                   label: Center(
-                    child: Text('Last Played', style: headerTextStyle),
+                    child: Text("Last Played", style: headerTextStyle),
                   ),
                 ),
                 GridColumn(
-                  columnName: 'Loadouts',
+                  columnName: "Loadouts",
                   allowSorting: false,
                   width: 160,
                   label: Center(
-                    child: Text('Loadouts', style: headerTextStyle),
+                    child: Text("Loadouts", style: headerTextStyle),
                   ),
                 ),
               ],
@@ -194,15 +195,17 @@ class PlayerChampions extends HookConsumerWidget {
     );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params['playerId'];
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params["playerId"];
     if (paramPlayerId == null) {
-      return const screens.NotFound();
+      return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final playerId = paramPlayerId;
 
-    return PlayerChampions(playerId: playerId);
+    return CupertinoPage(child: PlayerChampions(playerId: playerId));
   }
 }

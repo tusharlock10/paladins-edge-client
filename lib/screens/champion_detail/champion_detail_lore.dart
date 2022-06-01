@@ -1,6 +1,6 @@
-import 'package:expand_widget/expand_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/models/index.dart' as models;
+import "package:expand_widget/expand_widget.dart";
+import "package:flutter/material.dart";
+import "package:paladinsedge/models/index.dart" as models;
 
 class ChampionDetailLore extends StatelessWidget {
   final models.Champion champion;

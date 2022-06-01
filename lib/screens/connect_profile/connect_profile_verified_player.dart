@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfileVerifiedPlayer extends ConsumerWidget {
   const ConnectProfileVerifiedPlayer({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
     return Column(
       children: [
         const SizedBox(height: 15),
-        const Text('Yay! Profile connected 🎉'),
+        const Text("Yay! Profile connected 🎉"),
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +64,7 @@ class ConnectProfileVerifiedPlayer extends ConsumerWidget {
               backgroundColor: theme.scaffoldBackgroundColor,
             ),
             child: Text(
-              'Continue',
+              "Continue",
               style: TextStyle(color: secondaryColor),
             ),
           ),

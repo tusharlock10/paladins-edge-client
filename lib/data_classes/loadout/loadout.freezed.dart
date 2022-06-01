@@ -12,22 +12,7 @@ part of 'loadout.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$LoadoutValidationResultTearOff {
-  const _$LoadoutValidationResultTearOff();
-
-  _LoadoutValidationResult call({required bool result, required String error}) {
-    return _LoadoutValidationResult(
-      result: result,
-      error: error,
-    );
-  }
-}
-
-/// @nodoc
-const $LoadoutValidationResult = _$LoadoutValidationResultTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$LoadoutValidationResult {
@@ -75,33 +60,33 @@ class _$LoadoutValidationResultCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$LoadoutValidationResultCopyWith<$Res>
+abstract class _$$_LoadoutValidationResultCopyWith<$Res>
     implements $LoadoutValidationResultCopyWith<$Res> {
-  factory _$LoadoutValidationResultCopyWith(_LoadoutValidationResult value,
-          $Res Function(_LoadoutValidationResult) then) =
-      __$LoadoutValidationResultCopyWithImpl<$Res>;
+  factory _$$_LoadoutValidationResultCopyWith(_$_LoadoutValidationResult value,
+          $Res Function(_$_LoadoutValidationResult) then) =
+      __$$_LoadoutValidationResultCopyWithImpl<$Res>;
   @override
   $Res call({bool result, String error});
 }
 
 /// @nodoc
-class __$LoadoutValidationResultCopyWithImpl<$Res>
+class __$$_LoadoutValidationResultCopyWithImpl<$Res>
     extends _$LoadoutValidationResultCopyWithImpl<$Res>
-    implements _$LoadoutValidationResultCopyWith<$Res> {
-  __$LoadoutValidationResultCopyWithImpl(_LoadoutValidationResult _value,
-      $Res Function(_LoadoutValidationResult) _then)
-      : super(_value, (v) => _then(v as _LoadoutValidationResult));
+    implements _$$_LoadoutValidationResultCopyWith<$Res> {
+  __$$_LoadoutValidationResultCopyWithImpl(_$_LoadoutValidationResult _value,
+      $Res Function(_$_LoadoutValidationResult) _then)
+      : super(_value, (v) => _then(v as _$_LoadoutValidationResult));
 
   @override
-  _LoadoutValidationResult get _value =>
-      super._value as _LoadoutValidationResult;
+  _$_LoadoutValidationResult get _value =>
+      super._value as _$_LoadoutValidationResult;
 
   @override
   $Res call({
     Object? result = freezed,
     Object? error = freezed,
   }) {
-    return _then(_LoadoutValidationResult(
+    return _then(_$_LoadoutValidationResult(
       result: result == freezed
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
@@ -133,7 +118,7 @@ class _$_LoadoutValidationResult implements _LoadoutValidationResult {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _LoadoutValidationResult &&
+            other is _$_LoadoutValidationResult &&
             const DeepCollectionEquality().equals(other.result, result) &&
             const DeepCollectionEquality().equals(other.error, error));
   }
@@ -146,50 +131,26 @@ class _$_LoadoutValidationResult implements _LoadoutValidationResult {
 
   @JsonKey(ignore: true)
   @override
-  _$LoadoutValidationResultCopyWith<_LoadoutValidationResult> get copyWith =>
-      __$LoadoutValidationResultCopyWithImpl<_LoadoutValidationResult>(
-          this, _$identity);
+  _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
+      get copyWith =>
+          __$$_LoadoutValidationResultCopyWithImpl<_$_LoadoutValidationResult>(
+              this, _$identity);
 }
 
 abstract class _LoadoutValidationResult implements LoadoutValidationResult {
   factory _LoadoutValidationResult(
-      {required bool result,
-      required String error}) = _$_LoadoutValidationResult;
+      {required final bool result,
+      required final String error}) = _$_LoadoutValidationResult;
 
   @override
-  bool get result;
+  bool get result => throw _privateConstructorUsedError;
   @override
-  String get error;
+  String get error => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$LoadoutValidationResultCopyWith<_LoadoutValidationResult> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
+      get copyWith => throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$DraftLoadoutTearOff {
-  const _$DraftLoadoutTearOff();
-
-  _DraftLoadout call(
-      {required int championId,
-      required String playerId,
-      required String name,
-      required List<LoadoutCard?> loadoutCards,
-      required bool isImported,
-      String? loadoutHash}) {
-    return _DraftLoadout(
-      championId: championId,
-      playerId: playerId,
-      name: name,
-      loadoutCards: loadoutCards,
-      isImported: isImported,
-      loadoutHash: loadoutHash,
-    );
-  }
-}
-
-/// @nodoc
-const $DraftLoadout = _$DraftLoadoutTearOff();
 
 /// @nodoc
 mixin _$DraftLoadout {
@@ -266,11 +227,11 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$DraftLoadoutCopyWith<$Res>
+abstract class _$$_DraftLoadoutCopyWith<$Res>
     implements $DraftLoadoutCopyWith<$Res> {
-  factory _$DraftLoadoutCopyWith(
-          _DraftLoadout value, $Res Function(_DraftLoadout) then) =
-      __$DraftLoadoutCopyWithImpl<$Res>;
+  factory _$$_DraftLoadoutCopyWith(
+          _$_DraftLoadout value, $Res Function(_$_DraftLoadout) then) =
+      __$$_DraftLoadoutCopyWithImpl<$Res>;
   @override
   $Res call(
       {int championId,
@@ -282,14 +243,15 @@ abstract class _$DraftLoadoutCopyWith<$Res>
 }
 
 /// @nodoc
-class __$DraftLoadoutCopyWithImpl<$Res> extends _$DraftLoadoutCopyWithImpl<$Res>
-    implements _$DraftLoadoutCopyWith<$Res> {
-  __$DraftLoadoutCopyWithImpl(
-      _DraftLoadout _value, $Res Function(_DraftLoadout) _then)
-      : super(_value, (v) => _then(v as _DraftLoadout));
+class __$$_DraftLoadoutCopyWithImpl<$Res>
+    extends _$DraftLoadoutCopyWithImpl<$Res>
+    implements _$$_DraftLoadoutCopyWith<$Res> {
+  __$$_DraftLoadoutCopyWithImpl(
+      _$_DraftLoadout _value, $Res Function(_$_DraftLoadout) _then)
+      : super(_value, (v) => _then(v as _$_DraftLoadout));
 
   @override
-  _DraftLoadout get _value => super._value as _DraftLoadout;
+  _$_DraftLoadout get _value => super._value as _$_DraftLoadout;
 
   @override
   $Res call({
@@ -300,7 +262,7 @@ class __$DraftLoadoutCopyWithImpl<$Res> extends _$DraftLoadoutCopyWithImpl<$Res>
     Object? isImported = freezed,
     Object? loadoutHash = freezed,
   }) {
-    return _then(_DraftLoadout(
+    return _then(_$_DraftLoadout(
       championId: championId == freezed
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
@@ -314,7 +276,7 @@ class __$DraftLoadoutCopyWithImpl<$Res> extends _$DraftLoadoutCopyWithImpl<$Res>
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       loadoutCards: loadoutCards == freezed
-          ? _value.loadoutCards
+          ? _value._loadoutCards
           : loadoutCards // ignore: cast_nullable_to_non_nullable
               as List<LoadoutCard?>,
       isImported: isImported == freezed
@@ -336,9 +298,10 @@ class _$_DraftLoadout implements _DraftLoadout {
       {required this.championId,
       required this.playerId,
       required this.name,
-      required this.loadoutCards,
+      required final List<LoadoutCard?> loadoutCards,
       required this.isImported,
-      this.loadoutHash});
+      this.loadoutHash})
+      : _loadoutCards = loadoutCards;
 
   @override
   final int championId;
@@ -346,8 +309,13 @@ class _$_DraftLoadout implements _DraftLoadout {
   final String playerId;
   @override
   final String name;
+  final List<LoadoutCard?> _loadoutCards;
   @override
-  final List<LoadoutCard?> loadoutCards;
+  List<LoadoutCard?> get loadoutCards {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_loadoutCards);
+  }
+
   @override
   final bool isImported;
   @override
@@ -362,13 +330,13 @@ class _$_DraftLoadout implements _DraftLoadout {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DraftLoadout &&
+            other is _$_DraftLoadout &&
             const DeepCollectionEquality()
                 .equals(other.championId, championId) &&
             const DeepCollectionEquality().equals(other.playerId, playerId) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
-                .equals(other.loadoutCards, loadoutCards) &&
+                .equals(other._loadoutCards, _loadoutCards) &&
             const DeepCollectionEquality()
                 .equals(other.isImported, isImported) &&
             const DeepCollectionEquality()
@@ -381,39 +349,39 @@ class _$_DraftLoadout implements _DraftLoadout {
       const DeepCollectionEquality().hash(championId),
       const DeepCollectionEquality().hash(playerId),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(loadoutCards),
+      const DeepCollectionEquality().hash(_loadoutCards),
       const DeepCollectionEquality().hash(isImported),
       const DeepCollectionEquality().hash(loadoutHash));
 
   @JsonKey(ignore: true)
   @override
-  _$DraftLoadoutCopyWith<_DraftLoadout> get copyWith =>
-      __$DraftLoadoutCopyWithImpl<_DraftLoadout>(this, _$identity);
+  _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>
+      __$$_DraftLoadoutCopyWithImpl<_$_DraftLoadout>(this, _$identity);
 }
 
 abstract class _DraftLoadout implements DraftLoadout {
   factory _DraftLoadout(
-      {required int championId,
-      required String playerId,
-      required String name,
-      required List<LoadoutCard?> loadoutCards,
-      required bool isImported,
-      String? loadoutHash}) = _$_DraftLoadout;
+      {required final int championId,
+      required final String playerId,
+      required final String name,
+      required final List<LoadoutCard?> loadoutCards,
+      required final bool isImported,
+      final String? loadoutHash}) = _$_DraftLoadout;
 
   @override
-  int get championId;
+  int get championId => throw _privateConstructorUsedError;
   @override
-  String get playerId;
+  String get playerId => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  List<LoadoutCard?> get loadoutCards;
+  List<LoadoutCard?> get loadoutCards => throw _privateConstructorUsedError;
   @override
-  bool get isImported;
+  bool get isImported => throw _privateConstructorUsedError;
   @override
-  String? get loadoutHash;
+  String? get loadoutHash => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DraftLoadoutCopyWith<_DraftLoadout> get copyWith =>
+  _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>
       throw _privateConstructorUsedError;
 }

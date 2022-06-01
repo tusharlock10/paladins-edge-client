@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/theme/index.dart' as theme;
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
 
 class FeedbackDescription extends ConsumerWidget {
   final double? width;
@@ -48,7 +48,7 @@ class FeedbackDescription extends ConsumerWidget {
                 ),
               ),
               child: const Text(
-                'Description',
+                "Description",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class FeedbackDescription extends ConsumerWidget {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     border: InputBorder.none,
-                    hintText: 'Write your feedback here...',
+                    hintText: "Write your feedback here...",
                   ),
                   style: const TextStyle(fontSize: 18),
                   onChanged: feedbackProvider.changeDescription,

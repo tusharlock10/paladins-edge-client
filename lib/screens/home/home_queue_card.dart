@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class HomeQueueCard extends HookWidget {
   final models.Queue queue;
@@ -30,18 +30,18 @@ class HomeQueueCard extends HookWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            queue.name.replaceAll(RegExp('_'), ' '),
+            queue.name.replaceAll(RegExp("_"), " "),
             textAlign: TextAlign.center,
             style: textTheme.bodyText1,
           ),
           const SizedBox(height: 5),
           Text(
-            '${queue.activeMatchCount}',
+            "${queue.activeMatchCount}",
             style: textTheme.bodyText2?.copyWith(fontSize: 16),
           ),
           isSelected
               ? Text(
-                  'Selected',
+                  "Selected",
                   style: textTheme.bodyText1?.copyWith(
                     fontSize: 12,
                     color: brightness == Brightness.light

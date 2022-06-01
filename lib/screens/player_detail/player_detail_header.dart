@@ -1,13 +1,13 @@
-import 'dart:ui';
+import "dart:ui";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailHeader extends HookConsumerWidget {
   const PlayerDetailHeader({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
         utilities.Navigation.navigate(
           context,
           screens.ActiveMatch.routeName,
-          params: {'playerId': player.playerId},
+          params: {"playerId": player.playerId},
         );
       },
       [],
@@ -51,7 +51,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
           context,
           screens.Friends.routeName,
           params: {
-            'playerId': player.playerId,
+            "playerId": player.playerId,
           },
         );
       },
@@ -107,7 +107,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                             ?.copyWith(fontSize: 14),
                                       ),
                                       Text(
-                                        '${player.ranked.points} TP',
+                                        "${player.ranked.points} TP",
                                         style: textTheme.bodyText1
                                             ?.copyWith(fontSize: 12),
                                       ),
@@ -120,12 +120,12 @@ class PlayerDetailHeader extends HookConsumerWidget {
                               Row(
                                 children: [
                                   widgets.Button(
-                                    label: 'Friends',
+                                    label: "Friends",
                                     onPressed: onPressFriends,
                                   ),
                                   const SizedBox(width: 10),
                                   widgets.Button(
-                                    label: 'Active Match',
+                                    label: "Active Match",
                                     disabled: !isOnline,
                                     onPressed: onPressActiveMatch,
                                     color: Colors.green,

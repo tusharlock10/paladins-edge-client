@@ -1,9 +1,9 @@
 // The match that is completed
 
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/player/player.dart' show Ranked;
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/player/player.dart" show Ranked;
 
-part 'match.g.dart';
+part "match.g.dart";
 
 @JsonSerializable()
 class MatchPlayerStats {

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:overlay_support/overlay_support.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 void showForegroundNotification({
   required String title,

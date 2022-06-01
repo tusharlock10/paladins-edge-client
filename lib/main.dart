@@ -1,28 +1,30 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/firebase_options.dart' as firebase_options;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/router/index.dart' as router;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:responsive_framework/responsive_framework.dart';
+import "package:firebase_core/firebase_core.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:overlay_support/overlay_support.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/firebase_options.dart" as firebase_options;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/router/index.dart" as router;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:responsive_framework/responsive_framework.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!constants.isDebug) {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-  await Firebase.initializeApp(
-    options: firebase_options.DefaultFirebaseOptions.currentPlatform,
-  );
+  await Future.wait([
+    if (!constants.isDebug)
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]),
+    Firebase.initializeApp(
+      name: constants.isWeb ? null : "root",
+      options: firebase_options.DefaultFirebaseOptions.currentPlatform,
+    ),
+  ]);
 
   utilities.Messaging.onMessage();
   utilities.Messaging.onBackgroundMessage();

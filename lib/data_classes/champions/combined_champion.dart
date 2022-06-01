@@ -1,7 +1,7 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:paladinsedge/models/index.dart' show Champion, PlayerChampion;
+import "package:freezed_annotation/freezed_annotation.dart";
+import "package:paladinsedge/models/index.dart" show Champion, PlayerChampion;
 
-part 'combined_champion.freezed.dart';
+part "combined_champion.freezed.dart";
 
 enum ChampionsSearchCondition {
   name,

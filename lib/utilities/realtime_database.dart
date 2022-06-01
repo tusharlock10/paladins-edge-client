@@ -1,9 +1,9 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:dartx/dartx.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:paladinsedge/constants.dart' as constants;
+import "package:dartx/dartx.dart";
+import "package:firebase_database/firebase_database.dart";
+import "package:flutter_chat_types/flutter_chat_types.dart" as types;
+import "package:paladinsedge/constants.dart" as constants;
 
 enum ChatConnectionState { connected, disconnected, unknown }
 
@@ -16,13 +16,13 @@ class RealtimeGlobalChat {
 
   /// Used to initialize ref object
   /// should be called Env after is setup
-  static void initialize() {
+  static Future<void> initialize() async {
     _globalChatRef = FirebaseDatabase.instance.ref(
       "${constants.Env.appType}-global-chat",
     );
     _messagesRef = _globalChatRef!.child("messages");
     _playersOnlineRef = _globalChatRef!.child("players-online");
-    _keepChatMessagesSynced();
+    await _keepChatMessagesSynced();
   }
 
   /// Listens for connection events, initially when GlobalChat screen mounts
@@ -237,7 +237,7 @@ class RealtimeGlobalChat {
     final data = snapshotValue as Map?;
     if (data == null) return null;
     final author = _convertSnapshotToUser(data["author"]);
-    final id = data['id'];
+    final id = data["id"];
     final createdAt = data["createdAt"];
     final text = data["text"];
 
@@ -263,11 +263,11 @@ class RealtimeGlobalChat {
     if (data == null) return null;
 
     final id = data["id"];
-    final metadata = data['metadata'];
+    final metadata = data["metadata"];
     Map<String, dynamic>? metadataMap;
     if (id == null) return null;
     if (metadata != null) {
-      metadataMap = {'typing': metadata['typing']};
+      metadataMap = {"typing": metadata["typing"]};
     }
 
     return types.User(
@@ -310,10 +310,10 @@ class RealtimeGlobalChat {
   }
 
   /// Keeps the chat synced offline
-  static void _keepChatMessagesSynced() {
+  static Future<void> _keepChatMessagesSynced() async {
     if (_messagesRef == null) return;
     if (constants.isWeb) return;
 
-    _messagesRef!.keepSynced(true);
+    return await _messagesRef!.keepSynced(true);
   }
 }

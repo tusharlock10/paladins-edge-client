@@ -1,8 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/models/index.dart'
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/index.dart"
     show Player, ActiveMatch, SearchHistory;
 
-part 'responses.g.dart';
+part "responses.g.dart";
 
 @JsonSerializable()
 class LowerSearch {

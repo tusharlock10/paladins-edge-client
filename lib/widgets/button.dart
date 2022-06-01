@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
+import "package:flutter/material.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
 
 enum ButtonStyle {
   solid,

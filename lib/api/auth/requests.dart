@@ -1,6 +1,6 @@
-import 'package:paladinsedge/api/auth/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/auth/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class AuthRequests {
   static Future<responses.CheckPlayerClaimedResponse?> checkPlayerClaimed({
@@ -10,7 +10,7 @@ abstract class AuthRequests {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.checkPlayerClaimed,
         queryParameters: {
-          'playerId': playerId,
+          "playerId": playerId,
         },
       );
       if (response.data != null) {
@@ -31,8 +31,8 @@ abstract class AuthRequests {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.claimPlayer,
         data: {
-          'verification': verification,
-          'playerId': playerId,
+          "verification": verification,
+          "playerId": playerId,
         },
       );
       if (response.data != null) {
@@ -62,7 +62,7 @@ abstract class AuthRequests {
   static Future<bool> fcmToken({required String fcmToken}) async {
     try {
       await utilities.api
-          .post(constants.Urls.fcmToken, data: {'fcmToken': fcmToken});
+          .post(constants.Urls.fcmToken, data: {"fcmToken": fcmToken});
 
       return true;
     } catch (_) {
@@ -80,10 +80,10 @@ abstract class AuthRequests {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.login,
         data: {
-          'uid': uid,
-          'email': email,
-          'name': name,
-          'verification': verification,
+          "uid": uid,
+          "email": email,
+          "name": name,
+          "verification": verification,
         },
       );
       if (response.data != null) {

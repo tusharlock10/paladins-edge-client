@@ -1,2 +1,2 @@
-export './loadout.dart'
+export "./loadout.dart"
     show LoadoutValidationResult, DraftLoadout, ShowLoadoutDetailsOptions;

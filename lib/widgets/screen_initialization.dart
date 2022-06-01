@@ -1,12 +1,12 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:firebase_analytics/firebase_analytics.dart";
+import "package:firebase_performance/firebase_performance.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 /// Screen initialization widget
 /// Wrap a screen with this widget
@@ -39,14 +39,17 @@ class ScreenInitialization extends HookConsumerWidget {
 
     final initApp = useCallback(
       () async {
+        await utilities.Database.initialize();
+        authProvider.loadSettings();
+
         // first initialize all env variables and check
         // if all the env variables are loaded properly
         final missingEnvs = await constants.Env.loadEnv();
         if (missingEnvs.isNotEmpty) {
           // if some variables are missing then open up an alert
           // and do not let the app proceed forward
-          WidgetsBinding.instance?.addPostFrameCallback(
-            (_) => widgets.showDebugAlert(
+          utilities.postFrameCallback(
+            () => widgets.showDebugAlert(
               context: context,
               isDismissible: false,
               message: 'Env variable ${missingEnvs.join(", ")} not found',
@@ -57,23 +60,22 @@ class ScreenInitialization extends HookConsumerWidget {
           return;
         }
 
+        utilities.RealtimeGlobalChat.initialize();
         await Future.wait([
           utilities.RSACrypto.initialize(),
-          utilities.Database.initialize(),
           utilities.RemoteConfig.initialize(),
+          utilities.RealtimeGlobalChat.initialize(),
           FirebasePerformance.instance.setPerformanceCollectionEnabled(
             !constants.isDebug,
           ),
           FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
             !constants.isDebug,
           ),
+          authProvider.loadEssentials(),
         ]);
-        utilities.RealtimeGlobalChat.initialize();
 
         // load the essentials from hive
         // this depends on initDatabase to be completed
-        await authProvider.loadEssentials();
-        authProvider.loadSettings(); // load the settings from hive
         authProvider.checkLogin();
         authProvider.setAppInitialized();
       },
@@ -113,7 +115,7 @@ class ScreenInitialization extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  'Please Wait',
+                  "Please Wait",
                   style: textTheme.bodyText1?.copyWith(
                     fontSize: 16,
                     color: Colors.white.withOpacity(0.8),

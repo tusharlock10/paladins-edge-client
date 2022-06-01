@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/app_drawer/app_drawer_button.dart';
-import 'package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart';
-import 'package:paladinsedge/screens/app_drawer/app_drawer_info.dart';
-import 'package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart';
-import 'package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:paladinsedge/widgets/login_modal.dart';
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/app_drawer/app_drawer_button.dart";
+import "package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart";
+import "package:paladinsedge/screens/app_drawer/app_drawer_info.dart";
+import "package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart";
+import "package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:paladinsedge/widgets/login_modal.dart";
 
 class AppDrawer extends HookConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -32,18 +32,25 @@ class AppDrawer extends HookConsumerWidget {
     final isLoggingOut = useState(false);
 
     // Methods
+    final navigateToLogin = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Login.routeName);
+      },
+      [],
+    );
+
     final onLogout = useCallback(
       () async {
         isLoggingOut.value = true;
         final isLoggedOut = await ref.read(providers.auth).logout();
 
         if (isLoggedOut) {
-          utilities.Navigation.pop(context);
-          utilities.Navigation.navigate(context, screens.Login.routeName);
+          navigateToLogin();
         } else {
           widgets.showToast(
             context: context,
-            text: 'Unable to logout, try again later',
+            text: "Unable to logout, try again later",
             type: widgets.ToastType.error,
           );
         }
@@ -68,11 +75,11 @@ class AppDrawer extends HookConsumerWidget {
     final getThemeName = useCallback(
       () {
         if (themeMode == ThemeMode.dark) {
-          return 'dark';
+          return "dark";
         } else if (themeMode == ThemeMode.light) {
-          return 'light';
+          return "light";
         } else if (themeMode == ThemeMode.system) {
-          return 'system';
+          return "system";
         } else {
           return null;
         }
@@ -80,7 +87,7 @@ class AppDrawer extends HookConsumerWidget {
       [authProvider.settings.themeMode],
     );
 
-    final _onFriends = useCallback(
+    final onFriendsHelper = useCallback(
       () {
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(context, screens.Friends.userRouteName);
@@ -95,18 +102,18 @@ class AppDrawer extends HookConsumerWidget {
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
-              onSuccess: _onFriends,
+              onSuccess: onFriendsHelper,
               loginCta: constants.LoginCTA.friendsDrawer,
             ),
           );
         } else {
-          _onFriends();
+          onFriendsHelper();
         }
       },
       [],
     );
 
-    final _onActiveMatch = useCallback(
+    final onActiveMatchHelper = useCallback(
       () {
         if (player == null) return;
 
@@ -127,12 +134,12 @@ class AppDrawer extends HookConsumerWidget {
           showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
-              onSuccess: _onActiveMatch,
+              onSuccess: onActiveMatchHelper,
               loginCta: constants.LoginCTA.activeMatchDrawer,
             ),
           );
         } else {
-          _onActiveMatch();
+          onActiveMatchHelper();
         }
       },
       [],
@@ -175,26 +182,26 @@ class AppDrawer extends HookConsumerWidget {
                 : const AppDrawerPlayerProfile(),
             const SizedBox(height: 20),
             AppDrawerButton(
-              label: 'Change Theme',
+              label: "Change Theme",
               subTitle: getThemeName(),
               onPressed: onChangeTheme,
             ),
             if (showPlayerDependentButtons())
               AppDrawerButton(
-                label: 'Friends',
+                label: "Friends",
                 onPressed: onFriends,
               ),
             if (showPlayerDependentButtons())
               AppDrawerButton(
-                label: 'Active Match',
+                label: "Active Match",
                 onPressed: onActiveMatch,
               ),
             AppDrawerButton(
-              label: 'Feedback',
+              label: "Feedback",
               onPressed: onFeedback,
             ),
             AppDrawerButton(
-              label: 'Global Chat',
+              label: "Global Chat",
               onPressed: onGlobalChat,
             ),
             Row(
@@ -212,7 +219,7 @@ class AppDrawer extends HookConsumerWidget {
                         onPressed: onLogout,
                       )
                     : AppDrawerButton(
-                        label: 'Logout',
+                        label: "Logout",
                         disabled: isLoggingOut.value,
                         onPressed: onLogout,
                       ),

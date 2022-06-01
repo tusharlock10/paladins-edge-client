@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
-import 'package:paladinsedge/theme/colors.dart';
-import 'package:paladinsedge/theme/fonts.dart';
+import "package:flutter/services.dart";
+import "package:paladinsedge/theme/colors.dart";
+import "package:paladinsedge/theme/fonts.dart";
 
 /// ThemeData for light theme
 final lightTheme = ThemeData(

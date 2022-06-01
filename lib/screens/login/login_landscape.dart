@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/screens/login/login_big_icon.dart';
-import 'package:paladinsedge/screens/login/login_tag_line.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/screens/login/login_big_icon.dart";
+import "package:paladinsedge/screens/login/login_tag_line.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class LoginLandscape extends StatelessWidget {
   final bool isLoggingIn;

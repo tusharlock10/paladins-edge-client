@@ -1,6 +1,6 @@
-import 'package:paladinsedge/api/bounty_store/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/bounty_store/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class BountyStoreRequests {
   static Future<responses.BountyStoreDetailsResponse?>

@@ -1,4 +1,4 @@
-import 'dart:math';
+import "dart:math";
 
 /// Round a `number` to nearest multiple of 10
 /// eg. 1733 has nearest multiple of 10 as 1000
@@ -27,20 +27,20 @@ int roundToNearestTenth(
   bool ceil = false,
   bool floor = false,
 }) {
-  final _exponent = number.toString().length - 1;
-  final exponent = max(_exponent - offset, 0);
+  double exponent = number.toString().length - 1;
+  exponent = max(exponent - offset, 0);
   final nearestMultiple = pow(10, exponent).toInt();
 
-  double _result = (number / nearestMultiple); // 1733/1000 = 1.7
-  int result;
+  double result = (number / nearestMultiple); // 1733/1000 = 1.7
+  int intResult;
 
   if (ceil) {
-    result = _result.ceil() * nearestMultiple;
+    intResult = result.ceil() * nearestMultiple;
   } else if (floor) {
-    result = _result.floor() * nearestMultiple;
+    intResult = result.floor() * nearestMultiple;
   } else {
-    result = _result.round() * nearestMultiple;
+    intResult = result.round() * nearestMultiple;
   }
 
-  return result;
+  return intResult;
 }

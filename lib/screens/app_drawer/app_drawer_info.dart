@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:url_launcher/url_launcher.dart';
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:package_info_plus/package_info_plus.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:url_launcher/url_launcher_string.dart";
 
 class AppDrawerInfo extends StatelessWidget {
   const AppDrawerInfo({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class AppDrawerInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'Paladins Edge',
+                "Paladins Edge",
                 style: textTheme.bodyText1,
               ),
               const SizedBox(height: 10),
@@ -37,7 +37,7 @@ class AppDrawerInfo extends StatelessWidget {
                 children: [
                   widgets.TextChip(
                     color: Colors.deepPurple,
-                    text: 'v${packageInfo.version}',
+                    text: "v${packageInfo.version}",
                     spacing: 5,
                   ),
                   const widgets.TextChip(
@@ -54,12 +54,12 @@ class AppDrawerInfo extends StatelessWidget {
               ),
               IconButton(
                 iconSize: 24,
-                tooltip: 'View on GitHub',
+                tooltip: "View on GitHub",
                 splashRadius: 24,
                 icon: const Icon(
                   FeatherIcons.github,
                 ),
-                onPressed: () => launch(constants.Env.githubLink),
+                onPressed: () => launchUrlString(constants.Env.githubLink),
               ),
             ],
           ),

@@ -1,6 +1,6 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/screens/main/main_pages.dart';
+import "package:bottom_navy_bar/bottom_navy_bar.dart";
+import "package:flutter/material.dart";
+import "package:paladinsedge/screens/main/main_pages.dart";
 
 class MainBottomTabs extends StatelessWidget {
   final int selectedIndex;

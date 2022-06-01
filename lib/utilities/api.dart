@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mime/mime.dart';
-import 'package:paladinsedge/constants.dart' as constants;
+import "package:dio/dio.dart";
+import "package:image_picker/image_picker.dart";
+import "package:mime/mime.dart";
+import "package:paladinsedge/constants.dart" as constants;
 
 // api singleton
 // authorization header is set by authProvider

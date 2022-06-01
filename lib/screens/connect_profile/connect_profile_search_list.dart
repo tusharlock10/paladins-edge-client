@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/connect_profile/connect_profile_player_input.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_search_item.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/connect_profile/connect_profile_player_input.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_search_item.dart";
 
 class ConnectProfileSearchList extends ConsumerWidget {
   final bool isLoading;
@@ -41,10 +41,10 @@ class ConnectProfileSearchList extends ConsumerWidget {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: const [
-                      Text('*Search for your Paladins IGN'),
-                      Text('*Select your profile and follow the steps ahead'),
+                      Text("*Search for your Paladins IGN"),
+                      Text("*Select your profile and follow the steps ahead"),
                       SizedBox(height: 10),
-                      Text('*If your profile is not being shown after search,'),
+                      Text("*If your profile is not being shown after search,"),
                       Text(
                         'make sure it is set to "Public" under Settings > Gameplay',
                       ),

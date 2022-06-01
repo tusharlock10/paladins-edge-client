@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
@@ -33,7 +33,7 @@ class _PlayersNotifier extends ChangeNotifier {
     );
 
     playerStatus ??= api.PlayerStatusResponse(
-      status: 'Unknown',
+      status: "Unknown",
       match: null,
     );
 
@@ -45,11 +45,11 @@ class _PlayersNotifier extends ChangeNotifier {
   /// syncs it with server for showing in Search screen
   void loadSearchHistory() async {
     // gets the search history from local db
-    final _searchHistory = utilities.Database.getSearchHistory();
+    final savedSearchHistory = utilities.Database.getSearchHistory();
 
     // if searchHistory is not available
     // fetch it from backend
-    if (_searchHistory == null) {
+    if (savedSearchHistory == null) {
       final response = await api.PlayersRequests.searchHistory();
 
       if (response == null) {
@@ -61,7 +61,7 @@ class _PlayersNotifier extends ChangeNotifier {
       searchHistory = response.searchHistory;
       response.searchHistory.forEach(utilities.Database.saveSearchHistory);
     } else {
-      searchHistory = _searchHistory;
+      searchHistory = savedSearchHistory;
     }
 
     // remove searchHistory older than 7 days
@@ -145,9 +145,9 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   /// The the playerId of the player to be shown in active match screen
-  void setPlayerStatusPlayerId(String _playerStatusPlayerId) {
+  void setPlayerStatusPlayerId(String playerStatusPlayerId) {
     playerStatus = null;
-    playerStatusPlayerId = _playerStatusPlayerId;
+    this.playerStatusPlayerId = playerStatusPlayerId;
 
     notifyListeners();
   }

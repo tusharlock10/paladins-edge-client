@@ -1,7 +1,7 @@
-import 'package:expand_widget/expand_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:expand_widget/expand_widget.dart";
+import "package:flutter/material.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionDetailTalents extends StatelessWidget {
   final models.Champion champion;
@@ -56,7 +56,7 @@ class ChampionDetailTalents extends StatelessWidget {
                                 widgets.TextChip(
                                   spacing: 5,
                                   text:
-                                      '${talent.cooldown.toInt().toString()} sec',
+                                      "${talent.cooldown.toInt().toString()} sec",
                                   color: Colors.blueGrey,
                                   icon: Icons.timelapse,
                                 ),

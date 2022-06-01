@@ -1,26 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/champion_detail/champion_detail_abilities.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_app_bar.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_heading.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_loadout_cards.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_lore.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_player_stats.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_talents.dart';
-import 'package:paladinsedge/screens/champion_detail/champion_detail_title_label.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/champion_detail/champion_detail_abilities.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_app_bar.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_heading.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_loadout_cards.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_lore.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_player_stats.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_talents.dart";
+import "package:paladinsedge/screens/champion_detail/champion_detail_title_label.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionDetail extends HookConsumerWidget {
-  static const routeName = 'champion';
-  static const routePath = 'champion/:championId';
+  static const routeName = "champion";
+  static const routePath = "champion/:championId";
   final int championId;
 
   const ChampionDetail({
@@ -31,7 +32,7 @@ class ChampionDetail extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -84,15 +85,15 @@ class ChampionDetail extends HookConsumerWidget {
       [],
     );
 
-    final _onLoadoutPress = useCallback(
+    final onLoadoutPressHelper = useCallback(
       () {
         if (champion == null || player == null) return;
         utilities.Navigation.navigate(
           context,
           screens.Loadouts.routeName,
           params: {
-            'championId': champion.championId.toString(),
-            'playerId': player.playerId,
+            "championId": champion.championId.toString(),
+            "playerId": player.playerId,
           },
         );
       },
@@ -105,10 +106,10 @@ class ChampionDetail extends HookConsumerWidget {
           widgets.showLoginModal(data_classes.ShowLoginModalOptions(
             context: context,
             loginCta: constants.LoginCTA.loadoutFab,
-            onSuccess: _onLoadoutPress,
+            onSuccess: onLoadoutPressHelper,
           ));
         } else {
-          _onLoadoutPress();
+          onLoadoutPressHelper();
         }
       },
       [isGuest],
@@ -120,33 +121,34 @@ class ChampionDetail extends HookConsumerWidget {
                 body: widgets.LoadingIndicator(
                   lineWidth: 2,
                   size: 28,
-                  label: Text('Getting champion'),
+                  label: Text("Getting champion"),
                 ),
               )
             : const screens.NotFound()
         : Scaffold(
             floatingActionButton: SizedBox(
-              height: 40,
-              width: 90,
+              height: 50,
+              width: 108,
               child: AnimatedSlide(
                 offset: hideLoadoutFab.value
                     ? const Offset(0, 2)
                     : const Offset(0, 0),
-                duration: const Duration(milliseconds: 250),
-                child: FloatingActionButton(
-                  onPressed: onLoadoutPress,
+                duration: const Duration(milliseconds: 300),
+                child: widgets.InteractiveCard(
+                  onTap: onLoadoutPress,
                   elevation: 4,
                   hoverElevation: 6,
-                  focusElevation: 8,
-                  backgroundColor: theme.themeMaterialColor,
-                  child: Text(
-                    'Loadouts',
-                    style: textTheme.bodyText2?.copyWith(
-                      fontSize: 14,
-                      color: Colors.white,
+                  color: theme.themeMaterialColor,
+                  borderRadius: 25,
+                  child: Center(
+                    child: Text(
+                      "Loadouts",
+                      style: textTheme.bodyText2?.copyWith(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  isExtended: true,
                 ),
               ),
             ),
@@ -154,7 +156,7 @@ class ChampionDetail extends HookConsumerWidget {
                 ? const widgets.LoadingIndicator(
                     lineWidth: 2,
                     size: 28,
-                    label: Text('Getting champion'),
+                    label: Text("Getting champion"),
                   )
                 : NotificationListener<ScrollNotification>(
                     onNotification: onScrollNotification,
@@ -165,20 +167,20 @@ class ChampionDetail extends HookConsumerWidget {
                           delegate: SliverChildListDelegate(
                             [
                               ChampionDetailHeading(champion: champion),
-                              const ChampionDetailTitleLabel(label: 'Lore'),
+                              const ChampionDetailTitleLabel(label: "Lore"),
                               ChampionDetailLore(champion: champion),
-                              const ChampionDetailTitleLabel(label: 'Talents'),
+                              const ChampionDetailTitleLabel(label: "Talents"),
                               ChampionDetailTalents(champion: champion),
                               const ChampionDetailTitleLabel(
-                                label: 'Abilities',
+                                label: "Abilities",
                               ),
                               ChampionDetailAbilities(champion: champion),
                               const ChampionDetailTitleLabel(
-                                label: 'Loadout Cards',
+                                label: "Loadout Cards",
                               ),
                               ChampionDetailLoadoutCards(champion: champion),
                               const ChampionDetailTitleLabel(
-                                label: 'Your Stats',
+                                label: "Your Stats",
                               ),
                               ChampionDetailPlayerStats(champion: champion),
                               const SizedBox(height: 50),
@@ -191,13 +193,15 @@ class ChampionDetail extends HookConsumerWidget {
           );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
-    final param = state.params['championId'];
-    if (param == null) return const screens.NotFound();
+  static Page _routeBuilder(_, GoRouterState state) {
+    final param = state.params["championId"];
+    if (param == null) return const CupertinoPage(child: screens.NotFound());
 
     final championId = int.tryParse(param);
-    if (championId == null) return const screens.NotFound();
+    if (championId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
 
-    return ChampionDetail(championId: championId);
+    return CupertinoPage(child: ChampionDetail(championId: championId));
   }
 }

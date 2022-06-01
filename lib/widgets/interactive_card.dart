@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
 
 class InteractiveCard extends HookWidget {
   final Widget child;
@@ -38,7 +38,7 @@ class InteractiveCard extends HookWidget {
     final isHovering = useState<bool>(false);
 
     // Hooks
-    final _hoverBorderColor = useMemoized(
+    final themeHoverBorderColor = useMemoized(
       () {
         return hoverBorderColor ??
             (brightness == Brightness.light
@@ -54,14 +54,6 @@ class InteractiveCard extends HookWidget {
       child: Card(
         clipBehavior: Clip.hardEdge,
         color: color,
-        child: InkWell(
-          onTap: onTap,
-          hoverColor: color ?? Theme.of(context).cardTheme.color,
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
-        ),
         elevation:
             isInteractive && isHovering.value ? hoverElevation : elevation,
         margin: margin,
@@ -71,10 +63,18 @@ class InteractiveCard extends HookWidget {
               : BorderRadius.all(Radius.circular(borderRadius!)),
           side: isInteractive && isHovering.value
               ? BorderSide(
-                  color: _hoverBorderColor,
+                  color: themeHoverBorderColor,
                   width: 3,
                 )
               : BorderSide.none,
+        ),
+        child: InkWell(
+          onTap: onTap,
+          hoverColor: color ?? Theme.of(context).cardTheme.color,
+          child: Padding(
+            padding: padding,
+            child: child,
+          ),
         ),
       ),
     );

@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/home/home_bounty_store_details.dart';
-import 'package:paladinsedge/screens/home/home_favourite_friends.dart';
-import 'package:paladinsedge/screens/home/home_queue_chart.dart';
-import 'package:paladinsedge/screens/home/home_queue_details.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/home/home_bounty_store_details.dart";
+import "package:paladinsedge/screens/home/home_favourite_friends.dart";
+import "package:paladinsedge/screens/home/home_queue_chart.dart";
+import "package:paladinsedge/screens/home/home_queue_details.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Home extends HookConsumerWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,8 +16,9 @@ class Home extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
-    final favouriteFriends =
-        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final favouriteFriends = ref.watch(
+      providers.auth.select((_) => _.user?.favouriteFriends),
+    );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
     final bountyStoreProvider = ref.read(providers.bountyStore);
@@ -58,7 +59,7 @@ class Home extends HookConsumerWidget {
             forceElevated: true,
             pinned: constants.isWeb,
             title: Text(
-              'Paladins Edge',
+              "Paladins Edge",
               style: TextStyle(fontSize: 20),
             ),
           ),
