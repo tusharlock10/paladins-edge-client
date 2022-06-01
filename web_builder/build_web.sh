@@ -7,13 +7,14 @@ echo "Downloading credentials"
 node ./web_builder/index.js
 
 echo "Cloning flutter";
-git clone https://github.com/flutter/flutter.git -b stable;
+git clone https://github.com/flutter/flutter.git
+git pull
 git checkout tags/3.0.1
 flutter precache
 export PATH="$PATH:`pwd`/flutter/bin";
 
-flutter --version;
-flutter --doctor;
+echo | flutter --version;
+echo | flutter --doctor;
 
 echo "Building web app";
 flutter packages pub get;
