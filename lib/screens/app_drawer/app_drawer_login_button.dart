@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class AppDrawerLoginButton extends StatelessWidget {
   final BuildContext context;
@@ -25,7 +25,7 @@ class AppDrawerLoginButton extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'Back to Login',
+            "Back to Login",
             style: theme.textTheme.headline3?.copyWith(
               color: theme.colorScheme.secondary,
             ),

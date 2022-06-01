@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/global.dart';
+import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/global.dart";
 
 abstract class Navigation {
   /// Navigate to the screen with the name and params using go_router
@@ -25,7 +25,7 @@ abstract class Navigation {
   /// eg. `/ => /`
   /// eg. `/login => /login`
   static String sanitizeRoutePath(String routePath) =>
-      routePath[0] == '/' ? routePath : '/$routePath';
+      routePath[0] == "/" ? routePath : "/$routePath";
 
   /// Redirects to login screen if an unauthenticated
   /// user lands on a protected route

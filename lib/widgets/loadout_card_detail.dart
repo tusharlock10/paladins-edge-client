@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 void showLoadoutCardDetailSheet(
   data_classes.ShowLoadoutDetailsOptions options,
@@ -130,7 +130,7 @@ class _LoadoutCardDetail extends HookWidget {
                           if (card.cooldown != 0)
                             widgets.TextChip(
                               spacing: 5,
-                              text: '${card.cooldown.toInt().toString()} sec',
+                              text: "${card.cooldown.toInt().toString()} sec",
                               color: Colors.blueGrey,
                               icon: Icons.timelapse,
                             ),
@@ -166,7 +166,7 @@ class _LoadoutCardDetail extends HookWidget {
                   divisions: 4,
                   min: 1,
                   max: 5,
-                  label: '${amount.value}',
+                  label: "${amount.value}",
                   onChanged: onChanged,
                 ),
               ),
@@ -174,7 +174,7 @@ class _LoadoutCardDetail extends HookWidget {
               sliderFixed
                   ? const SizedBox()
                   : Text(
-                      '*Change slider to view the card with different points',
+                      "*Change slider to view the card with different points",
                       textAlign: TextAlign.center,
                       style: textTheme.bodyText1?.copyWith(fontSize: 12),
                     ),

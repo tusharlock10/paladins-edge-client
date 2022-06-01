@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/champion_detail/champion_detail_stat_label.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:timer_builder/timer_builder.dart';
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/champion_detail/champion_detail_stat_label.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:timer_builder/timer_builder.dart";
 
 class ChampionDetailPlayerStats extends HookConsumerWidget {
   final models.Champion champion;
@@ -30,7 +30,7 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
       return const Padding(
         padding: EdgeInsets.all(10),
         child: Text(
-          'Stats not available for Guest Users',
+          "Stats not available for Guest Users",
           textAlign: TextAlign.center,
           style: TextStyle(fontStyle: FontStyle.italic),
         ),
@@ -41,14 +41,14 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
       return const Padding(
         padding: EdgeInsets.all(10),
         child: Text(
-          'You have not played enough matches on this champion',
+          "You have not played enough matches on this champion",
           textAlign: TextAlign.center,
         ),
       );
     }
 
     final playTimeString =
-        '${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min';
+        "${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min";
 
     String kda = ((playerChampion.totalKills + playerChampion.totalAssists) /
             playerChampion.totalDeaths)
@@ -100,50 +100,50 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
                   physics: const ClampingScrollPhysics(),
                   children: [
                     StatLabel(
-                      label: 'W / L',
+                      label: "W / L",
                       text:
-                          '${NumberFormat.compact().format(playerChampion.wins).toString()} / ${NumberFormat.compact().format(playerChampion.losses).toString()}',
+                          "${NumberFormat.compact().format(playerChampion.wins).toString()} / ${NumberFormat.compact().format(playerChampion.losses).toString()}",
                     ),
                     StatLabel(
-                      label: 'Level',
+                      label: "Level",
                       text: NumberFormat.compact()
                           .format(playerChampion.level)
                           .toString(),
                     ),
                     StatLabel(
-                      label: 'Kills',
+                      label: "Kills",
                       text: NumberFormat.compact()
                           .format(playerChampion.totalKills)
                           .toString(),
                     ),
                     StatLabel(
-                      label: 'Deaths',
+                      label: "Deaths",
                       text: NumberFormat.compact()
                           .format(playerChampion.totalDeaths)
                           .toString(),
                     ),
                     StatLabel(
-                      label: 'Play Time',
+                      label: "Play Time",
                       text: playTimeString,
                     ),
                     TimerBuilder.periodic(
                       const Duration(minutes: 1),
                       builder: (_) {
                         return StatLabel(
-                          label: 'Last Played',
+                          label: "Last Played",
                           text: utilities
                               .getLastPlayedTime(playerChampion.lastPlayed),
                         );
                       },
                     ),
                     StatLabel(
-                      label: 'KDA',
+                      label: "KDA",
                       text: kda,
                     ),
                     StatLabel(
-                      label: 'Credits',
+                      label: "Credits",
                       text:
-                          '${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min',
+                          "${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min",
                     ),
                   ],
                 ),

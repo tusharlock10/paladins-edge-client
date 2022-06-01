@@ -1,18 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/player_detail/player_detail_header.dart';
-import 'package:paladinsedge/screens/player_detail/player_detail_matches.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:touchable_opacity/touchable_opacity.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/player_detail/player_detail_header.dart";
+import "package:paladinsedge/screens/player_detail/player_detail_matches.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:touchable_opacity/touchable_opacity.dart";
 
 class PlayerDetail extends HookConsumerWidget {
-  static const routeName = 'player';
-  static const routePath = 'player/:playerId';
+  static const routeName = "player";
+  static const routePath = "player/:playerId";
   final String playerId;
 
   const PlayerDetail({
@@ -23,7 +24,7 @@ class PlayerDetail extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -34,8 +35,9 @@ class PlayerDetail extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
     final player = ref.watch(providers.players.select((_) => _.playerData));
-    final playerStatus =
-        ref.watch(providers.players.select((_) => _.playerStatus));
+    final playerStatus = ref.watch(
+      providers.players.select((_) => _.playerStatus),
+    );
 
     // Effects
     useEffect(
@@ -88,7 +90,7 @@ class PlayerDetail extends HookConsumerWidget {
           context,
           screens.PlayerChampions.routeName,
           params: {
-            'playerId': playerId,
+            "playerId": playerId,
           },
         );
       },
@@ -126,7 +128,7 @@ class PlayerDetail extends HookConsumerWidget {
                 child: Row(
                   children: const [
                     Text(
-                      'Champs',
+                      "Champs",
                       style: TextStyle(
                         fontSize: 16,
                       ),
@@ -156,14 +158,14 @@ class PlayerDetail extends HookConsumerWidget {
                     ),
                 ],
               )
-            : const Text('Loading'),
+            : const Text("Player"),
       ),
       body: player == null
           ? const widgets.LoadingIndicator(
               lineWidth: 2,
               size: 28,
               center: true,
-              label: Text('Loading player'),
+              label: Text("Loading player"),
             )
           : widgets.Refresh(
               onRefresh: onRefresh,
@@ -177,15 +179,17 @@ class PlayerDetail extends HookConsumerWidget {
     );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params['playerId'];
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params["playerId"];
     if (paramPlayerId == null) {
-      return const screens.NotFound();
+      return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final playerId = paramPlayerId;
 
-    return PlayerDetail(playerId: playerId);
+    return CupertinoPage(child: PlayerDetail(playerId: playerId));
   }
 }

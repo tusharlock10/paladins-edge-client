@@ -1,11 +1,13 @@
-import 'package:dartx/dartx.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "dart:math";
+
+import "package:dartx/dartx.dart";
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _QueueState extends ChangeNotifier {
   bool isLoading = true;
@@ -56,8 +58,8 @@ class _QueueState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeTimelineGranularity(int _smallestUnit) {
-    smallestUnit = _smallestUnit;
+  void changeTimelineGranularity(int smallestUnit) {
+    this.smallestUnit = smallestUnit;
 
     _selectTimelineQueue(selectedQueueId);
 
@@ -68,36 +70,25 @@ class _QueueState extends ChangeNotifier {
     // x axis -> index
     // y axis -> activeMatchCount
 
-    double index = -1;
-
     selectedQueueId = queueId;
-
-    chartMinX = double.infinity;
-    chartMinY = double.infinity;
-    chartMaxX = 0;
-    chartMaxY = 0;
-
     selectedTimeline = timeline
-        .where((queue) => queue.queueId == queueId)
+        .where((queue) => queue.queueId == selectedQueueId)
         .filterIndexed((_, index) => index % (smallestUnit ~/ 4) == 0)
         .toList();
-    chartTimelineData = selectedTimeline.map(
-      (queue) {
-        index++;
 
-        if (queue.activeMatchCount > chartMaxY) {
-          chartMaxY = queue.activeMatchCount.toDouble();
-        }
-        if (queue.activeMatchCount < chartMinY) {
-          chartMinY = queue.activeMatchCount.toDouble();
-        }
+    chartMinX = 0;
+    chartMaxX = selectedTimeline.length - 1;
+    chartMinY = double.maxFinite;
+    chartMaxY = 0;
 
-        return FlSpot(index, queue.activeMatchCount.toDouble());
+    chartTimelineData = selectedTimeline.mapIndexed(
+      (index, queue) {
+        chartMaxY = max(queue.activeMatchCount.toDouble(), chartMaxY);
+        chartMinY = min(queue.activeMatchCount.toDouble(), chartMinY);
+
+        return FlSpot(index.toDouble(), queue.activeMatchCount.toDouble());
       },
     ).toList();
-
-    chartMaxX = index;
-    chartMinX = 0;
   }
 
   void _getQueue() {

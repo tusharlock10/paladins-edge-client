@@ -1,14 +1,14 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:dartx/dartx.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/auth.dart' as auth_provider;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:uuid/uuid.dart';
+import "package:dartx/dartx.dart";
+import "package:firebase_database/firebase_database.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter_chat_types/flutter_chat_types.dart" as types;
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/auth.dart" as auth_provider;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:uuid/uuid.dart";
 
 class _GlobalChatNotifier extends ChangeNotifier {
   bool isInit = false;
@@ -40,7 +40,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
                 imageUrl: player.avatarUrl,
                 firstName: player.name,
                 metadata: const {
-                  'typing': false,
+                  "typing": false,
                 },
               );
 
@@ -77,7 +77,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
       role: globalChatUser.role,
       updatedAt: globalChatUser.updatedAt,
       metadata: {
-        'typing': isTyping,
+        "typing": isTyping,
       },
     );
     utilities.RealtimeGlobalChat.setPlayer(globalChatUser);

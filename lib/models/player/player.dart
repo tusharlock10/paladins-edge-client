@@ -1,9 +1,9 @@
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:hive/hive.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
-part 'player.g.dart';
+part "player.g.dart";
 
 @HiveType(typeId: TypeIds.playerRanked)
 @JsonSerializable()

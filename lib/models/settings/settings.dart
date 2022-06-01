@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:paladinsedge/constants.dart' show TypeIds;
+import "package:flutter/material.dart";
+import "package:hive/hive.dart";
+import "package:paladinsedge/constants.dart" show TypeIds;
 
-part 'settings.g.dart';
+part "settings.g.dart";
 
 // model for storing user settings locally
 @HiveType(typeId: TypeIds.settings)

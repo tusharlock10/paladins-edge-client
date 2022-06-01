@@ -15,6 +15,6 @@ abstract class FeedbackTypes {
         return "Bug";
     }
 
-    return '';
+    return "";
   }
 }

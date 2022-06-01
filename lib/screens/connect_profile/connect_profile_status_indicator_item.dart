@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class ConnectProfileStatusIndicatorItem extends StatelessWidget {
   final int currentStep;
@@ -30,7 +30,7 @@ class ConnectProfileStatusIndicatorItem extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            '${step + 1}',
+            "${step + 1}",
             style: TextStyle(
               color: isActive
                   ? theme.scaffoldBackgroundColor

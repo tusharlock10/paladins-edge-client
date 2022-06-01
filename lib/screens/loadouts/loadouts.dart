@@ -1,20 +1,21 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/loadouts/loadout_item.dart';
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/loadouts/loadout_item.dart";
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Loadouts extends HookConsumerWidget {
-  static const routeName = 'loadouts';
-  static const routePath = 'loadouts/:playerId';
+  static const routeName = "loadouts";
+  static const routePath = "loadouts/:playerId";
   final int championId;
   final String playerId;
 
@@ -27,7 +28,7 @@ class Loadouts extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -117,6 +118,24 @@ class Loadouts extends HookConsumerWidget {
     );
 
     // Methods
+    final onScrollNotification = useCallback(
+      (ScrollNotification notification) {
+        if (notification is ScrollEndNotification && hideLoadoutFab.value) {
+          hideLoadoutFab.value = false;
+
+          return true;
+        }
+        if ((notification is ScrollUpdateNotification) &&
+            (notification.scrollDelta ?? 0).abs() > 1.2 &&
+            !hideLoadoutFab.value) {
+          hideLoadoutFab.value = true;
+        }
+
+        return true;
+      },
+      [],
+    );
+
     final onCreate = useCallback(
       () {
         if (isOtherPlayer) return;
@@ -129,8 +148,8 @@ class Loadouts extends HookConsumerWidget {
           context,
           screens.CreateLoadout.routeName,
           params: {
-            'championId': championId.toString(),
-            'playerId': playerId,
+            "championId": championId.toString(),
+            "playerId": playerId,
           },
         );
       },
@@ -150,8 +169,8 @@ class Loadouts extends HookConsumerWidget {
           context,
           screens.CreateLoadout.routeName,
           params: {
-            'championId': championId.toString(),
-            'playerId': playerId,
+            "championId": championId.toString(),
+            "playerId": playerId,
           },
         );
       },
@@ -175,19 +194,19 @@ class Loadouts extends HookConsumerWidget {
       floatingActionButton: isOtherPlayer
           ? null
           : SizedBox(
-              height: 40,
-              width: 90,
+              height: 50,
+              width: 108,
               child: AnimatedSlide(
                 offset: hideLoadoutFab.value
                     ? const Offset(0, 2)
                     : const Offset(0, 0),
-                duration: const Duration(milliseconds: 250),
-                child: FloatingActionButton(
-                  onPressed: onCreate,
+                duration: const Duration(milliseconds: 300),
+                child: widgets.InteractiveCard(
+                  onTap: onCreate,
                   elevation: 4,
                   hoverElevation: 6,
-                  focusElevation: 8,
-                  backgroundColor: theme.themeMaterialColor,
+                  color: theme.themeMaterialColor,
+                  borderRadius: 25,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -198,7 +217,7 @@ class Loadouts extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 2),
                       Text(
-                        'Create',
+                        "Create",
                         style: textTheme.bodyText2?.copyWith(
                           fontSize: 14,
                           color: Colors.white,
@@ -207,115 +226,126 @@ class Loadouts extends HookConsumerWidget {
                       const SizedBox(width: 10),
                     ],
                   ),
-                  isExtended: true,
                 ),
               ),
             ),
       body: widgets.Refresh(
         edgeOffset: utilities.getTopEdgeOffset(context),
         onRefresh: onRefresh,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              forceElevated: true,
-              floating: true,
-              snap: true,
-              pinned: constants.isWeb,
-              title: Column(
-                children: [
-                  Text(isOtherPlayer ? 'Loadouts' : 'Your Loadouts'),
-                  if (champion != null && player != null)
-                    Text(
-                      isOtherPlayer
-                          ? '${player.name} - ${champion.name}'
-                          : champion.name,
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                ],
+        child: NotificationListener<ScrollNotification>(
+          onNotification: onScrollNotification,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                forceElevated: true,
+                floating: true,
+                snap: true,
+                pinned: constants.isWeb,
+                title: Column(
+                  children: [
+                    Text(isOtherPlayer ? "Loadouts" : "Your Loadouts"),
+                    if (champion != null && player != null)
+                      Text(
+                        isOtherPlayer
+                            ? "${player.name} - ${champion.name}"
+                            : champion.name,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            loadouts != null && loadouts.isNotEmpty && champion != null
-                ? SliverPadding(
-                    padding: EdgeInsets.only(
-                      right: horizontalPadding,
-                      left: horizontalPadding,
-                      top: 20,
-                      bottom: 70,
-                    ),
-                    sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        childAspectRatio: LoadoutItem.loadoutAspectRatio,
-                        mainAxisSpacing: 5,
+              loadouts != null && loadouts.isNotEmpty && champion != null
+                  ? SliverPadding(
+                      padding: EdgeInsets.only(
+                        right: horizontalPadding,
+                        left: horizontalPadding,
+                        top: 20,
+                        bottom: 70,
                       ),
-                      delegate: SliverChildBuilderDelegate(
-                        (_, index) {
-                          final loadout = loadouts[index];
-
-                          return GestureDetector(
-                            onTap: loadout.isImported
-                                ? null
-                                : () => onEdit(loadout),
-                            child: AbsorbPointer(
-                              absorbing: !loadout.isImported,
-                              child: LoadoutItem(
-                                loadout: loadout,
-                                champion: champion,
-                              ),
-                            ),
-                          );
-                        },
-                        childCount: loadouts.length,
-                      ),
-                    ),
-                  )
-                : SliverList(
-                    delegate: SliverChildListDelegate.fixed(
-                      [
-                        SizedBox(
-                          height: utilities.getBodyHeight(context),
-                          child: isGettingLoadouts ||
-                                  isLoadingCombinedChampions ||
-                                  isLoadingPlayerData
-                              ? const widgets.LoadingIndicator(
-                                  lineWidth: 2,
-                                  size: 28,
-                                  label: Text('Getting loadouts'),
-                                )
-                              : loadouts != null &&
-                                      champion != null &&
-                                      loadouts.isEmpty
-                                  ? Center(
-                                      child: Text(
-                                        'No loadouts found for ${champion.name}',
-                                      ),
-                                    )
-                                  : const Center(
-                                      child: Text('Unable to fetch loadouts'),
-                                    ),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          childAspectRatio: LoadoutItem.loadoutAspectRatio,
+                          mainAxisSpacing: 5,
                         ),
-                      ],
+                        delegate: SliverChildBuilderDelegate(
+                          (_, index) {
+                            final loadout = loadouts[index];
+
+                            return GestureDetector(
+                              onTap: loadout.isImported
+                                  ? null
+                                  : () => onEdit(loadout),
+                              child: AbsorbPointer(
+                                absorbing: !loadout.isImported,
+                                child: LoadoutItem(
+                                  loadout: loadout,
+                                  champion: champion,
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: loadouts.length,
+                        ),
+                      ),
+                    )
+                  : SliverList(
+                      delegate: SliverChildListDelegate.fixed(
+                        [
+                          SizedBox(
+                            height: utilities.getBodyHeight(context),
+                            child: isGettingLoadouts ||
+                                    isLoadingCombinedChampions ||
+                                    isLoadingPlayerData
+                                ? const widgets.LoadingIndicator(
+                                    lineWidth: 2,
+                                    size: 28,
+                                    label: Text("Getting loadouts"),
+                                  )
+                                : loadouts != null &&
+                                        champion != null &&
+                                        loadouts.isEmpty
+                                    ? Center(
+                                        child: Text(
+                                          "No loadouts found for ${champion.name}",
+                                        ),
+                                      )
+                                    : const Center(
+                                        child: Text("Unable to fetch loadouts"),
+                                      ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params['championId'];
-    final paramPlayerId = state.params['playerId'];
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = state.params["championId"];
+    final paramPlayerId = state.params["playerId"];
     if (paramChampionId == null || paramPlayerId == null) {
-      return const screens.NotFound();
+      return const CupertinoPage(child: screens.NotFound());
     }
 
     final championId = int.tryParse(paramChampionId);
-    if (championId == null) return const screens.NotFound();
+    if (championId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
 
-    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final playerId = paramPlayerId;
 
-    return Loadouts(playerId: playerId, championId: championId);
+    return CupertinoPage(
+      child: Loadouts(
+        playerId: playerId,
+        championId: championId,
+      ),
+    );
   }
 }

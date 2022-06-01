@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:substring_highlight/substring_highlight.dart';
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:substring_highlight/substring_highlight.dart";
 
 class ChampionItem extends HookConsumerWidget {
   final models.Champion champion;
@@ -62,7 +62,7 @@ class ChampionItem extends HookConsumerWidget {
       () {
         return searchCondition == data_classes.ChampionsSearchCondition.name
             ? search
-            : '';
+            : "";
       },
       [search, searchCondition],
     );
@@ -71,7 +71,7 @@ class ChampionItem extends HookConsumerWidget {
       () {
         return searchCondition == data_classes.ChampionsSearchCondition.title
             ? search
-            : '';
+            : "";
       },
       [search, searchCondition],
     );
@@ -81,7 +81,7 @@ class ChampionItem extends HookConsumerWidget {
         return searchCondition ==
                 data_classes.ChampionsSearchCondition.championId
             ? search
-            : '';
+            : "";
       },
       [search, searchCondition],
     );
@@ -90,7 +90,7 @@ class ChampionItem extends HookConsumerWidget {
       () {
         return searchCondition == data_classes.ChampionsSearchCondition.level
             ? search
-            : '';
+            : "";
       },
       [search, searchCondition],
     );
@@ -99,7 +99,7 @@ class ChampionItem extends HookConsumerWidget {
       () {
         return searchCondition == data_classes.ChampionsSearchCondition.role
             ? search
-            : '';
+            : "";
       },
       [search, searchCondition],
     );
@@ -111,7 +111,7 @@ class ChampionItem extends HookConsumerWidget {
         utilities.Navigation.navigate(
           context,
           screens.ChampionDetail.routeName,
-          params: {'championId': champion.championId.toString()},
+          params: {"championId": champion.championId.toString()},
         );
       },
       [champion],
@@ -129,7 +129,7 @@ class ChampionItem extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(right: 10, left: 5),
               child: Hero(
-                tag: '${champion.championId}Icon',
+                tag: "${champion.championId}Icon",
                 child: LayoutBuilder(
                   builder: (context, constraints) => widgets.ElevatedAvatar(
                     imageUrl: champion.iconUrl,
@@ -157,7 +157,7 @@ class ChampionItem extends HookConsumerWidget {
                   const SizedBox(height: 2),
                   if (championIdSearch.isNotEmpty)
                     SubstringHighlight(
-                      text: 'Champion ID ${champion.championId}',
+                      text: "Champion ID ${champion.championId}",
                       term: championIdSearch,
                       textStyle: textTheme.bodyText1!.copyWith(
                         fontSize: 12,
@@ -192,20 +192,20 @@ class ChampionItem extends HookConsumerWidget {
                         widgets.TextChip(
                           spacing: 5,
                           highlightText: levelSearch,
-                          text: 'Level ${playerChampion?.level.toString()}',
+                          text: "Level ${playerChampion?.level.toString()}",
                           color: levelColor,
                         ),
                       if (champion.onFreeRotation)
                         const widgets.TextChip(
                           spacing: 5,
-                          text: 'Free',
+                          text: "Free",
                           icon: Icons.rotate_right,
                           color: Colors.green,
                         ),
                       if (champion.latestChampion)
                         const widgets.TextChip(
                           spacing: 5,
-                          text: 'New',
+                          text: "New",
                           icon: Icons.star,
                           color: Colors.orange,
                         ),

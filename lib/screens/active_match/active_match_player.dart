@@ -1,15 +1,15 @@
-import 'package:dartx/dartx.dart';
-import 'package:expandable/expandable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:expandable/expandable.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class _InfoLabel extends StatelessWidget {
   final String label;
@@ -75,7 +75,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     winRate =
         winRate == double.nan || winRate == double.infinity ? null : winRate;
     final champion = champions.firstOrNullWhere(
-      (_champion) => _champion.championId == playerInfo.championId,
+      (champion) => champion.championId == playerInfo.championId,
     );
 
     // State
@@ -104,7 +104,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            'playerId': playerInfo.player.playerId,
+            "playerId": playerInfo.player.playerId,
           },
         );
       },
@@ -129,9 +129,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final getChampionPlaytime = useCallback(
       () {
         final duration = Duration(minutes: playerChampion.value!.playTime);
-        if (duration.inHours == 0) return '${duration.inMinutes}min';
+        if (duration.inHours == 0) return "${duration.inMinutes}min";
 
-        return '${duration.inHours}h ${duration.inMinutes % 60}m';
+        return "${duration.inHours}h ${duration.inMinutes % 60}m";
       },
       [],
     );
@@ -147,9 +147,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
         final totalMatches = wins + playerChampion.value!.losses;
         final winRate = wins * 100 / totalMatches;
 
-        if (winRate == double.nan || winRate == double.nan) return '';
+        if (winRate == double.nan || winRate == double.nan) return "";
 
-        return '${winRate.toStringAsPrecision(3)}%';
+        return "${winRate.toStringAsPrecision(3)}%";
       },
       [],
     );
@@ -174,7 +174,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
         final totalCredits = playerChampion.value!.totalCredits;
         final cpm = totalCredits / totalMatches;
 
-        return '${cpm.round()} CR';
+        return "${cpm.round()} CR";
       },
       [],
     );
@@ -197,7 +197,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           onTap: () => playerChampion.value == null
               ? widgets.showToast(
                   context: context,
-                  text: 'Stats not available for this player',
+                  text: "Stats not available for this player",
                   type: widgets.ToastType.info,
                 )
               : expandedController.toggle(),
@@ -247,7 +247,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                           onTap: onTapPlayer,
                           child: Text(
                             isPrivatePlayer
-                                ? 'Private Profile'
+                                ? "Private Profile"
                                 : playerInfo.player.playerName,
                             style: TextStyle(
                               decoration: isPrivatePlayer
@@ -264,7 +264,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                           ),
                         ),
                         Text(
-                          'Level ${playerInfo.player.level}',
+                          "Level ${playerInfo.player.level}",
                           style: textTheme.bodyText1?.copyWith(fontSize: 12),
                         ),
                       ],
@@ -283,10 +283,10 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                     text: TextSpan(
                                       style: DefaultTextStyle.of(context).style,
                                       children: [
-                                        const TextSpan(text: 'WR '),
+                                        const TextSpan(text: "WR "),
                                         TextSpan(
                                           text:
-                                              '${winRate.toStringAsPrecision(3)}%',
+                                              "${winRate.toStringAsPrecision(3)}%",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: getWinRateColor(winRate),
@@ -296,7 +296,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    '${playerInfo.ranked!.wins}W ${playerInfo.ranked!.looses}L',
+                                    "${playerInfo.ranked!.wins}W ${playerInfo.ranked!.looses}L",
                                     style: textTheme.bodyText1
                                         ?.copyWith(fontSize: 12),
                                   ),
@@ -318,7 +318,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                            'Stats',
+                                            "Stats",
                                             style: textTheme.bodyText1
                                                 ?.copyWith(fontSize: 10),
                                           ),
@@ -360,15 +360,15 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   _InfoLabel(
-                                    label: 'Play Time',
+                                    label: "Play Time",
                                     text: getChampionPlaytime(),
                                   ),
                                   _InfoLabel(
-                                    label: 'Champ. Lvl',
+                                    label: "Champ. Lvl",
                                     text: getChampionLevel(),
                                   ),
                                   _InfoLabel(
-                                    label: 'Champ. WR',
+                                    label: "Champ. WR",
                                     text: getChampionWinRate(),
                                   ),
                                 ],
@@ -379,15 +379,15 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   _InfoLabel(
-                                    label: 'KDA',
+                                    label: "KDA",
                                     text: getChampionKDA(),
                                   ),
                                   _InfoLabel(
-                                    label: 'CR / Match',
+                                    label: "CR / Match",
                                     text: getChampionCPM(),
                                   ),
                                   _InfoLabel(
-                                    label: 'Last Played',
+                                    label: "Last Played",
                                     text: getPlayerLastPlayed(),
                                   ),
                                 ],

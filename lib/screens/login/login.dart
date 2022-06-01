@@ -1,21 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/screens/login/login_landscape.dart';
-import 'package:paladinsedge/screens/login/login_portrait.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/screens/login/login_landscape.dart";
+import "package:paladinsedge/screens/login/login_portrait.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Login extends HookConsumerWidget {
-  static const routeName = 'login';
-  static const routePath = '/login';
+  static const routeName = "login";
+  static const routePath = "/login";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: _routeRedirect,
   );
 
@@ -34,6 +35,16 @@ class Login extends HookConsumerWidget {
     final isLoggingIn = useState(false);
 
     // Methods
+    final navigateToMain = useCallback(
+      () {
+        utilities.Navigation.navigate(
+          context,
+          screens.Main.routeName,
+        );
+      },
+      [],
+    );
+
     final onGoogleSignIn = useCallback(
       () async {
         if (isLoggingIn.value) {
@@ -44,10 +55,7 @@ class Login extends HookConsumerWidget {
 
         final response = await authProvider.signInWithGoogle();
         if (response.result) {
-          utilities.Navigation.navigate(
-            context,
-            screens.Main.routeName,
-          );
+          navigateToMain();
         } else {
           isLoggingIn.value = false;
           if (response.errorCode != null && response.errorMessage != null) {
@@ -98,7 +106,7 @@ class Login extends HookConsumerWidget {
     );
   }
 
-  static Login _routeBuilder(_, __) => const Login();
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Login());
 
   static String? _routeRedirect(GoRouterState _) {
     // check if user is authenticated

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/google_button.dart';
-import 'package:paladinsedge/widgets/toast.dart';
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/google_button.dart";
+import "package:paladinsedge/widgets/toast.dart";
 
 void showLoginModal(data_classes.ShowLoginModalOptions options) {
   final context = options.context;
@@ -53,6 +53,13 @@ class _LoginModal extends HookConsumerWidget {
     final isLoggingIn = useState(false);
 
     // Methods
+    final goBack = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
+
     final onGoogleSignIn = useCallback(
       () async {
         if (isLoggingIn.value) {
@@ -63,7 +70,7 @@ class _LoginModal extends HookConsumerWidget {
 
         final response = await authProvider.signInWithGoogle();
         if (response.result) {
-          utilities.Navigation.pop(context);
+          goBack();
         } else {
           isLoggingIn.value = false;
           if (response.errorCode == null && response.errorMessage == null) {
@@ -98,7 +105,7 @@ class _LoginModal extends HookConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
-                      'LOGIN REQUIRED',
+                      "LOGIN REQUIRED",
                       style: textTheme.headline1?.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
@@ -113,7 +120,7 @@ class _LoginModal extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'To experience all features of Paladins Edge, please login',
+                  "To experience all features of Paladins Edge, please login",
                   style: textTheme.bodyText1?.copyWith(fontSize: 14),
                 ),
               ],

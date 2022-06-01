@@ -1,12 +1,12 @@
-import 'dart:io';
+import "dart:io";
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart' as http;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:path_provider/path_provider.dart';
+import "package:firebase_messaging/firebase_messaging.dart";
+import "package:flutter/services.dart";
+import "package:flutter_local_notifications/flutter_local_notifications.dart";
+import "package:http/http.dart" as http;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:path_provider/path_provider.dart";
 
 abstract class Messaging {
   static final flutterLocalNotificationsPlugin =
@@ -38,9 +38,9 @@ abstract class Messaging {
     FirebaseMessaging.onMessage.listen((message) {
       final data =
           message.data.map((key, value) => MapEntry(key, value?.toString()));
-      final imageUrl = data['imageUrl'];
-      final title = data['title'];
-      final body = data['body'];
+      final imageUrl = data["imageUrl"];
+      final title = data["title"];
+      final body = data["body"];
 
       if (imageUrl == null || title == null || body == null) return;
 
@@ -87,7 +87,7 @@ abstract class Messaging {
 
   static void registerLocalNotification() async {
     const initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_stat_ic_notification');
+        AndroidInitializationSettings("ic_stat_ic_notification");
     const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(
@@ -102,15 +102,15 @@ abstract class Messaging {
         message.data.map((key, value) => MapEntry(key, value?.toString()));
 
     createNotification(
-      imageUrl: data['imageUrl'],
-      title: data['title'],
-      body: data['body'],
+      imageUrl: data["imageUrl"],
+      title: data["title"],
+      body: data["body"],
     );
   }
 
   static Future<FilePathAndroidBitmap> _getFileAndroidBitmap(String url) async {
     final Directory directory = await getApplicationDocumentsDirectory();
-    final String filePath = '${directory.path}/notificationLargeIcon';
+    final String filePath = "${directory.path}/notificationLargeIcon";
     final http.Response response = await http.get(Uri.parse(url));
     final File file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);

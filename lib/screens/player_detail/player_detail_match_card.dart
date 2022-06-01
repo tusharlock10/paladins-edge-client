@@ -1,17 +1,17 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
-import 'package:timer_builder/timer_builder.dart';
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:timer_builder/timer_builder.dart";
 
 class PlayerDetailMatchCard extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
@@ -52,8 +52,8 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
           context,
           screens.MatchDetail.routeName,
           params: {
-            'matchId': match.matchId,
-            'playerId': matchPlayer.playerId,
+            "matchId": match.matchId,
+            "playerId": matchPlayer.playerId,
           },
         );
       },
@@ -94,11 +94,11 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}',
+                          "${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}",
                           style: textTheme.bodyText1?.copyWith(fontSize: 18),
                         ),
                         Text(
-                          match.map.replaceFirst('LIVE ', ''),
+                          match.map.replaceFirst("LIVE ", ""),
                           style: textTheme.bodyText1?.copyWith(fontSize: 12),
                         ),
                       ],
@@ -162,13 +162,13 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                             icon: FeatherIcons.zap,
                             color: Colors.orange,
                             text:
-                                '${matchPlayer.playerStats.biggestKillStreak} streak',
+                                "${matchPlayer.playerStats.biggestKillStreak} streak",
                           )
                         : const SizedBox(),
                     matchPlayer.playerStats.totalDamageDealt >
                             matchPlayer.playerStats.healingDone
                         ? Text(
-                            '${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg',
+                            "${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg",
                             style: textTheme.bodyText1?.copyWith(
                               fontSize: 12,
                               color: Colors.red.shade400,
@@ -176,7 +176,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                             ),
                           )
                         : Text(
-                            '${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal',
+                            "${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal",
                             style: textTheme.bodyText1?.copyWith(
                               fontSize: 12,
                               color: Colors.green.shade400,

@@ -1,28 +1,29 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/app_drawer/index.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_search_list.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_status_indicator.dart';
-import 'package:paladinsedge/screens/connect_profile/connect_profile_verified_player.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/app_drawer/index.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_search_list.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_status_indicator.dart";
+import "package:paladinsedge/screens/connect_profile/connect_profile_verified_player.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
-  static const routeName = 'connectProfile';
-  static const routePath = '/connectProfile';
+  static const routeName = "connectProfile";
+  static const routePath = "/connectProfile";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: _playerConnectedRedirect,
   );
 
@@ -61,13 +62,13 @@ class ConnectProfile extends HookConsumerWidget {
         if (exists == null) {
           widgets.showToast(
             context: context,
-            text: 'Something went wrong',
+            text: "Something went wrong",
             type: widgets.ToastType.error,
           );
         } else if (exists) {
           widgets.showToast(
             context: context,
-            text: 'Player is already claimed',
+            text: "Player is already claimed",
             type: widgets.ToastType.info,
           );
         } else {
@@ -86,7 +87,7 @@ class ConnectProfile extends HookConsumerWidget {
 
         widgets.showToast(
           context: context,
-          text: reason ?? 'Unable to verify',
+          text: reason ?? "Unable to verify",
           type: widgets.ToastType.error,
         );
       },
@@ -141,7 +142,7 @@ class ConnectProfile extends HookConsumerWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Connect Profile'),
+        title: const Text("Connect Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -154,7 +155,7 @@ class ConnectProfile extends HookConsumerWidget {
                       style: textTheme.headline1,
                       children: [
                         const TextSpan(
-                          text: 'Hi, ',
+                          text: "Hi, ",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
@@ -172,7 +173,7 @@ class ConnectProfile extends HookConsumerWidget {
                 : const SizedBox(),
             const SizedBox(height: 15),
             const Text(
-              'In order to enjoy all the features of Paladins Edge, please connect your profile',
+              "In order to enjoy all the features of Paladins Edge, please connect your profile",
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 15),
@@ -204,7 +205,8 @@ class ConnectProfile extends HookConsumerWidget {
     );
   }
 
-  static ConnectProfile _routeBuilder(_, __) => const ConnectProfile();
+  static Page _routeBuilder(_, __) =>
+      const CupertinoPage(child: ConnectProfile());
 
   static String? _playerConnectedRedirect(GoRouterState _) {
     // check if user is authenticated

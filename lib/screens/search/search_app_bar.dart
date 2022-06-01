@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:flutter_spinkit/flutter_spinkit.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
 
 class SearchAppBar extends HookConsumerWidget {
   final bool isLoading;
@@ -48,7 +48,7 @@ class SearchAppBar extends HookConsumerWidget {
         style: textStyle,
         onSubmitted: isLoading ? null : onSearch,
         decoration: InputDecoration(
-          hintText: 'Search player',
+          hintText: "Search player",
           counterText: "",
           hintStyle: textStyle,
           border: InputBorder.none,

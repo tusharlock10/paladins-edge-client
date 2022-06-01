@@ -1,6 +1,6 @@
-import 'package:paladinsedge/api/match/responses.dart' as responses;
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:paladinsedge/api/match/responses.dart" as responses;
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class MatchRequests {
   static Future<responses.MatchDetailsResponse?> matchDetails({
@@ -9,7 +9,7 @@ abstract class MatchRequests {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.matchDetails,
-        queryParameters: {'matchId': matchId},
+        queryParameters: {"matchId": matchId},
       );
       if (response.data != null) {
         return responses.MatchDetailsResponse.fromJson(response.data!);
@@ -29,8 +29,8 @@ abstract class MatchRequests {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.playerMatches,
         queryParameters: {
-          'playerId': playerId,
-          'forceUpdate': forceUpdate,
+          "playerId": playerId,
+          "forceUpdate": forceUpdate,
         },
       );
       if (response.data != null) {

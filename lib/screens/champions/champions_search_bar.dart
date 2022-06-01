@@ -1,14 +1,14 @@
-import 'package:badges/badges.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/champions/champions_filter_modal.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:badges/badges.dart";
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/champions/champions_filter_modal.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class ChampionsSearchBar extends HookConsumerWidget {
   const ChampionsSearchBar({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
           utilities.Navigation.navigate(
             context,
             screens.ChampionDetail.routeName,
-            params: {'championId': champion.championId.toString()},
+            params: {"championId": champion.championId.toString()},
           );
         }
       },
@@ -108,7 +108,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
         onChanged: championsProvider.filterChampionsBySearch,
         onSubmitted: onSubmit,
         decoration: InputDecoration(
-          hintText: 'Search champion',
+          hintText: "Search champion",
           counterText: "",
           hintStyle: textStyle,
           border: InputBorder.none,

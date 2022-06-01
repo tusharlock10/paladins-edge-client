@@ -1,6 +1,6 @@
 // a singleton class for string global variables
 
-import 'package:paladinsedge/models/index.dart' as models;
+import "package:paladinsedge/models/index.dart" as models;
 
 abstract class Global {
   /// Contains all the essentials data of the app

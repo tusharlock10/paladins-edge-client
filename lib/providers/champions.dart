@@ -1,10 +1,10 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:dartx/dartx.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
   /// loading state for combinedChampions
@@ -14,7 +14,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   bool isLoadingPlayerChampions = false;
 
   /// holds the search value for champions
-  String search = '';
+  String search = "";
 
   /// holds data for all champions
   List<models.Champion> champions = [];
@@ -127,10 +127,10 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Filters the champions based on the search provided
-  void filterChampionsBySearch(String _search) {
+  void filterChampionsBySearch(String search) {
     if (combinedChampions == null) return;
 
-    search = _search;
+    this.search = search;
 
     // remove filters if search is done
     // but keep the previous filterName intact
@@ -189,7 +189,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   void clearAppliedFiltersAndSort() {
     if (combinedChampions == null) return;
 
-    search = '';
+    search = "";
     combinedChampions = data_classes.ChampionsFilter.clearFilters(
       combinedChampions!,
     );
@@ -208,7 +208,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   void clearData() {
     isLoadingCombinedChampions = false;
     isLoadingPlayerChampions = false;
-    search = '';
+    search = "";
     champions = [];
     userPlayerChampions = null;
     combinedChampions = null;
@@ -227,13 +227,13 @@ class _ChampionsNotifier extends ChangeNotifier {
     final response = await api.ChampionsRequests.allChampions();
     if (response == null) return null;
 
-    final _champions = response.champions;
+    final champions = response.champions;
 
     // save champion locally for future use
-    _champions.forEach(utilities.Database.saveChampion);
+    champions.forEach(utilities.Database.saveChampion);
 
     // sort champions based on their name
-    return _champions.sortedBy((champion) => champion.name);
+    return champions.sortedBy((champion) => champion.name);
   }
 
   /// Loads the `playerChampions` data for the user from local db and

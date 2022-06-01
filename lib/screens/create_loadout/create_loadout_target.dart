@@ -1,13 +1,13 @@
-import 'package:dartx/dartx.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:dotted_border/dotted_border.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateLoadoutTarget extends HookConsumerWidget {
   static const loadoutAspectRatio = 15 / 9;
@@ -60,8 +60,8 @@ class CreateLoadoutTarget extends HookConsumerWidget {
         if (points > 15) color = Colors.red;
 
         return {
-          'points': points,
-          'color': color,
+          "points": points,
+          "color": color,
         };
       },
       [draftLoadout],
@@ -98,15 +98,15 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                             text: TextSpan(
                               style: DefaultTextStyle.of(context).style,
                               children: [
-                                const TextSpan(text: '('),
+                                const TextSpan(text: "("),
                                 TextSpan(
-                                  text: loadoutPoints['points'].toString(),
+                                  text: loadoutPoints["points"].toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: loadoutPoints['color'] as Color,
+                                    color: loadoutPoints["color"] as Color,
                                   ),
                                 ),
-                                const TextSpan(text: '/15)'),
+                                const TextSpan(text: "/15)"),
                               ],
                             ),
                           ),
@@ -118,9 +118,9 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                             autocorrect: false,
                             controller: loadoutNameController,
                             decoration: InputDecoration(
-                              counterText: '',
+                              counterText: "",
                               errorText: loadoutNameError.value
-                                  ? 'Please enter a loadout name'
+                                  ? "Please enter a loadout name"
                                   : null,
                             ),
                             style: const TextStyle(
@@ -168,15 +168,15 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                               );
                             }
 
-                            final _card = champion.cards.firstOrNullWhere(
+                            final tempCard = champion.cards.firstOrNullWhere(
                               (_) => _.cardId2 == loadoutCard?.cardId2,
                             );
 
-                            if (_card != null) {
+                            if (tempCard != null) {
                               return widgets.LoadoutDeckCard(
                                 imageHeight: imageHeight,
                                 imageWidth: imageWidth,
-                                card: _card,
+                                card: tempCard,
                                 champion: champion,
                                 loadoutCard: loadoutCard!,
                                 sliderFixed: false,
@@ -190,13 +190,13 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                               height: imageHeight,
                               padding: const EdgeInsets.all(5),
                               child: DottedBorder(
-                                child: const Center(
-                                  child: Icon(Icons.add),
-                                ),
                                 strokeWidth: 1,
                                 radius: const Radius.circular(5),
                                 color: Colors.grey,
                                 borderType: BorderType.RRect,
+                                child: const Center(
+                                  child: Icon(Icons.add),
+                                ),
                               ),
                             );
                           },

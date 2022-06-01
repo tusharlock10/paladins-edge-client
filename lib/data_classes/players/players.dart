@@ -1,4 +1,4 @@
-import 'package:paladinsedge/models/index.dart' as models;
+import "package:paladinsedge/models/index.dart" as models;
 
 class LoadoutItem {
   final models.Card? card;

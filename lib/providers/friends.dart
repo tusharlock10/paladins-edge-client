@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/auth.dart' as auth_provider;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/foundation.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/auth.dart" as auth_provider;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _FriendsNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_FriendsNotifier> ref;
   bool isLoadingFriends = false;
-  bool isLoadingFavouriteFriends = false;
+  bool isLoadingFavouriteFriends = true;
 
   /// Is true when we have fetched all the friends
   /// becomes true, when we visit Friends screen
@@ -42,17 +42,17 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     if (!forceUpdate) isLoadingFriends = false;
-    final _friends = response.friends;
+    final friends = response.friends;
 
     if (favouriteFriends != null) {
       // sort the friends on the basis on name
-      _friends.sort(
+      friends.sort(
         (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
       );
 
       // find favourite friends
       final favouritePlayers = List<models.Player>.empty(growable: true);
-      _friends.removeWhere((friend) {
+      friends.removeWhere((friend) {
         if (favouriteFriends.contains(friend.playerId)) {
           favouritePlayers.add(friend);
 
@@ -62,7 +62,7 @@ class _FriendsNotifier extends ChangeNotifier {
         return false;
       });
 
-      friends = favouritePlayers + _friends;
+      this.friends = favouritePlayers + friends;
     }
 
     fetchedAllFriends = true;
@@ -110,16 +110,16 @@ class _FriendsNotifier extends ChangeNotifier {
       return;
     }
 
-    final _friends = friends ?? [];
+    final friends = this.friends ?? [];
     final favouriteFriendsFromApi =
         response.favouriteFriends.map((_) => _.playerId).toList();
 
     // find favourite players
-    _friends.removeWhere(
+    friends.removeWhere(
       (friend) => favouriteFriendsFromApi.contains(friend.playerId),
     );
 
-    friends = response.favouriteFriends + _friends;
+    this.friends = response.favouriteFriends + friends;
 
     final user = ref.read(auth_provider.auth).user;
     user!.favouriteFriends =

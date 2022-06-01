@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailStatusIndicator extends HookConsumerWidget {
   const PlayerDetailStatusIndicator({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
     // Methods
     final getLastSeen = useCallback(
       () {
-        if (player == null) return '';
+        if (player == null) return "";
 
         final lastLoginDate = player.lastLoginDate;
         final duration = DateTime.now().difference(lastLoginDate);
@@ -57,7 +57,7 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      'Status',
+                      "Status",
                       style: textTheme.bodyText1?.copyWith(fontSize: 14),
                     ),
                   ],
@@ -89,10 +89,10 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
                         const SizedBox(width: 5),
                         Text(
                           isOnline
-                              ? 'Online'
+                              ? "Online"
                               : isUnknown
-                                  ? 'Unknown'
-                                  : 'Offline',
+                                  ? "Unknown"
+                                  : "Offline",
                         ),
                       ],
                     ),

@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:paladinsedge/data_classes/index.dart' show DraftLoadout;
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/data_classes/index.dart" show DraftLoadout;
 
-part 'loadout.g.dart';
+part "loadout.g.dart";
 
 @JsonSerializable()
 class LoadoutCard {

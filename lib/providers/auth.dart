@@ -1,17 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/data_classes/index.dart' as data_classes;
-import 'package:paladinsedge/dev/index.dart' as dev;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/champions.dart' as champions_provider;
-import 'package:paladinsedge/providers/loadout.dart' as loadout_provider;
-import 'package:paladinsedge/providers/matches.dart' as matches_provider;
-import 'package:paladinsedge/providers/players.dart' as players_provider;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:google_sign_in/google_sign_in.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/dev/index.dart" as dev;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/champions.dart" as champions_provider;
+import "package:paladinsedge/providers/loadout.dart" as loadout_provider;
+import "package:paladinsedge/providers/matches.dart" as matches_provider;
+import "package:paladinsedge/providers/players.dart" as players_provider;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _GetFirebaseUserResponse {
   final UserCredential? firebaseUser;
@@ -84,7 +84,7 @@ class _AuthNotifier extends ChangeNotifier {
 
     if (token != null) {
       isGuest = false;
-      utilities.api.options.headers["authorization"] = 'Bearer $token';
+      utilities.api.options.headers["authorization"] = "Bearer $token";
       utilities.Global.isAuthenticated = true;
 
       return true;
@@ -125,7 +125,7 @@ class _AuthNotifier extends ChangeNotifier {
       name = dev.testUser!.name;
     }
 
-    final verification = utilities.RSACrypto.encryptRSA('$name$email$uid');
+    final verification = utilities.RSACrypto.encryptRSA("$name$email$uid");
 
     final response = await api.AuthRequests.login(
       uid: uid,
@@ -146,7 +146,7 @@ class _AuthNotifier extends ChangeNotifier {
     token = response.token;
     player = response.player;
 
-    utilities.api.options.headers["authorization"] = 'Bearer $token';
+    utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
     if (player != null) utilities.Global.isPlayerConnected = true;
 

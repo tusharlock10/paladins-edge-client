@@ -1,24 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/global_chat/global_chat_connection.dart';
-import 'package:paladinsedge/screens/global_chat/global_chat_input.dart';
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_chat_types/flutter_chat_types.dart" as types;
+import "package:flutter_chat_ui/flutter_chat_ui.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/global_chat/global_chat_connection.dart";
+import "package:paladinsedge/screens/global_chat/global_chat_input.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GlobalChat extends HookConsumerWidget {
-  static const routeName = 'globalChat';
-  static const routePath = 'globalChat';
+  static const routeName = "globalChat";
+  static const routePath = "globalChat";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
   const GlobalChat({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class GlobalChat extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            'playerId': author.id,
+            "playerId": author.id,
           },
         );
       },
@@ -70,13 +71,13 @@ class GlobalChat extends HookConsumerWidget {
       appBar: AppBar(
         title: Column(
           children: [
-            const Text('Chat'),
+            const Text("Chat"),
             Text(
               playersOnline.isEmpty
-                  ? 'No one online'
+                  ? "No one online"
                   : playersOnline.length == 1
-                      ? 'Only you are online'
-                      : '${playersOnline.length} players online',
+                      ? "Only you are online"
+                      : "${playersOnline.length} players online",
               style: const TextStyle(fontSize: 12),
             ),
           ],
@@ -91,7 +92,7 @@ class GlobalChat extends HookConsumerWidget {
           ? const widgets.LoadingIndicator(
               lineWidth: 1.5,
               size: 28,
-              label: Text('Getting messages'),
+              label: Text("Getting messages"),
             )
           : Chat(
               messages: messages,
@@ -103,7 +104,7 @@ class GlobalChat extends HookConsumerWidget {
               hideBackgroundOnEmojiMessages: false,
               emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
               customBottomWidget: isGuest
-                  ? const Text('Login to send messages')
+                  ? const Text("Login to send messages")
                   : GlobalChatInput(
                       onSendPressed: globalChatProvider.sendNewMessage,
                       onTyping: globalChatProvider.sendTypingMetadata,
@@ -113,5 +114,5 @@ class GlobalChat extends HookConsumerWidget {
     );
   }
 
-  static GlobalChat _routeBuilder(_, __) => const GlobalChat();
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: GlobalChat());
 }

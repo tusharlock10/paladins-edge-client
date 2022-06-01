@@ -1,12 +1,12 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:paladinsedge/data_classes/champions/index.dart' as data_classes;
+import "package:flutter_dotenv/flutter_dotenv.dart";
+import "package:paladinsedge/data_classes/champions/index.dart" as data_classes;
 
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
-const releaseTag = 'alpha';
+const releaseTag = "alpha";
 
 abstract class Urls {
   // root
@@ -23,7 +23,7 @@ abstract class Urls {
   // champions
   static const allChampions = "/champions/allChampions"; // GET
   static const playerChampions = "/champions/playerChampions"; // GET
-  static const batchPlayerChampions = '/champions/batchPlayerChampions'; // POST
+  static const batchPlayerChampions = "/champions/batchPlayerChampions"; // POST
 
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET
@@ -49,8 +49,8 @@ abstract class Urls {
   // loadout
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET
   static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
-  static const updatePlayerLoadout = '/loadout/updatePlayerLoadout'; // PUT
-  static const deletePlayerLoadout = '/loadout/deletePlayerLoadout'; // DELETE
+  static const updatePlayerLoadout = "/loadout/updatePlayerLoadout"; // PUT
+  static const deletePlayerLoadout = "/loadout/deletePlayerLoadout"; // DELETE
 
   // feedback
   static const submitFeedback = "/feedback/submitFeedback"; // POST
@@ -63,24 +63,24 @@ abstract class StorageKeys {
 
 // environment variables
 abstract class Env {
-  static String get appType => _getEnv('APP_TYPE');
-  static String get baseUrl => _getEnv('BASE_URL');
-  static String get saltString => _getEnv('SALT_STRING');
-  static String get githubLink => _getEnv('GITHUB_LINK');
+  static String get appType => _getEnv("APP_TYPE");
+  static String get baseUrl => _getEnv("BASE_URL");
+  static String get saltString => _getEnv("SALT_STRING");
+  static String get githubLink => _getEnv("GITHUB_LINK");
 
   static Future<List<String>> loadEnv() async {
     await dotenv.load(fileName: "paladins-edge.env");
     final List<String> missingEnvs = [];
-    if (appType == '') missingEnvs.add('APP_TYPE');
-    if (baseUrl == '') missingEnvs.add('BASE_URL');
-    if (saltString == '') missingEnvs.add('SALT_STRING');
-    if (githubLink == '') missingEnvs.add('GITHUB_LINK');
+    if (appType == "") missingEnvs.add("APP_TYPE");
+    if (baseUrl == "") missingEnvs.add("BASE_URL");
+    if (saltString == "") missingEnvs.add("SALT_STRING");
+    if (githubLink == "") missingEnvs.add("GITHUB_LINK");
 
     return missingEnvs;
   }
 
   static String _getEnv(String envName) {
-    return dotenv.env[envName] ?? '';
+    return dotenv.env[envName] ?? "";
   }
 }
 
@@ -105,29 +105,29 @@ abstract class TypeIds {
 }
 
 abstract class NotificationChannels {
-  static const friends = 'friends';
+  static const friends = "friends";
 }
 
 final Map<String, data_classes.ChampionDamage> championDamageType = {
-  'Amplification':
+  "Amplification":
       data_classes.ChampionDamage(name: "Amplification", color: Colors.pink),
-  'Area Damage':
+  "Area Damage":
       data_classes.ChampionDamage(name: "Area Damage", color: Colors.red),
-  'Crowd Control':
+  "Crowd Control":
       data_classes.ChampionDamage(name: "Crowd Control", color: Colors.teal),
-  'Direct Damage':
+  "Direct Damage":
       data_classes.ChampionDamage(name: "Direct Damage", color: Colors.red),
-  'Heal': data_classes.ChampionDamage(name: "Heal", color: Colors.green),
-  'Movement':
+  "Heal": data_classes.ChampionDamage(name: "Heal", color: Colors.green),
+  "Movement":
       data_classes.ChampionDamage(name: "Movement", color: Colors.amber),
-  'Protective':
+  "Protective":
       data_classes.ChampionDamage(name: "Protective", color: Colors.lightBlue),
-  'Reveal': data_classes.ChampionDamage(name: "Reveal", color: Colors.amber),
-  'Shield': data_classes.ChampionDamage(name: "Shield", color: Colors.indigo),
-  'Stance Change':
+  "Reveal": data_classes.ChampionDamage(name: "Reveal", color: Colors.amber),
+  "Shield": data_classes.ChampionDamage(name: "Shield", color: Colors.indigo),
+  "Stance Change":
       data_classes.ChampionDamage(name: "Stance Change", color: Colors.pink),
-  'Stealth': data_classes.ChampionDamage(name: "Stealth", color: Colors.blue),
-  'Ultimate':
+  "Stealth": data_classes.ChampionDamage(name: "Stealth", color: Colors.blue),
+  "Ultimate":
       data_classes.ChampionDamage(name: "Ultimate", color: Colors.orange),
 };
 
@@ -253,25 +253,25 @@ abstract class LoginCTA {
 mark your friends as favorites and
 notifies when you favourite friend comes online
 """
-          .replaceAll('\n', ' ');
+          .replaceAll("\n", " ");
 
   static final activeMatchDrawer = """Active Match section allows you to
 view your live match,
 check stats of all the players before loading in
 and visit their profile directly
 """
-      .replaceAll('\n', ' ');
+      .replaceAll("\n", " ");
 
   static final loadoutFab = """Loadout section allows you to
 view your in-game loadouts,
 create and save your own
 loadouts outside the game 
 """
-      .replaceAll('\n', ' ');
+      .replaceAll("\n", " ");
 }
 
 abstract class RemoteConfigParams {
-  static const enableGuestLogin = 'enableGuestLogin';
+  static const enableGuestLogin = "enableGuestLogin";
 }
 
 class PaladinsGuruSite {

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:paladinsedge/screens/create_loadout/create_loadout_delete_confirmation.dart';
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:paladinsedge/screens/create_loadout/create_loadout_delete_confirmation.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateLoadoutDeleteButton extends StatelessWidget {
   final void Function() onDelete;
@@ -13,7 +13,7 @@ class CreateLoadoutDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return widgets.Button(
-      label: 'Delete',
+      label: "Delete",
       color: Colors.red,
       disabled: false,
       leading: FeatherIcons.trash,

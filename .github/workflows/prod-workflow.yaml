@@ -9,19 +9,9 @@ on:
       - main
 
 env:
-  flutter_version: "2.10.5"
+  flutter_version: "3.0.1"
 
 jobs:
-  check:
-    name: "code metrics 📈"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dart-code-metrics
-        uses: dart-code-checker/dart-code-metrics-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
   build-apk:
     name: "build apk 🔨"
     runs-on: ubuntu-latest

@@ -1,10 +1,10 @@
-import 'package:dartx/dartx.dart';
-import 'package:expand_widget/expand_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/constants.dart' as constants;
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:expand_widget/expand_widget.dart";
+import "package:flutter/material.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionDetailAbilities extends StatelessWidget {
   final models.Champion champion;
@@ -21,7 +21,7 @@ class ChampionDetailAbilities extends StatelessWidget {
       children: champion.abilities.map(
         (ability) {
           final damageTypeChips =
-              ability.damageType.split(',').map((damageType) {
+              ability.damageType.split(",").map((damageType) {
             return constants.championDamageType[damageType];
           }).filterNotNull();
 
@@ -74,7 +74,7 @@ class ChampionDetailAbilities extends StatelessWidget {
                                 widgets.TextChip(
                                   spacing: 5,
                                   text:
-                                      '${ability.cooldown.toInt().toString()} sec',
+                                      "${ability.cooldown.toInt().toString()} sec",
                                   color: Colors.blueGrey,
                                   icon: Icons.timelapse,
                                 ),

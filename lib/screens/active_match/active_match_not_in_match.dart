@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/material.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class ActiveMatchNotInMatch extends StatelessWidget {
   final String status;

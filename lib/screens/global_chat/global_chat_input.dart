@@ -1,11 +1,11 @@
-import 'package:dartx/dartx.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/theme/index.dart' as theme;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:dartx/dartx.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GlobalChatInput extends HookConsumerWidget {
   final void Function(String) onSendPressed;
@@ -50,7 +50,7 @@ class GlobalChatInput extends HookConsumerWidget {
       () {
         if (isValid.value) {
           onSendPressed(textController.text);
-          textController.text = '';
+          textController.text = "";
           isValid.value = false;
           onTyping(isValid.value);
         }
@@ -61,7 +61,7 @@ class GlobalChatInput extends HookConsumerWidget {
     final typingPlayers = useMemoized(
       () {
         return playersOnline.values.mapNotNull((playerOnline) {
-          final isTyping = playerOnline.metadata?['typing'] as bool? ?? false;
+          final isTyping = playerOnline.metadata?["typing"] as bool? ?? false;
           if (globalChatUser.id == playerOnline.id) return null;
 
           return isTyping ? playerOnline : null;
@@ -73,10 +73,10 @@ class GlobalChatInput extends HookConsumerWidget {
     final playersTypingText = useMemoized(
       () {
         return typingPlayers.length == 1
-            ? '${typingPlayers.first.firstName} is typing ...'
+            ? "${typingPlayers.first.firstName} is typing ..."
             : typingPlayers.length == 2
                 ? '${typingPlayers.map((_) => _.firstName).join(', ')} are typing ...'
-                : '${typingPlayers.length} players are typing ...';
+                : "${typingPlayers.length} players are typing ...";
       },
       [typingPlayers],
     );
@@ -137,8 +137,8 @@ class GlobalChatInput extends HookConsumerWidget {
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             elevation: 7,
-            shadowColor: theme.themeMaterialColor.shade50,
             clipBehavior: Clip.hardEdge,
+            color: chatTheme.inputBackgroundColor,
             child: Row(
               children: [
                 Expanded(
@@ -150,16 +150,16 @@ class GlobalChatInput extends HookConsumerWidget {
                     style: const TextStyle(fontSize: 16),
                     onSubmitted: (_) => onSend(),
                     onChanged: onChanged,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,
                       ),
-                      fillColor: chatTheme.inputBackgroundColor,
+                      fillColor: Colors.transparent,
                       border: InputBorder.none,
                       filled: true,
-                      counterText: '',
-                      hintText: 'Message...',
+                      counterText: "",
+                      hintText: "Message...",
                     ),
                   ),
                 ),

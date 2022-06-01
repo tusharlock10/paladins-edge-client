@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/screens/active_match/active_match_player.dart';
+import "package:flutter/material.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/screens/active_match/active_match_player.dart";
 
 class ActiveMatchList extends StatelessWidget {
   final api.PlayerStatusResponse playerStatus;
@@ -33,7 +33,7 @@ class ActiveMatchList extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${playerStatus.match?.map}',
+                  "${playerStatus.match?.map}",
                   style: const TextStyle(fontSize: 14),
                 ),
               ],
@@ -41,15 +41,15 @@ class ActiveMatchList extends StatelessWidget {
           const SizedBox(height: 10),
           const Center(
             child: Text(
-              'Team 1',
+              "Team 1",
               style: TextStyle(fontSize: 18),
             ),
           ),
           const SizedBox(height: 10),
           ...playersInfoTeam1?.map(
-                (_playerInfo) {
+                (playerInfo) {
                   return ActiveMatchPlayer(
-                    playerInfo: _playerInfo,
+                    playerInfo: playerInfo,
                   );
                 },
               ).toList() ??
@@ -58,15 +58,15 @@ class ActiveMatchList extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                'Team 2',
+                "Team 2",
                 style: TextStyle(fontSize: 18),
               ),
             ),
           ),
           ...playersInfoTeam2?.map(
-                (_playerInfo) {
+                (playerInfo) {
                   return ActiveMatchPlayer(
-                    playerInfo: _playerInfo,
+                    playerInfo: playerInfo,
                   );
                 },
               ).toList() ??

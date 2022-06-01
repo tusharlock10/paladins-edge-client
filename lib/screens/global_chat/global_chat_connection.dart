@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GlobalChatConnection extends StatelessWidget {
   final utilities.ChatConnectionState connectionState;
@@ -25,7 +25,7 @@ class GlobalChatConnection extends StatelessWidget {
         children: [
           widgets.TextChip(
             color: isConnected ? Colors.green : Colors.red,
-            text: isConnected ? 'Online' : 'Offline',
+            text: isConnected ? "Online" : "Offline",
           ),
         ],
       ),

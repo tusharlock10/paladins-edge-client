@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:paladinsedge/api/index.dart' as api;
-import 'package:paladinsedge/screens/index.dart' as screens;
-import 'package:paladinsedge/utilities/index.dart' as utilities;
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class SearchLowerItem extends HookWidget {
   final api.LowerSearch lowerSearch;
@@ -25,7 +25,7 @@ class SearchLowerItem extends HookWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            'playerId': lowerSearch.playerId,
+            "playerId": lowerSearch.playerId,
           },
         );
       },

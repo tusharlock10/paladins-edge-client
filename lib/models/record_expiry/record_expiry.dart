@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
-import 'package:paladinsedge/constants.dart'
+import "package:hive/hive.dart";
+import "package:paladinsedge/constants.dart"
     show TypeIds, RecordExpiryDuration, RecordExpiryName;
 
-part 'record_expiry.g.dart';
+part "record_expiry.g.dart";
 
 // model for storing the exipry date of saved champion, searchHistory, etc. in local db
 @HiveType(typeId: TypeIds.recordExpiry)

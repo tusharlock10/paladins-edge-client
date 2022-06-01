@@ -1,21 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/screens/feedback/feedback_input_landscape.dart';
-import 'package:paladinsedge/screens/feedback/feedback_input_portrait.dart';
-import 'package:paladinsedge/screens/feedback/feedback_type_selector.dart';
-import 'package:paladinsedge/utilities/index.dart' as utilities;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/feedback/feedback_input_landscape.dart";
+import "package:paladinsedge/screens/feedback/feedback_input_portrait.dart";
+import "package:paladinsedge/screens/feedback/feedback_type_selector.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Feedback extends HookConsumerWidget {
-  static const routeName = 'feedback';
-  static const routePath = 'feedback';
+  static const routeName = "feedback";
+  static const routePath = "feedback";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
   );
 
   const Feedback({Key? key}) : super(key: key);
@@ -39,6 +40,13 @@ class Feedback extends HookConsumerWidget {
     );
 
     // Methods
+    final goBack = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
+
     final onSubmit = useCallback(
       () async {
         final result = await feedbackProvider.submitFeedback();
@@ -46,17 +54,17 @@ class Feedback extends HookConsumerWidget {
         if (!result) {
           widgets.showToast(
             context: context,
-            text: 'Unable to submit feedback',
+            text: "Unable to submit feedback",
             type: widgets.ToastType.error,
           );
 
           return;
         }
 
-        utilities.Navigation.pop(context);
+        goBack();
         widgets.showToast(
           context: context,
-          text: 'Thank you for feedback',
+          text: "Thank you for feedback",
           type: widgets.ToastType.success,
         );
       },
@@ -65,7 +73,7 @@ class Feedback extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Provide Feedback'),
+        title: const Text("Provide Feedback"),
       ),
       body: ListView(
         physics: const ClampingScrollPhysics(),
@@ -87,10 +95,10 @@ class Feedback extends HookConsumerWidget {
                 ? const widgets.LoadingIndicator(
                     lineWidth: 2,
                     size: 28,
-                    label: Text('Submitting'),
+                    label: Text("Submitting"),
                   )
                 : widgets.Button(
-                    label: 'Submit',
+                    label: "Submit",
                     onPressed: onSubmit,
                     disabled: description.length < 10,
                   ),
@@ -101,5 +109,5 @@ class Feedback extends HookConsumerWidget {
     );
   }
 
-  static Feedback _routeBuilder(_, __) => const Feedback();
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Feedback());
 }

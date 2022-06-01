@@ -1,6 +1,6 @@
-import 'package:dartx/dartx.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/data_classes/champions/combined_champion.dart';
+import "package:dartx/dartx.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/data_classes/champions/combined_champion.dart";
 
 abstract class ChampionsSort {
   static const _name = "Name";
@@ -67,11 +67,11 @@ abstract class ChampionsSort {
       case _level:
         return "Sort champions that based on their level in your account";
       case _winRate:
-        return 'Sort champions based on your win-rate using them';
+        return "Sort champions based on your win-rate using them";
       case _lastPlayed:
         return "Sort champions based on when you last played them";
       default:
-        return '';
+        return "";
     }
   }
 
@@ -86,7 +86,7 @@ abstract class ChampionsSort {
         return "Health ${combinedChampion.champion.health.toInt()}";
       case _releasedDate:
         final formattedReleaseDate =
-            Jiffy(combinedChampion.champion.releaseDate).format('MMM do yy');
+            Jiffy(combinedChampion.champion.releaseDate).format("MMM do yy");
         return "Released on $formattedReleaseDate";
       case _dps:
         final dps = combinedChampion.champion.weaponDamage ~/
@@ -95,20 +95,20 @@ abstract class ChampionsSort {
       case _level:
         return null;
       case _winRate:
-        if (combinedChampion.playerChampion == null) return 'Not Played';
+        if (combinedChampion.playerChampion == null) return "Not Played";
         final playerChampion = combinedChampion.playerChampion!;
         final matches = playerChampion.wins + playerChampion.losses;
         if (matches == 0) return null;
         final winRate = playerChampion.wins * 100 / matches;
 
-        return 'WR ${winRate.toStringAsPrecision(3)}%';
+        return "WR ${winRate.toStringAsPrecision(3)}%";
       case _lastPlayed:
-        if (combinedChampion.playerChampion == null) return 'Not Played';
+        if (combinedChampion.playerChampion == null) return "Not Played";
         final formattedLastPlayed =
-            Jiffy(combinedChampion.playerChampion!.lastPlayed).format('MMM do');
+            Jiffy(combinedChampion.playerChampion!.lastPlayed).format("MMM do");
         return "Played on $formattedLastPlayed";
       default:
-        return '';
+        return "";
     }
   }
 

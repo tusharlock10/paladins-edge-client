@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:paladinsedge/models/index.dart' as models;
-import 'package:paladinsedge/providers/index.dart' as providers;
-import 'package:paladinsedge/widgets/index.dart' as widgets;
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionDetailHeading extends ConsumerWidget {
   final models.Champion champion;
@@ -23,24 +23,24 @@ class ChampionDetailHeading extends ConsumerWidget {
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
     final health = NumberFormat.compact().format(champion.health).toString();
-    String range = '';
+    String range = "";
 
     if (champion.damageFallOffRange == 0) {
-      range = 'Range ∞';
+      range = "Range ∞";
     } else if (champion.damageFallOffRange < 0) {
-      range = 'Range ${champion.damageFallOffRange.abs().toInt()}';
+      range = "Range ${champion.damageFallOffRange.abs().toInt()}";
     } else {
-      range = 'Fall-off ${champion.damageFallOffRange.toInt()}';
+      range = "Fall-off ${champion.damageFallOffRange.toInt()}";
     }
 
-    final birthDay = Jiffy(champion.releaseDate).format('MMM do');
+    final birthDay = Jiffy(champion.releaseDate).format("MMM do");
 
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           Hero(
-            tag: '${champion.championId}Icon',
+            tag: "${champion.championId}Icon",
             child: widgets.ElevatedAvatar(
               imageUrl: champion.iconUrl,
               imageBlurHash: champion.iconBlurHash,
@@ -72,7 +72,7 @@ class ChampionDetailHeading extends ConsumerWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '$dps DPS | $health Health | $range',
+                      "$dps DPS | $health Health | $range",
                       style: textTheme.bodyText1?.copyWith(fontSize: 10),
                     ),
                     Text(
