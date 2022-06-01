@@ -12,16 +12,6 @@ env:
   flutter_version: "3.0.1"
 
 jobs:
-  check:
-    name: "code metrics 📈"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dart-code-metrics
-        uses: dart-code-checker/dart-code-metrics-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
   build-bundle:
     name: "build bundle 🛠️"
     runs-on: ubuntu-latest
