@@ -8,7 +8,7 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class _FriendsNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_FriendsNotifier> ref;
   bool isLoadingFriends = false;
-  bool isLoadingFavouriteFriends = false;
+  bool isLoadingFavouriteFriends = true;
 
   /// Is true when we have fetched all the friends
   /// becomes true, when we visit Friends screen

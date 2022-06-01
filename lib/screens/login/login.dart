@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -15,7 +16,7 @@ class Login extends HookConsumerWidget {
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: _routeRedirect,
   );
 
@@ -105,7 +106,7 @@ class Login extends HookConsumerWidget {
     );
   }
 
-  static Login _routeBuilder(_, __) => const Login();
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Login());
 
   static String? _routeRedirect(GoRouterState _) {
     // check if user is authenticated

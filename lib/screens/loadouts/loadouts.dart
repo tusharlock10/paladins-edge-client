@@ -1,4 +1,5 @@
 import "package:dartx/dartx.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -27,7 +28,7 @@ class Loadouts extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -323,19 +324,28 @@ class Loadouts extends HookConsumerWidget {
     );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
+  static Page _routeBuilder(_, GoRouterState state) {
     final paramChampionId = state.params["championId"];
     final paramPlayerId = state.params["playerId"];
     if (paramChampionId == null || paramPlayerId == null) {
-      return const screens.NotFound();
+      return const CupertinoPage(child: screens.NotFound());
     }
 
     final championId = int.tryParse(paramChampionId);
-    if (championId == null) return const screens.NotFound();
+    if (championId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
 
-    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final playerId = paramPlayerId;
 
-    return Loadouts(playerId: playerId, championId: championId);
+    return CupertinoPage(
+      child: Loadouts(
+        playerId: playerId,
+        championId: championId,
+      ),
+    );
   }
 }

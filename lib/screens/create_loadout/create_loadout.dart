@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -17,7 +18,7 @@ class CreateLoadout extends HookConsumerWidget {
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
   final int championId;
@@ -163,12 +164,16 @@ class CreateLoadout extends HookConsumerWidget {
           );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
+  static Page _routeBuilder(_, GoRouterState state) {
     final paramChampionId = state.params["championId"];
-    if (paramChampionId == null) return const screens.NotFound();
+    if (paramChampionId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final championId = int.tryParse(paramChampionId);
-    if (championId == null) return const screens.NotFound();
+    if (championId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
 
-    return CreateLoadout(championId: championId);
+    return CupertinoPage(child: CreateLoadout(championId: championId));
   }
 }

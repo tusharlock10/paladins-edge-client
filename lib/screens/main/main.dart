@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -19,7 +20,7 @@ class Main extends HookWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
         redirect: _routeRedirect,
       );
@@ -56,7 +57,8 @@ class Main extends HookWidget {
     );
   }
 
-  static Main _routeBuilder(_, __) => const Main(startIndex: 0);
+  static Page _routeBuilder(_, __) =>
+      const CupertinoPage(child: Main(startIndex: 0));
 
   static String? _routeRedirect(GoRouterState _) {
     if (utilities.Global.isInitialRoute && !utilities.Global.isAuthenticated) {

@@ -1,5 +1,6 @@
 import "dart:math";
 
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -22,7 +23,7 @@ class ConnectProfile extends HookConsumerWidget {
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: _playerConnectedRedirect,
   );
 
@@ -204,7 +205,8 @@ class ConnectProfile extends HookConsumerWidget {
     );
   }
 
-  static ConnectProfile _routeBuilder(_, __) => const ConnectProfile();
+  static Page _routeBuilder(_, __) =>
+      const CupertinoPage(child: ConnectProfile());
 
   static String? _playerConnectedRedirect(GoRouterState _) {
     // check if user is authenticated

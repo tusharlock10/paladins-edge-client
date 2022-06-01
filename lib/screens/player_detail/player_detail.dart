@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -23,7 +24,7 @@ class PlayerDetail extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -157,7 +158,7 @@ class PlayerDetail extends HookConsumerWidget {
                     ),
                 ],
               )
-            : const Text("Loading"),
+            : const Text("Player"),
       ),
       body: player == null
           ? const widgets.LoadingIndicator(
@@ -178,15 +179,17 @@ class PlayerDetail extends HookConsumerWidget {
     );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
+  static Page _routeBuilder(_, GoRouterState state) {
     final paramPlayerId = state.params["playerId"];
     if (paramPlayerId == null) {
-      return const screens.NotFound();
+      return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) return const screens.NotFound();
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
     final playerId = paramPlayerId;
 
-    return PlayerDetail(playerId: playerId);
+    return CupertinoPage(child: PlayerDetail(playerId: playerId));
   }
 }

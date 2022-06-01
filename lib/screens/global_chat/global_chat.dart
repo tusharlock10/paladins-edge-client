@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_chat_types/flutter_chat_types.dart" as types;
 import "package:flutter_chat_ui/flutter_chat_ui.dart";
@@ -18,7 +19,7 @@ class GlobalChat extends HookConsumerWidget {
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
-    builder: _routeBuilder,
+    pageBuilder: _routeBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
   const GlobalChat({Key? key}) : super(key: key);
@@ -113,5 +114,5 @@ class GlobalChat extends HookConsumerWidget {
     );
   }
 
-  static GlobalChat _routeBuilder(_, __) => const GlobalChat();
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: GlobalChat());
 }

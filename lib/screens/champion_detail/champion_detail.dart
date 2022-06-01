@@ -1,3 +1,4 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -31,7 +32,7 @@ class ChampionDetail extends HookConsumerWidget {
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
-        builder: _routeBuilder,
+        pageBuilder: _routeBuilder,
         routes: routes,
       );
 
@@ -192,13 +193,15 @@ class ChampionDetail extends HookConsumerWidget {
           );
   }
 
-  static Widget _routeBuilder(_, GoRouterState state) {
+  static Page _routeBuilder(_, GoRouterState state) {
     final param = state.params["championId"];
-    if (param == null) return const screens.NotFound();
+    if (param == null) return const CupertinoPage(child: screens.NotFound());
 
     final championId = int.tryParse(param);
-    if (championId == null) return const screens.NotFound();
+    if (championId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
 
-    return ChampionDetail(championId: championId);
+    return CupertinoPage(child: ChampionDetail(championId: championId));
   }
 }
