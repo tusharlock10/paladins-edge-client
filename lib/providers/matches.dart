@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
@@ -8,6 +9,10 @@ class _MatchesNotifier extends ChangeNotifier {
   bool isMatchDetailsLoading = false;
   api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
+  List<data_classes.CombinedMatch>? combinedMatches;
+
+  /// holds the currently active filter
+  String selectedSort = data_classes.MatchSort.defaultSort;
 
   Future<void> getPlayerMatches({
     required String playerId,
@@ -22,16 +27,35 @@ class _MatchesNotifier extends ChangeNotifier {
       playerId: playerId,
       forceUpdate: forceUpdate,
     );
+    if (!forceUpdate) isPlayerMatchesLoading = false;
 
-    // sort matches & matchPlayers based on matchId
-    if (response != null) {
-      response.matches.sort(
-        (a, b) => int.parse(b.matchId).compareTo(int.parse(a.matchId)),
+    if (response == null) return notifyListeners();
+
+    // create list of combinedMatches using a temp. map
+    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    for (final match in response.matches) {
+      tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
+        match: match,
+        matchPlayers: [],
       );
-      response.matchPlayers.sort(
-        (a, b) => int.parse(b.matchId).compareTo(int.parse(a.matchId)),
+    }
+    for (final matchPlayer in response.matchPlayers) {
+      final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
+      if (existingCombinedMatch == null) continue;
+
+      tempMatchesMap[matchPlayer.matchId] = existingCombinedMatch.copyWith(
+        matchPlayers: [...existingCombinedMatch.matchPlayers, matchPlayer],
       );
-      playerMatches = response;
+    }
+
+    combinedMatches = tempMatchesMap.values.toList();
+
+    // sort combinedMatches based on the selectedSort
+    if (combinedMatches != null) {
+      combinedMatches = data_classes.MatchSort.getSortedMatches(
+        combinedMatches: combinedMatches!,
+        sort: selectedSort,
+      );
     }
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
@@ -58,6 +82,19 @@ class _MatchesNotifier extends ChangeNotifier {
     matchDetails = null;
 
     utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Set value of sort and apply sorting
+  void setSort(String sort) {
+    if (combinedMatches == null) return;
+
+    selectedSort = sort;
+    combinedMatches = data_classes.MatchSort.getSortedMatches(
+      combinedMatches: combinedMatches!,
+      sort: sort,
+    );
+
+    notifyListeners();
   }
 
   /// Clears all user sensitive data upon logout

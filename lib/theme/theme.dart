@@ -134,6 +134,19 @@ final lightTheme = ThemeData(
     ),
     showValueIndicator: ShowValueIndicator.never,
   ),
+  popupMenuTheme: PopupMenuThemeData(
+    elevation: 25,
+    textStyle: TextStyle(
+      fontFamily: Fonts.secondaryAccent,
+      color: Colors.black54,
+      fontStyle: FontStyle.italic,
+      fontSize: 12,
+    ),
+    color: Colors.white70,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+    ),
+  ),
 );
 
 /// ThemeData for dark theme
@@ -264,5 +277,18 @@ final darkTheme = ThemeData(
       elevation: 7,
     ),
     showValueIndicator: ShowValueIndicator.never,
+  ),
+  popupMenuTheme: PopupMenuThemeData(
+    elevation: 25,
+    textStyle: TextStyle(
+      fontFamily: Fonts.secondaryAccent,
+      color: Colors.white54,
+      fontStyle: FontStyle.italic,
+      fontSize: 12,
+    ),
+    color: darkThemeMaterialColor.shade300,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+    ),
   ),
 );

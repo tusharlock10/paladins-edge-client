@@ -13,9 +13,11 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailPlayer extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
+  final double averageCredits;
 
   const MatchDetailPlayer({
     required this.matchPlayer,
+    required this.averageCredits,
     Key? key,
   }) : super(key: key);
 
@@ -39,13 +41,56 @@ class MatchDetailPlayer extends HookConsumerWidget {
         : ((kills + assists) / deaths).toStringAsFixed(2);
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
+    final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.5;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
-    String matchPosition = " ${matchPlayer.matchPosition}th ";
 
-    if (matchPlayer.matchPosition == 1) matchPosition = "MVP";
-    if (matchPlayer.matchPosition == 2) matchPosition = " 2nd ";
-    if (matchPlayer.matchPosition == 3) matchPosition = " 3rd ";
+    // Hooks
+    final playerPosition = useMemoized(
+      () {
+        final matchPosition = matchPlayer.matchPosition;
+        if (matchPosition == null) return null;
+
+        switch (matchPosition) {
+          case 1:
+            return "MVP";
+          case 2:
+            return "2nd";
+          case 3:
+            return "3rd";
+          default:
+            return "${matchPosition}th";
+        }
+      },
+      [matchPlayer.matchPosition],
+    );
+
+    final playerPositionIcon = useMemoized(
+      () {
+        final matchPosition = matchPlayer.matchPosition;
+        if (matchPosition == null) return null;
+
+        if (matchPosition == 1) return FeatherIcons.award;
+        if (matchPosition == 10) return FeatherIcons.meh;
+      },
+      [matchPlayer.matchPosition],
+    );
+
+    final playerPositionColor = useMemoized(
+      () {
+        final matchPosition = matchPlayer.matchPosition;
+
+        switch (matchPosition) {
+          case 1:
+            return Colors.orange;
+          case 10:
+            return Colors.blueGrey;
+          default:
+            return Colors.cyan;
+        }
+      },
+      [matchPlayer.matchPosition],
+    );
 
     // Methods
     final onPressPlayer = useCallback(
@@ -75,6 +120,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                   height: 50,
                   width: 50,
                   borderRadius: const BorderRadius.all(Radius.circular(12.5)),
+                  greyedOut: isBot,
                 ),
           matchPlayer.playerRanked == null
               ? const SizedBox(width: 20)
@@ -154,20 +200,13 @@ class MatchDetailPlayer extends HookConsumerWidget {
                       ],
                     ),
                     const SizedBox(width: 5),
-                    widgets.TextChip(
-                      width: 55,
-                      text: matchPosition,
-                      icon: matchPlayer.matchPosition == 1
-                          ? FeatherIcons.award
-                          : matchPlayer.matchPosition == 10
-                              ? FeatherIcons.meh
-                              : null,
-                      color: matchPlayer.matchPosition == 1
-                          ? Colors.orange
-                          : matchPlayer.matchPosition == 10
-                              ? Colors.blueGrey
-                              : Colors.cyan,
-                    ),
+                    if (playerPosition != null)
+                      widgets.TextChip(
+                        width: 55,
+                        text: playerPosition,
+                        icon: playerPositionIcon,
+                        color: playerPositionColor,
+                      ),
                   ],
                 ),
               ],

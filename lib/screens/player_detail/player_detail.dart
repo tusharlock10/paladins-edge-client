@@ -7,9 +7,8 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/player_detail/player_detail_header.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_matches.dart";
-import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/screens/player_detail/player_detail_menu.dart";
 import "package:paladinsedge/widgets/index.dart" as widgets;
-import "package:touchable_opacity/touchable_opacity.dart";
 
 class PlayerDetail extends HookConsumerWidget {
   static const routeName = "player";
@@ -83,20 +82,6 @@ class PlayerDetail extends HookConsumerWidget {
       [playerId],
     );
 
-    // Methods
-    final onTapChamps = useCallback(
-      () {
-        utilities.Navigation.navigate(
-          context,
-          screens.PlayerChampions.routeName,
-          params: {
-            "playerId": playerId,
-          },
-        );
-      },
-      [],
-    );
-
     final onRefresh = useCallback(
       () async {
         final futures = [
@@ -119,27 +104,8 @@ class PlayerDetail extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: TouchableOpacity(
-              onTap: onTapChamps,
-              child: Center(
-                child: Row(
-                  children: const [
-                    Text(
-                      "Champs",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                    Icon(Icons.arrow_forward),
-                  ],
-                ),
-              ),
-            ),
-          ),
+        actions: const [
+          PlayerDetailMenu(),
         ],
         title: player != null
             ? Column(
