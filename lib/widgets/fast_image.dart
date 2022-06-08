@@ -9,6 +9,7 @@ class FastImage extends StatelessWidget {
   final double? width;
   final BorderRadius? borderRadius;
   final BoxFit? fit;
+  final bool greyedOut;
 
   const FastImage({
     required this.imageUrl,
@@ -17,19 +18,31 @@ class FastImage extends StatelessWidget {
     this.width,
     this.borderRadius = BorderRadius.zero,
     this.fit = BoxFit.contain,
+    this.greyedOut = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: CachedNetworkImage(
-        placeholderFadeInDuration: const Duration(milliseconds: 250),
-        fadeInDuration: Duration.zero,
-        fadeOutDuration: Duration.zero,
-        errorWidget: (_, __, ___) => imageBlurHash != null
-            ? SizedBox(
+    final image = CachedNetworkImage(
+      placeholderFadeInDuration: const Duration(milliseconds: 250),
+      fadeInDuration: Duration.zero,
+      fadeOutDuration: Duration.zero,
+      errorWidget: (_, __, ___) => imageBlurHash != null
+          ? SizedBox(
+              height: height,
+              width: width,
+              child: BlurHash(
+                hash: imageBlurHash!,
+                image: imageUrl,
+              ),
+            )
+          : SizedBox(
+              height: height,
+              width: width,
+            ),
+      placeholder: imageBlurHash != null
+          ? (_, __) => SizedBox(
                 height: height,
                 width: width,
                 child: BlurHash(
@@ -37,25 +50,24 @@ class FastImage extends StatelessWidget {
                   image: imageUrl,
                 ),
               )
-            : SizedBox(
-                height: height,
-                width: width,
+          : null,
+      imageUrl: imageUrl,
+      height: height,
+      width: width,
+      fit: fit,
+    );
+
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: greyedOut
+          ? ColorFiltered(
+              colorFilter: const ColorFilter.mode(
+                Colors.grey,
+                BlendMode.saturation,
               ),
-        placeholder: imageBlurHash != null
-            ? (_, __) => SizedBox(
-                  height: height,
-                  width: width,
-                  child: BlurHash(
-                    hash: imageBlurHash!,
-                    image: imageUrl,
-                  ),
-                )
-            : null,
-        imageUrl: imageUrl,
-        height: height,
-        width: width,
-        fit: fit,
-      ),
+              child: image,
+            )
+          : image,
     );
   }
 }

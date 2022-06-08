@@ -1,62 +1,23 @@
 import "dart:ui";
 
 import "package:flutter/material.dart";
-import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/providers/index.dart" as providers;
-import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class PlayerDetailHeader extends HookConsumerWidget {
+class PlayerDetailHeader extends ConsumerWidget {
   const PlayerDetailHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.players.select((_) => _.playerData));
-    final playerStatus =
-        ref.watch(providers.players.select((_) => _.playerStatus));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    final status = playerStatus?.status;
-    final isOnline = status?.toLowerCase() != "offline" &&
-        status?.toLowerCase() != "unknown" &&
-        status != null;
-
-    // Methods
-    final onPressActiveMatch = useCallback(
-      () {
-        if (player == null) return;
-
-        playersProvider.setPlayerStatusPlayerId(player.playerId);
-        utilities.Navigation.navigate(
-          context,
-          screens.ActiveMatch.routeName,
-          params: {"playerId": player.playerId},
-        );
-      },
-      [],
-    );
-
-    final onPressFriends = useCallback(
-      () {
-        if (player == null) return;
-
-        utilities.Navigation.navigate(
-          context,
-          screens.Friends.routeName,
-          params: {
-            "playerId": player.playerId,
-          },
-        );
-      },
-      [],
-    );
 
     return player == null
         ? const SizedBox()
@@ -79,7 +40,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                         widgets.ElevatedAvatar(
                           imageUrl: player.avatarUrl,
                           imageBlurHash: player.avatarBlurHash,
-                          size: 42,
+                          size: 24,
                           borderRadius: 10,
                         ),
                         const SizedBox(width: 10),
@@ -114,22 +75,6 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                     ],
                                   ),
                                   const PlayerDetailStatusIndicator(),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  widgets.Button(
-                                    label: "Friends",
-                                    onPressed: onPressFriends,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  widgets.Button(
-                                    label: "Active Match",
-                                    disabled: !isOnline,
-                                    onPressed: onPressActiveMatch,
-                                    color: Colors.green,
-                                  ),
                                 ],
                               ),
                             ],
