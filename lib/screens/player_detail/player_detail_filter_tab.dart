@@ -3,6 +3,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/player_detail/player_detail_datepicker_modal.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -12,9 +13,10 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final championsProvider = ref.read(providers.champions);
-    final selectedFilter =
-        ref.watch(providers.champions.select((_) => _.selectedFilter));
+    final matchesProvider = ref.read(providers.matches);
+    final selectedFilter = ref.watch(
+      providers.matches.select((_) => _.selectedFilter),
+    );
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -30,18 +32,38 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
       [brightness],
     );
 
+    // Methods
+    final onTapFilter = useCallback(
+      (bool isFilterValueSelected, data_classes.MatchFilterValue filterValue) {
+        if (isFilterValueSelected) {
+          return matchesProvider.setFilterValue(null);
+        }
+
+        if (filterValue.type == data_classes.MatchFilterValueType.dates) {
+          return showPlayerDetailDatePickerModal(
+            context,
+            filterValue,
+            matchesProvider.setFilterValue,
+          );
+        }
+
+        matchesProvider.setFilterValue(filterValue);
+      },
+      [],
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         physics: const ClampingScrollPhysics(),
-        children: data_classes.ChampionsFilter.filterNames.map(
+        children: data_classes.MatchFilter.filterNames.map(
           (filterName) {
             final isFilterNameSelected = selectedFilter.name == filterName;
 
             return widgets.InteractiveCard(
               onTap: isFilterNameSelected
                   ? null
-                  : () => championsProvider.setFilterName(filterName),
+                  : () => matchesProvider.setFilterName(filterName),
               elevation: isFilterNameSelected ? 2 : 7,
               margin: const EdgeInsets.all(10),
               borderRadius: 10,
@@ -73,7 +95,7 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
                     ),
                     if (isFilterNameSelected)
                       Text(
-                        data_classes.ChampionsFilter.getFilterDescription(
+                        data_classes.MatchFilter.getFilterDescription(
                           filterName,
                         ),
                         style: textTheme.bodyText1,
@@ -81,25 +103,28 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
                     if (isFilterNameSelected) const SizedBox(height: 10),
                     if (isFilterNameSelected)
                       Wrap(
-                        children: data_classes.ChampionsFilter.getFilterValues(
+                        children: data_classes.MatchFilter.getFilterValues(
                           filterName,
                         )!
                             .map(
                           (filterValue) {
                             final isFilterValueSelected =
-                                selectedFilter.value == filterValue;
+                                filterValue.isSameFilter(selectedFilter.value);
 
                             return widgets.TextChip(
                               spacing: 5,
                               textSize: 12,
                               iconSize: 14,
-                              text: filterValue,
+                              text: isFilterValueSelected
+                                  ? selectedFilter.value!.valueName
+                                  : filterValue.valueName,
                               icon: isFilterValueSelected ? Icons.check : null,
                               color: isFilterValueSelected
                                   ? theme.themeMaterialColor
                                   : Colors.blueGrey,
-                              onTap: () => championsProvider.setFilterValue(
-                                isFilterValueSelected ? null : filterValue,
+                              onTap: () => onTapFilter(
+                                isFilterValueSelected,
+                                filterValue,
                               ),
                             );
                           },

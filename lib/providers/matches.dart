@@ -11,8 +11,12 @@ class _MatchesNotifier extends ChangeNotifier {
   api.MatchDetailsResponse? matchDetails;
   List<data_classes.CombinedMatch>? combinedMatches;
 
-  /// holds the currently active filter
+  /// holds the currently active sort
   String selectedSort = data_classes.MatchSort.defaultSort;
+
+  /// holds the currently active filter
+  data_classes.SelectedMatchFilter selectedFilter =
+      data_classes.SelectedMatchFilter();
 
   Future<void> getPlayerMatches({
     required String playerId,
@@ -93,6 +97,46 @@ class _MatchesNotifier extends ChangeNotifier {
       combinedMatches: combinedMatches!,
       sort: sort,
     );
+
+    notifyListeners();
+  }
+
+  /// Set the name of filter
+  void setFilterName(String filterName) {
+    selectedFilter = data_classes.SelectedMatchFilter(name: filterName);
+
+    notifyListeners();
+  }
+
+  /// Set value of filter and apply the filter
+  void setFilterValue(data_classes.MatchFilterValue? filterValue) {
+    if (combinedMatches == null) return;
+
+    selectedFilter = data_classes.SelectedMatchFilter(
+      name: selectedFilter.name,
+      value: filterValue,
+    );
+
+    combinedMatches = selectedFilter.isValid
+        ? data_classes.MatchFilter.getFilteredMatches(
+            combinedMatches: combinedMatches!,
+            filter: selectedFilter,
+          )
+        : data_classes.MatchFilter.clearFilters(combinedMatches!);
+
+    notifyListeners();
+  }
+
+  /// Clears all applied filters and sort on combinedMatches
+  void clearAppliedFiltersAndSort() {
+    if (combinedMatches == null) return;
+
+    combinedMatches = data_classes.MatchFilter.clearFilters(combinedMatches!);
+    combinedMatches = data_classes.MatchSort.clearSorting(combinedMatches!);
+    selectedFilter = data_classes.SelectedMatchFilter(
+      name: selectedFilter.name,
+    );
+    selectedSort = data_classes.MatchSort.defaultSort;
 
     notifyListeners();
   }

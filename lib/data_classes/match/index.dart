@@ -1,3 +1,4 @@
 export "./combined_match.dart";
 export "./match.dart";
-export "./matches_sort.dart";
+export "./match_filter.dart";
+export "./match_sort.dart";

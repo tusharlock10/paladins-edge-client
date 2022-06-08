@@ -1287,7 +1287,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.1.57"
+    version: "20.1.59"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
@@ -1295,6 +1295,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "20.1.57"
+  syncfusion_flutter_datepicker:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datepicker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "20.1.59"
   synchronized:
     dependency: transitive
     description:

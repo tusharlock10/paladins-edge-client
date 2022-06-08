@@ -76,10 +76,13 @@ class PlayerDetail extends HookConsumerWidget {
 
     useEffect(
       () {
-        // reset the player data in provider when unmounting
-        return playersProvider.resetPlayerData;
+        // reset the player and filters data in provider when unmounting
+        return () {
+          playersProvider.resetPlayerData();
+          matchesProvider.clearAppliedFiltersAndSort();
+        };
       },
-      [playerId],
+      [],
     );
 
     final onRefresh = useCallback(
