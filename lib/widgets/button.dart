@@ -12,8 +12,10 @@ class Button extends StatelessWidget {
   final bool disabled;
   final MaterialColor color;
   final ButtonStyle style;
+  final Color? backgroundColor;
   final IconData? leading;
   final IconData? trailing;
+  final double? elevation;
 
   const Button({
     required this.label,
@@ -21,8 +23,10 @@ class Button extends StatelessWidget {
     this.disabled = false,
     this.color = theme.themeMaterialColor,
     this.style = ButtonStyle.solid,
+    this.backgroundColor,
     this.leading,
     this.trailing,
+    this.elevation,
     Key? key,
   }) : super(key: key);
 
@@ -40,7 +44,8 @@ class Button extends StatelessWidget {
             width: 128,
             child: TextButton(
               style: TextButton.styleFrom(
-                elevation: disabled ? 0 : null,
+                backgroundColor: backgroundColor,
+                elevation: disabled ? 0 : elevation,
                 shape: const StadiumBorder(),
                 side: BorderSide(
                   color: outlinedColor,
@@ -51,14 +56,15 @@ class Button extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (leading != null) ...[
-                    Icon(
-                      leading,
-                      size: 14,
-                      color: outlinedColor,
+                  if (leading != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Icon(
+                        leading,
+                        size: 14,
+                        color: outlinedColor,
+                      ),
                     ),
-                    const SizedBox(width: 5),
-                  ],
                   Text(
                     label,
                     style: TextStyle(
@@ -66,14 +72,15 @@ class Button extends StatelessWidget {
                       color: disabled ? null : outlinedColor,
                     ),
                   ),
-                  if (trailing != null) ...[
-                    const SizedBox(width: 5),
-                    Icon(
-                      trailing,
-                      size: 14,
-                      color: outlinedColor,
+                  if (trailing != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Icon(
+                        trailing,
+                        size: 14,
+                        color: outlinedColor,
+                      ),
                     ),
-                  ],
                 ],
               ),
             ),
@@ -84,21 +91,22 @@ class Button extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: color1,
-                elevation: disabled ? 0 : null,
+                elevation: disabled ? 0 : elevation,
                 shape: const StadiumBorder(),
               ),
               onPressed: disabled ? null : onPressed,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (leading != null) ...[
-                    Icon(
-                      leading,
-                      size: 14,
-                      color: color2,
+                  if (leading != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Icon(
+                        leading,
+                        size: 14,
+                        color: color2,
+                      ),
                     ),
-                    const SizedBox(width: 5),
-                  ],
                   Text(
                     label,
                     style: TextStyle(
@@ -106,14 +114,15 @@ class Button extends StatelessWidget {
                       color: disabled ? null : color2,
                     ),
                   ),
-                  if (trailing != null) ...[
-                    const SizedBox(width: 5),
-                    Icon(
-                      trailing,
-                      size: 14,
-                      color: color2,
+                  if (trailing != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Icon(
+                        trailing,
+                        size: 14,
+                        color: color2,
+                      ),
                     ),
-                  ],
                 ],
               ),
             ),

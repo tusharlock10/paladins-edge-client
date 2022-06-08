@@ -31,41 +31,51 @@ class MatchDetailStats extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                region,
-                style: textTheme.bodyText2?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          Flexible(
+            flex: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  region,
+                  style: textTheme.bodyText2?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              Text(
-                matchDuration,
-                style:
-                    textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic),
-              ),
-            ],
+                const SizedBox(height: 3),
+                Text(
+                  matchDuration,
+                  style: textTheme.bodyText1
+                      ?.copyWith(fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                map,
-                style: textTheme.bodyText2?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          const SizedBox(width: 10),
+          Flexible(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  map,
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              Text(
-                date.toString(),
-                style:
-                    textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic),
-              ),
-            ],
+                const SizedBox(height: 3),
+                Text(
+                  date.toString(),
+                  style: textTheme.bodyText1
+                      ?.copyWith(fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/champions/champions_filter_modal.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -17,10 +18,15 @@ class ChampionsSearchBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final championsProvider = ref.read(providers.champions);
-    final selectedFilter =
-        ref.watch(providers.champions.select((_) => _.selectedFilter));
-    final combinedChampions =
-        ref.watch(providers.champions.select((_) => _.combinedChampions));
+    final selectedFilter = ref.watch(
+      providers.champions.select((_) => _.selectedFilter),
+    );
+    final selectedSort = ref.watch(
+      providers.champions.select((_) => _.selectedSort),
+    );
+    final combinedChampions = ref.watch(
+      providers.champions.select((_) => _.combinedChampions),
+    );
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -85,7 +91,9 @@ class ChampionsSearchBar extends HookConsumerWidget {
             IconButton(
               icon: Badge(
                 elevation: 0,
-                showBadge: selectedFilter.isValid,
+                position: BadgePosition.topEnd(top: -4, end: -5),
+                showBadge: selectedFilter.isValid ||
+                    selectedSort != data_classes.ChampionsSort.defaultSort,
                 badgeColor: badgeColor,
                 child: const Icon(FeatherIcons.sliders),
               ),

@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 0.20.0
+version: 0.21.0
 
 homepage: "https://paladinsedge.app"
 
@@ -80,6 +80,7 @@ dependencies:
   flutter_chat_types: ^3.3.4
   intl: ^0.17.0
   http: ^0.13.4
+  syncfusion_flutter_datepicker: ^20.1.59
 
 dev_dependencies:
   flutter_test:
