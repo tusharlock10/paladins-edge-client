@@ -146,19 +146,15 @@ class _ChampionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Set the name of filter
-  void setFilterName(String filterName) {
-    selectedFilter = data_classes.SelectedChampionsFilter(name: filterName);
-
-    notifyListeners();
-  }
-
   /// Set value of filter and apply the filter
-  void setFilterValue(String? filterValue) {
+  void setFilterValue(
+    String? filterName,
+    String? filterValue,
+  ) {
     if (combinedChampions == null) return;
 
     selectedFilter = data_classes.SelectedChampionsFilter(
-      name: selectedFilter.name,
+      name: filterName,
       value: filterValue,
     );
 

@@ -16,20 +16,23 @@ void _onSelectDateRange(
       "startDate": value.startDate,
       "endDate": value.endDate,
     };
-    onDateSelect(data_classes.MatchFilterValue(
-      value: filterValue.value,
-      valueName: filterValue.valueName,
-      type: filterValue.type,
-      dateValue: dateValue,
-    ));
+    onDateSelect(
+      data_classes.MatchFilterValue(
+        value: filterValue.value,
+        valueName: filterValue.valueName,
+        type: filterValue.type,
+        dateValue: dateValue,
+      ),
+    );
     utilities.Navigation.pop(context);
   }
 }
 
 void showPlayerDetailDatePickerModal(
   BuildContext context,
+  String filterName,
   data_classes.MatchFilterValue filterValue,
-  void Function(data_classes.MatchFilterValue) onDateSelect,
+  void Function(String, data_classes.MatchFilterValue) onDateSelect,
 ) {
   showDialog(
     context: context,
@@ -44,7 +47,8 @@ void showPlayerDetailDatePickerModal(
             context,
             value,
             filterValue,
-            onDateSelect,
+            (selectedFilterValue) =>
+                onDateSelect(filterName, selectedFilterValue),
           ),
         ),
       );

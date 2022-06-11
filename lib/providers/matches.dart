@@ -101,19 +101,15 @@ class _MatchesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Set the name of filter
-  void setFilterName(String filterName) {
-    selectedFilter = data_classes.SelectedMatchFilter(name: filterName);
-
-    notifyListeners();
-  }
-
   /// Set value of filter and apply the filter
-  void setFilterValue(data_classes.MatchFilterValue? filterValue) {
+  void setFilterValue(
+    String? filterName,
+    data_classes.MatchFilterValue? filterValue,
+  ) {
     if (combinedMatches == null) return;
 
     selectedFilter = data_classes.SelectedMatchFilter(
-      name: selectedFilter.name,
+      name: filterName,
       value: filterValue,
     );
 
