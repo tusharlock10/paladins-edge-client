@@ -96,7 +96,6 @@ class MatchDetailPlayer extends HookConsumerWidget {
     final onPressPlayer = useCallback(
       () {
         if (isPrivatePlayer) return null;
-
         utilities.Navigation.navigate(
           context,
           screens.PlayerDetail.routeName,
@@ -105,7 +104,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
           },
         );
       },
-      [],
+      [matchPlayer],
     );
 
     return Padding(
@@ -114,13 +113,29 @@ class MatchDetailPlayer extends HookConsumerWidget {
         children: [
           champion == null
               ? const SizedBox(height: 50, width: 50)
-              : widgets.FastImage(
-                  imageUrl: utilities.getSmallAsset(champion.iconUrl),
-                  imageBlurHash: champion.iconBlurHash,
-                  height: 50,
-                  width: 50,
-                  borderRadius: const BorderRadius.all(Radius.circular(12.5)),
-                  greyedOut: isBot,
+              : Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    widgets.FastImage(
+                      imageUrl: utilities.getSmallAsset(champion.iconUrl),
+                      imageBlurHash: champion.iconBlurHash,
+                      height: 50,
+                      width: 50,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(12.5)),
+                      greyedOut: isBot,
+                    ),
+                    if (isBot)
+                      const Positioned.fill(
+                        bottom: -34,
+                        right: -34,
+                        child: Icon(
+                          FeatherIcons.link,
+                          size: 20,
+                          color: Colors.red,
+                        ),
+                      ),
+                  ],
                 ),
           matchPlayer.playerRanked == null
               ? const SizedBox(width: 20)
@@ -147,70 +162,61 @@ class MatchDetailPlayer extends HookConsumerWidget {
                     ],
                   ),
                 ),
-          GestureDetector(
-            onTap: onPressPlayer,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 160,
-                  child: Text(
-                    isPrivatePlayer
-                        ? "Private Profile"
-                        : matchPlayer.playerName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      decoration: isPrivatePlayer
-                          ? TextDecoration.none
-                          : TextDecoration.underline,
-                      fontSize: 14,
-                      fontWeight:
-                          isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
-                      fontStyle:
-                          isPrivatePlayer ? FontStyle.italic : FontStyle.normal,
-                    ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 160,
+                child: widgets.InteractiveText(
+                  isPrivatePlayer ? "Private Profile" : matchPlayer.playerName,
+                  onTap: isPrivatePlayer ? null : onPressPlayer,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight:
+                        isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
+                    fontStyle:
+                        isPrivatePlayer ? FontStyle.italic : FontStyle.normal,
                   ),
                 ),
-                Row(
-                  children: [
-                    talentUsed == null
-                        ? const SizedBox(height: 32, width: 32)
-                        : widgets.FastImage(
-                            imageUrl:
-                                utilities.getSmallAsset(talentUsed.imageUrl),
-                            height: 32,
-                            width: 32,
-                          ),
-                    const SizedBox(width: 5),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Credits",
-                          style: textTheme.bodyText1?.copyWith(
-                            fontSize: 9,
-                            fontStyle: FontStyle.italic,
-                          ),
+              ),
+              Row(
+                children: [
+                  talentUsed == null
+                      ? const SizedBox(height: 32, width: 32)
+                      : widgets.FastImage(
+                          imageUrl:
+                              utilities.getSmallAsset(talentUsed.imageUrl),
+                          height: 32,
+                          width: 32,
                         ),
-                        Text(
-                          matchPlayer.playerStats.creditsEarned.toString(),
-                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                  const SizedBox(width: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Credits",
+                        style: textTheme.bodyText1?.copyWith(
+                          fontSize: 9,
+                          fontStyle: FontStyle.italic,
                         ),
-                      ],
-                    ),
-                    const SizedBox(width: 5),
-                    if (playerPosition != null)
-                      widgets.TextChip(
-                        width: 55,
-                        text: playerPosition,
-                        icon: playerPositionIcon,
-                        color: playerPositionColor,
                       ),
-                  ],
-                ),
-              ],
-            ),
+                      Text(
+                        matchPlayer.playerStats.creditsEarned.toString(),
+                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 5),
+                  if (playerPosition != null)
+                    widgets.TextChip(
+                      width: 55,
+                      text: playerPosition,
+                      icon: playerPositionIcon,
+                      color: playerPositionColor,
+                    ),
+                ],
+              ),
+            ],
           ),
           Expanded(
             child: Column(

@@ -38,17 +38,20 @@ class PlayerDetail extends HookConsumerWidget {
       providers.players.select((_) => _.playerStatus),
     );
 
+    // Variables
+    final isSamePlayer = player != null && player.playerId == playerId;
+
     // Effects
     useEffect(
       () {
         // if player is null, then call getPlayerData
-        if (player == null) {
+        if (!isSamePlayer) {
           // fetch playerData from server
           playersProvider.getPlayerData(playerId: playerId, forceUpdate: false);
         }
 
         // fetch playerStatus from server
-        if (playerStatus == null) {
+        if (playerStatus?.playerId != playerId) {
           playersProvider.getPlayerStatus(
             playerId: playerId,
             onlyStatus: true,
@@ -62,7 +65,7 @@ class PlayerDetail extends HookConsumerWidget {
 
     useEffect(
       () {
-        if (player == null) return;
+        if (isSamePlayer) return;
 
         // get the playerMatches and playerChampions from server
         // these apis require player to not be null
@@ -71,16 +74,13 @@ class PlayerDetail extends HookConsumerWidget {
 
         return;
       },
-      [player, playerId],
+      [playerId, isSamePlayer],
     );
 
     useEffect(
       () {
         // reset the player and filters data in provider when unmounting
-        return () {
-          playersProvider.resetPlayerData();
-          matchesProvider.clearAppliedFiltersAndSort();
-        };
+        return matchesProvider.clearAppliedFiltersAndSort;
       },
       [],
     );
@@ -110,11 +110,11 @@ class PlayerDetail extends HookConsumerWidget {
         actions: const [
           PlayerDetailMenu(),
         ],
-        title: player != null
+        title: isSamePlayer
             ? Column(
                 children: [
                   Text(
-                    player.name,
+                    player!.name,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ class PlayerDetail extends HookConsumerWidget {
               )
             : const Text("Player"),
       ),
-      body: player == null
+      body: !isSamePlayer
           ? const widgets.LoadingIndicator(
               lineWidth: 2,
               size: 28,

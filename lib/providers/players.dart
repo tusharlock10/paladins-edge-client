@@ -7,7 +7,6 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   bool isLoadingPlayerStatus = false;
-  String? playerStatusPlayerId;
   models.Player? playerData;
   api.PlayerStatusResponse? playerStatus;
   List<api.LowerSearch> lowerSearchList = [];
@@ -33,6 +32,8 @@ class _PlayersNotifier extends ChangeNotifier {
     );
 
     playerStatus ??= api.PlayerStatusResponse(
+      inMatch: false,
+      playerId: "0",
       status: "Unknown",
       match: null,
     );
@@ -144,14 +145,6 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The the playerId of the player to be shown in active match screen
-  void setPlayerStatusPlayerId(String playerStatusPlayerId) {
-    playerStatus = null;
-    this.playerStatusPlayerId = playerStatusPlayerId;
-
-    notifyListeners();
-  }
-
   void getPlayerData({
     required String playerId,
     required bool forceUpdate,
@@ -182,8 +175,10 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetPlayerData() {
-    playerData = null;
+  void resetPlayerStatus() {
+    playerStatus = null;
+    isLoadingPlayerStatus = false;
+
     utilities.postFrameCallback(notifyListeners);
   }
 
@@ -191,7 +186,6 @@ class _PlayersNotifier extends ChangeNotifier {
   void clearData() {
     isLoadingPlayerData = false;
     isLoadingPlayerStatus = false;
-    playerStatusPlayerId = null;
     playerData = null;
     playerStatus = null;
     lowerSearchList = [];

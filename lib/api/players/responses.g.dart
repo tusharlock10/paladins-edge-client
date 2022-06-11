@@ -84,6 +84,8 @@ Map<String, dynamic> _$BatchPlayerDetailsResponseToJson(
 PlayerStatusResponse _$PlayerStatusResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerStatusResponse(
+      playerId: json['playerId'] as String,
+      inMatch: json['inMatch'] as bool,
       status: json['status'] as String,
       match: json['match'] == null
           ? null
@@ -93,6 +95,8 @@ PlayerStatusResponse _$PlayerStatusResponseFromJson(
 Map<String, dynamic> _$PlayerStatusResponseToJson(
         PlayerStatusResponse instance) =>
     <String, dynamic>{
+      'playerId': instance.playerId,
+      'inMatch': instance.inMatch,
       'status': instance.status,
       'match': instance.match,
     };

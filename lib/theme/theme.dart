@@ -138,11 +138,11 @@ final lightTheme = ThemeData(
     elevation: 25,
     textStyle: TextStyle(
       fontFamily: Fonts.secondaryAccent,
-      color: Colors.black54,
+      color: Colors.black,
       fontStyle: FontStyle.italic,
       fontSize: 12,
     ),
-    color: Colors.white70,
+    color: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
@@ -282,7 +282,7 @@ final darkTheme = ThemeData(
     elevation: 25,
     textStyle: TextStyle(
       fontFamily: Fonts.secondaryAccent,
-      color: Colors.white54,
+      color: Colors.white,
       fontStyle: FontStyle.italic,
       fontSize: 12,
     ),

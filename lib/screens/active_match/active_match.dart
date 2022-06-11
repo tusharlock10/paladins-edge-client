@@ -9,6 +9,7 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/active_match/active_match_list.dart";
 import "package:paladinsedge/screens/active_match/active_match_loading.dart";
 import "package:paladinsedge/screens/active_match/active_match_not_in_match.dart";
+import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -25,27 +26,30 @@ class ActiveMatch extends HookConsumerWidget {
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,
-    pageBuilder: _routeBuilder,
+    pageBuilder: _userRouteBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
+  final String? playerId;
 
-  const ActiveMatch({Key? key}) : super(key: key);
+  const ActiveMatch({
+    this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
-    final authProvider = ref.read(providers.auth);
+    final player = ref.watch(providers.auth.select((_) => _.player));
     final isLoadingPlayerStatus =
         ref.watch(providers.players.select((_) => _.isLoadingPlayerStatus));
     final playerStatus =
         ref.watch(providers.players.select((_) => _.playerStatus));
-    final playerStatusPlayerId =
-        ref.watch(providers.players.select((_) => _.playerStatusPlayerId));
+    final playerStatusPlayerId = playerId ?? player?.playerId;
 
     // Variables
-    final isUserPlayer = authProvider.player?.playerId == playerStatusPlayerId;
+    final isUserPlayer = player?.playerId == playerStatusPlayerId;
 
     // Effects
     useEffect(
@@ -123,5 +127,20 @@ class ActiveMatch extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: ActiveMatch());
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = state.params["playerId"];
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    if (int.tryParse(paramPlayerId) == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+    final playerId = paramPlayerId;
+
+    return CupertinoPage(child: ActiveMatch(playerId: playerId));
+  }
+
+  static Page _userRouteBuilder(_, __) =>
+      const CupertinoPage(child: ActiveMatch());
 }
