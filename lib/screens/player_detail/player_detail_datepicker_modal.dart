@@ -16,20 +16,23 @@ void _onSelectDateRange(
       "startDate": value.startDate,
       "endDate": value.endDate,
     };
-    onDateSelect(data_classes.MatchFilterValue(
-      value: filterValue.value,
-      valueName: filterValue.valueName,
-      type: filterValue.type,
-      dateValue: dateValue,
-    ));
+    onDateSelect(
+      data_classes.MatchFilterValue(
+        value: filterValue.value,
+        valueName: filterValue.valueName,
+        type: filterValue.type,
+        dateValue: dateValue,
+      ),
+    );
     utilities.Navigation.pop(context);
   }
 }
 
 void showPlayerDetailDatePickerModal(
   BuildContext context,
+  String filterName,
   data_classes.MatchFilterValue filterValue,
-  void Function(data_classes.MatchFilterValue) onDateSelect,
+  void Function(String, data_classes.MatchFilterValue) onDateSelect,
 ) {
   showDialog(
     context: context,
@@ -44,7 +47,8 @@ void showPlayerDetailDatePickerModal(
             context,
             value,
             filterValue,
-            onDateSelect,
+            (selectedFilterValue) =>
+                onDateSelect(filterName, selectedFilterValue),
           ),
         ),
       );
@@ -63,10 +67,21 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
+    final screenWidth = MediaQuery.of(context).size.width;
+    final width = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth / 3,
+      tablet: screenWidth / 2,
+      mobile: screenWidth,
+    );
     final theme = Theme.of(context);
+    final textStyle = theme.textTheme.bodyText2;
+    final disabledTextStyle = theme.textTheme.bodyText1;
+    final selectedTextStyle = theme.textTheme.headline1;
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
+      width: width,
       child: SfDateRangePicker(
         backgroundColor: theme.cardTheme.color,
         view: DateRangePickerView.month,
@@ -76,9 +91,12 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
         endRangeSelectionColor: theme.primaryColor,
         startRangeSelectionColor: theme.primaryColor,
         selectionShape: DateRangePickerSelectionShape.rectangle,
-        selectionTextStyle: theme.textTheme.headline1?.copyWith(fontSize: 18),
-        rangeTextStyle: theme.textTheme.headline1?.copyWith(
-          fontSize: 18,
+        selectionTextStyle: selectedTextStyle?.copyWith(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+        rangeTextStyle: selectedTextStyle?.copyWith(
+          fontSize: 14,
           fontWeight: FontWeight.normal,
         ),
         rangeSelectionColor: theme.bottomSheetTheme.backgroundColor,
@@ -89,11 +107,9 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         monthCellStyle: DateRangePickerMonthCellStyle(
-          disabledDatesTextStyle: theme.textTheme.bodyText1?.copyWith(
-            fontSize: 12,
-          ),
-          textStyle: theme.textTheme.bodyText2?.copyWith(fontSize: 14),
-          todayTextStyle: theme.textTheme.bodyText2?.copyWith(fontSize: 14),
+          disabledDatesTextStyle: disabledTextStyle,
+          textStyle: textStyle,
+          todayTextStyle: textStyle,
         ),
         viewSpacing: 10,
         headerHeight: 64,

@@ -76,10 +76,17 @@ class BatchPlayerDetailsResponse {
 
 @JsonSerializable()
 class PlayerStatusResponse {
+  final String playerId;
+  final bool inMatch;
   final String status;
   final ActiveMatch? match;
 
-  PlayerStatusResponse({required this.status, required this.match});
+  PlayerStatusResponse({
+    required this.playerId,
+    required this.inMatch,
+    required this.status,
+    required this.match,
+  });
 
   factory PlayerStatusResponse.fromJson(Map<String, dynamic> json) =>
       _$PlayerStatusResponseFromJson(json);

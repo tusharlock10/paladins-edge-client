@@ -22,6 +22,9 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
 
+    // State
+    final openedFilterName = useState(selectedFilter.name);
+
     // Hooks
     final labelColor = useMemoized(
       () {
@@ -34,20 +37,25 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
 
     // Methods
     final onTapFilter = useCallback(
-      (bool isFilterValueSelected, data_classes.MatchFilterValue filterValue) {
+      (
+        bool isFilterValueSelected,
+        String filterName,
+        data_classes.MatchFilterValue filterValue,
+      ) {
         if (isFilterValueSelected) {
-          return matchesProvider.setFilterValue(null);
+          return matchesProvider.setFilterValue(null, null);
         }
 
         if (filterValue.type == data_classes.MatchFilterValueType.dates) {
           return showPlayerDetailDatePickerModal(
             context,
+            filterName,
             filterValue,
             matchesProvider.setFilterValue,
           );
         }
 
-        matchesProvider.setFilterValue(filterValue);
+        matchesProvider.setFilterValue(filterName, filterValue);
       },
       [],
     );
@@ -58,13 +66,13 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
         physics: const ClampingScrollPhysics(),
         children: data_classes.MatchFilter.filterNames.map(
           (filterName) {
+            final isFilterOpened = openedFilterName.value == filterName;
             final isFilterNameSelected = selectedFilter.name == filterName;
 
             return widgets.InteractiveCard(
-              onTap: isFilterNameSelected
-                  ? null
-                  : () => matchesProvider.setFilterName(filterName),
-              elevation: isFilterNameSelected ? 2 : 7,
+              onTap: () =>
+                  isFilterOpened ? null : openedFilterName.value = filterName,
+              elevation: isFilterOpened ? 2 : 7,
               margin: const EdgeInsets.all(10),
               borderRadius: 10,
               child: Padding(
@@ -93,15 +101,15 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
                           ),
                       ],
                     ),
-                    if (isFilterNameSelected)
+                    if (isFilterOpened)
                       Text(
                         data_classes.MatchFilter.getFilterDescription(
                           filterName,
                         ),
                         style: textTheme.bodyText1,
                       ),
-                    if (isFilterNameSelected) const SizedBox(height: 10),
-                    if (isFilterNameSelected)
+                    if (isFilterOpened) const SizedBox(height: 10),
+                    if (isFilterOpened)
                       Wrap(
                         children: data_classes.MatchFilter.getFilterValues(
                           filterName,
@@ -124,6 +132,7 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
                                   : Colors.blueGrey,
                               onTap: () => onTapFilter(
                                 isFilterValueSelected,
+                                filterName,
                                 filterValue,
                               ),
                             );

@@ -20,8 +20,8 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final authProvider = ref.read(providers.auth);
+    final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final themeMode = ref.watch(
@@ -116,8 +116,7 @@ class AppDrawer extends HookConsumerWidget {
     final onActiveMatchHelper = useCallback(
       () {
         if (player == null) return;
-
-        playersProvider.setPlayerStatusPlayerId(player.playerId);
+        playersProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
           context,

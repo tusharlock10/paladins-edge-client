@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -20,6 +21,9 @@ class ChampionsFilterTab extends HookConsumerWidget {
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
 
+    // State
+    final openedFilterName = useState(selectedFilter.name);
+
     // Hooks
     final labelColor = useMemoized(
       () {
@@ -30,19 +34,38 @@ class ChampionsFilterTab extends HookConsumerWidget {
       [brightness],
     );
 
+    // Methods
+    final onTapFilter = useCallback(
+      (
+        bool isFilterValueSelected,
+        String filterName,
+        String filterValue,
+      ) {
+        if (isFilterValueSelected) {
+          return championsProvider.setFilterValue(null, null);
+        }
+
+        championsProvider.setFilterValue(
+          filterName,
+          filterValue,
+        );
+      },
+      [],
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         physics: const ClampingScrollPhysics(),
         children: data_classes.ChampionsFilter.filterNames.map(
           (filterName) {
+            final isFilterOpened = openedFilterName.value == filterName;
             final isFilterNameSelected = selectedFilter.name == filterName;
 
             return widgets.InteractiveCard(
-              onTap: isFilterNameSelected
-                  ? null
-                  : () => championsProvider.setFilterName(filterName),
-              elevation: isFilterNameSelected ? 2 : 7,
+              onTap: () =>
+                  isFilterOpened ? null : openedFilterName.value = filterName,
+              elevation: isFilterOpened ? 2 : 7,
               margin: const EdgeInsets.all(10),
               borderRadius: 10,
               child: Padding(
@@ -71,15 +94,15 @@ class ChampionsFilterTab extends HookConsumerWidget {
                           ),
                       ],
                     ),
-                    if (isFilterNameSelected)
+                    if (isFilterOpened)
                       Text(
                         data_classes.ChampionsFilter.getFilterDescription(
                           filterName,
                         ),
                         style: textTheme.bodyText1,
                       ),
-                    if (isFilterNameSelected) const SizedBox(height: 10),
-                    if (isFilterNameSelected)
+                    if (isFilterOpened) const SizedBox(height: 10),
+                    if (isFilterOpened)
                       Wrap(
                         children: data_classes.ChampionsFilter.getFilterValues(
                           filterName,
@@ -93,13 +116,15 @@ class ChampionsFilterTab extends HookConsumerWidget {
                               spacing: 5,
                               textSize: 12,
                               iconSize: 14,
-                              text: filterValue,
+                              text: filterValue.capitalize(),
                               icon: isFilterValueSelected ? Icons.check : null,
                               color: isFilterValueSelected
                                   ? theme.themeMaterialColor
                                   : Colors.blueGrey,
-                              onTap: () => championsProvider.setFilterValue(
-                                isFilterValueSelected ? null : filterValue,
+                              onTap: () => onTapFilter(
+                                isFilterValueSelected,
+                                filterName,
+                                filterValue,
                               ),
                             );
                           },
