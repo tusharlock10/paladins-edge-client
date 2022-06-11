@@ -33,13 +33,14 @@ class MatchDetailStats extends HookConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            flex: 0,
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   region,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -55,14 +56,15 @@ class MatchDetailStats extends HookConsumerWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Flexible(
-            flex: 1,
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   map,
                   textAlign: TextAlign.end,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
