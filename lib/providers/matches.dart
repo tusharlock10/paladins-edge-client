@@ -138,7 +138,7 @@ class _MatchesNotifier extends ChangeNotifier {
     );
     selectedSort = data_classes.MatchSort.defaultSort;
 
-    notifyListeners();
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Clears all user sensitive data upon logout

@@ -30,12 +30,8 @@ class PlayerDetailMenu extends HookConsumerWidget {
 
     // Variables
     final brightness = Theme.of(context).brightness;
-    final status = playerStatus?.status;
     final isValidFilterAndSort = selectedFilter.isValid ||
         selectedSort != data_classes.MatchSort.defaultSort;
-    final isOnline = status != null &&
-        status.toLowerCase() != "offline" &&
-        status.toLowerCase() != "unknown";
 
     // Hooks
     final badgeColor = useMemoized(
@@ -51,8 +47,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
     final onPressActiveMatch = useCallback(
       () {
         if (player == null) return;
-
-        playersProvider.setPlayerStatusPlayerId(player.playerId);
+        playersProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
           context,
@@ -133,7 +128,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           enabled: false,
           child: widgets.Button(
             label: "Active Match",
-            disabled: !isOnline,
+            disabled: !(playerStatus?.inMatch ?? false),
             elevation: 4,
             onPressed: onPressActiveMatch,
             color: Colors.green,

@@ -67,7 +67,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
           },
         );
       },
-      [],
+      [match, matchPlayer],
     );
 
     return widgets.InteractiveCard(

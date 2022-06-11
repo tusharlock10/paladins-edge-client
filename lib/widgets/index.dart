@@ -8,6 +8,7 @@ export "./google_button.dart";
 export "./icon_button.dart";
 export "./info_alert.dart";
 export "./interactive_card.dart";
+export "./interactive_text.dart";
 export "./loading_indicator.dart";
 export "./loadout_card_detail.dart";
 export "./loadout_deck_card.dart";

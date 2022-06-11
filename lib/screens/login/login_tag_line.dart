@@ -19,7 +19,7 @@ class LoginTagLine extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text(
-                  "Feature rich\nPaladins manager",
+                  "Feature packed\nPaladins companion",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: GoogleFonts.poppins().fontFamily,

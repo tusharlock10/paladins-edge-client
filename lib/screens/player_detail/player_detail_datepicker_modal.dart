@@ -63,10 +63,21 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
+    final screenWidth = MediaQuery.of(context).size.width;
+    final width = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth / 3,
+      tablet: screenWidth / 2,
+      mobile: screenWidth,
+    );
     final theme = Theme.of(context);
+    final textStyle = theme.textTheme.bodyText2;
+    final disabledTextStyle = theme.textTheme.bodyText1;
+    final selectedTextStyle = theme.textTheme.headline1;
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
+      width: width,
       child: SfDateRangePicker(
         backgroundColor: theme.cardTheme.color,
         view: DateRangePickerView.month,
@@ -76,9 +87,12 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
         endRangeSelectionColor: theme.primaryColor,
         startRangeSelectionColor: theme.primaryColor,
         selectionShape: DateRangePickerSelectionShape.rectangle,
-        selectionTextStyle: theme.textTheme.headline1?.copyWith(fontSize: 18),
-        rangeTextStyle: theme.textTheme.headline1?.copyWith(
-          fontSize: 18,
+        selectionTextStyle: selectedTextStyle?.copyWith(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+        rangeTextStyle: selectedTextStyle?.copyWith(
+          fontSize: 14,
           fontWeight: FontWeight.normal,
         ),
         rangeSelectionColor: theme.bottomSheetTheme.backgroundColor,
@@ -89,11 +103,9 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         monthCellStyle: DateRangePickerMonthCellStyle(
-          disabledDatesTextStyle: theme.textTheme.bodyText1?.copyWith(
-            fontSize: 12,
-          ),
-          textStyle: theme.textTheme.bodyText2?.copyWith(fontSize: 14),
-          todayTextStyle: theme.textTheme.bodyText2?.copyWith(fontSize: 14),
+          disabledDatesTextStyle: disabledTextStyle,
+          textStyle: textStyle,
+          todayTextStyle: textStyle,
         ),
         viewSpacing: 10,
         headerHeight: 64,
