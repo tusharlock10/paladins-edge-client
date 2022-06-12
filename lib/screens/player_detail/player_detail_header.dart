@@ -38,7 +38,7 @@ class PlayerDetailHeader extends ConsumerWidget {
                     child: Row(
                       children: [
                         widgets.ElevatedAvatar(
-                          imageUrl: player.avatarUrl,
+                          imageUrl: utilities.getSmallAsset(player.avatarUrl),
                           imageBlurHash: player.avatarBlurHash,
                           size: 24,
                           borderRadius: 10,

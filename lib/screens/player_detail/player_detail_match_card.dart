@@ -203,8 +203,8 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
 }
 
 class _PlayerDetailUnknownMatchCard extends StatelessWidget {
-  static const _itemMargin = 7.0;
   final models.Match match;
+  static const _itemMargin = 7.0;
 
   const _PlayerDetailUnknownMatchCard({
     required this.match,

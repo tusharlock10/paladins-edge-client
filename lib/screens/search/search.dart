@@ -15,8 +15,11 @@ class Search extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final searchProvider = ref.watch(providers.players);
     final playersProvider = ref.read(providers.players);
+    final topSearchList =
+        ref.watch(providers.players.select((_) => _.topSearchList));
+    final lowerSearchList =
+        ref.watch(providers.players.select((_) => _.lowerSearchList));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // State
@@ -77,10 +80,10 @@ class Search extends HookConsumerWidget {
     return CustomScrollView(
       slivers: [
         SearchAppBar(isLoading: isLoading.value, onSearch: onSearch),
-        searchProvider.topSearchList.isNotEmpty
+        topSearchList.isNotEmpty
             ? const SearchTopList()
             : const SearchHistory(),
-        if (searchProvider.lowerSearchList.isNotEmpty) const SearchLowerList(),
+        if (lowerSearchList.isNotEmpty) const SearchLowerList(),
       ],
     );
   }

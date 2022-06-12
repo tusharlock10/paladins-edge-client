@@ -25,6 +25,9 @@ class _ChampionsNotifier extends ChangeNotifier {
   /// holds the champion and userPlayerChampion in one object for easy access
   List<data_classes.CombinedChampion>? combinedChampions;
 
+  /// stores the playerId associated with the playerChampions
+  String? playerChampionsPlayerId;
+
   /// holds playerChampions data for other players
   List<models.PlayerChampion>? playerChampions;
 
@@ -93,14 +96,22 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Get the `playerChampions` data for the playerId
-  Future<void> getPlayerChampions(String playerId) async {
+  Future<void> getPlayerChampions({
+    required String playerId,
+    bool forceUpdate = false,
+  }) async {
     isLoadingPlayerChampions = true;
 
-    final response =
-        await api.ChampionsRequests.playerChampions(playerId: playerId);
+    final response = await api.ChampionsRequests.playerChampions(
+      playerId: playerId,
+      forceUpdate: forceUpdate,
+    );
 
     isLoadingPlayerChampions = false;
-    if (response != null) playerChampions = response.playerChampions;
+    if (response != null) {
+      playerChampionsPlayerId = playerId;
+      playerChampions = response.playerChampions;
+    }
 
     notifyListeners();
   }
@@ -116,13 +127,18 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
 
     isLoadingPlayerChampions = false;
-    if (response != null) playerChampions = response.playerChampions;
+    if (response != null) {
+      // set playerChampionsPlayerId to null because it doesn't belong to a specific playerId
+      playerChampionsPlayerId = null;
+      playerChampions = response.playerChampions;
+    }
 
     notifyListeners();
   }
 
   /// Deletes the plyerChampions
   void resetPlayerChampions() {
+    playerChampionsPlayerId = null;
     playerChampions = null;
   }
 
@@ -208,6 +224,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     champions = [];
     userPlayerChampions = null;
     combinedChampions = null;
+    playerChampionsPlayerId = null;
     playerChampions = null;
     selectedFilter = data_classes.SelectedChampionsFilter();
     selectedSort = data_classes.ChampionsSort.defaultSort;
