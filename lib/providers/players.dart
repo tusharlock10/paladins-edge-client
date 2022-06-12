@@ -145,12 +145,14 @@ class _PlayersNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getPlayerData({
+  Future<void> getPlayerData({
     required String playerId,
     required bool forceUpdate,
   }) async {
-    isLoadingPlayerData = true;
-    utilities.postFrameCallback(notifyListeners);
+    if (!forceUpdate) {
+      isLoadingPlayerData = true;
+      utilities.postFrameCallback(notifyListeners);
+    }
 
     final response = await api.PlayersRequests.playerDetail(
       playerId: playerId,
@@ -158,10 +160,10 @@ class _PlayersNotifier extends ChangeNotifier {
     );
 
     if (response == null) {
-      isLoadingPlayerData = false;
+      if (!forceUpdate) isLoadingPlayerData = false;
       notifyListeners();
 
-      return null;
+      return;
     }
 
     playerData = response.player;
@@ -171,7 +173,7 @@ class _PlayersNotifier extends ChangeNotifier {
       playerId: playerId,
     );
 
-    isLoadingPlayerData = false;
+    if (!forceUpdate) isLoadingPlayerData = false;
     notifyListeners();
   }
 

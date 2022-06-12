@@ -34,73 +34,82 @@ class PlayerDetail extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final isLoadingPlayerData = ref.watch(
+      providers.players.select((_) => _.isLoadingPlayerData),
+    );
     final playerStatus = ref.watch(
       providers.players.select((_) => _.playerStatus),
     );
+    final combinedMatchesPlayerId = ref.watch(
+      providers.matches.select((_) => _.combinedMatchesPlayerId),
+    );
+    final playerChampionsPlayerId = ref.watch(
+      providers.champions.select((_) => _.playerChampionsPlayerId),
+    );
 
     // Variables
-    final isSamePlayer = player != null && player.playerId == playerId;
+    final isSamePlayer = player?.playerId == playerId;
+    final isSamePlayerStatus = playerStatus?.playerId == playerId;
+    final isSamePlayerMatches = combinedMatchesPlayerId == playerId;
+    final isSamePlayerChampions = playerChampionsPlayerId == playerId;
 
-    // Effects
-    useEffect(
-      () {
-        // if player is null, then call getPlayerData
-        if (!isSamePlayer) {
-          // fetch playerData from server
-          playersProvider.getPlayerData(playerId: playerId, forceUpdate: false);
+    // Methods
+    final getPlayerDetails = useCallback(
+      ({bool forceUpdate = false}) async {
+        if (!isSamePlayerMatches || forceUpdate) {
+          matchesProvider.resetPlayerMatches(forceUpdate: forceUpdate);
         }
+        await Future.wait([
+          if (!isSamePlayer || forceUpdate)
+            playersProvider.getPlayerData(
+              playerId: playerId,
+              forceUpdate: forceUpdate,
+            ),
+          if (!isSamePlayerStatus || forceUpdate)
+            playersProvider.getPlayerStatus(
+              playerId: playerId,
+              onlyStatus: true,
+              forceUpdate: forceUpdate,
+            ),
+        ]);
 
-        // fetch playerStatus from server
-        if (playerStatus?.playerId != playerId) {
-          playersProvider.getPlayerStatus(
-            playerId: playerId,
-            onlyStatus: true,
-          );
-        }
-
-        return;
+        await Future.wait([
+          if (!isSamePlayerMatches || forceUpdate)
+            matchesProvider.getPlayerMatches(
+              playerId: playerId,
+              forceUpdate: forceUpdate,
+            ),
+          if (!isSamePlayerChampions || forceUpdate)
+            championsProvider.getPlayerChampions(
+              playerId: playerId,
+              forceUpdate: forceUpdate,
+            ),
+        ]);
       },
-      [player, playerId],
-    );
-
-    useEffect(
-      () {
-        if (isSamePlayer) return;
-
-        // get the playerMatches and playerChampions from server
-        // these apis require player to not be null
-        matchesProvider.getPlayerMatches(playerId: playerId);
-        championsProvider.getPlayerChampions(playerId);
-
-        return;
-      },
-      [playerId, isSamePlayer],
-    );
-
-    useEffect(
-      () {
-        // reset the player and filters data in provider when unmounting
-        return matchesProvider.clearAppliedFiltersAndSort;
-      },
-      [],
+      [
+        isSamePlayer,
+        isSamePlayerStatus,
+        isSamePlayerMatches,
+        isSamePlayerChampions,
+        playerId,
+      ],
     );
 
     final onRefresh = useCallback(
-      () async {
-        final futures = [
-          playersProvider.getPlayerStatus(
-            playerId: playerId,
-            forceUpdate: true,
-            onlyStatus: true,
-          ),
-          matchesProvider.getPlayerMatches(
-            playerId: playerId,
-            forceUpdate: true,
-          ),
-        ];
-        await Future.wait(futures);
+      () {
+        return getPlayerDetails(forceUpdate: true);
+      },
+      [playerId],
+    );
 
-        return;
+    // Effects
+
+    useEffect(
+      () {
+        getPlayerDetails();
+
+        // reset the player and filters data in provider when unmounting
+        return matchesProvider.clearAppliedFiltersAndSort;
       },
       [playerId],
     );
@@ -110,8 +119,9 @@ class PlayerDetail extends HookConsumerWidget {
         actions: const [
           PlayerDetailMenu(),
         ],
-        title: isSamePlayer
-            ? Column(
+        title: isLoadingPlayerData
+            ? const Text("Player")
+            : Column(
                 children: [
                   Text(
                     player!.name,
@@ -126,10 +136,9 @@ class PlayerDetail extends HookConsumerWidget {
                       style: const TextStyle(fontSize: 12),
                     ),
                 ],
-              )
-            : const Text("Player"),
+              ),
       ),
-      body: !isSamePlayer
+      body: isLoadingPlayerData
           ? const widgets.LoadingIndicator(
               lineWidth: 2,
               size: 28,

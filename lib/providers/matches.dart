@@ -7,8 +7,8 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;
   bool isMatchDetailsLoading = false;
-  api.PlayerMatchesResponse? playerMatches;
   api.MatchDetailsResponse? matchDetails;
+  String? combinedMatchesPlayerId;
   List<data_classes.CombinedMatch>? combinedMatches;
 
   /// holds the currently active sort
@@ -18,15 +18,20 @@ class _MatchesNotifier extends ChangeNotifier {
   data_classes.SelectedMatchFilter selectedFilter =
       data_classes.SelectedMatchFilter();
 
+  void resetPlayerMatches({bool forceUpdate = false}) {
+    if (forceUpdate) return;
+
+    isPlayerMatchesLoading = true;
+    combinedMatches = null;
+    combinedMatchesPlayerId = null;
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// get the matches for this playerId
   Future<void> getPlayerMatches({
     required String playerId,
     bool forceUpdate = false,
   }) async {
-    if (!forceUpdate) {
-      isPlayerMatchesLoading = true;
-      utilities.postFrameCallback(notifyListeners);
-    }
-
     final response = await api.MatchRequests.playerMatches(
       playerId: playerId,
       forceUpdate: forceUpdate,
@@ -52,6 +57,7 @@ class _MatchesNotifier extends ChangeNotifier {
       );
     }
 
+    combinedMatchesPlayerId = playerId;
     combinedMatches = tempMatchesMap.values.toList();
 
     // sort combinedMatches based on the selectedSort
@@ -141,8 +147,9 @@ class _MatchesNotifier extends ChangeNotifier {
   void clearData() {
     isPlayerMatchesLoading = false;
     isMatchDetailsLoading = false;
-    playerMatches = null;
     matchDetails = null;
+    combinedMatchesPlayerId = null;
+    combinedMatches = null;
   }
 }
 
