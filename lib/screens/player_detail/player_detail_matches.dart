@@ -65,7 +65,7 @@ class PlayerDetailMatches extends HookConsumerWidget {
             ),
             itemCount: filteredCombinedMatches.length,
             padding: EdgeInsets.only(
-              top: 80,
+              top: 100,
               bottom: 50,
               right: horizontalPadding,
               left: horizontalPadding,

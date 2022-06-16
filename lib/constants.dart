@@ -34,6 +34,7 @@ abstract class Urls {
   static const favouriteFriends = "/players/favouriteFriends"; // GET
   static const updateFavouriteFriend = "/players/updateFavouriteFriend"; // PUT
   static const searchHistory = "/players/searchHistory"; // GET
+  static const playerInferred = "/players/playerInferred"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET

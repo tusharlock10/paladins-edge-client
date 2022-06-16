@@ -154,3 +154,16 @@ Map<String, dynamic> _$SearchHistoryResponseToJson(
     <String, dynamic>{
       'searchHistory': instance.searchHistory,
     };
+
+PlayerInferredResponse _$PlayerInferredResponseFromJson(
+        Map<String, dynamic> json) =>
+    PlayerInferredResponse(
+      playerInferred: PlayerInferred.fromJson(
+          json['playerInferred'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PlayerInferredResponseToJson(
+        PlayerInferredResponse instance) =>
+    <String, dynamic>{
+      'playerInferred': instance.playerInferred,
+    };

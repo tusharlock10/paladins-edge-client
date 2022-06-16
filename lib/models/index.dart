@@ -7,6 +7,7 @@ export "./loadout/loadout.dart";
 export "./match/match.dart";
 export "./player/player.dart";
 export "./player_champion/player_champion.dart";
+export "./player_inferred/player_inferred.dart";
 export "./queue/queue.dart";
 export "./record_expiry/record_expiry.dart";
 export "./search_history/search_history.dart";

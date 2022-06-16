@@ -4,20 +4,20 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class ElevatedAvatar extends StatelessWidget {
   final String imageUrl;
   final double size;
+  final BoxFit fit;
   final String? imageBlurHash;
   final double? borderRadius;
   final double? borderWidth;
   final double? elevation;
-  final BoxFit? fit;
 
   const ElevatedAvatar({
     required this.imageUrl,
     required this.size,
+    this.fit = BoxFit.contain,
     this.imageBlurHash,
     this.borderWidth,
     this.elevation,
     this.borderRadius,
-    this.fit,
     Key? key,
   }) : super(key: key);
 

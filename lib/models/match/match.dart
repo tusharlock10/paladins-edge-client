@@ -47,20 +47,32 @@ class MatchPlayerStats {
   final int creditsEarned;
 
   MatchPlayerStats({
-    required this.kills,
-    required this.assists,
-    required this.deaths,
-    required this.weaponDamageDealt,
-    required this.totalDamageDealt,
-    required this.damageShielded,
-    required this.totalDamageTaken,
-    required this.selfHealingDone,
-    required this.healingDone,
-    required this.biggestKillStreak,
-    required this.totalMultiKills,
-    required this.objectiveTime,
-    required this.creditsEarned,
-  });
+    required double kills,
+    required double assists,
+    required double deaths,
+    required double weaponDamageDealt,
+    required double totalDamageDealt,
+    required double damageShielded,
+    required double totalDamageTaken,
+    required double selfHealingDone,
+    required double healingDone,
+    required double biggestKillStreak,
+    required double totalMultiKills,
+    required double objectiveTime,
+    required double creditsEarned,
+  })  : kills = kills.toInt(),
+        assists = assists.toInt(),
+        deaths = deaths.toInt(),
+        weaponDamageDealt = weaponDamageDealt.toInt(),
+        totalDamageDealt = totalDamageDealt.toInt(),
+        damageShielded = damageShielded.toInt(),
+        totalDamageTaken = totalDamageTaken.toInt(),
+        selfHealingDone = selfHealingDone.toInt(),
+        healingDone = healingDone.toInt(),
+        biggestKillStreak = biggestKillStreak.toInt(),
+        totalMultiKills = totalMultiKills.toInt(),
+        objectiveTime = objectiveTime.toInt(),
+        creditsEarned = creditsEarned.toInt();
 
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>
       _$MatchPlayerStatsFromJson(json);
