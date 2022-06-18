@@ -150,4 +150,22 @@ abstract class PlayersRequests {
       return null;
     }
   }
+
+  static Future<responses.PlayerInferredResponse?> playerInferred({
+    required String playerId,
+  }) async {
+    try {
+      final response = await utilities.api.get<Map<String, dynamic>>(
+        constants.Urls.playerInferred,
+        queryParameters: {"playerId": playerId},
+      );
+      if (response.data != null) {
+        return responses.PlayerInferredResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

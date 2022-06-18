@@ -46,12 +46,16 @@ class PlayerDetail extends HookConsumerWidget {
     final playerChampionsPlayerId = ref.watch(
       providers.champions.select((_) => _.playerChampionsPlayerId),
     );
+    final playerInferred = ref.watch(
+      providers.players.select((_) => _.playerInferred),
+    );
 
     // Variables
     final isSamePlayer = player?.playerId == playerId;
     final isSamePlayerStatus = playerStatus?.playerId == playerId;
     final isSamePlayerMatches = combinedMatchesPlayerId == playerId;
     final isSamePlayerChampions = playerChampionsPlayerId == playerId;
+    final isSamePlayerInferred = playerInferred?.playerId == playerId;
 
     // Methods
     final getPlayerDetails = useCallback(
@@ -85,6 +89,10 @@ class PlayerDetail extends HookConsumerWidget {
               forceUpdate: forceUpdate,
             ),
         ]);
+
+        if (!isSamePlayerInferred || forceUpdate) {
+          playersProvider.getPlayerInferred(playerId: playerId);
+        }
       },
       [
         isSamePlayer,

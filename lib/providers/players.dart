@@ -7,8 +7,10 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerData = false;
   bool isLoadingPlayerStatus = false;
+  bool isLoadingPlayerInferred = false;
   models.Player? playerData;
   api.PlayerStatusResponse? playerStatus;
+  models.PlayerInferred? playerInferred;
   List<api.LowerSearch> lowerSearchList = [];
   List<models.Player> topSearchList = [];
   List<models.SearchHistory> searchHistory = [];
@@ -16,6 +18,9 @@ class _PlayersNotifier extends ChangeNotifier {
 
   _PlayersNotifier({required this.ref});
 
+  /// get the playerStatus from api
+  /// [onlyStatus] param if false, will get the active match details as well
+  /// else it will not get the active match details
   Future<void> getPlayerStatus({
     required String playerId,
     bool forceUpdate = false,
@@ -39,6 +44,22 @@ class _PlayersNotifier extends ChangeNotifier {
     );
 
     if (!forceUpdate) isLoadingPlayerStatus = false;
+    notifyListeners();
+  }
+
+  /// get the playerInferred from the api
+  Future<void> getPlayerInferred({
+    required String playerId,
+  }) async {
+    isLoadingPlayerInferred = true;
+    utilities.postFrameCallback(notifyListeners);
+
+    final response = await api.PlayersRequests.playerInferred(
+      playerId: playerId,
+    );
+    playerInferred = response?.playerInferred;
+
+    isLoadingPlayerInferred = false;
     notifyListeners();
   }
 
@@ -190,6 +211,7 @@ class _PlayersNotifier extends ChangeNotifier {
     isLoadingPlayerStatus = false;
     playerData = null;
     playerStatus = null;
+    playerInferred = null;
     lowerSearchList = [];
     topSearchList = [];
     searchHistory = [];

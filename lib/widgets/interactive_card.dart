@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/fast_image.dart";
 
 class InteractiveCard extends HookWidget {
   final Widget child;
@@ -13,6 +14,8 @@ class InteractiveCard extends HookWidget {
   final bool disableHover;
   final Color? color;
   final Color? hoverBorderColor;
+  final String? backgroundImage;
+  final String? backgroundImageBlurHash;
 
   const InteractiveCard({
     required this.child,
@@ -25,6 +28,8 @@ class InteractiveCard extends HookWidget {
     this.disableHover = false,
     this.color,
     this.hoverBorderColor,
+    this.backgroundImage,
+    this.backgroundImageBlurHash,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +43,7 @@ class InteractiveCard extends HookWidget {
     final isHovering = useState<bool>(false);
 
     // Hooks
+
     final themeHoverBorderColor = useMemoized(
       () {
         return hoverBorderColor ??
@@ -68,13 +74,30 @@ class InteractiveCard extends HookWidget {
                 )
               : BorderSide.none,
         ),
-        child: InkWell(
-          onTap: onTap,
-          hoverColor: color ?? Theme.of(context).cardTheme.color,
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (backgroundImage != null)
+              Opacity(
+                opacity: brightness == Brightness.light ? 0.125 : 0.215,
+                child: FastImage(
+                  imageBlurHash: backgroundImageBlurHash,
+                  imageUrl: backgroundImage!,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
+            InkWell(
+              onTap: onTap,
+              hoverColor: color ?? Theme.of(context).cardTheme.color,
+              child: Padding(
+                padding: padding,
+                child: child,
+              ),
+            ),
+          ],
         ),
       ),
     );

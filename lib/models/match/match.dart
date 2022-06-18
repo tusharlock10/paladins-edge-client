@@ -47,20 +47,32 @@ class MatchPlayerStats {
   final int creditsEarned;
 
   MatchPlayerStats({
-    required this.kills,
-    required this.assists,
-    required this.deaths,
-    required this.weaponDamageDealt,
-    required this.totalDamageDealt,
-    required this.damageShielded,
-    required this.totalDamageTaken,
-    required this.selfHealingDone,
-    required this.healingDone,
-    required this.biggestKillStreak,
-    required this.totalMultiKills,
-    required this.objectiveTime,
-    required this.creditsEarned,
-  });
+    required double kills,
+    required double assists,
+    required double deaths,
+    required double weaponDamageDealt,
+    required double totalDamageDealt,
+    required double damageShielded,
+    required double totalDamageTaken,
+    required double selfHealingDone,
+    required double healingDone,
+    required double biggestKillStreak,
+    required double totalMultiKills,
+    required double objectiveTime,
+    required double creditsEarned,
+  })  : kills = kills.ceil(),
+        assists = assists.ceil(),
+        deaths = deaths.ceil(),
+        weaponDamageDealt = weaponDamageDealt.ceil(),
+        totalDamageDealt = totalDamageDealt.ceil(),
+        damageShielded = damageShielded.ceil(),
+        totalDamageTaken = totalDamageTaken.ceil(),
+        selfHealingDone = selfHealingDone.ceil(),
+        healingDone = healingDone.ceil(),
+        biggestKillStreak = biggestKillStreak.ceil(),
+        totalMultiKills = totalMultiKills.ceil(),
+        objectiveTime = objectiveTime.ceil(),
+        creditsEarned = creditsEarned.ceil();
 
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>
       _$MatchPlayerStatsFromJson(json);

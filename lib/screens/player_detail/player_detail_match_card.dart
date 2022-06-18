@@ -75,6 +75,8 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: _itemMargin),
       borderRadius: 10,
+      backgroundImage: champion.splashUrl,
+      backgroundImageBlurHash: champion.splashBlurHash,
       child: Row(
         children: [
           Container(
@@ -84,70 +86,79 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                 : Colors.red,
           ),
           const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  widgets.ElevatedAvatar(
-                    imageUrl: utilities.getSmallAsset(champion.iconUrl),
-                    imageBlurHash: champion.iconBlurHash,
-                    size: 28,
-                    borderRadius: 28,
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}",
-                        style: textTheme.bodyText1?.copyWith(fontSize: 18),
+          Expanded(
+            flex: 5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    widgets.ElevatedAvatar(
+                      imageUrl: utilities.getSmallAsset(champion.iconUrl),
+                      imageBlurHash: champion.iconBlurHash,
+                      size: 28,
+                      borderRadius: 28,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}",
+                            style: textTheme.bodyText1?.copyWith(fontSize: 18),
+                          ),
+                          Text(
+                            match.map
+                                .replaceFirst("LIVE ", "")
+                                .replaceFirst("WIP ", ""),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                          ),
+                        ],
                       ),
-                      Text(
-                        match.map
-                            .replaceFirst("LIVE ", "")
-                            .replaceFirst("WIP ", ""),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
-              Row(
-                children: [
-                  talentUsed == null
-                      ? const SizedBox(height: 48, width: 48)
-                      : widgets.FastImage(
-                          imageUrl:
-                              utilities.getSmallAsset(talentUsed.imageUrl),
-                          height: 48,
-                          width: 48,
-                        ),
-                  ...loadout.map(
-                    (loadoutItem) {
-                      final cardImageUrl = loadoutItem.card?.imageUrl;
-                      if (cardImageUrl == null) return const SizedBox();
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    talentUsed == null
+                        ? const SizedBox(height: 48, width: 48)
+                        : widgets.FastImage(
+                            imageUrl:
+                                utilities.getSmallAsset(talentUsed.imageUrl),
+                            height: 48,
+                            width: 48,
+                          ),
+                    ...loadout.map(
+                      (loadoutItem) {
+                        final cardImageUrl = loadoutItem.card?.imageUrl;
+                        if (cardImageUrl == null) return const SizedBox();
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: widgets.FastImage(
-                          imageUrl: utilities.getSmallAsset(cardImageUrl),
-                          imageBlurHash: loadoutItem.card?.imageBlurHash,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                          height: 24,
-                          width: 24 * constants.ImageAspectRatios.championCard,
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ],
-              ),
-            ],
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: widgets.FastImage(
+                            imageUrl: utilities.getSmallAsset(cardImageUrl),
+                            imageBlurHash: loadoutItem.card?.imageBlurHash,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            height: 24,
+                            width:
+                                24 * constants.ImageAspectRatios.championCard,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ],
+                ),
+              ],
+            ),
           ),
           Expanded(
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
@@ -155,6 +166,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                 children: [
                   Text(
                     match.queue,
+                    textAlign: TextAlign.center,
                     style: textTheme.headline2?.copyWith(fontSize: 14),
                   ),
                   TimerBuilder.periodic(

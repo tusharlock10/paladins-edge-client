@@ -1,3 +1,4 @@
+import "package:duration/duration.dart";
 import "package:jiffy/jiffy.dart";
 
 /// Gets the time remaining between [fromDate] and [toDate] i.e.
@@ -68,4 +69,23 @@ Duration forceUpdateRemainingDuration({
   }
 
   return Duration.zero;
+}
+
+String getFormattedPlayTime(int minutes) {
+  final playTime = Duration(minutes: minutes);
+  DurationTersity upperTersity = DurationTersity.hour;
+  DurationTersity tersity = DurationTersity.minute;
+
+  if (playTime > const Duration(days: 1)) {
+    upperTersity = DurationTersity.day;
+    tersity = DurationTersity.hour;
+  }
+
+  return printDuration(
+    playTime,
+    abbreviated: true,
+    upperTersity: upperTersity,
+    tersity: tersity,
+    conjugation: " ",
+  );
 }

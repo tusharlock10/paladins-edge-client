@@ -6,7 +6,7 @@ import "package:paladinsedge/data_classes/champions/index.dart" as data_classes;
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
-const releaseTag = "alpha";
+const releaseTag = isWeb ? "alpha" : "beta";
 
 abstract class Urls {
   // root
@@ -34,6 +34,7 @@ abstract class Urls {
   static const favouriteFriends = "/players/favouriteFriends"; // GET
   static const updateFavouriteFriend = "/players/updateFavouriteFriend"; // PUT
   static const searchHistory = "/players/searchHistory"; // GET
+  static const playerInferred = "/players/playerInferred"; // GET
 
   // queue
   static const queueDetails = "/queue/queueDetails"; // GET
