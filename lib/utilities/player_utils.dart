@@ -36,30 +36,19 @@ String shortRankName(String rankName) {
   return "$shortTier$tierLevel";
 }
 
-String getKDAFormatted({
-  required num kills,
-  required num assists,
-  required num deaths,
-}) {
-  if (deaths == 0) return "Perfect";
-  final kda = (kills + assists) / deaths;
+MaterialColor? getKDAColor(double kda) {
+  if (kda == -1) return Colors.cyan;
 
-  return kda.toStringAsPrecision(3);
-}
-
-MaterialColor? getKDAColor(String kda) {
-  if (kda == "Perfect") return Colors.cyan;
-  final numKda = double.tryParse(kda);
-
-  if (numKda == null) return null;
-  if (numKda > 3.8) return Colors.green;
-  if (numKda > 3) return Colors.orange;
-  if (numKda < 1) return Colors.red;
+  if (kda > 3.8) return Colors.green;
+  if (kda > 3) return Colors.orange;
+  if (kda < 1) return Colors.red;
 
   return null;
 }
 
 MaterialColor getWinRateColor(num winRate) {
+  if (winRate < 1) winRate = winRate * 100;
+
   if (winRate > 58) return theme.themeMaterialColor;
   if (winRate > 53) return Colors.green;
   if (winRate > 48) return Colors.orange;

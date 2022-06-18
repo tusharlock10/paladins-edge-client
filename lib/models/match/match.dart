@@ -8,71 +8,65 @@ part "match.g.dart";
 @JsonSerializable()
 class MatchPlayerStats {
   /// number of kills the player got in match
-  final int kills;
+  final num kills;
 
   /// number of assists the player got in match
-  final int assists;
+  final num assists;
 
   /// number of deaths the player got in match
-  final int deaths;
+  final num deaths;
 
   /// damage dealt by the player with weapon
-  final int weaponDamageDealt;
+  final num weaponDamageDealt;
 
   /// total damage dealt by the player
-  final int totalDamageDealt;
+  final num totalDamageDealt;
 
   /// damage blocked by the player through shields
-  final int damageShielded;
+  final num damageShielded;
 
   /// total damage taken by the player
-  final int totalDamageTaken;
+  final num totalDamageTaken;
 
   /// healing done by the player for himself
-  final int selfHealingDone;
+  final num selfHealingDone;
 
   /// healing done by the player on allies
-  final int healingDone;
+  final num healingDone;
 
   /// longest kill streak of the player
-  final int biggestKillStreak;
+  final num biggestKillStreak;
 
   /// total number of multi kills of the player
-  final int totalMultiKills;
+  final num totalMultiKills;
 
   /// time spent on objective
-  final int objectiveTime;
+  final num objectiveTime;
 
   /// credits earned by the player
-  final int creditsEarned;
+  final num creditsEarned;
+
+  /// KDA of the player
+  double get kda => deaths == 0 ? -1 : (kills + assists) / deaths;
+
+  /// KDA formatted into a string
+  String get kdaFormatted => kda == -1 ? "Perfect" : kda.toStringAsPrecision(3);
 
   MatchPlayerStats({
-    required double kills,
-    required double assists,
-    required double deaths,
-    required double weaponDamageDealt,
-    required double totalDamageDealt,
-    required double damageShielded,
-    required double totalDamageTaken,
-    required double selfHealingDone,
-    required double healingDone,
-    required double biggestKillStreak,
-    required double totalMultiKills,
-    required double objectiveTime,
-    required double creditsEarned,
-  })  : kills = kills.ceil(),
-        assists = assists.ceil(),
-        deaths = deaths.ceil(),
-        weaponDamageDealt = weaponDamageDealt.ceil(),
-        totalDamageDealt = totalDamageDealt.ceil(),
-        damageShielded = damageShielded.ceil(),
-        totalDamageTaken = totalDamageTaken.ceil(),
-        selfHealingDone = selfHealingDone.ceil(),
-        healingDone = healingDone.ceil(),
-        biggestKillStreak = biggestKillStreak.ceil(),
-        totalMultiKills = totalMultiKills.ceil(),
-        objectiveTime = objectiveTime.ceil(),
-        creditsEarned = creditsEarned.ceil();
+    required this.kills,
+    required this.assists,
+    required this.deaths,
+    required this.weaponDamageDealt,
+    required this.totalDamageDealt,
+    required this.damageShielded,
+    required this.totalDamageTaken,
+    required this.selfHealingDone,
+    required this.healingDone,
+    required this.biggestKillStreak,
+    required this.totalMultiKills,
+    required this.objectiveTime,
+    required this.creditsEarned,
+  });
 
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>
       _$MatchPlayerStatsFromJson(json);

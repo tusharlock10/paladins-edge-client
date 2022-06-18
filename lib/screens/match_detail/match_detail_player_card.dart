@@ -11,11 +11,63 @@ import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class MatchDetailPlayer extends HookConsumerWidget {
+class _MatchDetailPlayerLoadout extends StatelessWidget {
+  final models.Champion champion;
+  final models.MatchPlayer matchPlayer;
+  const _MatchDetailPlayerLoadout({
+    required this.champion,
+    required this.matchPlayer,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: matchPlayer.playerChampionCards.map(
+        (playerChampionCard) {
+          final card = champion.cards.firstOrNullWhere(
+            (_) => _.cardId2 == playerChampionCard.cardId2,
+          );
+
+          if (card == null) {
+            return const SizedBox();
+          }
+
+          return GestureDetector(
+            onTap: () => widgets.showLoadoutCardDetailSheet(
+              data_classes.ShowLoadoutDetailsOptions(
+                context: context,
+                champion: champion,
+                card: card,
+                cardPoints: playerChampionCard.cardLevel,
+                sliderFixed: true,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3),
+              child: widgets.FastImage(
+                imageUrl: utilities.getSmallAsset(card.imageUrl),
+                imageBlurHash: card.imageBlurHash,
+                width: 32,
+                height: 32 / constants.ImageAspectRatios.championCard,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5),
+                ),
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+}
+
+class MatchDetailPlayerCard extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
   final double averageCredits;
 
-  const MatchDetailPlayer({
+  const MatchDetailPlayerCard({
     required this.matchPlayer,
     required this.averageCredits,
     Key? key,
@@ -36,9 +88,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
     final kills = matchPlayer.playerStats.kills;
     final deaths = matchPlayer.playerStats.deaths;
     final assists = matchPlayer.playerStats.assists;
-    final kda = deaths == 0
-        ? "Perfect"
-        : ((kills + assists) / deaths).toStringAsFixed(2);
+    final kdaFormatted = matchPlayer.playerStats.kdaFormatted;
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
     final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.5;
@@ -90,6 +140,27 @@ class MatchDetailPlayer extends HookConsumerWidget {
         }
       },
       [matchPlayer.matchPosition],
+    );
+    final playerHighestStat = useMemoized(
+      () {
+        final totalDamageDealt = matchPlayer.playerStats.totalDamageDealt;
+        final totalDamageTaken = matchPlayer.playerStats.totalDamageTaken;
+        final healingDone = matchPlayer.playerStats.healingDone;
+        final damageShielded = matchPlayer.playerStats.damageShielded;
+        final maxStat = [
+          totalDamageDealt,
+          totalDamageTaken,
+          healingDone,
+          damageShielded,
+        ].max()!;
+
+        if (maxStat == damageShielded) return "Shielded $maxStat";
+        if (maxStat == totalDamageTaken) return "Tanked $maxStat";
+        if (maxStat == healingDone) return "Healed $maxStat";
+
+        return "Damage $maxStat";
+      },
+      [matchPlayer],
     );
 
     // Methods
@@ -247,7 +318,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                         ),
                       TextSpan(text: "  $kills / $deaths / $assists  "),
                       TextSpan(
-                        text: "($kda)",
+                        text: "($kdaFormatted)",
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 12,
@@ -257,45 +328,7 @@ class MatchDetailPlayer extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: matchPlayer.playerChampionCards.map(
-                    (playerChampionCard) {
-                      final card = champion?.cards.firstOrNullWhere(
-                        (_) => _.cardId2 == playerChampionCard.cardId2,
-                      );
-
-                      if (card == null || champion == null) {
-                        return const SizedBox();
-                      }
-
-                      return GestureDetector(
-                        onTap: () => widgets.showLoadoutCardDetailSheet(
-                          data_classes.ShowLoadoutDetailsOptions(
-                            context: context,
-                            champion: champion,
-                            card: card,
-                            cardPoints: playerChampionCard.cardLevel,
-                            sliderFixed: true,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: widgets.FastImage(
-                            imageUrl: utilities.getSmallAsset(card.imageUrl),
-                            imageBlurHash: card.imageBlurHash,
-                            width: 32,
-                            height:
-                                32 / constants.ImageAspectRatios.championCard,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ),
+                Text(playerHighestStat),
               ],
             ),
           ),

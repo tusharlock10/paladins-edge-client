@@ -4,6 +4,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -49,12 +50,12 @@ class _RecentMatchesBar extends HookConsumerWidget {
           }
         }
 
-        return {
-          "normalMatches": normalMatches,
-          "normalWins": normalWins,
-          "rankedMatches": rankedMatches,
-          "rankedWins": rankedWins,
-        };
+        return data_classes.RecentWinStats(
+          normalMatches: normalMatches,
+          normalWins: normalWins,
+          rankedMatches: rankedMatches,
+          rankedWins: rankedWins,
+        );
       },
       [combinedMatches],
     );
@@ -62,15 +63,15 @@ class _RecentMatchesBar extends HookConsumerWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
-    final normalMatches = winStats["normalMatches"]!;
-    final normalWins = winStats["normalWins"]!;
-    final rankedMatches = winStats["rankedMatches"]!;
-    final rankedWins = winStats["rankedWins"]!;
+    final normalMatches = winStats.normalMatches;
+    final normalWins = winStats.normalWins;
+    final rankedMatches = winStats.rankedMatches;
+    final rankedWins = winStats.rankedWins;
     final totalWins = normalWins + rankedWins;
     final totalMatches = normalMatches + rankedMatches;
     final winRate = normalMatches != 0 ? totalWins / totalMatches : 0;
     final winRateFormatted = (winRate * 100).toStringAsPrecision(3);
-    final winRateColor = utilities.getWinRateColor(winRate * 100);
+    final winRateColor = utilities.getWinRateColor(winRate);
     final isLowWinRate = winRate < 0.4;
 
     return Column(
@@ -260,18 +261,14 @@ class _RecentlyPlayedChampionCard extends HookWidget {
     // Variables
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
-    final winRate = playerChampion != null
-        ? playerChampion!.wins *
-            100 /
-            (playerChampion!.losses + playerChampion!.wins)
-        : null;
-    final winRateFormatted = winRate?.toStringAsPrecision(3);
+    final winRate = playerChampion?.winRate;
+    final winRateFormatted = playerChampion?.winRateFormatted;
     final lastPlayed = playerChampion?.lastPlayed;
-    final kda = playerChampion != null
-        ? (playerChampion!.totalKills + playerChampion!.totalAssists) /
-            playerChampion!.totalDeaths
-        : null;
-    final kdaFormatted = kda?.toStringAsPrecision(3);
+    final kda = playerChampion?.kda;
+    final kdaFormatted = playerChampion?.kdaFormatted;
+    final kdaColor = kda == null ? null : utilities.getKDAColor(kda);
+    final winRateColor =
+        winRate == null ? null : utilities.getWinRateColor(winRate);
 
     // Hooks
     final lastPlayedFormatted = useMemoized(
@@ -286,27 +283,6 @@ class _RecentlyPlayedChampionCard extends HookWidget {
         return "Played ${Jiffy(lastPlayed).fromNow()}";
       },
       [lastPlayed],
-    );
-    final winRateColor = useMemoized(
-      () {
-        if (winRate == null) return null;
-        if (winRate < 49) return Colors.red;
-        if (winRate < 52) return null;
-
-        return Colors.green;
-      },
-      [winRate],
-    );
-    final kdaColor = useMemoized(
-      () {
-        if (kda == null) return null;
-        if (kda > 3.8) return Colors.green.shade200;
-        if (kda > 3) return Colors.orange.shade200;
-        if (kda < 1) return Colors.red.shade200;
-
-        return null;
-      },
-      [kda],
     );
 
     return SizedBox(
@@ -495,11 +471,8 @@ class _RecentPlayerStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final kda = utilities.getKDAFormatted(
-      assists: playerStats.assists,
-      kills: playerStats.assists,
-      deaths: playerStats.deaths,
-    );
+    final kda = playerStats.kda;
+    final kdaFormatted = playerStats.kdaFormatted;
     final kdaColor = utilities.getKDAColor(kda);
 
     return SizedBox(
@@ -511,7 +484,7 @@ class _RecentPlayerStats extends StatelessWidget {
             _PlayerStatsCard(
               title: "KDA",
               stat: 0,
-              statString: kda,
+              statString: kdaFormatted,
               color: kdaColor,
             ),
             _PlayerStatsCard(
@@ -572,7 +545,9 @@ class _PlayerStatsCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final String? formattedStat;
     formattedStat = statString ??
-        (stat < 8000 ? stat.toString() : NumberFormat.compact().format(stat));
+        (stat < 8000
+            ? stat.toStringAsPrecision(stat.toInt().toString().length + 1)
+            : NumberFormat.compact().format(stat));
 
     return SizedBox(
       width: itemWidth,

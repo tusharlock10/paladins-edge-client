@@ -47,12 +47,10 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
       );
     }
 
+    // Variables
     final playTimeString =
-        "${(playerChampion.playTime ~/ 60)}hrs ${playerChampion.playTime % 60}min";
-
-    String kda = ((playerChampion.totalKills + playerChampion.totalAssists) /
-            playerChampion.totalDeaths)
-        .toStringAsPrecision(2);
+        utilities.getFormattedPlayTime(playerChampion.playTime);
+    final kda = playerChampion.kdaFormatted;
 
     // Methods
     final getStatLabelGridProps = useCallback(

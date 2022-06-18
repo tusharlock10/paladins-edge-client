@@ -79,7 +79,7 @@ class InteractiveCard extends HookWidget {
           children: [
             if (backgroundImage != null)
               Opacity(
-                opacity: brightness == Brightness.light ? 0.125 : 0.215,
+                opacity: brightness == Brightness.light ? 0.145 : 0.225,
                 child: FastImage(
                   imageBlurHash: backgroundImageBlurHash,
                   imageUrl: backgroundImage!,

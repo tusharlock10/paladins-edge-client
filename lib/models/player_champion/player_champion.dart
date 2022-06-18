@@ -56,6 +56,23 @@ class PlayerChampion {
   @HiveField(11)
   final int totalXP;
 
+  /// KDA of the player on this champion
+  double get kda =>
+      totalDeaths == 0 ? -1 : (totalKills + totalAssists) / totalDeaths;
+
+  /// KDA formatted into a string
+  String get kdaFormatted => kda == -1 ? "Perfect" : kda.toStringAsPrecision(3);
+
+  // total matches played on this champion
+  int get matches => wins + losses;
+
+  /// win rate of the player on this champion (0 to 1)
+  double? get winRate => matches == 0 ? null : wins / matches;
+
+  /// win rate formatted into a string
+  String? get winRateFormatted =>
+      winRate == null ? null : (winRate! * 100).toStringAsPrecision(3);
+
   PlayerChampion({
     required this.playerId,
     required this.championId,

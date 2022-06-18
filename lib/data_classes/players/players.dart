@@ -21,3 +21,17 @@ class StatLabelGridProps {
     required this.crossAxisCount,
   });
 }
+
+class RecentWinStats {
+  final int normalMatches;
+  final int normalWins;
+  final int rankedMatches;
+  final int rankedWins;
+
+  const RecentWinStats({
+    required this.normalMatches,
+    required this.normalWins,
+    required this.rankedMatches,
+    required this.rankedWins,
+  });
+}

@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -59,10 +60,10 @@ class CreateLoadoutTarget extends HookConsumerWidget {
         if (points == 15) color = Colors.green;
         if (points > 15) color = Colors.red;
 
-        return {
-          "points": points,
-          "color": color,
-        };
+        return data_classes.LoadoutPoints(
+          points: points,
+          color: color,
+        );
       },
       [draftLoadout],
     );
@@ -100,10 +101,10 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                               children: [
                                 const TextSpan(text: "("),
                                 TextSpan(
-                                  text: loadoutPoints["points"].toString(),
+                                  text: loadoutPoints.points.toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: loadoutPoints["color"] as Color,
+                                    color: loadoutPoints.color,
                                   ),
                                 ),
                                 const TextSpan(text: "/15)"),
