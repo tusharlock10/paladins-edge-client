@@ -8,19 +8,19 @@ part of 'match.dart';
 
 MatchPlayerStats _$MatchPlayerStatsFromJson(Map<String, dynamic> json) =>
     MatchPlayerStats(
-      kills: json['kills'] as int,
-      assists: json['assists'] as int,
-      deaths: json['deaths'] as int,
-      weaponDamageDealt: json['weaponDamageDealt'] as int,
-      totalDamageDealt: json['totalDamageDealt'] as int,
-      damageShielded: json['damageShielded'] as int,
-      totalDamageTaken: json['totalDamageTaken'] as int,
-      selfHealingDone: json['selfHealingDone'] as int,
-      healingDone: json['healingDone'] as int,
-      biggestKillStreak: json['biggestKillStreak'] as int,
-      totalMultiKills: json['totalMultiKills'] as int,
-      objectiveTime: json['objectiveTime'] as int,
-      creditsEarned: json['creditsEarned'] as int,
+      kills: (json['kills'] as num).toDouble(),
+      assists: (json['assists'] as num).toDouble(),
+      deaths: (json['deaths'] as num).toDouble(),
+      weaponDamageDealt: (json['weaponDamageDealt'] as num).toDouble(),
+      totalDamageDealt: (json['totalDamageDealt'] as num).toDouble(),
+      damageShielded: (json['damageShielded'] as num).toDouble(),
+      totalDamageTaken: (json['totalDamageTaken'] as num).toDouble(),
+      selfHealingDone: (json['selfHealingDone'] as num).toDouble(),
+      healingDone: (json['healingDone'] as num).toDouble(),
+      biggestKillStreak: (json['biggestKillStreak'] as num).toDouble(),
+      totalMultiKills: (json['totalMultiKills'] as num).toDouble(),
+      objectiveTime: (json['objectiveTime'] as num).toDouble(),
+      creditsEarned: (json['creditsEarned'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$MatchPlayerStatsToJson(MatchPlayerStats instance) =>

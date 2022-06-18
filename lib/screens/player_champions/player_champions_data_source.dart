@@ -1,5 +1,4 @@
 import "package:dartx/dartx.dart";
-import "package:duration/duration.dart";
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
@@ -188,12 +187,8 @@ class PlayerChampionsDataSource extends DataGridSource {
   }
 
   Widget _getPlayTimeCellWidget(DataGridCell dataGridCell) {
-    final playTime = Duration(minutes: dataGridCell.value as int);
-    final humanizedTime = printDuration(
-      playTime,
-      abbreviated: true,
-      upperTersity: DurationTersity.day,
-    );
+    final humanizedTime =
+        utilities.getFormattedPlayTime(dataGridCell.value as int);
 
     return Center(
       child: Text(

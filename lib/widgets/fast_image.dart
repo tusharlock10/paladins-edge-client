@@ -8,8 +8,9 @@ class FastImage extends StatelessWidget {
   final double? height;
   final double? width;
   final BorderRadius? borderRadius;
-  final BoxFit? fit;
-  final bool greyedOut;
+  final BoxFit fit;
+  final bool? greyedOut;
+  final Alignment? alignment;
 
   const FastImage({
     required this.imageUrl,
@@ -18,7 +19,8 @@ class FastImage extends StatelessWidget {
     this.width,
     this.borderRadius = BorderRadius.zero,
     this.fit = BoxFit.contain,
-    this.greyedOut = false,
+    this.greyedOut,
+    this.alignment,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +30,7 @@ class FastImage extends StatelessWidget {
       placeholderFadeInDuration: const Duration(milliseconds: 250),
       fadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
+      alignment: alignment ?? Alignment.center,
       errorWidget: (_, __, ___) => imageBlurHash != null
           ? SizedBox(
               height: height,
@@ -35,6 +38,7 @@ class FastImage extends StatelessWidget {
               child: BlurHash(
                 hash: imageBlurHash!,
                 image: imageUrl,
+                imageFit: fit,
               ),
             )
           : SizedBox(
@@ -48,6 +52,7 @@ class FastImage extends StatelessWidget {
                 child: BlurHash(
                   hash: imageBlurHash!,
                   image: imageUrl,
+                  imageFit: fit,
                 ),
               )
           : null,
@@ -59,7 +64,7 @@ class FastImage extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: borderRadius,
-      child: greyedOut
+      child: (greyedOut ?? false)
           ? ColorFiltered(
               colorFilter: const ColorFilter.mode(
                 Colors.grey,

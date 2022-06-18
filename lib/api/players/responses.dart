@@ -1,6 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart"
-    show Player, ActiveMatch, SearchHistory;
+    show Player, ActiveMatch, SearchHistory, PlayerInferred;
 
 part "responses.g.dart";
 
@@ -137,4 +137,17 @@ class SearchHistoryResponse {
   factory SearchHistoryResponse.fromJson(Map<String, dynamic> json) =>
       _$SearchHistoryResponseFromJson(json);
   Map<String, dynamic> toJson() => _$SearchHistoryResponseToJson(this);
+}
+
+@JsonSerializable()
+class PlayerInferredResponse {
+  final PlayerInferred playerInferred;
+
+  PlayerInferredResponse({
+    required this.playerInferred,
+  });
+
+  factory PlayerInferredResponse.fromJson(Map<String, dynamic> json) =>
+      _$PlayerInferredResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$PlayerInferredResponseToJson(this);
 }
