@@ -26,7 +26,7 @@ class PlayerDetailHeader extends ConsumerWidget {
     // Variables
     final isSamePlayerInferred = playerId == playerInferred?.playerId;
     final textTheme = Theme.of(context).textTheme;
-    final expandedController = ExpandableController(initialExpanded: true);
+    final expandedController = ExpandableController(initialExpanded: false);
 
     return player == null
         ? const SizedBox()
