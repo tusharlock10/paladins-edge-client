@@ -6,7 +6,7 @@ import "package:paladinsedge/data_classes/champions/index.dart" as data_classes;
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
-const releaseTag = "alpha";
+const releaseTag = isWeb ? "alpha" : "beta";
 
 abstract class Urls {
   // root
