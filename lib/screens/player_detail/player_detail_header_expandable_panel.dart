@@ -2,7 +2,6 @@ import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:intl/intl.dart";
 import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
@@ -547,7 +546,7 @@ class _PlayerStatsCard extends StatelessWidget {
     formattedStat = statString ??
         (stat < 8000
             ? stat.toStringAsPrecision(stat.toInt().toString().length + 1)
-            : NumberFormat.compact().format(stat));
+            : utilities.humanizeNumber(stat));
 
     return SizedBox(
       width: itemWidth,

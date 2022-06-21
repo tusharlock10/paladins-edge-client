@@ -1,64 +1,75 @@
+import "dart:ui";
+
+import "package:cached_network_image/cached_network_image.dart";
 import "package:dartx/dartx.dart";
+import "package:duration/duration.dart";
+import "package:expandable/expandable.dart";
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
 import "package:paladinsedge/constants.dart" as constants;
-import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class _MatchDetailPlayerLoadout extends StatelessWidget {
-  final models.Champion champion;
-  final models.MatchPlayer matchPlayer;
-  const _MatchDetailPlayerLoadout({
-    required this.champion,
-    required this.matchPlayer,
+class _PlayerStatsCard extends StatelessWidget {
+  static const itemHeight = 46.0;
+  static const itemWidth = 110.0;
+  final String title;
+  final num stat;
+  final String? statString;
+  const _PlayerStatsCard({
+    required this.title,
+    required this.stat,
+    this.statString,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: matchPlayer.playerChampionCards.map(
-        (playerChampionCard) {
-          final card = champion.cards.firstOrNullWhere(
-            (_) => _.cardId2 == playerChampionCard.cardId2,
-          );
+    // Variables
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final textTheme = Theme.of(context).textTheme;
+    final String? formattedStat;
+    formattedStat = statString ?? NumberFormat.decimalPattern().format(stat);
 
-          if (card == null) {
-            return const SizedBox();
-          }
-
-          return GestureDetector(
-            onTap: () => widgets.showLoadoutCardDetailSheet(
-              data_classes.ShowLoadoutDetailsOptions(
-                context: context,
-                champion: champion,
-                card: card,
-                cardPoints: playerChampionCard.cardLevel,
-                sliderFixed: true,
-              ),
+    return SizedBox(
+      width: itemWidth,
+      child: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 4,
+            sigmaY: 4,
+            tileMode: TileMode.mirror,
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(isLightTheme ? 0.75 : 0.15),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
-              child: widgets.FastImage(
-                imageUrl: utilities.getSmallAsset(card.imageUrl),
-                imageBlurHash: card.imageBlurHash,
-                width: 32,
-                height: 32 / constants.ImageAspectRatios.championCard,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyText2?.copyWith(fontSize: 12),
                 ),
-              ),
+                const SizedBox(height: 2),
+                Text(
+                  formattedStat,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyText1?.copyWith(fontSize: 11),
+                ),
+              ],
             ),
-          );
-        },
-      ).toList(),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -79,23 +90,39 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final champions = ref.watch(providers.champions.select((_) => _.champions));
 
     // Variables
+    final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
-    final champion = champions.firstOrNullWhere(
-      (champion) => champion.championId == matchPlayer.championId,
-    );
-    final talentUsed = champion?.talents
-        .firstOrNullWhere((_) => _.talentId2 == matchPlayer.talentId2);
+    final expandedController = ExpandableController(
+      initialExpanded: true,
+    ); // TODO: make this false
     final kills = matchPlayer.playerStats.kills;
     final deaths = matchPlayer.playerStats.deaths;
     final assists = matchPlayer.playerStats.assists;
     final kdaFormatted = matchPlayer.playerStats.kdaFormatted;
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
-    final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.5;
+    final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.6;
+    final backgroundColor = Theme.of(context).cardTheme.color;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
 
     // Hooks
+    final champion = useMemoized(
+      () {
+        return champions.firstOrNullWhere(
+          (champion) => champion.championId == matchPlayer.championId,
+        );
+      },
+      [matchPlayer, champions],
+    );
+    final talentUsed = useMemoized(
+      () {
+        return champion?.talents.firstOrNullWhere(
+          (_) => _.talentId2 == matchPlayer.talentId2,
+        );
+      },
+      [champion, matchPlayer],
+    );
     final playerPosition = useMemoized(
       () {
         final matchPosition = matchPlayer.matchPosition;
@@ -141,27 +168,12 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer.matchPosition],
     );
-    final playerHighestStat = useMemoized(
-      () {
-        final totalDamageDealt = matchPlayer.playerStats.totalDamageDealt;
-        final totalDamageTaken = matchPlayer.playerStats.totalDamageTaken;
-        final healingDone = matchPlayer.playerStats.healingDone;
-        final damageShielded = matchPlayer.playerStats.damageShielded;
-        final maxStat = [
-          totalDamageDealt,
-          totalDamageTaken,
-          healingDone,
-          damageShielded,
-        ].max()!;
-
-        if (maxStat == damageShielded) return "Shielded $maxStat";
-        if (maxStat == totalDamageTaken) return "Tanked $maxStat";
-        if (maxStat == healingDone) return "Healed $maxStat";
-
-        return "Damage $maxStat";
-      },
-      [matchPlayer],
+    final matchPlayerHighestStat = utilities.matchPlayerHighestStat(
+      matchPlayer.playerStats,
+      champion?.role,
     );
+    final highestStatText =
+        "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}";
 
     // Methods
     final onPressPlayer = useCallback(
@@ -179,160 +191,287 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
-      child: Row(
-        children: [
-          champion == null
-              ? const SizedBox(height: 50, width: 50)
-              : Stack(
-                  clipBehavior: Clip.none,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Center(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            image: champion == null
+                ? null
+                : DecorationImage(
+                    image: CachedNetworkImageProvider(champion.splashUrl),
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                    opacity: brightness == Brightness.light ? 0.145 : 0.225,
+                  ),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 7.5, vertical: 7.5),
+                child: Row(
                   children: [
-                    widgets.FastImage(
-                      imageUrl: utilities.getSmallAsset(champion.iconUrl),
-                      imageBlurHash: champion.iconBlurHash,
-                      height: 50,
-                      width: 50,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(12.5)),
-                      greyedOut: isBot,
-                    ),
-                    if (isBot)
-                      const Positioned.fill(
-                        bottom: -34,
-                        right: -34,
-                        child: Icon(
-                          FeatherIcons.link,
-                          size: 20,
-                          color: Colors.red,
-                        ),
+                    champion == null
+                        ? const SizedBox(height: 50, width: 50)
+                        : Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              widgets.ElevatedAvatar(
+                                imageUrl:
+                                    utilities.getSmallAsset(champion.iconUrl),
+                                imageBlurHash: champion.iconBlurHash,
+                                size: 30,
+                                borderRadius: 15,
+                                greyedOut: isBot,
+                                margin: const EdgeInsets.all(2.5),
+                              ),
+                              if (isBot)
+                                const Positioned.fill(
+                                  bottom: -34,
+                                  right: -34,
+                                  child: Icon(
+                                    FeatherIcons.link,
+                                    size: 20,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                            ],
+                          ),
+                    matchPlayer.playerRanked == null
+                        ? const SizedBox(width: 20)
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              children: [
+                                widgets.FastImage(
+                                  imageUrl: utilities.getSmallAsset(
+                                    matchPlayer.playerRanked!.rankIconUrl,
+                                  ),
+                                  height: 20,
+                                  width: 20,
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  utilities.shortRankName(
+                                    matchPlayer.playerRanked!.rankName,
+                                  ),
+                                  style: textTheme.bodyText1?.copyWith(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: widgets.InteractiveText(
+                                  isPrivatePlayer
+                                      ? "Private Profile"
+                                      : matchPlayer.playerName,
+                                  onTap: isPrivatePlayer ? null : onPressPlayer,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: isPrivatePlayer
+                                        ? FontWeight.normal
+                                        : FontWeight.bold,
+                                    fontStyle: isPrivatePlayer
+                                        ? FontStyle.italic
+                                        : FontStyle.normal,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                highestStatText,
+                                style: textTheme.bodyText1?.copyWith(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  if (talentUsed != null) ...[
+                                    widgets.FastImage(
+                                      height: 32,
+                                      width: 32,
+                                      imageUrl: talentUsed.imageUrl,
+                                      semanticText: talentUsed.name,
+                                    ),
+                                    const SizedBox(width: 3),
+                                  ],
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Credits",
+                                        style: textTheme.bodyText1?.copyWith(
+                                          fontSize: 9,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      Text(
+                                        matchPlayer.playerStats.creditsEarned
+                                            .toString(),
+                                        style: textTheme.bodyText1
+                                            ?.copyWith(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 3),
+                                  if (playerPosition != null)
+                                    widgets.TextChip(
+                                      width: 55,
+                                      text: playerPosition,
+                                      icon: playerPositionIcon,
+                                      color: playerPositionColor,
+                                    ),
+                                ],
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: textTheme.bodyText1?.copyWith(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: matchPlayer.partyNumber != null
+                                          ? "party ${matchPlayer.partyNumber}"
+                                          : "solo",
+                                      style: TextStyle(
+                                        color: partyColor,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "  $kills / $deaths / $assists  ",
+                                    ),
+                                    TextSpan(
+                                      text: "($kdaFormatted)",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
+                    ),
+                    const SizedBox(width: 5),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: expandedController,
+                      builder: (context, isExpanded, _) {
+                        return AnimatedRotation(
+                          duration: const Duration(
+                            milliseconds: 200,
+                          ),
+                          turns: isExpanded ? 0.5 : 0,
+                          child: widgets.IconButton(
+                            iconSize: 22,
+                            onPressed: expandedController.toggle,
+                            icon: Icons.keyboard_arrow_down,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
-          matchPlayer.playerRanked == null
-              ? const SizedBox(width: 20)
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    children: [
-                      widgets.FastImage(
-                        imageUrl: utilities.getSmallAsset(
-                          matchPlayer.playerRanked!.rankIconUrl,
-                        ),
-                        height: 20,
-                        width: 20,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        utilities
-                            .shortRankName(matchPlayer.playerRanked!.rankName),
-                        style: textTheme.bodyText1?.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 160,
-                child: widgets.InteractiveText(
-                  isPrivatePlayer ? "Private Profile" : matchPlayer.playerName,
-                  onTap: isPrivatePlayer ? null : onPressPlayer,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight:
-                        isPrivatePlayer ? FontWeight.normal : FontWeight.bold,
-                    fontStyle:
-                        isPrivatePlayer ? FontStyle.italic : FontStyle.normal,
-                  ),
-                ),
               ),
-              Row(
-                children: [
-                  talentUsed == null
-                      ? const SizedBox(height: 32, width: 32)
-                      : widgets.FastImage(
-                          imageUrl:
-                              utilities.getSmallAsset(talentUsed.imageUrl),
-                          height: 32,
-                          width: 32,
-                        ),
-                  const SizedBox(width: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Credits",
-                        style: textTheme.bodyText1?.copyWith(
-                          fontSize: 9,
-                          fontStyle: FontStyle.italic,
+              ExpandablePanel(
+                controller: expandedController,
+                collapsed: const SizedBox(),
+                expanded: Column(
+                  children: [
+                    if (champion != null)
+                      widgets.MatchPlayerLoadout(
+                        matchPlayer: matchPlayer,
+                        champion: champion,
+                        size: 36,
+                      ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: _PlayerStatsCard.itemHeight,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: utilities.insertBetween(
+                          [
+                            const SizedBox(),
+                            if (matchPlayer.playerStats.totalDamageDealt != 0)
+                              _PlayerStatsCard(
+                                title: "Damage",
+                                stat: matchPlayer.playerStats.totalDamageDealt,
+                              ),
+                            if (matchPlayer.playerStats.healingDone != 0)
+                              _PlayerStatsCard(
+                                title: "Healing",
+                                stat: matchPlayer.playerStats.healingDone,
+                              ),
+                            if (matchPlayer.playerStats.damageShielded != 0)
+                              _PlayerStatsCard(
+                                title: "Shielding",
+                                stat: matchPlayer.playerStats.damageShielded,
+                              ),
+                            if (matchPlayer.playerStats.totalDamageTaken != 0)
+                              _PlayerStatsCard(
+                                title: "Damage Taken",
+                                stat: matchPlayer.playerStats.totalDamageTaken,
+                              ),
+                            if (matchPlayer.playerStats.selfHealingDone != 0)
+                              _PlayerStatsCard(
+                                title: "Self Heal",
+                                stat: matchPlayer.playerStats.selfHealingDone,
+                              ),
+                            if (matchPlayer.playerStats.objectiveTime != 0)
+                              _PlayerStatsCard(
+                                title: "Objective Time",
+                                stat: matchPlayer.playerStats.objectiveTime,
+                                statString: printDuration(
+                                  Duration(
+                                    seconds: matchPlayer
+                                        .playerStats.objectiveTime
+                                        .toInt(),
+                                  ),
+                                  abbreviated: true,
+                                  upperTersity: DurationTersity.second,
+                                  tersity: DurationTersity.second,
+                                  conjugation: " ",
+                                ),
+                              ),
+                            const SizedBox(),
+                          ],
+                          const SizedBox(width: 10),
                         ),
                       ),
-                      Text(
-                        matchPlayer.playerStats.creditsEarned.toString(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 5),
-                  if (playerPosition != null)
-                    widgets.TextChip(
-                      width: 55,
-                      text: playerPosition,
-                      icon: playerPositionIcon,
-                      color: playerPositionColor,
                     ),
-                ],
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             ],
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    style: textTheme.bodyText1?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    children: [
-                      if (matchPlayer.partyNumber != null)
-                        TextSpan(
-                          text: "party ${matchPlayer.partyNumber}",
-                          style: TextStyle(
-                            color: partyColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                          ),
-                        )
-                      else
-                        const TextSpan(
-                          text: "solo",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      TextSpan(text: "  $kills / $deaths / $assists  "),
-                      TextSpan(
-                        text: "($kdaFormatted)",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(playerHighestStat),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

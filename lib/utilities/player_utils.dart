@@ -1,4 +1,8 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/theme/index.dart" as theme;
 
@@ -54,4 +58,57 @@ MaterialColor getWinRateColor(num winRate) {
   if (winRate > 48) return Colors.orange;
 
   return Colors.red;
+}
+
+data_classes.MatchPlayerHighestStat matchPlayerHighestStat(
+  models.MatchPlayerStats playerStats,
+  String? role, [
+  bool compact = false,
+]) {
+  final totalDamageDealt = playerStats.totalDamageDealt;
+  final totalDamageTaken = playerStats.totalDamageTaken;
+  final healingDone = playerStats.healingDone;
+  final damageShielded = playerStats.damageShielded;
+  num maxStat;
+  String type;
+  MaterialColor color;
+  IconData icon;
+
+  if (role == constants.ChampionRoles.damage) {
+    maxStat = totalDamageDealt;
+  } else if (role == constants.ChampionRoles.flank) {
+    maxStat = [totalDamageDealt, healingDone].max()!.toInt();
+  } else {
+    maxStat = [
+      totalDamageDealt,
+      totalDamageTaken,
+      healingDone,
+      damageShielded,
+    ].max()!;
+  }
+
+  if (maxStat == damageShielded) {
+    type = compact ? "Shield" : "Shielded";
+    color = theme.themeMaterialColor;
+    icon = FeatherIcons.shield;
+  } else if (maxStat == totalDamageTaken) {
+    type = compact ? "Tank" : "Tanked";
+    icon = FeatherIcons.heart;
+    color = Colors.purple;
+  } else if (maxStat == healingDone) {
+    type = compact ? "Heal" : "Healed";
+    color = Colors.green;
+    icon = FeatherIcons.activity;
+  } else {
+    type = compact ? "Dmg" : "Damage";
+    color = Colors.red;
+    icon = FeatherIcons.crosshair;
+  }
+
+  return data_classes.MatchPlayerHighestStat(
+    color: color,
+    type: type,
+    stat: maxStat.toInt(),
+    icon: icon,
+  );
 }

@@ -23,7 +23,7 @@ class ChampionsList extends HookConsumerWidget {
     double width;
     final size = MediaQuery.of(context).size;
     final paddingTop = MediaQuery.of(context).padding.top;
-    const itemHeight = 120.0;
+    const itemHeight = 110.0;
     final filteredCombinedChampions =
         combinedChampions?.where((_) => !_.hide).toList();
 

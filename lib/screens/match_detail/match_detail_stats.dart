@@ -25,8 +25,9 @@ class MatchDetailStats extends HookConsumerWidget {
     ).replaceAll("min", "m");
     final map = match.map.split(" ").sublist(1).join(" ");
     final region = match.region;
-    final date =
-        Jiffy(match.matchStartTime.toLocal()).format("do MMMM, h:mm a");
+    final date = Jiffy(
+      match.matchStartTime.toLocal(),
+    ).format("do MMMM, h:mm a");
 
     return Padding(
       padding: const EdgeInsets.all(10),

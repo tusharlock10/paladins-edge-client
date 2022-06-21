@@ -50,7 +50,10 @@ class MatchPlayerStats {
   double get kda => deaths == 0 ? -1 : (kills + assists) / deaths;
 
   /// KDA formatted into a string
-  String get kdaFormatted => kda == -1 ? "Perfect" : kda.toStringAsPrecision(3);
+  String get kdaFormatted => kda == -1
+      ? "PR"
+      : kda
+          .toStringAsPrecision(kda < 1 ? 1 : kda.toInt().toString().length + 1);
 
   MatchPlayerStats({
     required this.kills,

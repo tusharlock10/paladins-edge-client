@@ -18,6 +18,7 @@ abstract class Database {
   static Box<models.BountyStore>? _bountyStoreBox;
   static Box<models.PlayerChampion>? _playerChampionBox;
   static Box<models.Queue>? _queueTimelineBox;
+  static Box<models.Item>? _itemBox;
 
   // getters
   static Box<String>? get tokenBox => _tokenBox;
@@ -32,6 +33,7 @@ abstract class Database {
   static Box<models.PlayerChampion>? get playerChampionBox =>
       _playerChampionBox;
   static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
+  static Box<models.Item>? get itemBox => _itemBox;
 
   static Future<void> initialize() async {
     if (_init) return;
@@ -51,6 +53,7 @@ abstract class Database {
     Hive.registerAdapter(models.BountyStoreAdapter());
     Hive.registerAdapter(models.PlayerChampionAdapter());
     Hive.registerAdapter(models.QueueAdapter());
+    Hive.registerAdapter(models.ItemAdapter());
 
     _init = true;
 
@@ -77,6 +80,9 @@ abstract class Database {
     );
     _queueTimelineBox = await Hive.openBox<models.Queue>(
       constants.HiveBoxes.queueTimeline,
+    );
+    _itemBox = await Hive.openBox<models.Item>(
+      constants.HiveBoxes.item,
     );
 
     // check if recordExpiry contains any data
@@ -120,6 +126,8 @@ abstract class Database {
       _playerChampionBox?.add(playerChampion);
 
   static void saveQueue(models.Queue queue) => _queueTimelineBox?.add(queue);
+
+  static void saveItem(models.Item item) => _itemBox?.add(item);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
@@ -217,6 +225,20 @@ abstract class Database {
     return queueTimeline == null || queueTimeline.isEmpty
         ? null
         : queueTimeline;
+  }
+
+  static List<models.Item>? getItems() {
+    // check if item records have expired
+    if (_recordExpiry!.isRecordExpired(constants.RecordExpiryName.item)) {
+      // if the data is expired, then clear item box
+      // and renew the recordExpiry for item records
+      _itemBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryName.item);
+    }
+
+    final items = _itemBox?.values.toList();
+
+    return items == null || items.isEmpty ? null : items;
   }
 
   // clear all the boxes

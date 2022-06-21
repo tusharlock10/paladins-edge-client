@@ -11,6 +11,7 @@ class FastImage extends StatelessWidget {
   final BoxFit fit;
   final bool? greyedOut;
   final Alignment? alignment;
+  final String? semanticText;
 
   const FastImage({
     required this.imageUrl,
@@ -21,6 +22,7 @@ class FastImage extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.greyedOut,
     this.alignment,
+    this.semanticText,
     Key? key,
   }) : super(key: key);
 
@@ -62,17 +64,22 @@ class FastImage extends StatelessWidget {
       fit: fit,
     );
 
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: (greyedOut ?? false)
-          ? ColorFiltered(
-              colorFilter: const ColorFilter.mode(
-                Colors.grey,
-                BlendMode.saturation,
-              ),
-              child: image,
-            )
-          : image,
+    return Semantics(
+      readOnly: true,
+      label: semanticText,
+      image: true,
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: (greyedOut ?? false)
+            ? ColorFiltered(
+                colorFilter: const ColorFilter.mode(
+                  Colors.grey,
+                  BlendMode.saturation,
+                ),
+                child: image,
+              )
+            : image,
+      ),
     );
   }
 }

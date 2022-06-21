@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:intl/intl.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
@@ -100,25 +99,20 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
                     StatLabel(
                       label: "W / L",
                       text:
-                          "${NumberFormat.compact().format(playerChampion.wins).toString()} / ${NumberFormat.compact().format(playerChampion.losses).toString()}",
+                          "${utilities.humanizeNumber(playerChampion.wins)} / ${utilities.humanizeNumber(playerChampion.losses)}",
                     ),
                     StatLabel(
                       label: "Level",
-                      text: NumberFormat.compact()
-                          .format(playerChampion.level)
-                          .toString(),
+                      text: utilities.humanizeNumber(playerChampion.level),
                     ),
                     StatLabel(
                       label: "Kills",
-                      text: NumberFormat.compact()
-                          .format(playerChampion.totalKills)
-                          .toString(),
+                      text: utilities.humanizeNumber(playerChampion.totalKills),
                     ),
                     StatLabel(
                       label: "Deaths",
-                      text: NumberFormat.compact()
-                          .format(playerChampion.totalDeaths)
-                          .toString(),
+                      text:
+                          utilities.humanizeNumber(playerChampion.totalDeaths),
                     ),
                     StatLabel(
                       label: "Play Time",
@@ -141,7 +135,7 @@ class ChampionDetailPlayerStats extends HookConsumerWidget {
                     StatLabel(
                       label: "Credits",
                       text:
-                          "${(playerChampion.totalCredits ~/ playerChampion.playTime).toString()} Per Min",
+                          "${playerChampion.totalCredits ~/ playerChampion.playTime} Per Min",
                     ),
                   ],
                 ),

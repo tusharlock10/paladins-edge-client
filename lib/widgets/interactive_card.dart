@@ -74,30 +74,29 @@ class InteractiveCard extends HookWidget {
                 )
               : BorderSide.none,
         ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (backgroundImage != null)
-              Opacity(
-                opacity: brightness == Brightness.light ? 0.145 : 0.225,
-                child: FastImage(
-                  imageBlurHash: backgroundImageBlurHash,
-                  imageUrl: backgroundImage!,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
+        child: InkWell(
+          onTap: onTap,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              if (backgroundImage != null)
+                Opacity(
+                  opacity: brightness == Brightness.light ? 0.145 : 0.225,
+                  child: FastImage(
+                    imageBlurHash: backgroundImageBlurHash,
+                    imageUrl: backgroundImage!,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                  ),
                 ),
-              ),
-            InkWell(
-              onTap: onTap,
-              hoverColor: color ?? Theme.of(context).cardTheme.color,
-              child: Padding(
+              Padding(
                 padding: padding,
                 child: child,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

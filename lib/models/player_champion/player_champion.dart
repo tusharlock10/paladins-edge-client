@@ -61,7 +61,10 @@ class PlayerChampion {
       totalDeaths == 0 ? -1 : (totalKills + totalAssists) / totalDeaths;
 
   /// KDA formatted into a string
-  String get kdaFormatted => kda == -1 ? "Perfect" : kda.toStringAsPrecision(3);
+  String get kdaFormatted => kda == -1
+      ? "PR"
+      : kda
+          .toStringAsPrecision(kda < 1 ? 1 : kda.toInt().toString().length + 1);
 
   // total matches played on this champion
   int get matches => wins + losses;

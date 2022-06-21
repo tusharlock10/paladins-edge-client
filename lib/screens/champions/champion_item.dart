@@ -121,8 +121,8 @@ class ChampionItem extends HookConsumerWidget {
       width: width,
       height: height,
       child: widgets.InteractiveCard(
-        borderRadius: 25,
-        padding: const EdgeInsets.all(10),
+        borderRadius: 22.5,
+        padding: const EdgeInsets.all(5),
         onTap: onTapChampion,
         child: Row(
           children: [
@@ -135,6 +135,7 @@ class ChampionItem extends HookConsumerWidget {
                     imageUrl: champion.iconUrl,
                     imageBlurHash: champion.iconBlurHash,
                     size: (constraints.maxHeight - 10) / 2,
+                    margin: const EdgeInsets.all(5),
                   ),
                 ),
               ),
@@ -143,9 +144,10 @@ class ChampionItem extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 10),
                   SubstringHighlight(
                     text: champion.name.toUpperCase(),
-                    term: nameSearch,
+                    term: nameSearch.trim(),
                     textStyle: textTheme.headline1!.copyWith(
                       fontSize: 16,
                     ),
@@ -154,11 +156,11 @@ class ChampionItem extends HookConsumerWidget {
                       backgroundColor: highlightColor,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  if (championIdSearch.isNotEmpty)
+                  if (championIdSearch.isNotEmpty) ...[
+                    const SizedBox(height: 2),
                     SubstringHighlight(
                       text: "Champion ID ${champion.championId}",
-                      term: championIdSearch,
+                      term: championIdSearch.trim(),
                       textStyle: textTheme.bodyText1!.copyWith(
                         fontSize: 12,
                       ),
@@ -167,10 +169,12 @@ class ChampionItem extends HookConsumerWidget {
                         backgroundColor: highlightColor,
                       ),
                     ),
-                  if (titleSearch.isNotEmpty)
+                  ],
+                  if (titleSearch.isNotEmpty) ...[
+                    const SizedBox(height: 2),
                     SubstringHighlight(
                       text: champion.title,
-                      term: titleSearch,
+                      term: titleSearch.trim(),
                       textStyle: textTheme.bodyText1!.copyWith(
                         fontSize: 12,
                       ),
@@ -179,13 +183,14 @@ class ChampionItem extends HookConsumerWidget {
                         backgroundColor: highlightColor,
                       ),
                     ),
-                  const SizedBox(height: 5),
+                  ],
+                  const SizedBox(height: 2),
                   Wrap(
                     children: [
                       widgets.TextChip(
                         spacing: 5,
                         text: champion.role,
-                        highlightText: roleSearch,
+                        highlightText: roleSearch.trim(),
                         color: theme.themeMaterialColor,
                       ),
                       if (playerChampion?.level != null)
