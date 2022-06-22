@@ -67,13 +67,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final expandedController = ExpandableController(initialExpanded: false);
     final textTheme = Theme.of(context).textTheme;
     final isPrivatePlayer = playerInfo.player.playerId == "0";
-    double? winRate = playerInfo.ranked != null
-        ? playerInfo.ranked!.wins *
-            100 /
-            (playerInfo.ranked!.wins + playerInfo.ranked!.looses)
-        : null;
-    winRate =
-        winRate == double.nan || winRate == double.infinity ? null : winRate;
+    final winRate = playerInfo.ranked?.winRate;
+    final winRateFormatted = playerInfo.ranked?.winRateFormatted;
     final champion = champions.firstOrNullWhere(
       (champion) => champion.championId == playerInfo.championId,
     );
@@ -111,21 +106,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [],
     );
 
-    final getWinRateColor = useCallback(
-      (double? winRate) {
-        if (winRate == null) {
-          return null;
-        } else if (winRate < 49) {
-          return Colors.red;
-        } else if (winRate < 52) {
-          return textTheme.headline3?.color;
-        } else {
-          return Colors.green;
-        }
-      },
-      [],
-    );
-
     final getChampionPlaytime = useCallback(
       () {
         final duration = Duration(minutes: playerChampion.value!.playTime);
@@ -141,33 +121,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [],
     );
 
-    final getChampionWinRate = useCallback(
-      () {
-        final wins = playerChampion.value!.wins;
-        final totalMatches = wins + playerChampion.value!.losses;
-        final winRate = wins * 100 / totalMatches;
-
-        if (winRate == double.nan || winRate == double.nan) return "";
-
-        return "${winRate.toStringAsPrecision(3)}%";
-      },
-      [],
-    );
-
-    final getChampionKDA = useCallback(
-      () {
-        final kills = playerChampion.value!.totalKills;
-        final deaths = playerChampion.value!.totalDeaths;
-        final assists = playerChampion.value!.totalAssists;
-
-        final kda = (kills + assists) / deaths;
-
-        return kda.toStringAsPrecision(3);
-      },
-      [],
-    );
-
-    final getChampionCPM = useCallback(
+    final championCPM = useMemoized(
       () {
         final totalMatches =
             playerChampion.value!.wins + playerChampion.value!.losses;
@@ -176,13 +130,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
 
         return "${cpm.round()} CR";
       },
-      [],
-    );
-
-    final getPlayerLastPlayed = useCallback(
-      () => Jiffy(
-        playerChampion.value!.lastPlayed,
-      ).fromNow(),
       [],
     );
 
@@ -275,7 +222,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            if (winRate != null)
+                            if (winRate != null && winRateFormatted != null)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -285,11 +232,11 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                       children: [
                                         const TextSpan(text: "WR "),
                                         TextSpan(
-                                          text:
-                                              "${winRate.toStringAsPrecision(3)}%",
+                                          text: "$winRateFormatted%",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: getWinRateColor(winRate),
+                                            color: utilities
+                                                .getWinRateColor(winRate),
                                           ),
                                         ),
                                       ],
@@ -369,7 +316,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                   ),
                                   _InfoLabel(
                                     label: "Champ. WR",
-                                    text: getChampionWinRate(),
+                                    text:
+                                        "${playerChampion.value!.winRateFormatted}%",
                                   ),
                                 ],
                               ),
@@ -380,15 +328,17 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                 children: [
                                   _InfoLabel(
                                     label: "KDA",
-                                    text: getChampionKDA(),
+                                    text: playerChampion.value!.kdaFormatted,
                                   ),
                                   _InfoLabel(
                                     label: "CR / Match",
-                                    text: getChampionCPM(),
+                                    text: championCPM,
                                   ),
                                   _InfoLabel(
                                     label: "Last Played",
-                                    text: getPlayerLastPlayed(),
+                                    text: Jiffy(
+                                      playerChampion.value!.lastPlayed,
+                                    ).fromNow(),
                                   ),
                                 ],
                               ),

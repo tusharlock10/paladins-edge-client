@@ -63,3 +63,13 @@ class ShowLoadoutDetailsOptions {
     this.onSliderChange,
   });
 }
+
+class LoadoutPoints {
+  final int points;
+  final Color color;
+
+  const LoadoutPoints({
+    required this.points,
+    required this.color,
+  });
+}

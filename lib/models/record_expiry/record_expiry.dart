@@ -4,7 +4,7 @@ import "package:paladinsedge/constants.dart"
 
 part "record_expiry.g.dart";
 
-// model for storing the exipry date of saved champion, searchHistory, etc. in local db
+// model for storing the expiry date of saved champion, searchHistory, etc. in local db
 @HiveType(typeId: TypeIds.recordExpiry)
 class RecordExpiry extends HiveObject {
   /// date at which the saved champion record will expire
@@ -26,6 +26,10 @@ class RecordExpiry extends HiveObject {
   /// date at which the saved queue record will expire
   @HiveField(4)
   DateTime? _queueTimelineExpiry;
+
+  /// date at which the saved item record will expire
+  @HiveField(5)
+  DateTime? _itemExpiry;
 
   bool isRecordExpired(RecordExpiryName recordName) {
     // checks if the provided record is expired
@@ -52,6 +56,10 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.queueTimeline:
         duration = RecordExpiryDuration.queueTimelineDuration;
         return now.isAfter(_queueTimelineExpiry ?? now.add(duration));
+
+      case RecordExpiryName.item:
+        duration = RecordExpiryDuration.itemDuration;
+        return now.isAfter(_itemExpiry ?? now.add(duration));
 
       default:
         return true;
@@ -84,6 +92,10 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.queueTimeline:
         _queueTimelineExpiry =
             DateTime.now().add(RecordExpiryDuration.queueTimelineDuration);
+        return;
+
+      case RecordExpiryName.item:
+        _itemExpiry = DateTime.now().add(RecordExpiryDuration.itemDuration);
         return;
     }
   }

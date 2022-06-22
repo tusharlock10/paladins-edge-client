@@ -26,11 +26,11 @@ class PlayerChampionsDataSource extends DataGridSource {
   }) {
     _playerChampions = playerChampions.mapNotNull(
       (playerChampion) {
-        final matches = playerChampion.losses + playerChampion.wins;
         final kills = playerChampion.totalKills;
         final deaths = playerChampion.totalDeaths;
-        final winRate = playerChampion.wins * 100 / matches;
-        final kda = (kills + playerChampion.totalAssists) / deaths;
+        final winRate = playerChampion.winRate;
+        final matches = playerChampion.matches;
+        final kda = playerChampion.kda;
         final level = playerChampion.level;
         final playTime = playerChampion.playTime;
         final lastPlayed = playerChampion.lastPlayed;
@@ -74,60 +74,6 @@ class PlayerChampionsDataSource extends DataGridSource {
     );
   }
 
-  TextStyle _getKDAStyle(double kda) {
-    if (kda > 3.8) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-      );
-    }
-    if (kda > 3) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.orange,
-        fontWeight: FontWeight.bold,
-      );
-    }
-    if (kda < 1) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.red,
-        fontSize: 15,
-      );
-    }
-
-    return const TextStyle(fontSize: 14);
-  }
-
-  TextStyle _getWinRateStyle(double winRate) {
-    if (winRate > 60) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-      );
-    }
-    if (winRate > 55) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.orange,
-        fontWeight: FontWeight.bold,
-      );
-    }
-    if (winRate < 42) {
-      return TextStyle(
-        fontFamily: fontFamily,
-        color: Colors.red,
-        fontSize: 15,
-      );
-    }
-
-    return const TextStyle(fontSize: 14);
-  }
-
   Widget _getChampCellWidget(DataGridCell dataGridCell) {
     final sortedData =
         dataGridCell.value as data_classes.PlayerChampionsSortData;
@@ -169,19 +115,27 @@ class PlayerChampionsDataSource extends DataGridSource {
   }
 
   Widget _getKDACellWidget(DataGridCell dataGridCell) {
+    final value = dataGridCell.value as double;
+    final kdaFormatted = value.toStringAsPrecision(3);
+    final kdaColor = utilities.getKDAColor(value);
+
     return Center(
       child: Text(
-        (dataGridCell.value as double).toStringAsPrecision(3),
-        style: _getKDAStyle(dataGridCell.value as double),
+        kdaFormatted,
+        style: TextStyle(color: kdaColor),
       ),
     );
   }
 
   Widget _getWinRateCellWidget(DataGridCell dataGridCell) {
+    final value = dataGridCell.value as double;
+    final winRateFormatted = value.toStringAsPrecision(3);
+    final winRateColor = utilities.getWinRateColor(value);
+
     return Center(
       child: Text(
-        "${dataGridCell.value.toStringAsPrecision(3)}%",
-        style: _getWinRateStyle(dataGridCell.value as double),
+        "$winRateFormatted%",
+        style: TextStyle(color: winRateColor),
       ),
     );
   }

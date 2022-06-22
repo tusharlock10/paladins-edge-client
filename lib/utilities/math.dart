@@ -1,5 +1,7 @@
 import "dart:math";
 
+import "package:intl/intl.dart";
+
 /// Round a `number` to nearest multiple of 10
 /// eg. 1733 has nearest multiple of 10 as 1000
 /// so the result will be 2000
@@ -43,4 +45,8 @@ int roundToNearestTenth(
   }
 
   return intResult;
+}
+
+String humanizeNumber(num number) {
+  return NumberFormat.compact().format(number);
 }

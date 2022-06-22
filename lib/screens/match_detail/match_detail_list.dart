@@ -5,7 +5,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
-import "package:paladinsedge/screens/match_detail/match_detail_player.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_team_header.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -64,9 +64,9 @@ class MatchDetailList extends HookConsumerWidget {
         );
         for (var matchPlayer in matchPlayers) {
           if (matchPlayer.team == team) {
-            teamStats.kills += matchPlayer.playerStats.kills;
-            teamStats.deaths += matchPlayer.playerStats.deaths;
-            teamStats.assists += matchPlayer.playerStats.assists;
+            teamStats.kills += matchPlayer.playerStats.kills.toInt();
+            teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
+            teamStats.assists += matchPlayer.playerStats.assists.toInt();
           }
         }
 
@@ -129,7 +129,7 @@ class MatchDetailList extends HookConsumerWidget {
                       matchDetails.match.winningTeam == matchPlayer.team,
                   matchPlayer: matchPlayer,
                 ),
-              MatchDetailPlayer(
+              MatchDetailPlayerCard(
                 matchPlayer: matchPlayer,
                 averageCredits: averageCredits,
               ),

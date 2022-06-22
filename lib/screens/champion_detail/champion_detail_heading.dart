@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:intl/intl.dart";
 import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionDetailHeading extends ConsumerWidget {
@@ -22,7 +22,7 @@ class ChampionDetailHeading extends ConsumerWidget {
 
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
-    final health = NumberFormat.compact().format(champion.health).toString();
+    final health = utilities.humanizeNumber(champion.health);
     String range = "";
 
     if (champion.damageFallOffRange == 0) {

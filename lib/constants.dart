@@ -37,11 +37,13 @@ abstract class Urls {
   static const playerInferred = "/players/playerInferred"; // GET
 
   // queue
-  static const queueDetails = "/queue/queueDetails"; // GET
   static const queueTimeline = "/queue/queueTimeline"; // GET
 
   // bountyStore
   static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
+
+  // items
+  static const itemDetails = "/items/itemDetails"; // GET
 
   // match
   static const matchDetails = "/match/matchDetails"; // GET
@@ -103,6 +105,7 @@ abstract class TypeIds {
   static const recordExpiry = 12;
   static const bountyStore = 13;
   static const queue = 14;
+  static const item = 15;
 }
 
 abstract class NotificationChannels {
@@ -144,6 +147,7 @@ abstract class HiveBoxes {
   static const bountyStore = "bountyStore";
   static const playerChampion = "playerChampion";
   static const queueTimeline = "queueTimeline";
+  static const item = "item";
 }
 
 enum RecordExpiryName {
@@ -152,6 +156,7 @@ enum RecordExpiryName {
   bountyStore,
   playerChampion,
   queueTimeline,
+  item,
 }
 
 abstract class RecordExpiryDuration {
@@ -161,6 +166,7 @@ abstract class RecordExpiryDuration {
   static const bountyStoreDuration = Duration(days: 1);
   static const playerChampionDuration = Duration(days: 1);
   static const queueTimelineDuration = Duration(minutes: 10);
+  static const itemDuration = Duration(days: 1);
 }
 
 abstract class ImageAspectRatios {
@@ -282,4 +288,11 @@ class PaladinsGuruSite {
 
   static String champions(String playerId) =>
       "$_baseUrl/profile/$playerId/champions";
+}
+
+abstract class ChampionRoles {
+  static const damage = "Damage";
+  static const flank = "Flank";
+  static const tank = "Tank";
+  static const support = "support";
 }

@@ -95,13 +95,10 @@ abstract class ChampionsSort {
       case _level:
         return null;
       case _winRate:
-        if (combinedChampion.playerChampion == null) return "Not Played";
-        final playerChampion = combinedChampion.playerChampion!;
-        final matches = playerChampion.wins + playerChampion.losses;
-        if (matches == 0) return null;
-        final winRate = playerChampion.wins * 100 / matches;
-
-        return "WR ${winRate.toStringAsPrecision(3)}%";
+        final winRateFormatted =
+            combinedChampion.playerChampion?.winRateFormatted;
+        if (winRateFormatted == null) return "Not Played";
+        return "WR $winRateFormatted%";
       case _lastPlayed:
         if (combinedChampion.playerChampion == null) return "Not Played";
         final formattedLastPlayed =
