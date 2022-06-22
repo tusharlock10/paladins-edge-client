@@ -21,8 +21,8 @@ class ItemAdapter extends TypeAdapter<Item> {
       name: fields[1] as String,
       description: fields[2] as String,
       price: fields[3] as int,
-      imageUrl: fields[4] as String,
       imageBlurHash: fields[5] as String?,
+      imageUrl: fields[4] as String,
     );
   }
 
@@ -64,8 +64,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       name: json['name'] as String,
       description: json['description'] as String,
       price: json['price'] as int,
-      imageUrl: json['imageUrl'] as String,
       imageBlurHash: json['imageBlurHash'] as String?,
+      imageUrl: json['imageUrl'] as String,
     );
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{

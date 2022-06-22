@@ -10,6 +10,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -88,13 +89,12 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
+    final items = ref.watch(providers.items.select((_) => _.items));
 
     // Variables
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
-    final expandedController = ExpandableController(
-      initialExpanded: true,
-    ); // TODO: make this false
+    final expandedController = ExpandableController(initialExpanded: false);
     final kills = matchPlayer.playerStats.kills;
     final deaths = matchPlayer.playerStats.deaths;
     final assists = matchPlayer.playerStats.assists;
@@ -114,6 +114,28 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
         );
       },
       [matchPlayer, champions],
+    );
+    final playerItemsUsed = useMemoized(
+      () {
+        final List<data_classes.MatchPlayerItemUsed> playerItemsUsed = [];
+        if (items == null) return playerItemsUsed;
+
+        for (final playerItem in matchPlayer.playerItems) {
+          final item = items
+              .firstOrNullWhere((item) => item.itemId == playerItem.itemId);
+          if (item != null) {
+            playerItemsUsed.add(
+              data_classes.MatchPlayerItemUsed(
+                playerItem: playerItem,
+                item: item,
+              ),
+            );
+          }
+        }
+
+        return playerItemsUsed;
+      },
+      [matchPlayer, items],
     );
     final talentUsed = useMemoized(
       () {
@@ -240,7 +262,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             ],
                           ),
                     matchPlayer.playerRanked == null
-                        ? const SizedBox(width: 20)
+                        ? const SizedBox(width: 5)
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Column(
@@ -404,12 +426,38 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                 collapsed: const SizedBox(),
                 expanded: Column(
                   children: [
-                    if (champion != null)
-                      widgets.MatchPlayerLoadout(
-                        matchPlayer: matchPlayer,
-                        champion: champion,
-                        size: 36,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: utilities.insertBetween(
+                          [
+                            ...playerItemsUsed.map(
+                              (playerItemUsed) => widgets.FastImage(
+                                width: 32,
+                                height:
+                                    32 / constants.ImageAspectRatios.itemIcon,
+                                imageUrl: playerItemUsed.item.imageUrl,
+                                imageBlurHash:
+                                    playerItemUsed.item.imageBlurHash,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                              ),
+                            ),
+                            const Expanded(
+                              child: SizedBox(),
+                            ),
+                            if (champion != null)
+                              widgets.MatchPlayerLoadout(
+                                matchPlayer: matchPlayer,
+                                champion: champion,
+                                size: 38,
+                              ),
+                          ],
+                          const SizedBox(width: 5),
+                        ),
                       ),
+                    ),
                     const SizedBox(height: 10),
                     SizedBox(
                       height: _PlayerStatsCard.itemHeight,

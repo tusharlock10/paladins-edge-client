@@ -1,6 +1,7 @@
 import "package:hive/hive.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/constants.dart" show TypeIds;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 part "item.g.dart";
 
@@ -31,14 +32,14 @@ class Item {
   @HiveField(5)
   final String? imageBlurHash;
 
-  const Item({
+  Item({
     required this.itemId,
     required this.name,
     required this.description,
     required this.price,
-    required this.imageUrl,
     required this.imageBlurHash,
-  });
+    required String imageUrl,
+  }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
   Map<String, dynamic> toJson() => _$ItemToJson(this);

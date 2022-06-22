@@ -1,6 +1,6 @@
 import "dart:math";
 
-import 'package:intl/intl.dart';
+import "package:intl/intl.dart";
 
 /// Round a `number` to nearest multiple of 10
 /// eg. 1733 has nearest multiple of 10 as 1000

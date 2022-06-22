@@ -77,18 +77,18 @@ class MatchPlayerStats {
 }
 
 @JsonSerializable()
-class MatchPlayerItems {
+class MatchPlayerItem {
   final int itemId; // item id as per paladins api
   final int itemLevel; // level of item bought by the player in game
 
-  MatchPlayerItems({
+  MatchPlayerItem({
     required this.itemId,
     required this.itemLevel,
   });
 
-  factory MatchPlayerItems.fromJson(Map<String, dynamic> json) =>
-      _$MatchPlayerItemsFromJson(json);
-  Map<String, dynamic> toJson() => _$MatchPlayerItemsToJson(this);
+  factory MatchPlayerItem.fromJson(Map<String, dynamic> json) =>
+      _$MatchPlayerItemFromJson(json);
+  Map<String, dynamic> toJson() => _$MatchPlayerItemToJson(this);
 }
 
 @JsonSerializable()
@@ -145,7 +145,7 @@ class MatchPlayer {
   final MatchPlayerStats playerStats;
 
   /// items bought by the player
-  final List<MatchPlayerItems> playerItems;
+  final List<MatchPlayerItem> playerItems;
 
   /// champion cards used by the player
   final List<MatchPlayerChampionCard> playerChampionCards;

@@ -70,7 +70,6 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: _itemMargin),
       borderRadius: 10,
       backgroundImage: champion.splashUrl,
-      backgroundImageBlurHash: champion.splashBlurHash,
       child: Row(
         children: [
           Container(

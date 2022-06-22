@@ -1,7 +1,7 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
-import "package:paladinsedge/widgets/fast_image.dart";
 
 class InteractiveCard extends HookWidget {
   final Widget child;
@@ -15,7 +15,6 @@ class InteractiveCard extends HookWidget {
   final Color? color;
   final Color? hoverBorderColor;
   final String? backgroundImage;
-  final String? backgroundImageBlurHash;
 
   const InteractiveCard({
     required this.child,
@@ -29,7 +28,6 @@ class InteractiveCard extends HookWidget {
     this.color,
     this.hoverBorderColor,
     this.backgroundImage,
-    this.backgroundImageBlurHash,
     Key? key,
   }) : super(key: key);
 
@@ -76,26 +74,21 @@ class InteractiveCard extends HookWidget {
         ),
         child: InkWell(
           onTap: onTap,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              if (backgroundImage != null)
-                Opacity(
-                  opacity: brightness == Brightness.light ? 0.145 : 0.225,
-                  child: FastImage(
-                    imageBlurHash: backgroundImageBlurHash,
-                    imageUrl: backgroundImage!,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                  ),
-                ),
-              Padding(
-                padding: padding,
-                child: child,
-              ),
-            ],
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              image: backgroundImage == null
+                  ? null
+                  : DecorationImage(
+                      image: CachedNetworkImageProvider(backgroundImage!),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                      opacity: brightness == Brightness.light ? 0.145 : 0.225,
+                    ),
+            ),
+            child: Padding(
+              padding: padding,
+              child: child,
+            ),
           ),
         ),
       ),

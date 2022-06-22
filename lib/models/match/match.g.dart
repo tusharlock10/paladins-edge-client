@@ -40,13 +40,13 @@ Map<String, dynamic> _$MatchPlayerStatsToJson(MatchPlayerStats instance) =>
       'creditsEarned': instance.creditsEarned,
     };
 
-MatchPlayerItems _$MatchPlayerItemsFromJson(Map<String, dynamic> json) =>
-    MatchPlayerItems(
+MatchPlayerItem _$MatchPlayerItemFromJson(Map<String, dynamic> json) =>
+    MatchPlayerItem(
       itemId: json['itemId'] as int,
       itemLevel: json['itemLevel'] as int,
     );
 
-Map<String, dynamic> _$MatchPlayerItemsToJson(MatchPlayerItems instance) =>
+Map<String, dynamic> _$MatchPlayerItemToJson(MatchPlayerItem instance) =>
     <String, dynamic>{
       'itemId': instance.itemId,
       'itemLevel': instance.itemLevel,
@@ -83,7 +83,7 @@ MatchPlayer _$MatchPlayerFromJson(Map<String, dynamic> json) => MatchPlayer(
       playerStats: MatchPlayerStats.fromJson(
           json['playerStats'] as Map<String, dynamic>),
       playerItems: (json['playerItems'] as List<dynamic>)
-          .map((e) => MatchPlayerItems.fromJson(e as Map<String, dynamic>))
+          .map((e) => MatchPlayerItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       playerChampionCards: (json['playerChampionCards'] as List<dynamic>)
           .map((e) =>
