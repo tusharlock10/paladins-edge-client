@@ -32,6 +32,16 @@ class Ranked {
   @HiveField(5)
   final int? points;
 
+  // total ranked matches played
+  int get matches => wins + looses;
+
+  /// win rate of the player in ranked (0 to 1)
+  double? get winRate => matches == 0 ? null : wins / matches;
+
+  /// win rate formatted into a string
+  String? get winRateFormatted =>
+      winRate == null ? null : (winRate! * 100).toStringAsPrecision(3);
+
   Ranked({
     required this.wins,
     required this.looses,

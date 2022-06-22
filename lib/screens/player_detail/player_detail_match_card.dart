@@ -3,10 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:intl/intl.dart";
 import "package:jiffy/jiffy.dart";
-import "package:paladinsedge/constants.dart" as constants;
-import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -40,20 +37,17 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final playerStats = matchPlayer.playerStats;
-    final talentUsed = champion.talents
-        .firstOrNullWhere((_) => _.talentId2 == matchPlayer.talentId2);
-    final loadout = matchPlayer.playerChampionCards.map(
-      (playerChampionCard) {
-        // find the card from that champion
-        final card = champion.cards
-            .firstOrNullWhere((_) => _.cardId2 == playerChampionCard.cardId2);
-
-        return data_classes.LoadoutItem(
-          card: card,
-          cardLevel: playerChampionCard.cardLevel,
-        );
-      },
+    final talentUsed = champion.talents.firstOrNullWhere(
+      (_) => _.talentId2 == matchPlayer.talentId2,
     );
+    final isMVP = matchPlayer.matchPosition == 1;
+    final matchPlayerHighestStat = utilities.matchPlayerHighestStat(
+      matchPlayer.playerStats,
+      champion.role,
+      true,
+    );
+    final highestStatText =
+        "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}";
 
     // Methods
     final onTap = useCallback(
@@ -76,7 +70,6 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: _itemMargin),
       borderRadius: 10,
       backgroundImage: champion.splashUrl,
-      backgroundImageBlurHash: champion.splashBlurHash,
       child: Row(
         children: [
           Container(
@@ -99,15 +92,37 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                       imageBlurHash: champion.iconBlurHash,
                       size: 28,
                       borderRadius: 28,
+                      borderSide: isMVP
+                          ? const BorderSide(
+                              color: Colors.orange,
+                              width: 2.5,
+                            )
+                          : null,
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}",
-                            style: textTheme.bodyText1?.copyWith(fontSize: 18),
+                          RichText(
+                            text: TextSpan(
+                              style: textTheme.bodyText1
+                                  ?.copyWith(fontSize: isMVP ? 16 : 18),
+                              children: [
+                                if (isMVP)
+                                  const TextSpan(
+                                    text: "MVP  ",
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                TextSpan(
+                                  text:
+                                      "${playerStats.kills} / ${playerStats.deaths} / ${playerStats.assists}",
+                                ),
+                              ],
+                            ),
                           ),
                           Text(
                             match.map
@@ -133,25 +148,10 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                             height: 48,
                             width: 48,
                           ),
-                    ...loadout.map(
-                      (loadoutItem) {
-                        final cardImageUrl = loadoutItem.card?.imageUrl;
-                        if (cardImageUrl == null) return const SizedBox();
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: widgets.FastImage(
-                            imageUrl: utilities.getSmallAsset(cardImageUrl),
-                            imageBlurHash: loadoutItem.card?.imageBlurHash,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                            height: 24,
-                            width:
-                                24 * constants.ImageAspectRatios.championCard,
-                          ),
-                        );
-                      },
-                    ).toList(),
+                    widgets.MatchPlayerLoadout(
+                      champion: champion,
+                      matchPlayer: matchPlayer,
+                    ),
                   ],
                 ),
               ],
@@ -174,11 +174,11 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                     builder: (_) {
                       return Text(
                         Jiffy(match.matchStartTime).fromNow(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: textTheme.bodyText1?.copyWith(fontSize: 13),
                       );
                     },
                   ),
-                  matchPlayer.playerStats.biggestKillStreak > 5
+                  matchPlayer.playerStats.biggestKillStreak > 7
                       ? widgets.TextChip(
                           icon: FeatherIcons.zap,
                           color: Colors.orange,
@@ -186,24 +186,11 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                               "${matchPlayer.playerStats.biggestKillStreak} streak",
                         )
                       : const SizedBox(),
-                  matchPlayer.playerStats.totalDamageDealt >
-                          matchPlayer.playerStats.healingDone
-                      ? Text(
-                          "${NumberFormat.compact().format(matchPlayer.playerStats.totalDamageDealt)} Dmg",
-                          style: textTheme.bodyText1?.copyWith(
-                            fontSize: 12,
-                            color: Colors.red.shade400,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        )
-                      : Text(
-                          "${NumberFormat.compact().format(matchPlayer.playerStats.healingDone)} Heal",
-                          style: textTheme.bodyText1?.copyWith(
-                            fontSize: 12,
-                            color: Colors.green.shade400,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
+                  widgets.TextChip(
+                    text: highestStatText,
+                    color: matchPlayerHighestStat.color,
+                    icon: matchPlayerHighestStat.icon,
+                  ),
                 ],
               ),
             ),

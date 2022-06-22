@@ -21,6 +21,7 @@ class Home extends HookConsumerWidget {
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
+    final itemsProvider = ref.read(providers.items);
     final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
 
@@ -29,6 +30,7 @@ class Home extends HookConsumerWidget {
       () {
         bountyStoreProvider.loadBountyStore(false);
         queueProvider.getQueueTimeline(false);
+        itemsProvider.loadItems(false);
 
         return;
       },
@@ -41,6 +43,7 @@ class Home extends HookConsumerWidget {
         return await Future.wait([
           bountyStoreProvider.loadBountyStore(true),
           queueProvider.getQueueTimeline(true),
+          itemsProvider.loadItems(true),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),
         ]);

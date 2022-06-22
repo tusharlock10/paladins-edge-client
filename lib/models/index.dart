@@ -3,6 +3,7 @@ export "./bounty_store/bounty_store.dart";
 export "./champion/champion.dart";
 export "./essentials/essentials.dart";
 export "./feedback/feedback.dart";
+export "./item/item.dart";
 export "./loadout/loadout.dart";
 export "./match/match.dart";
 export "./player/player.dart";

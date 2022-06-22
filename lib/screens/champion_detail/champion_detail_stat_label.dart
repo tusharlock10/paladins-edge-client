@@ -29,7 +29,6 @@ class StatLabel extends StatelessWidget {
             text,
             style: theme.textTheme.headline1?.copyWith(
               fontSize: 14,
-              fontWeight: FontWeight.w200,
               color: Colors.white,
             ),
           ),
