@@ -104,7 +104,7 @@ class GlobalChat extends HookConsumerWidget {
               hideBackgroundOnEmojiMessages: false,
               emojiEnlargementBehavior: EmojiEnlargementBehavior.single,
               customBottomWidget: isGuest
-                  ? const Text("Login to send messages")
+                  ? const SizedBox()
                   : GlobalChatInput(
                       onSendPressed: globalChatProvider.sendNewMessage,
                       onTyping: globalChatProvider.sendTypingMetadata,

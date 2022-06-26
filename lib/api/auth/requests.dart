@@ -105,4 +105,18 @@ abstract class AuthRequests {
       return false;
     }
   }
+
+  static Future<responses.FaqsResponse?> faqs() async {
+    try {
+      final response = await utilities.api
+          .get<Map<String, dynamic>>(constants.Urls.essentials);
+      if (response.data != null) {
+        return responses.FaqsResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

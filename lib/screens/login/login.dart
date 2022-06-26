@@ -13,14 +13,15 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Login extends HookConsumerWidget {
   static const routeName = "login";
   static const routePath = "/login";
-  static final goRoute = GoRoute(
-    name: routeName,
-    path: routePath,
-    pageBuilder: _routeBuilder,
-    redirect: _routeRedirect,
-  );
-
   const Login({Key? key}) : super(key: key);
+
+  static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
+        name: routeName,
+        path: routePath,
+        routes: routes,
+        pageBuilder: _routeBuilder,
+        redirect: _routeRedirect,
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,6 +80,13 @@ class Login extends HookConsumerWidget {
       [],
     );
 
+    final onFAQ = useCallback(
+      () {
+        utilities.Navigation.navigate(context, screens.Faqs.loginRouteName);
+      },
+      [],
+    );
+
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -96,11 +104,13 @@ class Login extends HookConsumerWidget {
                 isLoggingIn: isLoggingIn.value,
                 onGoogleSignIn: onGoogleSignIn,
                 onGuestLogin: onGuestLogin,
+                onFAQ: onFAQ,
               )
             : LoginLandscape(
                 isLoggingIn: isLoggingIn.value,
                 onGoogleSignIn: onGoogleSignIn,
                 onGuestLogin: onGuestLogin,
+                onFAQ: onFAQ,
               ),
       ),
     );
