@@ -106,7 +106,6 @@ class ChampionDetail extends HookConsumerWidget {
           widgets.showLoginModal(data_classes.ShowLoginModalOptions(
             context: context,
             loginCta: constants.LoginCTA.loadoutFab,
-            onSuccess: onLoadoutPressHelper,
           ));
         } else {
           onLoadoutPressHelper();

@@ -5,12 +5,14 @@ class InteractiveText extends StatelessWidget {
   final void Function()? onTap;
   final TextStyle style;
   final bool isInteractive;
+  final bool showUnderline;
 
   const InteractiveText(
     this.text, {
     required this.onTap,
     this.style = const TextStyle(),
     this.isInteractive = false,
+    this.showUnderline = true,
     Key? key,
   }) : super(key: key);
 
@@ -24,7 +26,7 @@ class InteractiveText extends StatelessWidget {
           text,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
-          style: onTap == null
+          style: onTap == null || !showUnderline
               ? style
               : style.copyWith(
                   decoration: TextDecoration.underline,

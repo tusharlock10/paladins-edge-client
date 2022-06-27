@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:paladinsedge/gen/assets.gen.dart";
@@ -10,11 +11,13 @@ class GoogleButton extends HookWidget {
   final bool isLoggingIn;
   final void Function() onGoogleSignIn;
   final void Function()? onGuestLogin;
+  final void Function()? onFAQ;
   final double? width;
 
   const GoogleButton({
     required this.isLoggingIn,
     required this.onGoogleSignIn,
+    required this.onFAQ,
     this.onGuestLogin,
     this.width,
     Key? key,
@@ -75,16 +78,37 @@ class GoogleButton extends HookWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         if ((onGuestLogin != null) && enableGuestLogin)
+          widgets.InteractiveText(
+            "Continue as guest",
+            onTap: onGuestLogin!,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+        if (onFAQ != null)
           TextButton(
-            onPressed: onGuestLogin,
-            child: const Text(
-              "Continue as guest",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
+            onPressed: onFAQ,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widgets.InteractiveText(
+                  "View FAQs",
+                  onTap: onFAQ,
+                  showUnderline: false,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+                const Icon(
+                  FeatherIcons.chevronRight,
+                  color: Colors.white,
+                  size: 14,
+                ),
+              ],
             ),
           ),
         const SizedBox(height: 12),

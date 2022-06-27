@@ -22,10 +22,15 @@ final _mainRoutes = [
   screens.ActiveMatch.userGoRoute,
   screens.Feedback.goRoute,
   screens.GlobalChat.goRoute,
+  screens.Faqs.goRoute,
+];
+
+final _loginRoutes = [
+  screens.Faqs.loginGoRoute,
 ];
 
 final rootRoutes = [
-  screens.Login.goRoute,
+  screens.Login.goRouteBuilder(_loginRoutes),
   screens.ConnectProfile.goRoute,
   screens.Main.goRouteBuilder(_mainRoutes),
 ];

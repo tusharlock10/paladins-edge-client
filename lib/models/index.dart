@@ -2,6 +2,7 @@ export "./active_match/active_match.dart";
 export "./bounty_store/bounty_store.dart";
 export "./champion/champion.dart";
 export "./essentials/essentials.dart";
+export "./faq/faq.dart";
 export "./feedback/feedback.dart";
 export "./item/item.dart";
 export "./loadout/loadout.dart";

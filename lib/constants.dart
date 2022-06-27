@@ -19,6 +19,7 @@ abstract class Urls {
   static const claimPlayer = "/auth/claimPlayer"; // POST
   static const fcmToken = "/auth/fcmToken"; // POST
   static const essentials = "/auth/essentials"; // GET
+  static const faqs = "/auth/faqs"; // GET
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -273,6 +274,11 @@ and visit their profile directly
 view your in-game loadouts,
 create and save your own
 loadouts outside the game 
+"""
+      .replaceAll("\n", " ");
+
+  static final globalChat = """Global Chat allows you to send
+messages to other players, and start discussions.
 """
       .replaceAll("\n", " ");
 }

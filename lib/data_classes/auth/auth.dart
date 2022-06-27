@@ -10,12 +10,10 @@ enum FavouriteFriendResult {
 class ShowLoginModalOptions {
   final BuildContext context;
   final String loginCta;
-  void Function() onSuccess;
 
   ShowLoginModalOptions({
     required this.context,
     required this.loginCta,
-    required this.onSuccess,
   });
 }
 

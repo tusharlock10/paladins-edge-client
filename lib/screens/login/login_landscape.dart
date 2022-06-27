@@ -7,11 +7,13 @@ class LoginLandscape extends StatelessWidget {
   final bool isLoggingIn;
   final void Function() onGoogleSignIn;
   final void Function() onGuestLogin;
+  final void Function() onFAQ;
 
   const LoginLandscape({
     required this.isLoggingIn,
     required this.onGoogleSignIn,
     required this.onGuestLogin,
+    required this.onFAQ,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +35,7 @@ class LoginLandscape extends StatelessWidget {
                 isLoggingIn: isLoggingIn,
                 onGoogleSignIn: onGoogleSignIn,
                 onGuestLogin: onGuestLogin,
+                onFAQ: onFAQ,
               ),
             ],
           ),

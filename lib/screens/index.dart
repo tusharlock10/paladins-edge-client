@@ -3,6 +3,7 @@ export "./champion_detail/index.dart";
 export "./champions/index.dart";
 export "./connect_profile/index.dart";
 export "./create_loadout/index.dart";
+export "./faqs/index.dart";
 export "./feedback/index.dart";
 export "./friends/index.dart";
 export "./global_chat/index.dart";

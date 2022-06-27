@@ -38,6 +38,7 @@ class _AuthNotifier extends ChangeNotifier {
   models.User? user;
   models.Player? player;
   models.Settings settings = models.Settings();
+  List<models.FAQ>? faqs;
 
   _AuthNotifier({required this.ref});
 
@@ -294,6 +295,14 @@ class _AuthNotifier extends ChangeNotifier {
     notifyListeners();
 
     return data_classes.FavouriteFriendResult.added;
+  }
+
+  void getFAQs() async {
+    final response = await api.AuthRequests.faqs();
+    if (response != null) {
+      faqs = response.faqs;
+      notifyListeners();
+    }
   }
 
   /// Toggle the theme from `light` to `dark` and vice versa
