@@ -65,3 +65,14 @@ Map<String, dynamic> _$EssentialsResponseToJson(EssentialsResponse instance) =>
     <String, dynamic>{
       'essentials': instance.essentials,
     };
+
+FaqsResponse _$FaqsResponseFromJson(Map<String, dynamic> json) => FaqsResponse(
+      faqs: (json['faqs'] as List<dynamic>)
+          .map((e) => FAQ.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
+    <String, dynamic>{
+      'faqs': instance.faqs,
+    };

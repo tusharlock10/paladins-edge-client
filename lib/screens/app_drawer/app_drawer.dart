@@ -12,7 +12,6 @@ import "package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
-import "package:paladinsedge/widgets/login_modal.dart";
 
 class AppDrawer extends HookConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -99,10 +98,9 @@ class AppDrawer extends HookConsumerWidget {
       () {
         if (isGuest) {
           utilities.Navigation.pop(context);
-          showLoginModal(
+          widgets.showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
-              onSuccess: onFriendsHelper,
               loginCta: constants.LoginCTA.friendsDrawer,
             ),
           );
@@ -130,10 +128,9 @@ class AppDrawer extends HookConsumerWidget {
       () {
         if (isGuest) {
           utilities.Navigation.pop(context);
-          showLoginModal(
+          widgets.showLoginModal(
             data_classes.ShowLoginModalOptions(
               context: context,
-              onSuccess: onActiveMatchHelper,
               loginCta: constants.LoginCTA.activeMatchDrawer,
             ),
           );
@@ -152,10 +149,35 @@ class AppDrawer extends HookConsumerWidget {
       [player],
     );
 
-    final onGlobalChat = useCallback(
+    final onGlobalChatHelper = useCallback(
       () {
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(context, screens.GlobalChat.routeName);
+      },
+      [],
+    );
+
+    final onGlobalChat = useCallback(
+      () {
+        if (isGuest) {
+          utilities.Navigation.pop(context);
+          widgets.showLoginModal(
+            data_classes.ShowLoginModalOptions(
+              context: context,
+              loginCta: constants.LoginCTA.globalChat,
+            ),
+          );
+        } else {
+          onGlobalChatHelper();
+        }
+      },
+      [],
+    );
+
+    final onFAQ = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Faqs.routeName);
       },
       [],
     );
@@ -202,6 +224,10 @@ class AppDrawer extends HookConsumerWidget {
             AppDrawerButton(
               label: "Global Chat",
               onPressed: onGlobalChat,
+            ),
+            AppDrawerButton(
+              label: "FAQs",
+              onPressed: onFAQ,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

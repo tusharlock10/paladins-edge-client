@@ -131,6 +131,7 @@ class _LoginModal extends HookConsumerWidget {
         GoogleButton(
           isLoggingIn: isLoggingIn.value,
           onGoogleSignIn: onGoogleSignIn,
+          onFAQ: null,
           width: width - 30,
         ),
         const SizedBox(height: 15),
