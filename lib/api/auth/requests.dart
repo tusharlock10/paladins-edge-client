@@ -108,8 +108,8 @@ abstract class AuthRequests {
 
   static Future<responses.FaqsResponse?> faqs() async {
     try {
-      final response = await utilities.api
-          .get<Map<String, dynamic>>(constants.Urls.essentials);
+      final response =
+          await utilities.api.get<Map<String, dynamic>>(constants.Urls.faqs);
       if (response.data != null) {
         return responses.FaqsResponse.fromJson(response.data!);
       }

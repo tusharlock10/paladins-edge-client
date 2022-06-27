@@ -542,11 +542,14 @@ class _PlayerStatsCard extends StatelessWidget {
     // Variables
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
-    final String? formattedStat;
-    formattedStat = statString ??
+    String formattedStat = statString ??
         (stat < 8000
             ? stat.toStringAsPrecision(stat.toInt().toString().length + 1)
             : utilities.humanizeNumber(stat));
+
+    if (num.tryParse(formattedStat)?.toInt() == stat) {
+      formattedStat = stat.toInt().toString();
+    }
 
     return SizedBox(
       width: itemWidth,
@@ -639,60 +642,65 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
         const SizedBox(height: 10),
         _PlayerInfo(player: player),
         const SizedBox(height: 20),
-        Text(
-          "RECENTLY PLAYED WITH",
-          style: textTheme.bodyText1?.copyWith(
-            fontSize: 14,
-            color: textTheme.bodyText1?.color,
-            fontWeight: FontWeight.bold,
+        if (recentPartyMembers.isNotEmpty) ...[
+          Text(
+            "RECENTLY PLAYED WITH",
+            style: textTheme.bodyText1?.copyWith(
+              fontSize: 14,
+              color: textTheme.bodyText1?.color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: _RecentPartyMemberCard.itemHeight,
-          child: ListView.separated(
-            separatorBuilder: (_, __) => const SizedBox(width: 10),
-            scrollDirection: Axis.horizontal,
-            itemCount: recentPartyMembers.length,
-            itemBuilder: (_, index) {
-              final recentPartyMember = recentPartyMembers.elementAt(index);
+          const SizedBox(height: 10),
+          SizedBox(
+            height: _RecentPartyMemberCard.itemHeight,
+            child: ListView.separated(
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              scrollDirection: Axis.horizontal,
+              itemCount: recentPartyMembers.length,
+              itemBuilder: (_, index) {
+                final recentPartyMember = recentPartyMembers.elementAt(index);
 
-              return _RecentPartyMemberCard(player: recentPartyMember);
-            },
+                return _RecentPartyMemberCard(player: recentPartyMember);
+              },
+            ),
           ),
-        ),
+        ],
         const SizedBox(height: 20),
-        Text(
-          "RECENTLY PLAYED CHAMPION${recentlyPlayedChampions.length != 1 ? 'S' : ''}",
-          style: textTheme.bodyText1?.copyWith(
-            fontSize: 14,
-            color: textTheme.bodyText1?.color,
-            fontWeight: FontWeight.bold,
+        if (recentlyPlayedChampions.isNotEmpty) ...[
+          Text(
+            "RECENTLY PLAYED CHAMPION${recentlyPlayedChampions.length != 1 ? 'S' : ''}",
+            style: textTheme.bodyText1?.copyWith(
+              fontSize: 14,
+              color: textTheme.bodyText1?.color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: _RecentlyPlayedChampionCard.itemHeight,
-          child: ListView.separated(
-            separatorBuilder: (_, __) => const SizedBox(width: 10),
-            scrollDirection: Axis.horizontal,
-            itemCount: recentlyPlayedChampions.length,
-            itemBuilder: (_, index) {
-              final recentlyPlayedChampion = recentlyPlayedChampions.elementAt(
-                index,
-              );
-              final recentlyPlayedPlayerChampion =
-                  recentlyPlayedPlayerChampions.elementAt(
-                index,
-              );
+          const SizedBox(height: 10),
+          SizedBox(
+            height: _RecentlyPlayedChampionCard.itemHeight,
+            child: ListView.separated(
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              scrollDirection: Axis.horizontal,
+              itemCount: recentlyPlayedChampions.length,
+              itemBuilder: (_, index) {
+                final recentlyPlayedChampion =
+                    recentlyPlayedChampions.elementAt(
+                  index,
+                );
+                final recentlyPlayedPlayerChampion =
+                    recentlyPlayedPlayerChampions.elementAt(
+                  index,
+                );
 
-              return _RecentlyPlayedChampionCard(
-                champion: recentlyPlayedChampion,
-                playerChampion: recentlyPlayedPlayerChampion,
-              );
-            },
+                return _RecentlyPlayedChampionCard(
+                  champion: recentlyPlayedChampion,
+                  playerChampion: recentlyPlayedPlayerChampion,
+                );
+              },
+            ),
           ),
-        ),
+        ],
         const SizedBox(height: 20),
         Text(
           "AVERAGE STATS PER MATCH",

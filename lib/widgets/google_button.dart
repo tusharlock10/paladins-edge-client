@@ -78,47 +78,39 @@ class GoogleButton extends HookWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
-        Column(
-          children: [
-            if ((onGuestLogin != null) && enableGuestLogin)
-              TextButton(
-                onPressed: onGuestLogin,
-                child: const Text(
-                  "Continue as guest",
-                  style: TextStyle(
+        const SizedBox(height: 10),
+        if ((onGuestLogin != null) && enableGuestLogin)
+          widgets.InteractiveText(
+            "Continue as guest",
+            onTap: onGuestLogin!,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+        if (onFAQ != null)
+          TextButton(
+            onPressed: onFAQ,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widgets.InteractiveText(
+                  "View FAQs",
+                  onTap: onFAQ,
+                  showUnderline: false,
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 12,
                   ),
                 ),
-              ),
-            if (onGuestLogin != null)
-              TextButton(
-                onPressed: onFAQ,
-                style: TextButton.styleFrom(
-                  fixedSize: const Size.fromHeight(30),
+                const Icon(
+                  FeatherIcons.chevronRight,
+                  color: Colors.white,
+                  size: 14,
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text(
-                      "View FAQs",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(width: 2),
-                    Icon(
-                      FeatherIcons.chevronRight,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
+              ],
+            ),
+          ),
         const SizedBox(height: 12),
       ],
     );
