@@ -13,22 +13,26 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
   final String matchId;
+  final data_classes.CombinedMatch? combinedMatch;
+  final bool isSavedMatch;
   const MatchDetailList({
     required this.matchId,
+    required this.combinedMatch,
+    required this.isSavedMatch,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final matchesProvider = ref.read(providers.matches);
-    final isMatchDetailsLoading =
-        ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading));
-    final matchDetails =
-        ref.watch(providers.matches.select((_) => _.matchDetails));
+    final matchesProvider = !isSavedMatch ? ref.read(providers.matches) : null;
+    final isMatchDetailsLoading = !isSavedMatch
+        ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
+        : false;
 
     // Effects
     useEffect(
       () {
+        if (matchesProvider == null) return null;
         // call matchDetail api
         matchesProvider.getMatchDetails(matchId);
 
@@ -40,15 +44,15 @@ class MatchDetailList extends HookConsumerWidget {
     // Hooks
     final averageCredits = useMemoized(
       () {
-        if (matchDetails == null) return double.maxFinite;
+        if (combinedMatch == null) return double.maxFinite;
 
-        final totalCredits = matchDetails.matchPlayers
+        final totalCredits = combinedMatch!.matchPlayers
             .map((matchPlayer) => matchPlayer.playerStats.creditsEarned)
             .reduce((value, creditsEarned) => value + creditsEarned);
 
-        return totalCredits / matchDetails.matchPlayers.length;
+        return totalCredits / combinedMatch!.matchPlayers.length;
       },
-      [matchDetails],
+      [combinedMatch],
     );
 
     // Methods
@@ -94,7 +98,7 @@ class MatchDetailList extends HookConsumerWidget {
       );
     }
 
-    if (matchDetails == null) {
+    if (combinedMatch == null) {
       return SliverList(
         delegate: SliverChildListDelegate.fixed(
           [
@@ -112,21 +116,21 @@ class MatchDetailList extends HookConsumerWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (_, index) {
-          final matchPlayer = matchDetails.matchPlayers[index];
+          final matchPlayer = combinedMatch!.matchPlayers[index];
           final previousMatchPlayer =
-              matchDetails.matchPlayers.elementAtOrNull(index - 1);
+              combinedMatch!.matchPlayers.elementAtOrNull(index - 1);
 
           return Column(
             children: [
-              if (index == 0) const MatchDetailStats(),
+              if (index == 0) MatchDetailStats(combinedMatch: combinedMatch),
               if (matchPlayer.team != previousMatchPlayer?.team)
                 MatchDetailTeamHeader(
                   teamStats: calculateTeamStats(
                     matchPlayer.team,
-                    matchDetails.matchPlayers,
+                    combinedMatch!.matchPlayers,
                   ),
                   isWinningTeam:
-                      matchDetails.match.winningTeam == matchPlayer.team,
+                      combinedMatch!.match.winningTeam == matchPlayer.team,
                   matchPlayer: matchPlayer,
                 ),
               MatchDetailPlayerCard(
@@ -136,7 +140,7 @@ class MatchDetailList extends HookConsumerWidget {
             ],
           );
         },
-        childCount: matchDetails.matchPlayers.length,
+        childCount: combinedMatch!.matchPlayers.length,
       ),
     );
   }

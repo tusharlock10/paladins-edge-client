@@ -20,6 +20,8 @@ abstract class Urls {
   static const fcmToken = "/auth/fcmToken"; // POST
   static const essentials = "/auth/essentials"; // GET
   static const faqs = "/auth/faqs"; // GET
+  static const savedMatches = "/auth/savedMatches"; // GET
+  static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -149,6 +151,21 @@ abstract class HiveBoxes {
   static const playerChampion = "playerChampion";
   static const queueTimeline = "queueTimeline";
   static const item = "item";
+
+  static const allBoxes = [
+    token,
+    user,
+    player,
+    settings,
+    essentials,
+    searchHistory,
+    champion,
+    recordExpiry,
+    bountyStore,
+    playerChampion,
+    queueTimeline,
+    item,
+  ];
 }
 
 enum RecordExpiryName {
@@ -285,6 +302,7 @@ messages to other players, and start discussions.
 
 abstract class RemoteConfigParams {
   static const enableGuestLogin = "enableGuestLogin";
+  static const showBackgroundSplash = "showBackgroundSplash";
 }
 
 class PaladinsGuruSite {

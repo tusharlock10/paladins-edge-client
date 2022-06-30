@@ -1,2 +1,6 @@
 export "./auth.dart"
-    show FavouriteFriendResult, ShowLoginModalOptions, SignInProviderResponse;
+    show
+        FavouriteFriendResult,
+        ShowLoginModalOptions,
+        SignInProviderResponse,
+        SaveMatchResult;

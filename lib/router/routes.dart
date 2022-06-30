@@ -15,6 +15,10 @@ final _playerDetailRoutes = [
   screens.ActiveMatch.goRoute,
 ];
 
+final _savedMatchesRoutes = [
+  screens.MatchDetail.savedMatchGoRoute,
+];
+
 final _mainRoutes = [
   screens.ChampionDetail.goRouteBuilder(_championDetailRoutes),
   screens.PlayerDetail.goRouteBuilder(_playerDetailRoutes),
@@ -23,6 +27,7 @@ final _mainRoutes = [
   screens.Feedback.goRoute,
   screens.GlobalChat.goRoute,
   screens.Faqs.goRoute,
+  screens.SavedMatches.goRouteBuilder(_savedMatchesRoutes),
 ];
 
 final _loginRoutes = [

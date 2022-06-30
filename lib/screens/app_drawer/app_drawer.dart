@@ -174,6 +174,14 @@ class AppDrawer extends HookConsumerWidget {
       [],
     );
 
+    final onSavedMatches = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.SavedMatches.routeName);
+      },
+      [],
+    );
+
     final onFAQ = useCallback(
       () {
         utilities.Navigation.pop(context);
@@ -224,6 +232,10 @@ class AppDrawer extends HookConsumerWidget {
             AppDrawerButton(
               label: "Global Chat",
               onPressed: onGlobalChat,
+            ),
+            AppDrawerButton(
+              label: "Saved Matches",
+              onPressed: onSavedMatches,
             ),
             AppDrawerButton(
               label: "FAQs",

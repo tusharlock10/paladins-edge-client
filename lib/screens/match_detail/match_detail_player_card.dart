@@ -103,6 +103,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final partyNumber = matchPlayer.partyNumber;
     final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.6;
     final backgroundColor = Theme.of(context).cardTheme.color;
+    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
 
@@ -219,14 +220,14 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: const BorderRadius.all(Radius.circular(15)),
-            image: champion == null
-                ? null
-                : DecorationImage(
+            image: champion != null && showBackgroundSplash
+                ? DecorationImage(
                     image: CachedNetworkImageProvider(champion.splashUrl),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     opacity: brightness == Brightness.light ? 0.145 : 0.225,
-                  ),
+                  )
+                : null,
           ),
           child: Column(
             children: [

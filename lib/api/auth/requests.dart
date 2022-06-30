@@ -119,4 +119,36 @@ abstract class AuthRequests {
       return null;
     }
   }
+
+  static Future<responses.SavedMatchesResponse?> savedMatches() async {
+    try {
+      final response = await utilities.api
+          .get<Map<String, dynamic>>(constants.Urls.savedMatches);
+      if (response.data != null) {
+        return responses.SavedMatchesResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<responses.UpdateSavedMatchesResponse?> updateSavedMatches({
+    required String matchId,
+  }) async {
+    try {
+      final response = await utilities.api.put<Map<String, dynamic>>(
+        constants.Urls.updateSavedMatches,
+        data: {"matchId": matchId},
+      );
+      if (response.data != null) {
+        return responses.UpdateSavedMatchesResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

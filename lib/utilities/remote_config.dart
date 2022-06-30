@@ -10,6 +10,8 @@ abstract class RemoteConfig {
   /// Getters
   static bool get enableGuestLogin => _firebaseRemoteConfig
       .getBool(constants.RemoteConfigParams.enableGuestLogin);
+  static bool get showBackgroundSplash => _firebaseRemoteConfig
+      .getBool(constants.RemoteConfigParams.showBackgroundSplash);
 
   /// Setup for Remote Config
 
