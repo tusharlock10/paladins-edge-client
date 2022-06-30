@@ -18,6 +18,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final savedMatches = ref.watch(
       providers.auth.select((_) => _.user?.savedMatches ?? []),
     );
@@ -26,9 +27,24 @@ class MatchDetailAppBar extends HookConsumerWidget {
     final isSavedMatch = savedMatches.contains(match?.matchId);
 
     // Methods
+    final guestLogin = useCallback(
+      () {
+        if (!isGuest) return;
+        widgets.showLoginModal(
+          data_classes.ShowLoginModalOptions(
+            context: context,
+            loginCta: constants.LoginCTA.savedMatches,
+          ),
+        );
+      },
+      [isGuest],
+    );
+
     final onSaveMatch = useCallback(
       () async {
         if (match == null) return;
+        if (isGuest) return guestLogin();
+
         final result = await authProvider.saveMatch(match.matchId);
 
         if (result == data_classes.SaveMatchResult.limitReached) {
@@ -43,7 +59,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
           );
         }
       },
-      [match],
+      [match, isGuest],
     );
 
     return SliverAppBar(

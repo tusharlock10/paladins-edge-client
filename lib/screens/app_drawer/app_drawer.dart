@@ -108,7 +108,7 @@ class AppDrawer extends HookConsumerWidget {
           onFriendsHelper();
         }
       },
-      [],
+      [isGuest],
     );
 
     final onActiveMatchHelper = useCallback(
@@ -138,7 +138,7 @@ class AppDrawer extends HookConsumerWidget {
           onActiveMatchHelper();
         }
       },
-      [],
+      [isGuest],
     );
 
     final onFeedback = useCallback(
@@ -146,7 +146,7 @@ class AppDrawer extends HookConsumerWidget {
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(context, screens.Feedback.routeName);
       },
-      [player],
+      [],
     );
 
     final onGlobalChatHelper = useCallback(
@@ -171,15 +171,32 @@ class AppDrawer extends HookConsumerWidget {
           onGlobalChatHelper();
         }
       },
-      [],
+      [isGuest],
     );
 
-    final onSavedMatches = useCallback(
+    final onSavedMatchesHelper = useCallback(
       () {
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(context, screens.SavedMatches.routeName);
       },
       [],
+    );
+
+    final onSavedMatches = useCallback(
+      () {
+        if (isGuest) {
+          utilities.Navigation.pop(context);
+          widgets.showLoginModal(
+            data_classes.ShowLoginModalOptions(
+              context: context,
+              loginCta: constants.LoginCTA.savedMatches,
+            ),
+          );
+        } else {
+          onSavedMatchesHelper();
+        }
+      },
+      [isGuest],
     );
 
     final onFAQ = useCallback(
