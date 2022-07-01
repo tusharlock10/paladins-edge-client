@@ -1,21 +1,20 @@
 import "package:duration/duration.dart";
 import "package:flutter/material.dart";
-import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
-import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 
-class MatchDetailStats extends HookConsumerWidget {
-  const MatchDetailStats({Key? key}) : super(key: key);
+class MatchDetailStats extends StatelessWidget {
+  final data_classes.CombinedMatch? combinedMatch;
+  const MatchDetailStats({
+    required this.combinedMatch,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Providers
-    final matchDetails =
-        ref.watch(providers.matches.select((_) => _.matchDetails));
-
+  Widget build(BuildContext context) {
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final match = matchDetails?.match;
+    final match = combinedMatch?.match;
     if (match == null) return const SizedBox.shrink();
     final matchDuration = printDuration(
       Duration(seconds: match.matchDuration),

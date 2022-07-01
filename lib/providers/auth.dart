@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -39,6 +40,7 @@ class _AuthNotifier extends ChangeNotifier {
   models.Player? player;
   models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
+  List<data_classes.CombinedMatch>? savedMatches;
 
   _AuthNotifier({required this.ref});
 
@@ -257,6 +259,7 @@ class _AuthNotifier extends ChangeNotifier {
     if (user == null) return data_classes.FavouriteFriendResult.unauthorized;
 
     final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
+    data_classes.FavouriteFriendResult result;
 
     if (!user!.favouriteFriends.contains(playerId)) {
       // player is not in the favouriteFriends, so we need to add him
@@ -268,9 +271,11 @@ class _AuthNotifier extends ChangeNotifier {
       }
 
       user!.favouriteFriends.add(playerId);
+      result = data_classes.FavouriteFriendResult.added;
     } else {
       // if he is in the favouriteFriends, then remove him
       user!.favouriteFriends.remove(playerId);
+      result = data_classes.FavouriteFriendResult.removed;
     }
 
     notifyListeners();
@@ -286,15 +291,120 @@ class _AuthNotifier extends ChangeNotifier {
       // if the response fails for some reason, revert back the change
       // set newPlayerAdded to false
       user!.favouriteFriends = favouriteFriendsClone;
+      result = data_classes.FavouriteFriendResult.reverted;
     } else {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
     utilities.Database.saveUser(user!);
+    notifyListeners();
+
+    return result;
+  }
+
+  /// Saves/ Un-saves a `match` for later reference
+  Future<data_classes.SaveMatchResult> saveMatch(
+    String matchId,
+  ) async {
+    if (user == null) return data_classes.SaveMatchResult.unauthorized;
+
+    data_classes.SaveMatchResult result;
+    data_classes.CombinedMatch? combinedMatch = savedMatches?.firstOrNullWhere(
+      (_) => _.match.matchId == matchId,
+    );
+    if (combinedMatch == null) {
+      final matchDetails = ref.read(matches_provider.matches).matchDetails;
+      if (matchDetails != null && matchDetails.match.matchId == matchId) {
+        combinedMatch = data_classes.CombinedMatch(
+          match: matchDetails.match,
+          matchPlayers: matchDetails.matchPlayers,
+        );
+      }
+    }
+    if (combinedMatch == null) return data_classes.SaveMatchResult.reverted;
+
+    final savedMatchesClone = List<String>.from(user!.savedMatches);
+
+    if (!user!.savedMatches.contains(matchId)) {
+      // matchId is not in savedMatches, so we need to add it
+
+      // check if user already has max number of saved matches
+      if (user!.favouriteFriends.length >=
+          utilities.Global.essentials!.maxSavedMatches) {
+        return data_classes.SaveMatchResult.limitReached;
+      }
+
+      user!.savedMatches.add(matchId);
+      result = data_classes.SaveMatchResult.added;
+      savedMatches = [...?savedMatches, combinedMatch];
+    } else {
+      // if match is in savedMatches, then remove it
+      user!.savedMatches.remove(matchId);
+      result = data_classes.SaveMatchResult.removed;
+      if (savedMatches != null) {
+        savedMatches = savedMatches!
+            .where(
+              (_) => _.match.matchId != matchId,
+            )
+            .toList();
+      }
+    }
 
     notifyListeners();
 
-    return data_classes.FavouriteFriendResult.added;
+    // after we update the UI
+    // update the saved matches in backend
+    // update the UI for the latest changes from backend
+
+    final response = await api.AuthRequests.updateSavedMatches(
+      matchId: matchId,
+    );
+
+    if (response == null) {
+      // if the response fails for some reason, revert back the change
+      user!.savedMatches = savedMatchesClone;
+      _restoreSavedMatches(combinedMatch, result);
+
+      result = data_classes.SaveMatchResult.reverted;
+    } else {
+      user!.savedMatches = response.savedMatches;
+    }
+
+    utilities.Database.saveUser(user!);
+    notifyListeners();
+
+    return result;
+  }
+
+  /// Gets all the saved matches for this user
+  Future<void> getSavedMatches() async {
+    final response = await api.AuthRequests.savedMatches();
+    if (response == null) return;
+
+    // create list of combinedMatches using a temp. map
+    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    for (final match in response.matches) {
+      tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
+        match: match,
+        matchPlayers: [],
+      );
+    }
+    for (final matchPlayer in response.matchPlayers) {
+      final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
+      if (existingCombinedMatch == null) continue;
+
+      tempMatchesMap[matchPlayer.matchId] = existingCombinedMatch.copyWith(
+        matchPlayers: [...existingCombinedMatch.matchPlayers, matchPlayer],
+      );
+    }
+
+    savedMatches = tempMatchesMap.values.toList();
+    if (user != null && savedMatches != null) {
+      final matchIds = savedMatches!.map((_) => _.match.matchId);
+      user!.savedMatches = matchIds.toList();
+      utilities.Database.saveUser(user!);
+    }
+    notifyListeners();
   }
 
   void getFAQs() async {
@@ -391,6 +501,19 @@ class _AuthNotifier extends ChangeNotifier {
     if (response.player != null) {
       utilities.Database.savePlayer(response.player!);
     }
+  }
+
+  void _restoreSavedMatches(
+    data_classes.CombinedMatch combinedMatch,
+    data_classes.SaveMatchResult result,
+  ) {
+    if (savedMatches == null) return;
+
+    savedMatches = result == data_classes.SaveMatchResult.added
+        ? savedMatches!
+            .where((_) => _.match.matchId != combinedMatch.match.matchId)
+            .toList()
+        : [...savedMatches!, combinedMatch];
   }
 }
 

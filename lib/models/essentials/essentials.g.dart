@@ -19,19 +19,20 @@ class EssentialsAdapter extends TypeAdapter<Essentials> {
     return Essentials(
       version: fields[0] as String,
       imageBaseUrl: fields[1] as String,
-      forceUpdateFriendsDuration: fields[3] as int,
-      forceUpdateMatchesDuration: fields[4] as int,
-      forceUpdatePlayerDuration: fields[5] as int,
-      forceUpdateChampionsDuration: fields[6] as int,
+      forceUpdateFriendsDuration: fields[4] as int,
+      forceUpdateMatchesDuration: fields[5] as int,
+      forceUpdatePlayerDuration: fields[6] as int,
+      forceUpdateChampionsDuration: fields[7] as int,
       maxFavouriteFriends: fields[2] as int,
-      forceUpdatePlayerLoadouts: fields[7] as int,
+      maxSavedMatches: fields[3] as int,
+      forceUpdatePlayerLoadouts: fields[8] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Essentials obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.version)
       ..writeByte(1)
@@ -39,14 +40,16 @@ class EssentialsAdapter extends TypeAdapter<Essentials> {
       ..writeByte(2)
       ..write(obj.maxFavouriteFriends)
       ..writeByte(3)
-      ..write(obj.forceUpdateFriendsDuration)
+      ..write(obj.maxSavedMatches)
       ..writeByte(4)
-      ..write(obj.forceUpdateMatchesDuration)
+      ..write(obj.forceUpdateFriendsDuration)
       ..writeByte(5)
-      ..write(obj.forceUpdatePlayerDuration)
+      ..write(obj.forceUpdateMatchesDuration)
       ..writeByte(6)
-      ..write(obj.forceUpdateChampionsDuration)
+      ..write(obj.forceUpdatePlayerDuration)
       ..writeByte(7)
+      ..write(obj.forceUpdateChampionsDuration)
+      ..writeByte(8)
       ..write(obj.forceUpdatePlayerLoadouts);
   }
 
@@ -73,6 +76,7 @@ Essentials _$EssentialsFromJson(Map<String, dynamic> json) => Essentials(
       forceUpdatePlayerDuration: json['forceUpdatePlayerDuration'] as int,
       forceUpdateChampionsDuration: json['forceUpdateChampionsDuration'] as int,
       maxFavouriteFriends: json['maxFavouriteFriends'] as int,
+      maxSavedMatches: json['maxSavedMatches'] as int,
       forceUpdatePlayerLoadouts: json['forceUpdatePlayerLoadouts'] as int,
     );
 
@@ -81,6 +85,7 @@ Map<String, dynamic> _$EssentialsToJson(Essentials instance) =>
       'version': instance.version,
       'imageBaseUrl': instance.imageBaseUrl,
       'maxFavouriteFriends': instance.maxFavouriteFriends,
+      'maxSavedMatches': instance.maxSavedMatches,
       'forceUpdateFriendsDuration': instance.forceUpdateFriendsDuration,
       'forceUpdateMatchesDuration': instance.forceUpdateMatchesDuration,
       'forceUpdatePlayerDuration': instance.forceUpdatePlayerDuration,

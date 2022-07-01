@@ -6,6 +6,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/faqs/faq_item.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Faqs extends HookConsumerWidget {
@@ -63,14 +64,17 @@ class Faqs extends HookConsumerWidget {
             title: Text("FAQs"),
           ),
           faqs == null
-              ? const SliverList(
+              ? SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     [
-                      Center(
-                        child: widgets.LoadingIndicator(
-                          lineWidth: 2,
-                          size: 28,
-                          label: Text("Getting FAQs"),
+                      SizedBox(
+                        height: utilities.getBodyHeight(context),
+                        child: const Center(
+                          child: widgets.LoadingIndicator(
+                            lineWidth: 2,
+                            size: 28,
+                            label: Text("Getting FAQs"),
+                          ),
                         ),
                       ),
                     ],

@@ -1,11 +1,16 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/match_detail/match_detail_app_bar.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_list.dart";
 
-class MatchDetail extends StatelessWidget {
+class MatchDetail extends HookConsumerWidget {
   static const routeName = "match";
   static const routePath = "match/:matchId";
   static final goRoute = GoRoute(
@@ -13,20 +18,65 @@ class MatchDetail extends StatelessWidget {
     path: routePath,
     pageBuilder: _routeBuilder,
   );
+  static const savedMatchRouteName = "savedMatch";
+  static const savedMatchRoutePath = "match/:matchId";
+  static final savedMatchGoRoute = GoRoute(
+    name: savedMatchRouteName,
+    path: savedMatchRoutePath,
+    pageBuilder: _routeBuilder,
+  );
   final String matchId;
+  final bool isSavedMatch;
 
   const MatchDetail({
     required this.matchId,
+    required this.isSavedMatch,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final savedMatches =
+        isSavedMatch ? ref.read(providers.auth).savedMatches : null;
+    final matchDetails = !isSavedMatch
+        ? ref.watch(providers.matches.select((_) => _.matchDetails))
+        : null;
+
+    // Hooks
+    final combinedMatch = useMemoized(
+      () {
+        if (!isSavedMatch && matchDetails != null) {
+          return data_classes.CombinedMatch(
+            match: matchDetails.match,
+            matchPlayers: matchDetails.matchPlayers,
+          );
+        }
+
+        final combinedMatch = savedMatches?.firstOrNullWhere(
+          (_) => _.match.matchId == matchId,
+        );
+
+        if (combinedMatch == null) return null;
+
+        return combinedMatch.copyWith(
+          matchPlayers: combinedMatch.matchPlayers.sortedBy((a) => a.team),
+        );
+      },
+      [isSavedMatch, savedMatches, matchDetails],
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const MatchDetailAppBar(),
-          MatchDetailList(matchId: matchId),
+          MatchDetailAppBar(
+            combinedMatch: combinedMatch,
+          ),
+          MatchDetailList(
+            matchId: matchId,
+            combinedMatch: combinedMatch,
+            isSavedMatch: isSavedMatch,
+          ),
         ],
       ),
     );
@@ -34,6 +84,8 @@ class MatchDetail extends StatelessWidget {
 
   static Page _routeBuilder(_, GoRouterState state) {
     final paramMatchId = state.params["matchId"];
+    final isSavedMatch =
+        (state.queryParams["isSavedMatch"] ?? "false") == "true";
     if (paramMatchId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
@@ -43,6 +95,11 @@ class MatchDetail extends StatelessWidget {
     }
     final matchId = paramMatchId;
 
-    return CupertinoPage(child: MatchDetail(matchId: matchId));
+    return CupertinoPage(
+      child: MatchDetail(
+        matchId: matchId,
+        isSavedMatch: isSavedMatch,
+      ),
+    );
   }
 }
