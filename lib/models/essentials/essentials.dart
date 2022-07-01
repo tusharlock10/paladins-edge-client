@@ -22,24 +22,28 @@ class Essentials extends HiveObject {
   @HiveField(2)
   final int maxFavouriteFriends;
 
-  /// interval duration for player friends forced update
+  /// max number of matches user can save
   @HiveField(3)
+  final int maxSavedMatches;
+
+  /// interval duration for player friends forced update
+  @HiveField(4)
   final int forceUpdateFriendsDuration;
 
   /// interval duration for player matches forced update
-  @HiveField(4)
+  @HiveField(5)
   final int forceUpdateMatchesDuration;
 
   /// interval duration for player profile forced update
-  @HiveField(5)
+  @HiveField(6)
   final int forceUpdatePlayerDuration;
 
   /// interval duration for player champions forced update
-  @HiveField(6)
+  @HiveField(7)
   final int forceUpdateChampionsDuration;
 
   /// interval duration for player loadouts forced update
-  @HiveField(7)
+  @HiveField(8)
   final int forceUpdatePlayerLoadouts;
 
   Essentials({
@@ -50,6 +54,7 @@ class Essentials extends HiveObject {
     required this.forceUpdatePlayerDuration,
     required this.forceUpdateChampionsDuration,
     required this.maxFavouriteFriends,
+    required this.maxSavedMatches,
     required this.forceUpdatePlayerLoadouts,
   });
 

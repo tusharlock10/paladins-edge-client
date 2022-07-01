@@ -76,3 +76,35 @@ Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
     <String, dynamic>{
       'faqs': instance.faqs,
     };
+
+SavedMatchesResponse _$SavedMatchesResponseFromJson(
+        Map<String, dynamic> json) =>
+    SavedMatchesResponse(
+      matches: (json['matches'] as List<dynamic>)
+          .map((e) => Match.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      matchPlayers: (json['matchPlayers'] as List<dynamic>)
+          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SavedMatchesResponseToJson(
+        SavedMatchesResponse instance) =>
+    <String, dynamic>{
+      'matches': instance.matches,
+      'matchPlayers': instance.matchPlayers,
+    };
+
+UpdateSavedMatchesResponse _$UpdateSavedMatchesResponseFromJson(
+        Map<String, dynamic> json) =>
+    UpdateSavedMatchesResponse(
+      savedMatches: (json['savedMatches'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$UpdateSavedMatchesResponseToJson(
+        UpdateSavedMatchesResponse instance) =>
+    <String, dynamic>{
+      'savedMatches': instance.savedMatches,
+    };

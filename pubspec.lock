@@ -511,7 +511,7 @@ packages:
       name: fl_chart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.50.6"
+    version: "0.55.0"
   flash:
     dependency: "direct main"
     description:
@@ -572,7 +572,7 @@ packages:
       name: flutter_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.4"
+    version: "0.18.5+1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -757,7 +757,7 @@ packages:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.2.2"
   hive_flutter:
     dependency: "direct main"
     description:

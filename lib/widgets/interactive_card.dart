@@ -2,6 +2,7 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class InteractiveCard extends HookWidget {
   final Widget child;
@@ -36,12 +37,12 @@ class InteractiveCard extends HookWidget {
     // Variables
     final brightness = Theme.of(context).brightness;
     final isInteractive = onTap != null && !disableHover;
+    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
 
     // State
     final isHovering = useState<bool>(false);
 
     // Hooks
-
     final themeHoverBorderColor = useMemoized(
       () {
         return hoverBorderColor ??
@@ -76,14 +77,14 @@ class InteractiveCard extends HookWidget {
           onTap: onTap,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              image: backgroundImage == null
-                  ? null
-                  : DecorationImage(
+              image: backgroundImage != null && showBackgroundSplash
+                  ? DecorationImage(
                       image: CachedNetworkImageProvider(backgroundImage!),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                       opacity: brightness == Brightness.light ? 0.145 : 0.225,
-                    ),
+                    )
+                  : null,
             ),
             child: Padding(
               padding: padding,

@@ -27,11 +27,16 @@ class User {
   @HiveField(7)
   List<String> favouriteFriends;
 
+  /// list of matchId
+  @HiveField(8)
+  List<String> savedMatches;
+
   User({
     required this.name,
     required this.email,
     required this.uid,
     required this.favouriteFriends,
+    required this.savedMatches,
     this.playerId,
   });
 

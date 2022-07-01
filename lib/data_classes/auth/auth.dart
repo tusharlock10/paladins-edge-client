@@ -5,7 +5,10 @@ enum FavouriteFriendResult {
   added,
   limitReached,
   unauthorized,
+  reverted
 }
+
+enum SaveMatchResult { removed, added, limitReached, unauthorized, reverted }
 
 class ShowLoginModalOptions {
   final BuildContext context;

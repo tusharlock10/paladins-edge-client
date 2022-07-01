@@ -14,6 +14,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
   final models.MatchPlayer? matchPlayer;
   final models.Champion? champion;
   final models.Match match;
+  final bool isSavedMatch;
 
   static const itemExtent = _itemHeight + _itemMargin * 2;
   static const _itemMargin = 7.0;
@@ -23,6 +24,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     required this.matchPlayer,
     required this.champion,
     required this.match,
+    this.isSavedMatch = false,
     Key? key,
   }) : super(key: key);
 
@@ -54,10 +56,15 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       () {
         utilities.Navigation.navigate(
           context,
-          screens.MatchDetail.routeName,
+          isSavedMatch
+              ? screens.MatchDetail.savedMatchRouteName
+              : screens.MatchDetail.routeName,
           params: {
             "matchId": match.matchId,
-            "playerId": matchPlayer.playerId,
+            if (!isSavedMatch) "playerId": matchPlayer.playerId,
+          },
+          queryParams: {
+            if (isSavedMatch) "isSavedMatch": "true",
           },
         );
       },
