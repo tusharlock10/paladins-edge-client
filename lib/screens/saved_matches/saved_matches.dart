@@ -10,8 +10,8 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class SavedMatches extends HookConsumerWidget {
-  static const routeName = "savedMatches";
-  static const routePath = "savedMatches";
+  static const routeName = "saved-matches";
+  static const routePath = "saved-matches";
 
   const SavedMatches({Key? key}) : super(key: key);
 

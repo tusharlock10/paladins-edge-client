@@ -14,8 +14,8 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GlobalChat extends HookConsumerWidget {
-  static const routeName = "globalChat";
-  static const routePath = "globalChat";
+  static const routeName = "global-chat";
+  static const routePath = "global-chat";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,

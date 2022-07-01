@@ -13,8 +13,8 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateLoadout extends HookConsumerWidget {
-  static const routeName = "createLoadout";
-  static const routePath = "createLoadout";
+  static const routeName = "create-loadout";
+  static const routePath = "create-loadout";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
