@@ -9,6 +9,7 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/match_detail/match_detail_app_bar.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_list.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
 
 class MatchDetail extends HookConsumerWidget {
   static const routeName = "match";
@@ -69,9 +70,8 @@ class MatchDetail extends HookConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          MatchDetailAppBar(
-            combinedMatch: combinedMatch,
-          ),
+          MatchDetailAppBar(combinedMatch: combinedMatch),
+          MatchDetailStats(combinedMatch: combinedMatch),
           MatchDetailList(
             matchId: matchId,
             combinedMatch: combinedMatch,
