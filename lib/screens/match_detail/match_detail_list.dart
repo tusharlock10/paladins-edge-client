@@ -1,9 +1,7 @@
-import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
-import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
@@ -24,10 +22,15 @@ class MatchDetailList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final matchesProvider = !isSavedMatch ? ref.read(providers.matches) : null;
     final isMatchDetailsLoading = !isSavedMatch
         ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
         : false;
+
+    // Variables
+    final matchPlayers = combinedMatch?.matchPlayers;
+    final match = combinedMatch?.match;
 
     // Effects
     useEffect(
@@ -55,28 +58,64 @@ class MatchDetailList extends HookConsumerWidget {
       [combinedMatch],
     );
 
-    // Methods
-    final calculateTeamStats = useCallback(
-      (
-        int team,
-        List<models.MatchPlayer> matchPlayers,
-      ) {
+    final winningTeamMatchPlayers = useMemoized(
+      () {
+        return matchPlayers
+                ?.where((_) => _.team == match?.winningTeam)
+                .toList() ??
+            [];
+      },
+      [matchPlayers, match],
+    );
+
+    final losingTeamMatchPlayers = useMemoized(
+      () {
+        return matchPlayers
+                ?.where((_) => _.team != match?.winningTeam)
+                .toList() ??
+            [];
+      },
+      [matchPlayers, match],
+    );
+
+    final winningTeamStats = useMemoized(
+      () {
         final teamStats = data_classes.MatchTeamStats(
           kills: 0,
           deaths: 0,
           assists: 0,
         );
-        for (var matchPlayer in matchPlayers) {
-          if (matchPlayer.team == team) {
-            teamStats.kills += matchPlayer.playerStats.kills.toInt();
-            teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
-            teamStats.assists += matchPlayer.playerStats.assists.toInt();
-          }
+        if (winningTeamMatchPlayers.isEmpty) return null;
+
+        for (final matchPlayer in winningTeamMatchPlayers) {
+          teamStats.kills += matchPlayer.playerStats.kills.toInt();
+          teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
+          teamStats.assists += matchPlayer.playerStats.assists.toInt();
         }
 
         return teamStats;
       },
-      [],
+      [winningTeamMatchPlayers],
+    );
+
+    final losingTeamStats = useMemoized(
+      () {
+        final teamStats = data_classes.MatchTeamStats(
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+        );
+        if (losingTeamMatchPlayers.isEmpty) return null;
+
+        for (final matchPlayer in losingTeamMatchPlayers) {
+          teamStats.kills += matchPlayer.playerStats.kills.toInt();
+          teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
+          teamStats.assists += matchPlayer.playerStats.assists.toInt();
+        }
+
+        return teamStats;
+      },
+      [losingTeamMatchPlayers],
     );
 
     if (isMatchDetailsLoading) {
@@ -113,34 +152,35 @@ class MatchDetailList extends HookConsumerWidget {
       );
     }
 
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (_, index) {
-          final matchPlayer = combinedMatch!.matchPlayers[index];
-          final previousMatchPlayer =
-              combinedMatch!.matchPlayers.elementAtOrNull(index - 1);
-
-          return Column(
-            children: [
-              if (index == 0) MatchDetailStats(combinedMatch: combinedMatch),
-              if (matchPlayer.team != previousMatchPlayer?.team)
-                MatchDetailTeamHeader(
-                  teamStats: calculateTeamStats(
-                    matchPlayer.team,
-                    combinedMatch!.matchPlayers,
-                  ),
-                  isWinningTeam:
-                      combinedMatch!.match.winningTeam == matchPlayer.team,
-                  matchPlayer: matchPlayer,
-                ),
-              MatchDetailPlayerCard(
-                matchPlayer: matchPlayer,
-                averageCredits: averageCredits,
-              ),
-            ],
-          );
-        },
-        childCount: combinedMatch!.matchPlayers.length,
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          MatchDetailStats(combinedMatch: combinedMatch),
+          if (winningTeamStats != null)
+            MatchDetailTeamHeader(
+              teamStats: winningTeamStats,
+              isWinningTeam: true,
+            ),
+          for (int playerIndex = 0;
+              playerIndex < winningTeamMatchPlayers.length;
+              playerIndex++)
+            MatchDetailPlayerCard(
+              matchPlayer: winningTeamMatchPlayers[playerIndex],
+              averageCredits: averageCredits,
+            ),
+          if (losingTeamStats != null)
+            MatchDetailTeamHeader(
+              teamStats: losingTeamStats,
+              isWinningTeam: false,
+            ),
+          for (int playerIndex = 0;
+              playerIndex < losingTeamMatchPlayers.length;
+              playerIndex++)
+            MatchDetailPlayerCard(
+              matchPlayer: losingTeamMatchPlayers[playerIndex],
+              averageCredits: averageCredits,
+            ),
+        ],
       ),
     );
   }
