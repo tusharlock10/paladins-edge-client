@@ -1,7 +1,9 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
@@ -27,6 +29,7 @@ class MatchDetailList extends HookConsumerWidget {
     final isMatchDetailsLoading = !isSavedMatch
         ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
         : false;
+    final champions = ref.watch(providers.champions.select((_) => _.champions));
 
     // Variables
     final matchPlayers = combinedMatch?.matchPlayers;
@@ -118,6 +121,65 @@ class MatchDetailList extends HookConsumerWidget {
       [losingTeamMatchPlayers],
     );
 
+    final championBans = useMemoized(
+      () {
+        final championBans = match?.championBans;
+        if (championBans != null && championBans.length == 6) {
+          // swap the last 2 champion bans
+          final length = championBans.length;
+          final ban1 = championBans[length - 2];
+          final ban2 = championBans[length - 1];
+          championBans[length - 2] = ban2;
+          championBans[length - 1] = ban1;
+        }
+
+        return championBans;
+      },
+      [match],
+    );
+
+    final winningTeamBans = useMemoized(
+      () {
+        List<models.Champion> winningTeamBans = [];
+        if (match == null || championBans == null) return winningTeamBans;
+
+        final isFirstTeam = match.winningTeam == 1;
+        winningTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return winningTeamBans;
+      },
+      [match, championBans],
+    );
+
+    final losingTeamBans = useMemoized(
+      () {
+        List<models.Champion> losingTeamBans = [];
+        if (match == null || championBans == null) return losingTeamBans;
+
+        final isFirstTeam = match.winningTeam == 2;
+        losingTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return losingTeamBans;
+      },
+      [match, championBans],
+    );
+
     if (isMatchDetailsLoading) {
       return SliverList(
         delegate: SliverChildListDelegate.fixed(
@@ -156,11 +218,14 @@ class MatchDetailList extends HookConsumerWidget {
       child: Column(
         children: [
           MatchDetailStats(combinedMatch: combinedMatch),
-          if (winningTeamStats != null)
+          if (winningTeamStats != null) ...[
+            const Divider(),
             MatchDetailTeamHeader(
               teamStats: winningTeamStats,
               isWinningTeam: true,
+              bannedChampions: winningTeamBans,
             ),
+          ],
           for (int playerIndex = 0;
               playerIndex < winningTeamMatchPlayers.length;
               playerIndex++)
@@ -168,11 +233,15 @@ class MatchDetailList extends HookConsumerWidget {
               matchPlayer: winningTeamMatchPlayers[playerIndex],
               averageCredits: averageCredits,
             ),
-          if (losingTeamStats != null)
+          if (losingTeamStats != null) ...[
+            const SizedBox(height: 20),
+            const Divider(),
             MatchDetailTeamHeader(
               teamStats: losingTeamStats,
               isWinningTeam: false,
+              bannedChampions: losingTeamBans,
             ),
+          ],
           for (int playerIndex = 0;
               playerIndex < losingTeamMatchPlayers.length;
               playerIndex++)
