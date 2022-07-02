@@ -203,7 +203,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Center(
         child: DecoratedBox(
           decoration: BoxDecoration(

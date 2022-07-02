@@ -1,10 +1,11 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
-import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_team_header.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
@@ -27,10 +28,24 @@ class MatchDetailList extends HookConsumerWidget {
     final isMatchDetailsLoading = !isSavedMatch
         ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
         : false;
+    final champions = ref.watch(providers.champions.select((_) => _.champions));
 
     // Variables
     final matchPlayers = combinedMatch?.matchPlayers;
     final match = combinedMatch?.match;
+    final isLandscape = utilities.responsiveCondition(
+      context,
+      desktop: true,
+      tablet: true,
+      mobile: false,
+    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    final horizontalPadding = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth * 0.125,
+      tablet: 15.0,
+      mobile: 15.0,
+    );
 
     // Effects
     useEffect(
@@ -118,6 +133,65 @@ class MatchDetailList extends HookConsumerWidget {
       [losingTeamMatchPlayers],
     );
 
+    final championBans = useMemoized(
+      () {
+        final championBans = match?.championBans;
+        if (championBans != null && championBans.length == 6) {
+          // swap the last 2 champion bans
+          final length = championBans.length;
+          final ban1 = championBans[length - 2];
+          final ban2 = championBans[length - 1];
+          championBans[length - 2] = ban2;
+          championBans[length - 1] = ban1;
+        }
+
+        return championBans;
+      },
+      [match],
+    );
+
+    final winningTeamBans = useMemoized(
+      () {
+        List<models.Champion> winningTeamBans = [];
+        if (match == null || championBans == null) return winningTeamBans;
+
+        final isFirstTeam = match.winningTeam == 1;
+        winningTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return winningTeamBans;
+      },
+      [match, championBans],
+    );
+
+    final losingTeamBans = useMemoized(
+      () {
+        List<models.Champion> losingTeamBans = [];
+        if (match == null || championBans == null) return losingTeamBans;
+
+        final isFirstTeam = match.winningTeam == 2;
+        losingTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return losingTeamBans;
+      },
+      [match, championBans],
+    );
+
     if (isMatchDetailsLoading) {
       return SliverList(
         delegate: SliverChildListDelegate.fixed(
@@ -152,36 +226,80 @@ class MatchDetailList extends HookConsumerWidget {
       );
     }
 
+    // Widgets
+    final winningTeamColumn = Column(
+      children: [
+        if (winningTeamStats != null)
+          MatchDetailTeamHeader(
+            teamStats: winningTeamStats,
+            isWinningTeam: true,
+            bannedChampions: winningTeamBans,
+          ),
+        for (int playerIndex = 0;
+            playerIndex < winningTeamMatchPlayers.length;
+            playerIndex++)
+          MatchDetailPlayerCard(
+            matchPlayer: winningTeamMatchPlayers[playerIndex],
+            averageCredits: averageCredits,
+          ),
+      ],
+    );
+
+    final losingTeamColumn = Column(
+      children: [
+        if (losingTeamStats != null)
+          MatchDetailTeamHeader(
+            teamStats: losingTeamStats,
+            isWinningTeam: false,
+            bannedChampions: losingTeamBans,
+          ),
+        for (int playerIndex = 0;
+            playerIndex < losingTeamMatchPlayers.length;
+            playerIndex++)
+          MatchDetailPlayerCard(
+            matchPlayer: losingTeamMatchPlayers[playerIndex],
+            averageCredits: averageCredits,
+          ),
+      ],
+    );
+
     return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          MatchDetailStats(combinedMatch: combinedMatch),
-          if (winningTeamStats != null)
-            MatchDetailTeamHeader(
-              teamStats: winningTeamStats,
-              isWinningTeam: true,
+      child: isLandscape
+          ? Column(
+              children: [
+                const Divider(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Divider(),
+                      Expanded(child: winningTeamColumn),
+                      const SizedBox(width: 10),
+                      Expanded(child: losingTeamColumn),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            )
+          : Column(
+              children: [
+                const Divider(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Column(
+                    children: [
+                      winningTeamColumn,
+                      const SizedBox(height: 20),
+                      if (losingTeamStats != null) const Divider(),
+                      losingTeamColumn,
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          for (int playerIndex = 0;
-              playerIndex < winningTeamMatchPlayers.length;
-              playerIndex++)
-            MatchDetailPlayerCard(
-              matchPlayer: winningTeamMatchPlayers[playerIndex],
-              averageCredits: averageCredits,
-            ),
-          if (losingTeamStats != null)
-            MatchDetailTeamHeader(
-              teamStats: losingTeamStats,
-              isWinningTeam: false,
-            ),
-          for (int playerIndex = 0;
-              playerIndex < losingTeamMatchPlayers.length;
-              playerIndex++)
-            MatchDetailPlayerCard(
-              matchPlayer: losingTeamMatchPlayers[playerIndex],
-              averageCredits: averageCredits,
-            ),
-        ],
-      ),
     );
   }
 }
