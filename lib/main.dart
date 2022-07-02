@@ -52,6 +52,7 @@ class PaladinsEdgeApp extends ConsumerWidget {
           themeMode: themeMode,
           theme: theme.lightTheme,
           darkTheme: theme.darkTheme,
+          routeInformationProvider: router.router.routeInformationProvider,
           routeInformationParser: router.router.routeInformationParser,
           routerDelegate: router.router.routerDelegate,
           title: "Paladins Edge",

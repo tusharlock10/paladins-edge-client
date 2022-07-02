@@ -1,16 +1,13 @@
 import "package:flutter/material.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
-import "package:paladinsedge/models/index.dart" as models;
 
 class MatchDetailTeamHeader extends StatelessWidget {
   final data_classes.MatchTeamStats teamStats;
   final bool isWinningTeam;
-  final models.MatchPlayer matchPlayer;
 
   const MatchDetailTeamHeader({
     required this.teamStats,
     required this.isWinningTeam,
-    required this.matchPlayer,
     Key? key,
   }) : super(key: key);
 
@@ -27,13 +24,6 @@ class MatchDetailTeamHeader extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 20,
               color: isWinningTeam ? Colors.green : Colors.red,
-            ),
-          ),
-          const SizedBox(width: 15),
-          Text(
-            "Team ${matchPlayer.team}",
-            style: const TextStyle(
-              fontSize: 20,
             ),
           ),
           const SizedBox(width: 15),

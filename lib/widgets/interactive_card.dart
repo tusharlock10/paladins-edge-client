@@ -82,7 +82,15 @@ class InteractiveCard extends HookWidget {
                       image: CachedNetworkImageProvider(backgroundImage!),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
-                      opacity: brightness == Brightness.light ? 0.145 : 0.225,
+                      colorFilter: ColorFilter.mode(
+                        Color.fromRGBO(
+                          255,
+                          255,
+                          255,
+                          brightness == Brightness.light ? 0.145 : 0.225,
+                        ),
+                        BlendMode.modulate,
+                      ),
                     )
                   : null,
             ),

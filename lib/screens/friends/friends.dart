@@ -18,8 +18,8 @@ class Friends extends HookConsumerWidget {
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const userRouteName = "userFriends";
-  static const userRoutePath = "userFriends";
+  static const userRouteName = "user-friends";
+  static const userRoutePath = "friends";
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,

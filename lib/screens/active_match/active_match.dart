@@ -14,15 +14,15 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ActiveMatch extends HookConsumerWidget {
-  static const routeName = "activeMatch";
-  static const routePath = "activeMatch";
+  static const routeName = "active-match";
+  static const routePath = "active-match";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const userRouteName = "userActiveMatch";
-  static const userRoutePath = "userActiveMatch";
+  static const userRouteName = "user-active-match";
+  static const userRoutePath = "active-match";
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,
