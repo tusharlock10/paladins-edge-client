@@ -126,9 +126,9 @@ class _PlayersNotifier extends ChangeNotifier {
     required String playerName,
     required bool simpleResults,
     required bool addInSearchHistory,
+    required void Function(String) onNotFound,
   }) async {
-    // makes a req. to api for search
-    // saves the searchItem in the searchHistory
+    // makes a request to api for search
     // saves the searchItem in the local db
 
     final response = await api.PlayersRequests.searchPlayers(
@@ -153,6 +153,10 @@ class _PlayersNotifier extends ChangeNotifier {
     } else {
       topSearchList = response.searchData.topSearchList;
       lowerSearchList = response.searchData.lowerSearchList;
+
+      if (topSearchList.isEmpty && lowerSearchList.isEmpty) {
+        onNotFound(playerName);
+      }
     }
 
     notifyListeners();

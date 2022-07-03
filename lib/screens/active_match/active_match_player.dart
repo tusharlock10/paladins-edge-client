@@ -60,8 +60,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.read(providers.champions).champions;
-    final playerChampions =
-        ref.watch(providers.champions.select((_) => _.playerChampions));
+    final playerChampions = ref.watch(
+      providers.champions.select((_) => _.playerChampions),
+    );
 
     // Variables
     final expandedController = ExpandableController(initialExpanded: false);
@@ -73,21 +74,46 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       (champion) => champion.championId == playerInfo.championId,
     );
 
-    // State
-    final playerChampion = useState<models.PlayerChampion?>(null);
-
-    // Effects
-    useEffect(
+    // Hooks
+    final playerChampion = useMemoized(
       () {
-        if (playerChampions != null) {
-          playerChampion.value = playerChampions.firstOrNullWhere(
-            (_) => _.playerId == playerInfo.player.playerId,
-          );
-        }
+        if (playerChampions == null) return null;
 
-        return null;
+        return playerChampions.firstOrNullWhere(
+          (_) => _.playerId == playerInfo.player.playerId,
+        );
       },
-      [playerChampions],
+      [playerChampions, playerInfo],
+    );
+
+    final championPlaytime = useMemoized(
+      () {
+        if (playerChampion == null) return null;
+
+        final duration = Duration(minutes: playerChampion.playTime);
+        if (duration.inHours == 0) return "${duration.inMinutes}min";
+
+        return "${duration.inHours}h ${duration.inMinutes % 60}m";
+      },
+      [playerChampion],
+    );
+
+    final championLevel = useMemoized(
+      () => playerChampion?.level.toString(),
+      [playerChampion],
+    );
+
+    final championCPM = useMemoized(
+      () {
+        if (playerChampion == null) return null;
+
+        final totalMatches = playerChampion.wins + playerChampion.losses;
+        final totalCredits = playerChampion.totalCredits;
+        final cpm = totalCredits / totalMatches;
+
+        return "${cpm.round()} CR";
+      },
+      [playerChampion],
     );
 
     // Methods
@@ -106,33 +132,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [],
     );
 
-    final getChampionPlaytime = useCallback(
-      () {
-        final duration = Duration(minutes: playerChampion.value!.playTime);
-        if (duration.inHours == 0) return "${duration.inMinutes}min";
-
-        return "${duration.inHours}h ${duration.inMinutes % 60}m";
-      },
-      [],
-    );
-
-    final getChampionLevel = useCallback(
-      () => playerChampion.value!.level.toString(),
-      [],
-    );
-
-    final championCPM = useMemoized(
-      () {
-        final totalMatches =
-            playerChampion.value!.wins + playerChampion.value!.losses;
-        final totalCredits = playerChampion.value!.totalCredits;
-        final cpm = totalCredits / totalMatches;
-
-        return "${cpm.round()} CR";
-      },
-      [],
-    );
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Card(
@@ -141,7 +140,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: InkWell(
-          onTap: () => playerChampion.value == null
+          onTap: () => playerChampion == null
               ? widgets.showToast(
                   context: context,
                   text: "Stats not available for this player",
@@ -253,7 +252,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                             ValueListenableBuilder<bool>(
                               valueListenable: expandedController,
                               builder: (context, isExpanded, _) {
-                                if (playerChampion.value == null) {
+                                if (playerChampion == null) {
                                   return const SizedBox();
                                 }
 
@@ -297,7 +296,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                 ExpandablePanel(
                   controller: expandedController,
                   collapsed: const SizedBox(),
-                  expanded: playerChampion.value != null
+                  expanded: playerChampion != null
                       ? Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Column(
@@ -306,18 +305,19 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  _InfoLabel(
-                                    label: "Play Time",
-                                    text: getChampionPlaytime(),
-                                  ),
-                                  _InfoLabel(
-                                    label: "Champ. Lvl",
-                                    text: getChampionLevel(),
-                                  ),
+                                  if (championPlaytime != null)
+                                    _InfoLabel(
+                                      label: "Play Time",
+                                      text: championPlaytime,
+                                    ),
+                                  if (championLevel != null)
+                                    _InfoLabel(
+                                      label: "Champ. Lvl",
+                                      text: championLevel,
+                                    ),
                                   _InfoLabel(
                                     label: "Champ. WR",
-                                    text:
-                                        "${playerChampion.value!.winRateFormatted}%",
+                                    text: "${playerChampion.winRateFormatted}%",
                                   ),
                                 ],
                               ),
@@ -328,16 +328,17 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                 children: [
                                   _InfoLabel(
                                     label: "KDA",
-                                    text: playerChampion.value!.kdaFormatted,
+                                    text: playerChampion.kdaFormatted,
                                   ),
-                                  _InfoLabel(
-                                    label: "CR / Match",
-                                    text: championCPM,
-                                  ),
+                                  if (championCPM != null)
+                                    _InfoLabel(
+                                      label: "CR / Match",
+                                      text: championCPM,
+                                    ),
                                   _InfoLabel(
                                     label: "Last Played",
                                     text: Jiffy(
-                                      playerChampion.value!.lastPlayed,
+                                      playerChampion.lastPlayed,
                                     ).fromNow(),
                                   ),
                                 ],
