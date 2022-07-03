@@ -81,6 +81,7 @@ dependencies:
   intl: ^0.17.0
   http: ^0.13.4
   syncfusion_flutter_datepicker: ^20.2.36
+  device_info_plus: 3.2.4
 
 dev_dependencies:
   flutter_test:
