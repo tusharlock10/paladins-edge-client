@@ -1,5 +1,6 @@
 import "package:paladinsedge/api/auth/responses.dart" as responses;
 import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class AuthRequests {
@@ -144,6 +145,24 @@ abstract class AuthRequests {
       );
       if (response.data != null) {
         return responses.UpdateSavedMatchesResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<responses.DeviceDetailResponse?> deviceDetail({
+    required models.DeviceDetail deviceDetail,
+  }) async {
+    try {
+      final response = await utilities.api.put<Map<String, dynamic>>(
+        constants.Urls.deviceDetail,
+        data: {"deviceDetail": deviceDetail},
+      );
+      if (response.data != null) {
+        return responses.DeviceDetailResponse.fromJson(response.data!);
       }
 
       return null;

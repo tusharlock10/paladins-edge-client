@@ -153,8 +153,9 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.Global.isAuthenticated = true;
     if (player != null) utilities.Global.isPlayerConnected = true;
 
-    // upon successful login, send FCM token to server
+    // upon successful login, send FCM token and deviceDetail to server
     _sendFCMToken();
+    _sendDeviceDetail();
     // save response in local db
     _saveResponse(response);
 
@@ -492,7 +493,18 @@ class _AuthNotifier extends ChangeNotifier {
   /// for the server, and not stored on the app/ browser
   Future<void> _sendFCMToken() async {
     final fcmToken = await utilities.Messaging.initMessaging();
-    if (fcmToken != null) api.AuthRequests.fcmToken(fcmToken: fcmToken);
+    if (fcmToken != null) await api.AuthRequests.fcmToken(fcmToken: fcmToken);
+  }
+
+  /// Send device details to server
+  Future<void> _sendDeviceDetail() async {
+    final deviceDetail = await utilities.getDeviceDetail();
+
+    if (deviceDetail != null) {
+      await api.AuthRequests.deviceDetail(
+        deviceDetail: deviceDetail,
+      );
+    }
   }
 
   void _saveResponse(api.LoginResponse response) {

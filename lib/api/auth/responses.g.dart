@@ -108,3 +108,16 @@ Map<String, dynamic> _$UpdateSavedMatchesResponseToJson(
     <String, dynamic>{
       'savedMatches': instance.savedMatches,
     };
+
+DeviceDetailResponse _$DeviceDetailResponseFromJson(
+        Map<String, dynamic> json) =>
+    DeviceDetailResponse(
+      deviceDetail:
+          DeviceDetail.fromJson(json['deviceDetail'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$DeviceDetailResponseToJson(
+        DeviceDetailResponse instance) =>
+    <String, dynamic>{
+      'deviceDetail': instance.deviceDetail,
+    };
