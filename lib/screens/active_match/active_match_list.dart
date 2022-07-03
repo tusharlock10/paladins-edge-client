@@ -12,10 +12,14 @@ class ActiveMatchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final playersInfoTeam1 =
-        playerStatus.match?.playersInfo.where((_) => _.team == 1);
-    final playersInfoTeam2 =
-        playerStatus.match?.playersInfo.where((_) => _.team == 2);
+    final playersInfoTeam1 = playerStatus.match?.playersInfo.where(
+          (_) => _.team == 1,
+        ) ??
+        [];
+    final playersInfoTeam2 = playerStatus.match?.playersInfo.where(
+          (_) => _.team == 2,
+        ) ??
+        [];
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed(
@@ -46,14 +50,13 @@ class ActiveMatchList extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          ...playersInfoTeam1?.map(
-                (playerInfo) {
-                  return ActiveMatchPlayer(
-                    playerInfo: playerInfo,
-                  );
-                },
-              ).toList() ??
-              [],
+          ...playersInfoTeam1.map(
+            (playerInfo) {
+              return ActiveMatchPlayer(
+                playerInfo: playerInfo,
+              );
+            },
+          ).toList(),
           const Center(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
@@ -63,14 +66,13 @@ class ActiveMatchList extends StatelessWidget {
               ),
             ),
           ),
-          ...playersInfoTeam2?.map(
-                (playerInfo) {
-                  return ActiveMatchPlayer(
-                    playerInfo: playerInfo,
-                  );
-                },
-              ).toList() ??
-              [],
+          ...playersInfoTeam2.map(
+            (playerInfo) {
+              return ActiveMatchPlayer(
+                playerInfo: playerInfo,
+              );
+            },
+          ).toList(),
           const SizedBox(height: 30),
         ],
       ),

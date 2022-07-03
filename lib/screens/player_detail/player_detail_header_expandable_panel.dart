@@ -685,13 +685,15 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
               itemCount: recentlyPlayedChampions.length,
               itemBuilder: (_, index) {
                 final recentlyPlayedChampion =
-                    recentlyPlayedChampions.elementAt(
+                    recentlyPlayedChampions.elementAtOrNull(
                   index,
                 );
                 final recentlyPlayedPlayerChampion =
-                    recentlyPlayedPlayerChampions.elementAt(
+                    recentlyPlayedPlayerChampions.elementAtOrNull(
                   index,
                 );
+
+                if (recentlyPlayedChampion == null) return const SizedBox();
 
                 return _RecentlyPlayedChampionCard(
                   champion: recentlyPlayedChampion,

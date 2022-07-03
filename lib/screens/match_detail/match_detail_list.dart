@@ -6,7 +6,6 @@ import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
-import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_team_header.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
@@ -24,10 +23,29 @@ class MatchDetailList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
     final matchesProvider = !isSavedMatch ? ref.read(providers.matches) : null;
     final isMatchDetailsLoading = !isSavedMatch
         ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
         : false;
+    final champions = ref.watch(providers.champions.select((_) => _.champions));
+
+    // Variables
+    final matchPlayers = combinedMatch?.matchPlayers;
+    final match = combinedMatch?.match;
+    final isLandscape = utilities.responsiveCondition(
+      context,
+      desktop: true,
+      tablet: true,
+      mobile: false,
+    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    final horizontalPadding = utilities.responsiveCondition(
+      context,
+      desktop: screenWidth * 0.125,
+      tablet: 15.0,
+      mobile: 15.0,
+    );
 
     // Effects
     useEffect(
@@ -55,28 +73,123 @@ class MatchDetailList extends HookConsumerWidget {
       [combinedMatch],
     );
 
-    // Methods
-    final calculateTeamStats = useCallback(
-      (
-        int team,
-        List<models.MatchPlayer> matchPlayers,
-      ) {
+    final winningTeamMatchPlayers = useMemoized(
+      () {
+        return matchPlayers
+                ?.where((_) => _.team == match?.winningTeam)
+                .toList() ??
+            [];
+      },
+      [matchPlayers, match],
+    );
+
+    final losingTeamMatchPlayers = useMemoized(
+      () {
+        return matchPlayers
+                ?.where((_) => _.team != match?.winningTeam)
+                .toList() ??
+            [];
+      },
+      [matchPlayers, match],
+    );
+
+    final winningTeamStats = useMemoized(
+      () {
         final teamStats = data_classes.MatchTeamStats(
           kills: 0,
           deaths: 0,
           assists: 0,
         );
-        for (var matchPlayer in matchPlayers) {
-          if (matchPlayer.team == team) {
-            teamStats.kills += matchPlayer.playerStats.kills.toInt();
-            teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
-            teamStats.assists += matchPlayer.playerStats.assists.toInt();
-          }
+        if (winningTeamMatchPlayers.isEmpty) return null;
+
+        for (final matchPlayer in winningTeamMatchPlayers) {
+          teamStats.kills += matchPlayer.playerStats.kills.toInt();
+          teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
+          teamStats.assists += matchPlayer.playerStats.assists.toInt();
         }
 
         return teamStats;
       },
-      [],
+      [winningTeamMatchPlayers],
+    );
+
+    final losingTeamStats = useMemoized(
+      () {
+        final teamStats = data_classes.MatchTeamStats(
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+        );
+        if (losingTeamMatchPlayers.isEmpty) return null;
+
+        for (final matchPlayer in losingTeamMatchPlayers) {
+          teamStats.kills += matchPlayer.playerStats.kills.toInt();
+          teamStats.deaths += matchPlayer.playerStats.deaths.toInt();
+          teamStats.assists += matchPlayer.playerStats.assists.toInt();
+        }
+
+        return teamStats;
+      },
+      [losingTeamMatchPlayers],
+    );
+
+    final championBans = useMemoized(
+      () {
+        final championBans = match?.championBans;
+        if (championBans != null && championBans.length == 6) {
+          // swap the last 2 champion bans
+          final length = championBans.length;
+          final ban1 = championBans[length - 2];
+          final ban2 = championBans[length - 1];
+          championBans[length - 2] = ban2;
+          championBans[length - 1] = ban1;
+        }
+
+        return championBans;
+      },
+      [match],
+    );
+
+    final winningTeamBans = useMemoized(
+      () {
+        List<models.Champion> winningTeamBans = [];
+        if (match == null || championBans == null) return winningTeamBans;
+
+        final isFirstTeam = match.winningTeam == 1;
+        winningTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return winningTeamBans;
+      },
+      [match, championBans],
+    );
+
+    final losingTeamBans = useMemoized(
+      () {
+        List<models.Champion> losingTeamBans = [];
+        if (match == null || championBans == null) return losingTeamBans;
+
+        final isFirstTeam = match.winningTeam == 2;
+        losingTeamBans = championBans.mapIndexedNotNull((index, championId) {
+          if (index % 2 == (isFirstTeam ? 0 : 1)) {
+            return champions.firstOrNullWhere(
+              (_) => _.championId == championId,
+            );
+          }
+
+          return null;
+        }).toList();
+
+        return losingTeamBans;
+      },
+      [match, championBans],
     );
 
     if (isMatchDetailsLoading) {
@@ -113,35 +226,80 @@ class MatchDetailList extends HookConsumerWidget {
       );
     }
 
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (_, index) {
-          final matchPlayer = combinedMatch!.matchPlayers[index];
-          final previousMatchPlayer =
-              combinedMatch!.matchPlayers.elementAtOrNull(index - 1);
+    // Widgets
+    final winningTeamColumn = Column(
+      children: [
+        if (winningTeamStats != null)
+          MatchDetailTeamHeader(
+            teamStats: winningTeamStats,
+            isWinningTeam: true,
+            bannedChampions: winningTeamBans,
+          ),
+        for (int playerIndex = 0;
+            playerIndex < winningTeamMatchPlayers.length;
+            playerIndex++)
+          MatchDetailPlayerCard(
+            matchPlayer: winningTeamMatchPlayers[playerIndex],
+            averageCredits: averageCredits,
+          ),
+      ],
+    );
 
-          return Column(
-            children: [
-              if (index == 0) MatchDetailStats(combinedMatch: combinedMatch),
-              if (matchPlayer.team != previousMatchPlayer?.team)
-                MatchDetailTeamHeader(
-                  teamStats: calculateTeamStats(
-                    matchPlayer.team,
-                    combinedMatch!.matchPlayers,
+    final losingTeamColumn = Column(
+      children: [
+        if (losingTeamStats != null)
+          MatchDetailTeamHeader(
+            teamStats: losingTeamStats,
+            isWinningTeam: false,
+            bannedChampions: losingTeamBans,
+          ),
+        for (int playerIndex = 0;
+            playerIndex < losingTeamMatchPlayers.length;
+            playerIndex++)
+          MatchDetailPlayerCard(
+            matchPlayer: losingTeamMatchPlayers[playerIndex],
+            averageCredits: averageCredits,
+          ),
+      ],
+    );
+
+    return SliverToBoxAdapter(
+      child: isLandscape
+          ? Column(
+              children: [
+                const Divider(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Divider(),
+                      Expanded(child: winningTeamColumn),
+                      const SizedBox(width: 10),
+                      Expanded(child: losingTeamColumn),
+                    ],
                   ),
-                  isWinningTeam:
-                      combinedMatch!.match.winningTeam == matchPlayer.team,
-                  matchPlayer: matchPlayer,
                 ),
-              MatchDetailPlayerCard(
-                matchPlayer: matchPlayer,
-                averageCredits: averageCredits,
-              ),
-            ],
-          );
-        },
-        childCount: combinedMatch!.matchPlayers.length,
-      ),
+                const SizedBox(height: 20),
+              ],
+            )
+          : Column(
+              children: [
+                const Divider(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Column(
+                    children: [
+                      winningTeamColumn,
+                      const SizedBox(height: 20),
+                      if (losingTeamStats != null) const Divider(),
+                      losingTeamColumn,
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

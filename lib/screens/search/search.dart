@@ -8,6 +8,7 @@ import "package:paladinsedge/screens/search/search_history.dart";
 import "package:paladinsedge/screens/search/search_lower_list.dart";
 import "package:paladinsedge/screens/search/search_top_list.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Search extends HookConsumerWidget {
   const Search({Key? key}) : super(key: key);
@@ -40,6 +41,17 @@ class Search extends HookConsumerWidget {
       [],
     );
 
+    final onNotFound = useCallback(
+      (String playerName) {
+        widgets.showToast(
+          context: context,
+          text: "Player $playerName not found",
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onSearch = useCallback(
       (
         String playerName, {
@@ -54,6 +66,7 @@ class Search extends HookConsumerWidget {
           playerName: playerName,
           simpleResults: false,
           addInSearchHistory: addInSearchHistory && !isGuest,
+          onNotFound: onNotFound,
         );
 
         isLoading.value = false;

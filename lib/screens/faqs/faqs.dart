@@ -17,7 +17,7 @@ class Faqs extends HookConsumerWidget {
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const loginRouteName = "loginFaqs";
+  static const loginRouteName = "login-faqs";
   static const loginRoutePath = "faqs";
   static final loginGoRoute = GoRoute(
     name: loginRouteName,

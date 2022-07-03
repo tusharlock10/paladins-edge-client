@@ -1,5 +1,3 @@
-import "dart:ui";
-
 import "package:cached_network_image/cached_network_image.dart";
 import "package:dartx/dartx.dart";
 import "package:duration/duration.dart";
@@ -40,35 +38,26 @@ class _PlayerStatsCard extends StatelessWidget {
 
     return SizedBox(
       width: itemWidth,
-      child: ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 4,
-            sigmaY: 4,
-            tileMode: TileMode.mirror,
-          ),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(isLightTheme ? 0.75 : 0.15),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(isLightTheme ? 0.6 : 0.20),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyText2?.copyWith(fontSize: 12),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText2?.copyWith(fontSize: 12),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  formattedStat,
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText1?.copyWith(fontSize: 11),
-                ),
-              ],
+            const SizedBox(height: 2),
+            Text(
+              formattedStat,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyText1?.copyWith(fontSize: 11),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -214,7 +203,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Center(
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -225,7 +214,15 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                     image: CachedNetworkImageProvider(champion.splashUrl),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
-                    opacity: brightness == Brightness.light ? 0.145 : 0.225,
+                    colorFilter: ColorFilter.mode(
+                      Color.fromRGBO(
+                        255,
+                        255,
+                        255,
+                        brightness == Brightness.light ? 0.145 : 0.225,
+                      ),
+                      BlendMode.modulate,
+                    ),
                   )
                 : null,
           ),

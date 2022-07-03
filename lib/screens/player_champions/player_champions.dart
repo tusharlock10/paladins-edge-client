@@ -12,8 +12,8 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 import "package:syncfusion_flutter_datagrid/datagrid.dart";
 
 class PlayerChampions extends HookConsumerWidget {
-  static const routeName = "playerChampions";
-  static const routePath = "playerChampions";
+  static const routeName = "player-champions";
+  static const routePath = "player-champions";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,

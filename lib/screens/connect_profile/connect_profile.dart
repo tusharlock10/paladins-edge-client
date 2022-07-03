@@ -18,8 +18,8 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfile extends HookConsumerWidget {
-  static const routeName = "connectProfile";
-  static const routePath = "/connectProfile";
+  static const routeName = "connect-profile";
+  static const routePath = "/connect-profile";
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
@@ -115,6 +115,17 @@ class ConnectProfile extends HookConsumerWidget {
       [],
     );
 
+    final onNotFound = useCallback(
+      (String playerName) {
+        widgets.showToast(
+          context: context,
+          text: "Player $playerName not found",
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onSearch = useCallback(
       (String playerName, WidgetRef ref) async {
         // exactMatch will always be false
@@ -131,6 +142,7 @@ class ConnectProfile extends HookConsumerWidget {
           playerName: playerName,
           simpleResults: true,
           addInSearchHistory: false,
+          onNotFound: onNotFound,
         );
 
         isLoading.value = false;
