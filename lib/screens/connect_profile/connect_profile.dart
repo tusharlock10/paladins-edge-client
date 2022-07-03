@@ -115,6 +115,17 @@ class ConnectProfile extends HookConsumerWidget {
       [],
     );
 
+    final onNotFound = useCallback(
+      (String playerName) {
+        widgets.showToast(
+          context: context,
+          text: "Player $playerName not found",
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onSearch = useCallback(
       (String playerName, WidgetRef ref) async {
         // exactMatch will always be false
@@ -131,6 +142,7 @@ class ConnectProfile extends HookConsumerWidget {
           playerName: playerName,
           simpleResults: true,
           addInSearchHistory: false,
+          onNotFound: onNotFound,
         );
 
         isLoading.value = false;
