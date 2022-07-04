@@ -12,6 +12,7 @@ abstract class Urls {
   static const faqs = "/auth/faqs"; // GET
   static const savedMatches = "/auth/savedMatches"; // GET
   static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
+  static const deviceDetail = "/auth/deviceDetail"; // PUT
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
