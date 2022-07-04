@@ -1,5 +1,5 @@
 import "package:paladinsedge/api/champions/responses.dart" as responses;
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 

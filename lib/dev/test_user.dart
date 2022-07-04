@@ -1,4 +1,4 @@
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 
 class TestUser {
   final String name;

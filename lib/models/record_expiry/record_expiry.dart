@@ -1,5 +1,5 @@
 import "package:hive/hive.dart";
-import "package:paladinsedge/constants.dart"
+import "package:paladinsedge/constants/index.dart"
     show TypeIds, RecordExpiryDuration, RecordExpiryName;
 
 part "record_expiry.g.dart";

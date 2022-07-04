@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -23,6 +24,9 @@ class SearchHistory extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       (String playerId) {
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.clickSearchHistory,
+        );
         utilities.unFocusKeyboard(context);
         utilities.Navigation.navigate(
           context,

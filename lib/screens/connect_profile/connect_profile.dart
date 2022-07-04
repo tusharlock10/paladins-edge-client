@@ -6,7 +6,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/app_drawer/index.dart";
 import "package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart";

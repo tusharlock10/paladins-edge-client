@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:overlay_support/overlay_support.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/firebase_options.dart" as firebase_options;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/router/index.dart" as router;

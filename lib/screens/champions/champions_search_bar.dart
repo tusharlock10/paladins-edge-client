@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/champions/champions_filter_modal.dart";
@@ -69,6 +69,11 @@ class ChampionsSearchBar extends HookConsumerWidget {
             combinedChampions.where((_) => !_.hide);
         if (filteredCombinedChampions.length == 1) {
           final champion = filteredCombinedChampions.first.champion;
+
+          utilities.Analytics.logEvent(
+            constants.AnalyticsEvent.directSearchChampion,
+            {"champion": champion.name},
+          );
           utilities.unFocusKeyboard(context);
           utilities.Navigation.navigate(
             context,

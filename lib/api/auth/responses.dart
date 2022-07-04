@@ -1,6 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart"
-    show User, Player, Essentials, FAQ, Match, MatchPlayer;
+    show User, Player, Essentials, FAQ, Match, MatchPlayer, DeviceDetail;
 
 part "responses.g.dart";
 
@@ -105,4 +105,17 @@ class UpdateSavedMatchesResponse {
   factory UpdateSavedMatchesResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateSavedMatchesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateSavedMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class DeviceDetailResponse {
+  final DeviceDetail deviceDetail;
+
+  DeviceDetailResponse({
+    required this.deviceDetail,
+  });
+
+  factory DeviceDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$DeviceDetailResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$DeviceDetailResponseToJson(this);
 }
