@@ -1,13 +1,11 @@
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/foundation.dart";
-import "package:paladinsedge/constants/index.dart" as constants;
 
 abstract class Analytics {
   static Future<void> logScreenEntry(String screenName) async {
     debugPrint("ANALYTICS [screen_view] : $screenName");
-    await FirebaseAnalytics.instance.logEvent(
-      name: constants.AnalyticsEvent.screenView,
-      parameters: {"firebase_screen": screenName},
+    await FirebaseAnalytics.instance.logScreenView(
+      screenName: screenName,
     );
   }
 

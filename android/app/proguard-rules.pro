@@ -21,3 +21,7 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+
+-keepclassmembers class app.paladinsedge.models.** {
+  *;
+}

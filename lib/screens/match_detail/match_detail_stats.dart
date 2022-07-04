@@ -28,60 +28,58 @@ class MatchDetailStats extends StatelessWidget {
       match.matchStartTime.toLocal(),
     ).format("do MMMM, h:mm a");
 
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    region,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodyText2?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  region,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.bodyText2?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    matchDuration,
-                    style: textTheme.bodyText1
-                        ?.copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  matchDuration,
+                  style: textTheme.bodyText1
+                      ?.copyWith(fontStyle: FontStyle.italic),
+                ),
+              ],
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    map,
-                    textAlign: TextAlign.end,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodyText2?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  map,
+                  textAlign: TextAlign.end,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.bodyText2?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    date.toString(),
-                    style: textTheme.bodyText1
-                        ?.copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  date.toString(),
+                  style: textTheme.bodyText1
+                      ?.copyWith(fontStyle: FontStyle.italic),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
