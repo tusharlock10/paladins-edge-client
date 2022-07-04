@@ -1,3 +1,4 @@
+export "./analytics.dart";
 export "./api.dart";
 export "./asset_urls.dart";
 export "./champion_card.dart";

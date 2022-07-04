@@ -1,6 +1,6 @@
 import "package:hive/hive.dart";
 import "package:json_annotation/json_annotation.dart";
-import "package:paladinsedge/constants.dart" show TypeIds;
+import "package:paladinsedge/constants/index.dart" show TypeIds;
 
 part "player_champion.g.dart";
 

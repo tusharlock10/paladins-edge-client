@@ -3,7 +3,7 @@ import "dart:async";
 import "package:dartx/dartx.dart";
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter_chat_types/flutter_chat_types.dart" as types;
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 
 enum ChatConnectionState { connected, disconnected, unknown }
 

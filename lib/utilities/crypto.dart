@@ -3,7 +3,7 @@ import "dart:typed_data";
 
 import "package:encrypt/encrypt.dart";
 import "package:flutter/services.dart" show rootBundle;
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:pointycastle/export.dart";
 
 /// Class for RSA encryption

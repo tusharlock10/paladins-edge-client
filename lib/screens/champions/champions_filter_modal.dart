@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/screens/champions/champions_filter_tab.dart";
 import "package:paladinsedge/screens/champions/champions_sort_tab.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
@@ -15,6 +16,7 @@ void showChampionsFilterModal(BuildContext context) {
     mobile: screenWidth,
   );
 
+  utilities.Analytics.logEvent(constants.AnalyticsEvent.championsFilterSort);
   utilities.unFocusKeyboard(context);
   showModalBottomSheet(
     elevation: 10,

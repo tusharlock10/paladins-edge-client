@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:package_info_plus/package_info_plus.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 import "package:url_launcher/url_launcher_string.dart";
 

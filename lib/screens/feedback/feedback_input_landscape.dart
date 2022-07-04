@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/screens/feedback/feedback_description.dart";
 import "package:paladinsedge/screens/feedback/feedback_image.dart";
 
