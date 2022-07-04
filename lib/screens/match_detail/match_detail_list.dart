@@ -6,6 +6,7 @@ import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/match_detail/match_detail_player_card.dart";
+import "package:paladinsedge/screens/match_detail/match_detail_stats.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_team_header.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
@@ -267,6 +268,7 @@ class MatchDetailList extends HookConsumerWidget {
       child: isLandscape
           ? Column(
               children: [
+                MatchDetailStats(combinedMatch: combinedMatch),
                 const Divider(),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -285,6 +287,7 @@ class MatchDetailList extends HookConsumerWidget {
             )
           : Column(
               children: [
+                MatchDetailStats(combinedMatch: combinedMatch),
                 const Divider(),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
