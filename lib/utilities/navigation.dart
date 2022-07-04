@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/utilities/analytics.dart";
 import "package:paladinsedge/utilities/global.dart";
 
 abstract class Navigation {
@@ -10,12 +11,14 @@ abstract class Navigation {
     String routeName, {
     Map<String, String>? params,
     Map<String, String>? queryParams,
-  }) =>
-      GoRouter.of(context).goNamed(
-        routeName,
-        params: params ?? const {},
-        queryParams: queryParams ?? const {},
-      );
+  }) {
+    Analytics.logScreenEntry(routeName);
+    GoRouter.of(context).goNamed(
+      routeName,
+      params: params ?? const {},
+      queryParams: queryParams ?? const {},
+    );
+  }
 
   /// Pop using the Flutter navigator
   static void pop(BuildContext context) => Navigator.of(context).pop();

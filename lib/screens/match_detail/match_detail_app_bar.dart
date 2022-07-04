@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;

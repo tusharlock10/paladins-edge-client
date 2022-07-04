@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -47,6 +48,10 @@ class PlayerDetailMenu extends HookConsumerWidget {
     final onPressActiveMatch = useCallback(
       () {
         if (player == null) return;
+
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.otherPlayerActiveMatch,
+        );
         playersProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
@@ -62,6 +67,9 @@ class PlayerDetailMenu extends HookConsumerWidget {
       () {
         if (player == null) return;
 
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.otherPlayerFriends,
+        );
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
           context,
@@ -78,6 +86,9 @@ class PlayerDetailMenu extends HookConsumerWidget {
       () {
         if (player == null) return;
 
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.otherPlayerChampions,
+        );
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
           context,
@@ -92,6 +103,9 @@ class PlayerDetailMenu extends HookConsumerWidget {
 
     final onFilter = useCallback(
       () {
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.playerMatchesFilterSort,
+        );
         utilities.Navigation.pop(context);
         showPlayerDetailFilterModal(context);
       },

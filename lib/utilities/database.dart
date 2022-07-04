@@ -1,5 +1,5 @@
 import "package:hive_flutter/hive_flutter.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 
 abstract class Database {

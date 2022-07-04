@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:package_info_plus/package_info_plus.dart";
-import "package:paladinsedge/constants.dart" as constants;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/widgets/loading_indicator.dart";
 
 void showInfoAlert(BuildContext context) {

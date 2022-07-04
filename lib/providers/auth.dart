@@ -5,6 +5,7 @@ import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/dev/index.dart" as dev;
 import "package:paladinsedge/models/index.dart" as models;
@@ -152,6 +153,7 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
     if (player != null) utilities.Global.isPlayerConnected = true;
+    _recordLoginAnalytics();
 
     // upon successful login, send FCM token to server
     _sendFCMToken();
@@ -167,6 +169,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// Login the user as Guest so that he/she can explore the app
   void loginAsGuest() {
     // use firebase to sign-in anonymously
+    utilities.Analytics.logEvent(constants.AnalyticsEvent.guestLogin);
     FirebaseAuth.instance.signInAnonymously();
     isGuest = true;
 
@@ -191,6 +194,9 @@ class _AuthNotifier extends ChangeNotifier {
       if (!result) {
         return false;
       }
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.userLogout);
+    } else {
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.guestLogin);
     }
 
     // clear data from all providers
@@ -244,6 +250,7 @@ class _AuthNotifier extends ChangeNotifier {
       if (player != null) {
         utilities.Database.savePlayer(player!);
         utilities.Global.isPlayerConnected = true;
+        utilities.Analytics.logEvent(constants.AnalyticsEvent.claimProfile);
       }
 
       notifyListeners();
@@ -272,10 +279,12 @@ class _AuthNotifier extends ChangeNotifier {
 
       user!.favouriteFriends.add(playerId);
       result = data_classes.FavouriteFriendResult.added;
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.markFriend);
     } else {
       // if he is in the favouriteFriends, then remove him
       user!.favouriteFriends.remove(playerId);
       result = data_classes.FavouriteFriendResult.removed;
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.unmarkFriend);
     }
 
     notifyListeners();
@@ -419,6 +428,19 @@ class _AuthNotifier extends ChangeNotifier {
   void toggleTheme(ThemeMode themeMode) {
     settings.themeMode = themeMode;
 
+    String? themeName;
+    if (themeMode == ThemeMode.dark) {
+      themeName = "dark";
+    } else if (themeMode == ThemeMode.light) {
+      themeName = "light";
+    } else if (themeMode == ThemeMode.system) {
+      themeName = "system";
+    }
+    utilities.Analytics.logEvent(
+      constants.AnalyticsEvent.changeTheme,
+      {"theme": themeName},
+    );
+
     // save the settings after changing the theme
     utilities.Database.saveSettings(settings);
     notifyListeners();
@@ -493,6 +515,22 @@ class _AuthNotifier extends ChangeNotifier {
   Future<void> _sendFCMToken() async {
     final fcmToken = await utilities.Messaging.initMessaging();
     if (fcmToken != null) api.AuthRequests.fcmToken(fcmToken: fcmToken);
+  }
+
+  Future<void> _recordLoginAnalytics() async {
+    if (isGuest = true) {
+      utilities.Analytics.logEvent(
+        constants.AnalyticsEvent.guestToUserConversion,
+      );
+    }
+    if (user != null) {
+      utilities.Analytics.setUserId(user!.uid);
+    }
+    if (player != null) {
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.existingUserLogin);
+    } else {
+      utilities.Analytics.logEvent(constants.AnalyticsEvent.newUserLogin);
+    }
   }
 
   void _saveResponse(api.LoginResponse response) {

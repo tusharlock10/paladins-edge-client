@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
-import "package:paladinsedge/constants.dart" show TypeIds;
+import "package:paladinsedge/constants/index.dart" show TypeIds;
 
 part "settings.g.dart";
 
