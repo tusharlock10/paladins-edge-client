@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
@@ -284,6 +285,29 @@ class _RecentlyPlayedChampionCard extends HookWidget {
       [lastPlayed],
     );
 
+    final championIcon = useMemoized(
+      () {
+        var championIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(champion.iconUrl),
+          isAssetImage: false,
+          blurHash: champion.iconBlurHash,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.icons,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            championIcon.imageUrl = assetUrl;
+            championIcon.isAssetImage = true;
+          }
+        }
+
+        return championIcon;
+      },
+      [champion],
+    );
+
     return SizedBox(
       width: itemWidth,
       child: DecoratedBox(
@@ -305,8 +329,9 @@ class _RecentlyPlayedChampionCard extends HookWidget {
               Row(
                 children: [
                   widgets.ElevatedAvatar(
-                    imageUrl: champion.iconUrl,
-                    imageBlurHash: champion.iconBlurHash,
+                    imageUrl: championIcon.imageUrl,
+                    imageBlurHash: championIcon.blurHash,
+                    isAssetImage: championIcon.isAssetImage,
                     size: 18,
                     borderRadius: 8,
                     elevation: 3,

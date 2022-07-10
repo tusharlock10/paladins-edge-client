@@ -9,9 +9,10 @@ class FastImage extends StatelessWidget {
   final double? width;
   final BorderRadius? borderRadius;
   final BoxFit fit;
-  final bool? greyedOut;
+  final bool greyedOut;
   final Alignment? alignment;
   final String? semanticText;
+  final bool isAssetImage;
 
   const FastImage({
     required this.imageUrl,
@@ -20,49 +21,57 @@ class FastImage extends StatelessWidget {
     this.width,
     this.borderRadius = BorderRadius.zero,
     this.fit = BoxFit.contain,
-    this.greyedOut,
+    this.greyedOut = false,
     this.alignment,
     this.semanticText,
+    this.isAssetImage = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final image = CachedNetworkImage(
-      placeholderFadeInDuration: const Duration(milliseconds: 250),
-      fadeInDuration: Duration.zero,
-      fadeOutDuration: Duration.zero,
-      alignment: alignment ?? Alignment.center,
-      errorWidget: (_, __, ___) => imageBlurHash != null
-          ? SizedBox(
-              height: height,
-              width: width,
-              child: BlurHash(
-                hash: imageBlurHash!,
-                image: imageUrl,
-                imageFit: fit,
-              ),
-            )
-          : SizedBox(
-              height: height,
-              width: width,
-            ),
-      placeholder: imageBlurHash != null
-          ? (_, __) => SizedBox(
-                height: height,
-                width: width,
-                child: BlurHash(
-                  hash: imageBlurHash!,
-                  image: imageUrl,
-                  imageFit: fit,
-                ),
-              )
-          : null,
-      imageUrl: imageUrl,
-      height: height,
-      width: width,
-      fit: fit,
-    );
+    final image = isAssetImage
+        ? Image.asset(
+            imageUrl,
+            height: height,
+            width: width,
+            fit: fit,
+          )
+        : CachedNetworkImage(
+            placeholderFadeInDuration: const Duration(milliseconds: 250),
+            fadeInDuration: Duration.zero,
+            fadeOutDuration: Duration.zero,
+            alignment: alignment ?? Alignment.center,
+            errorWidget: (_, __, ___) => imageBlurHash != null
+                ? SizedBox(
+                    height: height,
+                    width: width,
+                    child: BlurHash(
+                      hash: imageBlurHash!,
+                      image: imageUrl,
+                      imageFit: fit,
+                    ),
+                  )
+                : SizedBox(
+                    height: height,
+                    width: width,
+                  ),
+            placeholder: imageBlurHash != null
+                ? (_, __) => SizedBox(
+                      height: height,
+                      width: width,
+                      child: BlurHash(
+                        hash: imageBlurHash!,
+                        image: imageUrl,
+                        imageFit: fit,
+                      ),
+                    )
+                : null,
+            imageUrl: imageUrl,
+            height: height,
+            width: width,
+            fit: fit,
+          );
 
     return Semantics(
       readOnly: true,
@@ -70,7 +79,7 @@ class FastImage extends StatelessWidget {
       image: true,
       child: ClipRRect(
         borderRadius: borderRadius,
-        child: (greyedOut ?? false)
+        child: greyedOut
             ? ColorFiltered(
                 colorFilter: const ColorFilter.mode(
                   Colors.grey,

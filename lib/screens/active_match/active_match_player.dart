@@ -4,6 +4,8 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -116,6 +118,31 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [playerChampion],
     );
 
+    final championIcon = useMemoized(
+      () {
+        if (champion == null) return null;
+
+        var championIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.iconUrl,
+          isAssetImage: false,
+          blurHash: champion.iconBlurHash,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.icons,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            championIcon.imageUrl = assetUrl;
+            championIcon.isAssetImage = true;
+          }
+        }
+
+        return championIcon;
+      },
+      [champion],
+    );
+
     // Methods
     final onTapPlayer = useCallback(
       () {
@@ -153,11 +180,12 @@ class ActiveMatchPlayer extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    champion == null
+                    championIcon == null
                         ? const SizedBox(height: 24 * 2, width: 24 * 2)
                         : widgets.ElevatedAvatar(
-                            imageUrl: champion.iconUrl,
-                            imageBlurHash: champion.iconBlurHash,
+                            imageUrl: championIcon.imageUrl,
+                            imageBlurHash: championIcon.blurHash,
+                            isAssetImage: championIcon.isAssetImage,
                             borderRadius: 7.5,
                             size: 24,
                           ),

@@ -33,6 +33,12 @@ jobs:
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
 
+      - name: Including Paladins Assets in this build
+        run: |
+          aws s3 sync s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/paladins_assets/ ./paladins_assets/
+          rm pubspec.yaml
+          mv pubspec.assets.yaml pubspec.yaml
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -95,6 +101,12 @@ jobs:
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
+
+      - name: Including Paladins Assets in this build
+        run: |
+          aws s3 sync s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/paladins_assets/ ./paladins_assets/
+          rm pubspec.yaml
+          mv pubspec.assets.yaml pubspec.yaml
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2

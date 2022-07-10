@@ -16,6 +16,7 @@ class InteractiveCard extends HookWidget {
   final Color? color;
   final Color? hoverBorderColor;
   final String? backgroundImage;
+  final bool isAssetImage;
 
   const InteractiveCard({
     required this.child,
@@ -29,6 +30,7 @@ class InteractiveCard extends HookWidget {
     this.color,
     this.hoverBorderColor,
     this.backgroundImage,
+    this.isAssetImage = false,
     Key? key,
   }) : super(key: key);
 
@@ -79,7 +81,10 @@ class InteractiveCard extends HookWidget {
             decoration: BoxDecoration(
               image: backgroundImage != null && showBackgroundSplash
                   ? DecorationImage(
-                      image: CachedNetworkImageProvider(backgroundImage!),
+                      image: (isAssetImage
+                              ? AssetImage(backgroundImage!)
+                              : CachedNetworkImageProvider(backgroundImage!))
+                          as ImageProvider,
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                       colorFilter: ColorFilter.mode(

@@ -4,6 +4,8 @@ import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -51,6 +53,52 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     final highestStatText =
         "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}";
 
+    // Hooks
+    final splashBackground = useMemoized(
+      () {
+        var splashBackground = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.splashUrl,
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.splash,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            splashBackground.imageUrl = assetUrl;
+            splashBackground.isAssetImage = true;
+          }
+        }
+
+        return splashBackground;
+      },
+      [champion],
+    );
+
+    final championIcon = useMemoized(
+      () {
+        var championIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(champion.iconUrl),
+          isAssetImage: false,
+          blurHash: champion.iconBlurHash,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.icons,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            championIcon.imageUrl = assetUrl;
+            championIcon.isAssetImage = true;
+          }
+        }
+
+        return championIcon;
+      },
+      [champion],
+    );
+
     // Methods
     final onTap = useCallback(
       () {
@@ -76,7 +124,8 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: _itemMargin),
       borderRadius: 10,
-      backgroundImage: champion.splashUrl,
+      backgroundImage: splashBackground.imageUrl,
+      isAssetImage: splashBackground.isAssetImage,
       child: Row(
         children: [
           Container(
@@ -95,8 +144,9 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                 Row(
                   children: [
                     widgets.ElevatedAvatar(
-                      imageUrl: utilities.getSmallAsset(champion.iconUrl),
-                      imageBlurHash: champion.iconBlurHash,
+                      imageUrl: championIcon.imageUrl,
+                      imageBlurHash: championIcon.blurHash,
+                      isAssetImage: championIcon.isAssetImage,
                       size: 28,
                       borderRadius: 28,
                       borderSide: isMVP

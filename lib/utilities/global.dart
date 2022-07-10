@@ -1,5 +1,6 @@
 // a singleton class for string global variables
 
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 
 abstract class Global {
@@ -19,4 +20,14 @@ abstract class Global {
 
   /// used to detect if the route is being accessed initially
   static bool isInitialRoute = true;
+
+  /// a list of all paladins asset keys
+  static Map<String, List<String>> paladinsAssets = {
+    constants.ChampionAssetType.abilities: [],
+    constants.ChampionAssetType.cards: [],
+    constants.ChampionAssetType.header: [],
+    constants.ChampionAssetType.icons: [],
+    constants.ChampionAssetType.splash: [],
+    constants.ChampionAssetType.talents: [],
+  };
 }

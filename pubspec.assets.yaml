@@ -1,3 +1,6 @@
+# NOTE: This is a pubspec.yaml file variant that contains paladins_assets
+# It is intended to be used in non-web platform build process
+
 name: paladinsedge
 description: Feature packed Paladins companion
 
@@ -113,6 +116,8 @@ flutter:
     - assets/fonts/
     - assets/keys/
     - assets/images/
+    - paladins_assets/icons/
+    - paladins_assets/splash/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

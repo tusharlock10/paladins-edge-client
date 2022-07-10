@@ -48,4 +48,4 @@ app.*.map.json
 *.env
 google-services.json
 node_modules
-/assets/paladins/
+/paladins_assets/
