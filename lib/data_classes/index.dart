@@ -1,3 +1,4 @@
+export "./asset/index.dart";
 export "./auth/index.dart";
 export "./champions/index.dart";
 export "./common/index.dart";

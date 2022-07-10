@@ -41,6 +41,7 @@ class ScreenInitialization extends HookConsumerWidget {
       () async {
         await utilities.Database.initialize();
         authProvider.loadSettings();
+        authProvider.loadPaladinsAssets();
 
         // first initialize all env variables and check
         // if all the env variables are loaded properly

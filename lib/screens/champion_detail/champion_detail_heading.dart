@@ -1,12 +1,15 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class ChampionDetailHeading extends ConsumerWidget {
+class ChampionDetailHeading extends HookConsumerWidget {
   final models.Champion champion;
   const ChampionDetailHeading({
     required this.champion,
@@ -15,16 +18,16 @@ class ChampionDetailHeading extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Variables
     final textTheme = Theme.of(context).textTheme;
     final isLightTheme = ref.watch(
       providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
     );
-
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
     final health = utilities.humanizeNumber(champion.health);
+    final birthDay = Jiffy(champion.releaseDate).format("MMM do");
     String range = "";
-
     if (champion.damageFallOffRange == 0) {
       range = "Range ∞";
     } else if (champion.damageFallOffRange < 0) {
@@ -33,7 +36,29 @@ class ChampionDetailHeading extends ConsumerWidget {
       range = "Fall-off ${champion.damageFallOffRange.toInt()}";
     }
 
-    final birthDay = Jiffy(champion.releaseDate).format("MMM do");
+    // Hooks
+    final championIcon = useMemoized(
+      () {
+        var championIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.iconUrl,
+          isAssetImage: false,
+          blurHash: champion.iconBlurHash,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.icons,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            championIcon.imageUrl = assetUrl;
+            championIcon.isAssetImage = true;
+          }
+        }
+
+        return championIcon;
+      },
+      [champion],
+    );
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -42,8 +67,9 @@ class ChampionDetailHeading extends ConsumerWidget {
           Hero(
             tag: "${champion.championId}Icon",
             child: widgets.ElevatedAvatar(
-              imageUrl: champion.iconUrl,
-              imageBlurHash: champion.iconBlurHash,
+              imageUrl: championIcon.imageUrl,
+              imageBlurHash: championIcon.blurHash,
+              isAssetImage: championIcon.isAssetImage,
               size: 42,
             ),
           ),

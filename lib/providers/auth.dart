@@ -1,3 +1,5 @@
+import "dart:convert";
+
 import "package:dartx/dartx.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
@@ -48,6 +50,24 @@ class _AuthNotifier extends ChangeNotifier {
   void setAppInitialized() {
     isInitialized = true;
     notifyListeners();
+  }
+
+  /// gets the list of locally available paladinsAssets
+  Future<void> loadPaladinsAssets() async {
+    final manifestContent = await rootBundle.loadString("AssetManifest.json");
+    final manifestMap = jsonDecode(manifestContent) as Map<String, dynamic>;
+    final allPaladinsAssets = manifestMap.keys.where(
+      (_) => _.contains("paladins_assets"),
+    );
+    final assetTypes = utilities.Global.paladinsAssets.keys;
+    for (final asset in allPaladinsAssets) {
+      for (final assetType in assetTypes) {
+        if (asset.contains(assetType)) {
+          utilities.Global.paladinsAssets[assetType]?.add(asset);
+          break;
+        }
+      }
+    }
   }
 
   /// Loads the `settings` from local db

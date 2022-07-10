@@ -1,12 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class ChampionDetailAppBar extends StatelessWidget {
+class ChampionDetailAppBar extends HookWidget {
   final models.Champion champion;
   const ChampionDetailAppBar({
     required this.champion,
@@ -15,11 +17,10 @@ class ChampionDetailAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Variables
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
     bool showSplash = true;
-
     double headerHeight;
     if (height < width) {
       // means in landscape mode, fix the headerHeight
@@ -29,6 +30,29 @@ class ChampionDetailAppBar extends StatelessWidget {
       // make the headerHeight half of width
       headerHeight = width / 2;
     }
+
+    // Hooks
+    final splashBackground = useMemoized(
+      () {
+        var splashBackground = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.splashUrl,
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.splash,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            splashBackground.imageUrl = assetUrl;
+            splashBackground.isAssetImage = true;
+          }
+        }
+
+        return splashBackground;
+      },
+      [champion],
+    );
 
     return SliverAppBar(
       systemOverlayStyle:
@@ -61,9 +85,10 @@ class ChampionDetailAppBar extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: showSplash
             ? widgets.FastImage(
-                imageUrl: champion.splashUrl,
+                imageUrl: splashBackground.imageUrl,
                 imageBlurHash: champion.splashBlurHash,
                 fit: BoxFit.cover,
+                isAssetImage: splashBackground.isAssetImage,
               )
             : Align(
                 alignment: Alignment.centerRight,
