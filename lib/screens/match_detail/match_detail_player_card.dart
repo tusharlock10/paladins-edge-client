@@ -49,6 +49,8 @@ class _PlayerStatsCard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
               style: textTheme.bodyText2?.copyWith(fontSize: 12),
             ),
             const SizedBox(height: 2),

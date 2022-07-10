@@ -633,19 +633,31 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
     // Hooks
     final recentlyPlayedChampions = useMemoized(
       () {
-        return champions.where(
-          (champion) => recentlyPlayedChampionIds.contains(champion.championId),
-        );
+        final List<models.Champion?> recentlyPlayedChampions = [];
+
+        for (final championId in recentlyPlayedChampionIds) {
+          final champion = champions.firstOrNullWhere(
+            (_) => _.championId == championId,
+          );
+          recentlyPlayedChampions.add(champion);
+        }
+
+        return recentlyPlayedChampions;
       },
       [recentlyPlayedChampionIds],
     );
     final recentlyPlayedPlayerChampions = useMemoized(
       () {
-        return recentlyPlayedChampionIds.map(
-          (championId) => playerChampions?.firstWhere(
+        final List<models.PlayerChampion?> recentlyPlayedPlayerChampions = [];
+
+        for (final championId in recentlyPlayedChampionIds) {
+          final playerChampion = playerChampions?.firstOrNullWhere(
             (_) => _.championId == championId,
-          ),
-        );
+          );
+          recentlyPlayedPlayerChampions.add(playerChampion);
+        }
+
+        return recentlyPlayedPlayerChampions;
       },
       [recentlyPlayedChampionIds],
     );
