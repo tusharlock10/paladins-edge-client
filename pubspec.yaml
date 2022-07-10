@@ -113,6 +113,8 @@ flutter:
     - assets/fonts/
     - assets/keys/
     - assets/images/
+    - paladins_assets/icons/
+    - paladins_assets/splash/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

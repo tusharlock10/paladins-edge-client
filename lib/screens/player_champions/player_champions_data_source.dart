@@ -1,6 +1,7 @@
 import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/theme/index.dart" as theme;
@@ -46,6 +47,7 @@ class PlayerChampionsDataSource extends DataGridSource {
             DataGridCell(
               columnName: "Champ",
               value: data_classes.PlayerChampionsSortData(
+                championId: champion.championId,
                 iconUrl: champion.iconUrl,
                 sortedIndex: championIndex,
                 iconBlurHash: champion.iconBlurHash,
@@ -78,10 +80,27 @@ class PlayerChampionsDataSource extends DataGridSource {
     final sortedData =
         dataGridCell.value as data_classes.PlayerChampionsSortData;
 
+    var championIcon = data_classes.PlatformOptimizedImage(
+      imageUrl: utilities.getSmallAsset(sortedData.iconUrl),
+      isAssetImage: false,
+      blurHash: sortedData.iconBlurHash,
+    );
+    if (!constants.isWeb) {
+      final assetUrl = utilities.getAssetImageUrl(
+        constants.ChampionAssetType.icons,
+        sortedData.championId,
+      );
+      if (assetUrl != null) {
+        championIcon.imageUrl = assetUrl;
+        championIcon.isAssetImage = true;
+      }
+    }
+
     return Center(
       child: widgets.ElevatedAvatar(
-        imageUrl: utilities.getSmallAsset(sortedData.iconUrl),
-        imageBlurHash: sortedData.iconBlurHash,
+        imageUrl: championIcon.imageUrl,
+        imageBlurHash: championIcon.blurHash,
+        isAssetImage: championIcon.isAssetImage,
         size: 22,
       ),
     );

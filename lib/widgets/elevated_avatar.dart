@@ -7,6 +7,7 @@ class ElevatedAvatar extends StatelessWidget {
   final double size;
   final BoxFit fit;
   final bool greyedOut;
+  final bool isAssetImage;
   final String? imageBlurHash;
   final double? borderRadius;
   final BorderSide? borderSide;
@@ -18,6 +19,7 @@ class ElevatedAvatar extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.greyedOut = false,
     this.elevation = 5,
+    this.isAssetImage = false,
     this.imageBlurHash,
     this.borderRadius,
     this.borderSide,
@@ -43,6 +45,7 @@ class ElevatedAvatar extends StatelessWidget {
         borderOnForeground: true,
         child: widgets.FastImage(
           imageUrl: imageUrl,
+          isAssetImage: isAssetImage,
           imageBlurHash: imageBlurHash,
           fit: fit,
           greyedOut: greyedOut,

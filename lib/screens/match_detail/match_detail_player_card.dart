@@ -180,6 +180,57 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer.matchPosition],
     );
+
+    final splashBackground = useMemoized(
+      () {
+        if (!showBackgroundSplash) return null;
+        if (champion == null) return null;
+
+        var splashBackground = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.splashUrl,
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.splash,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            splashBackground.imageUrl = assetUrl;
+            splashBackground.isAssetImage = true;
+          }
+        }
+
+        return splashBackground;
+      },
+      [champion, showBackgroundSplash],
+    );
+
+    final championIcon = useMemoized(
+      () {
+        if (champion == null) return null;
+
+        var championIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(champion.iconUrl),
+          isAssetImage: false,
+          blurHash: champion.iconBlurHash,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.icons,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            championIcon.imageUrl = assetUrl;
+            championIcon.isAssetImage = true;
+          }
+        }
+
+        return championIcon;
+      },
+      [champion],
+    );
+
     final matchPlayerHighestStat = utilities.matchPlayerHighestStat(
       matchPlayer.playerStats,
       champion?.role,
@@ -209,9 +260,13 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: const BorderRadius.all(Radius.circular(15)),
-            image: champion != null && showBackgroundSplash
+            image: champion != null && splashBackground != null
                 ? DecorationImage(
-                    image: CachedNetworkImageProvider(champion.splashUrl),
+                    image: (splashBackground.isAssetImage
+                        ? AssetImage(splashBackground.imageUrl)
+                        : CachedNetworkImageProvider(
+                            splashBackground.imageUrl,
+                          )) as ImageProvider,
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     colorFilter: ColorFilter.mode(
@@ -233,15 +288,15 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                     const EdgeInsets.symmetric(horizontal: 7.5, vertical: 7.5),
                 child: Row(
                   children: [
-                    champion == null
+                    championIcon == null
                         ? const SizedBox(height: 50, width: 50)
                         : Stack(
                             clipBehavior: Clip.none,
                             children: [
                               widgets.ElevatedAvatar(
-                                imageUrl:
-                                    utilities.getSmallAsset(champion.iconUrl),
-                                imageBlurHash: champion.iconBlurHash,
+                                imageUrl: championIcon.imageUrl,
+                                imageBlurHash: championIcon.blurHash,
+                                isAssetImage: championIcon.isAssetImage,
                                 size: 30,
                                 borderRadius: 15,
                                 greyedOut: isBot,

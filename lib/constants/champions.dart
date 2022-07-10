@@ -1,5 +1,5 @@
-import "package:paladinsedge/data_classes/champions/index.dart" as data_classes;
 import "package:flutter/material.dart";
+import "package:paladinsedge/data_classes/champions/index.dart" as data_classes;
 
 abstract class ChampionRoles {
   static const damage = "Damage";
@@ -30,3 +30,15 @@ final Map<String, data_classes.ChampionDamage> championDamageType = {
   "Ultimate":
       data_classes.ChampionDamage(name: "Ultimate", color: Colors.orange),
 };
+
+abstract class ChampionAssetType {
+  static const abilities = "abilities";
+  static const cards = "cards";
+  static const header = "header";
+  static const icons = "icons";
+  static const splash = "splash";
+  static const talents = "talents";
+
+  static String getExtension(String assetType) =>
+      assetType == splash ? "jpg" : "png";
+}
