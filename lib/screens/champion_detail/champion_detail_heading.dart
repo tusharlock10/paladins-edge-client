@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
 import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/gen/assets.gen.dart";
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -81,11 +83,37 @@ class ChampionDetailHeading extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      champion.name.toUpperCase(),
-                      style: textTheme.headline1?.copyWith(
-                        fontSize: 24,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          champion.name.toUpperCase(),
+                          style: textTheme.headline1?.copyWith(
+                            fontSize: 24,
+                          ),
+                        ),
+                        champion.unlockCost == 0
+                            ? Text(
+                                "Free Unlock",
+                                style:
+                                    textTheme.bodyText1?.copyWith(fontSize: 12),
+                              )
+                            : Row(
+                                children: [
+                                  Assets.icons.gold
+                                      .image(height: 15, width: 15),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    NumberFormat.decimalPattern().format(
+                                      champion.unlockCost,
+                                    ),
+                                    style: textTheme.headline1?.copyWith(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ],
                     ),
                     Text(
                       champion.title.toUpperCase(),
