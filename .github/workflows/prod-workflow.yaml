@@ -57,16 +57,19 @@ jobs:
       - name: Build apk
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
+      - name: Print pubspec.yaml
+        run: cat ./pubspec.yaml
+
       # Run below tasks only if its a push
       - name: Get flutter version
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch'}}
+        if: ${{ github.event_name == 'push' }}
         id: flutter_version
         uses: NiklasLehnfeld/flutter-version-number-action@main
         with:
           file-path: ./pubspec.yaml
 
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'push' }}
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
         with:
@@ -74,7 +77,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create a GitHub release
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch'}}
+        if: ${{ github.event_name == 'push' }}
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
@@ -132,11 +135,11 @@ jobs:
 
       # Run the below tasks only if its a push
       - name: Get release notes
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'push' }}
         run: git log -1 --pretty="PRODUCTION BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
 
       - name: Upload bundle to app distribution
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'push' }}
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: 1:280154424805:android:06755c7776c617c0aa1b0c
