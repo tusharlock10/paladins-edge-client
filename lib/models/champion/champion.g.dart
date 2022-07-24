@@ -76,7 +76,7 @@ class TalentAdapter extends TypeAdapter<Talent> {
       cooldown: fields[4] as double,
       description: fields[5] as String,
       modifier: fields[6] as String,
-      unlockLevel: fields[7] as int,
+      unlockLevel: fields[7] as int?,
     );
   }
 
@@ -237,7 +237,7 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       cards: (fields[18] as List).cast<Card>(),
       latestChampion: fields[19] as bool,
       onFreeRotation: fields[20] as bool,
-      unlockCost: fields[22] as int,
+      unlockCost: fields[22] as int?,
     );
   }
 
@@ -334,7 +334,7 @@ Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
       cooldown: (json['cooldown'] as num).toDouble(),
       description: json['description'] as String,
       modifier: json['modifier'] as String,
-      unlockLevel: json['unlockLevel'] as int? ?? -1,
+      unlockLevel: json['unlockLevel'] as int?,
     );
 
 Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
@@ -408,7 +408,7 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
           .toList(),
       latestChampion: json['latestChampion'] as bool,
       onFreeRotation: json['onFreeRotation'] as bool,
-      unlockCost: json['unlockCost'] as int? ?? 0,
+      unlockCost: json['unlockCost'] as int?,
     );
 
 Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{

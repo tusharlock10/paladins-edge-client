@@ -84,7 +84,7 @@ class Talent {
 
   /// The level at which this talent unlocks
   @HiveField(7)
-  final int unlockLevel;
+  final int? unlockLevel;
 
   Talent({
     required this.talentId,
@@ -94,7 +94,7 @@ class Talent {
     required this.cooldown,
     required this.description,
     required this.modifier,
-    this.unlockLevel = -1,
+    this.unlockLevel,
   }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
   factory Talent.fromJson(Map<String, dynamic> json) => _$TalentFromJson(json);
@@ -260,7 +260,7 @@ class Champion {
 
   /// cost to unlock the champion in game
   @HiveField(22)
-  final int unlockCost;
+  final int? unlockCost;
 
   Champion({
     required this.championId,
@@ -284,7 +284,7 @@ class Champion {
     required this.cards,
     required this.latestChampion,
     required this.onFreeRotation,
-    this.unlockCost = 0,
+    this.unlockCost,
   })  : iconUrl = utilities.getUrlFromKey(iconUrl),
         headerUrl = utilities.getUrlFromKey(headerUrl),
         splashUrl = utilities.getUrlFromKey(splashUrl);
