@@ -17,6 +17,9 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/gold.png
+  AssetGenImage get gold => const AssetGenImage('assets/icons/gold.png');
+
   /// File path: assets/icons/google-colored.png
   AssetGenImage get googleColored =>
       const AssetGenImage('assets/icons/google-colored.png');

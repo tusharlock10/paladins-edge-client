@@ -50,17 +50,13 @@ class ChampionDetailAbilities extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: Text(
-                                  ability.name.toUpperCase(),
-                                  style: textTheme.headline1
-                                      ?.copyWith(fontSize: 18),
-                                ),
-                              ),
+                            const SizedBox(height: 5),
+                            Text(
+                              ability.name.toUpperCase(),
+                              style:
+                                  textTheme.headline1?.copyWith(fontSize: 18),
                             ),
+                            const SizedBox(height: 5),
                             Wrap(children: [
                               ...damageTypeChips.map((damageTypeChip) {
                                 return widgets.TextChip(
