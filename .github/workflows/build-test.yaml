@@ -35,6 +35,9 @@ jobs:
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
 
+      - name: Print pubspec.yaml
+        run: cat ./pubspec.yaml
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
