@@ -76,13 +76,14 @@ class TalentAdapter extends TypeAdapter<Talent> {
       cooldown: fields[4] as double,
       description: fields[5] as String,
       modifier: fields[6] as String,
+      unlockLevel: fields[7] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Talent obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.talentId)
       ..writeByte(1)
@@ -96,7 +97,9 @@ class TalentAdapter extends TypeAdapter<Talent> {
       ..writeByte(5)
       ..write(obj.description)
       ..writeByte(6)
-      ..write(obj.modifier);
+      ..write(obj.modifier)
+      ..writeByte(7)
+      ..write(obj.unlockLevel);
   }
 
   @override
@@ -234,7 +237,7 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       cards: (fields[18] as List).cast<Card>(),
       latestChampion: fields[19] as bool,
       onFreeRotation: fields[20] as bool,
-      tags: (fields[21] as List).cast<Tag>(),
+      unlockCost: fields[22] as int,
     );
   }
 
@@ -284,8 +287,8 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       ..write(obj.latestChampion)
       ..writeByte(20)
       ..write(obj.onFreeRotation)
-      ..writeByte(21)
-      ..write(obj.tags);
+      ..writeByte(22)
+      ..write(obj.unlockCost);
   }
 
   @override
@@ -331,6 +334,7 @@ Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
       cooldown: (json['cooldown'] as num).toDouble(),
       description: json['description'] as String,
       modifier: json['modifier'] as String,
+      unlockLevel: json['unlockLevel'] as int? ?? -1,
     );
 
 Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
@@ -341,6 +345,7 @@ Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
       'cooldown': instance.cooldown,
       'description': instance.description,
       'modifier': instance.modifier,
+      'unlockLevel': instance.unlockLevel,
     };
 
 Card _$CardFromJson(Map<String, dynamic> json) => Card(
@@ -403,9 +408,7 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
           .toList(),
       latestChampion: json['latestChampion'] as bool,
       onFreeRotation: json['onFreeRotation'] as bool,
-      tags: (json['tags'] as List<dynamic>)
-          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      unlockCost: json['unlockCost'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
@@ -430,5 +433,5 @@ Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'cards': instance.cards,
       'latestChampion': instance.latestChampion,
       'onFreeRotation': instance.onFreeRotation,
-      'tags': instance.tags,
+      'unlockCost': instance.unlockCost,
     };

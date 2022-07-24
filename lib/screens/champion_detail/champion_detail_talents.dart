@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:expand_widget/expand_widget.dart";
 import "package:flutter/material.dart";
 import "package:paladinsedge/models/index.dart" as models;
@@ -15,7 +16,7 @@ class ChampionDetailTalents extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
-      children: champion.talents.map(
+      children: champion.talents.sortedBy((talent) => talent.unlockLevel).map(
         (talent) {
           return Card(
             shape: const RoundedRectangleBorder(
@@ -39,7 +40,7 @@ class ChampionDetailTalents extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          talent.name.toUpperCase(),
+                          talent.name.trim().toUpperCase(),
                           style: textTheme.headline1?.copyWith(fontSize: 18),
                         ),
                         Padding(
@@ -60,13 +61,21 @@ class ChampionDetailTalents extends StatelessWidget {
                                   color: Colors.blueGrey,
                                   icon: Icons.timelapse,
                                 ),
+                              if (talent.unlockLevel != -1)
+                                widgets.TextChip(
+                                  spacing: 5,
+                                  text: talent.unlockLevel == 0
+                                      ? "Default"
+                                      : "Level ${talent.unlockLevel}",
+                                  color: Colors.lightBlue,
+                                ),
                             ],
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(5),
                           child: ExpandText(
-                            talent.description,
+                            talent.description.trim(),
                             maxLines: 3,
                             textAlign: TextAlign.center,
                             style:

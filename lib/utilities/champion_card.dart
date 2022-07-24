@@ -4,7 +4,7 @@ String _getScaledAmount(String scale, int amount) {
   final base = double.tryParse(temp.first) ?? 0;
   final adder = double.tryParse(temp[1]) ?? 0;
 
-  final sum = base + (adder * amount);
+  final sum = base + (adder * (amount - 1));
 
   if (sum == sum.toInt()) {
     return sum.toInt().toString();
