@@ -16,7 +16,8 @@ class ChampionDetailTalents extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
-      children: champion.talents.sortedBy((talent) => talent.unlockLevel).map(
+      children:
+          champion.talents.sortedBy((talent) => talent.unlockLevel ?? 0).map(
         (talent) {
           return Card(
             shape: const RoundedRectangleBorder(
@@ -61,7 +62,7 @@ class ChampionDetailTalents extends StatelessWidget {
                                   color: Colors.blueGrey,
                                   icon: Icons.timelapse,
                                 ),
-                              if (talent.unlockLevel != -1)
+                              if (talent.unlockLevel != null)
                                 widgets.TextChip(
                                   spacing: 5,
                                   text: talent.unlockLevel == 0

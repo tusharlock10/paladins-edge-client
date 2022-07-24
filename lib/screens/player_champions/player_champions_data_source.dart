@@ -147,7 +147,7 @@ class PlayerChampionsDataSource extends DataGridSource {
   }
 
   Widget _getWinRateCellWidget(DataGridCell dataGridCell) {
-    final value = dataGridCell.value as double;
+    final value = (dataGridCell.value as double) * 100;
     final winRateFormatted = value.toStringAsPrecision(3);
     final winRateColor = utilities.getWinRateColor(value);
 

@@ -92,27 +92,29 @@ class ChampionDetailHeading extends HookConsumerWidget {
                             fontSize: 24,
                           ),
                         ),
-                        champion.unlockCost == 0
-                            ? Text(
-                                "Free Unlock",
-                                style:
-                                    textTheme.bodyText1?.copyWith(fontSize: 12),
-                              )
-                            : Row(
-                                children: [
-                                  Assets.icons.gold
-                                      .image(height: 15, width: 15),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    NumberFormat.decimalPattern().format(
-                                      champion.unlockCost,
-                                    ),
-                                    style: textTheme.headline1?.copyWith(
-                                      fontSize: 14,
-                                    ),
+                        champion.unlockCost == null
+                            ? const SizedBox()
+                            : champion.unlockCost == 0
+                                ? Text(
+                                    "Free Unlock",
+                                    style: textTheme.bodyText1
+                                        ?.copyWith(fontSize: 12),
+                                  )
+                                : Row(
+                                    children: [
+                                      Assets.icons.gold
+                                          .image(height: 15, width: 15),
+                                      const SizedBox(width: 2),
+                                      Text(
+                                        NumberFormat.decimalPattern().format(
+                                          champion.unlockCost,
+                                        ),
+                                        style: textTheme.headline1?.copyWith(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
                       ],
                     ),
                     Text(
