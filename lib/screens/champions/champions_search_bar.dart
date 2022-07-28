@@ -10,6 +10,7 @@ import "package:paladinsedge/screens/champions/champions_filter_modal.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionsSearchBar extends HookConsumerWidget {
   const ChampionsSearchBar({Key? key}) : super(key: key);
@@ -93,6 +94,13 @@ class ChampionsSearchBar extends HookConsumerWidget {
       actions: [
         Row(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: widgets.RefreshButton(
+                color: Colors.white,
+                onRefresh: () => championsProvider.loadCombinedChampions(true),
+              ),
+            ),
             IconButton(
               icon: Badge(
                 elevation: 0,

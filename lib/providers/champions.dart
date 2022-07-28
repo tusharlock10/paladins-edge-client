@@ -52,7 +52,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     final result = await Future.wait([
       // champions do not have forceUpdate
       // return previous value if forceUpdate
-      forceUpdate ? Future.value(champions) : _loadChampions(),
+      _loadChampions(forceUpdate),
       _loadUserPlayerChampions(forceUpdate),
     ]);
 
@@ -87,6 +87,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     }).toList();
 
     // sort champions based on the selectedSort
+    clearAppliedFiltersAndSort();
     combinedChampions = data_classes.ChampionsSort.getSortedChampions(
       combinedChampions: combinedChampions!,
       sort: selectedSort,
@@ -231,10 +232,11 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Loads the `champions` data from local db and syncs it with server
-  Future<List<models.Champion>?> _loadChampions() async {
+  Future<List<models.Champion>?> _loadChampions(bool forceUpdate) async {
     // try to load champions from db
 
-    final savedChampions = utilities.Database.getChampions();
+    final savedChampions =
+        forceUpdate ? null : utilities.Database.getChampions();
     if (savedChampions != null) return savedChampions;
 
     final response = await api.ChampionsRequests.allChampions();
@@ -242,7 +244,9 @@ class _ChampionsNotifier extends ChangeNotifier {
 
     final champions = response.champions;
 
+    // clear the champions in db if forceUpdate
     // save champion locally for future use
+    if (forceUpdate) await utilities.Database.championBox?.clear();
     champions.forEach(utilities.Database.saveChampion);
 
     // sort champions based on their name

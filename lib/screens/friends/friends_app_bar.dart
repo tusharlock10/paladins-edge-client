@@ -2,11 +2,15 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class FriendsAppBar extends ConsumerWidget {
   final bool isOtherPlayer;
+  final RefreshCallback onRefresh;
+
   const FriendsAppBar({
     required this.isOtherPlayer,
+    required this.onRefresh,
     Key? key,
   }) : super(key: key);
 
@@ -29,6 +33,17 @@ class FriendsAppBar extends ConsumerWidget {
       floating: true,
       forceElevated: true,
       pinned: constants.isWeb,
+      actions: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: widgets.RefreshButton(
+              color: Colors.white,
+              onRefresh: onRefresh,
+            ),
+          ),
+        ),
+      ],
       title: Column(
         children: [
           Text(
