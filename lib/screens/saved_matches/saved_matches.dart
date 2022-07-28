@@ -47,12 +47,23 @@ class SavedMatches extends HookConsumerWidget {
         edgeOffset: utilities.getTopEdgeOffset(context),
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
               forceElevated: true,
               floating: true,
               snap: true,
               pinned: constants.isWeb,
-              title: Text("Saved Matches"),
+              title: const Text("Saved Matches"),
+              actions: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: widgets.RefreshButton(
+                      color: Colors.white,
+                      onRefresh: authProvider.getSavedMatches,
+                    ),
+                  ),
+                ),
+              ],
             ),
             savedMatches == null || savedMatches.isEmpty
                 ? SliverList(

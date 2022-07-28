@@ -122,6 +122,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
 
     return PopupMenuButton(
       icon: Badge(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         elevation: 0,
         badgeColor: badgeColor,
         showBadge: isValidFilterAndSort,

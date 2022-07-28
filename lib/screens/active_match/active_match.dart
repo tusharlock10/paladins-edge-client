@@ -103,12 +103,23 @@ class ActiveMatch extends HookConsumerWidget {
         onRefresh: onRefresh,
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
               forceElevated: true,
               floating: true,
               snap: true,
               pinned: constants.isWeb,
-              title: Text("Active Match"),
+              title: const Text("Active Match"),
+              actions: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: widgets.RefreshButton(
+                      color: Colors.white,
+                      onRefresh: onRefresh,
+                    ),
+                  ),
+                ),
+              ],
             ),
             playerStatus == null
                 ? ActiveMatchLoading(

@@ -84,6 +84,7 @@ class Friends extends HookConsumerWidget {
           slivers: [
             FriendsAppBar(
               isOtherPlayer: isOtherPlayer,
+              onRefresh: onRefresh,
             ),
             isLoadingFriends
                 ? SliverList(

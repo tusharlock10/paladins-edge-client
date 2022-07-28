@@ -124,8 +124,14 @@ class PlayerDetail extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          PlayerDetailMenu(),
+        actions: [
+          Center(
+            child: widgets.RefreshButton(
+              onRefresh: onRefresh,
+              color: Colors.white,
+            ),
+          ),
+          const PlayerDetailMenu(),
         ],
         title: isLoadingPlayerData
             ? const Text("Player")
