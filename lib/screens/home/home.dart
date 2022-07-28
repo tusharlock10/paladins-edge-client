@@ -56,15 +56,26 @@ class Home extends HookConsumerWidget {
       edgeOffset: utilities.getTopEdgeOffset(context),
       child: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             snap: true,
             floating: true,
             forceElevated: true,
             pinned: constants.isWeb,
-            title: Text(
+            title: const Text(
               "Paladins Edge",
               style: TextStyle(fontSize: 20),
             ),
+            actions: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: widgets.RefreshButton(
+                    color: Colors.white,
+                    onRefresh: onRefresh,
+                  ),
+                ),
+              ),
+            ],
           ),
           SliverList(
             delegate: SliverChildListDelegate.fixed(
