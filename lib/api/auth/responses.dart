@@ -119,3 +119,16 @@ class DeviceDetailResponse {
       _$DeviceDetailResponseFromJson(json);
   Map<String, dynamic> toJson() => _$DeviceDetailResponseToJson(this);
 }
+
+@JsonSerializable()
+class ApiStatusResponse {
+  final bool apiAvailable;
+
+  ApiStatusResponse({
+    required this.apiAvailable,
+  });
+
+  factory ApiStatusResponse.fromJson(Map<String, dynamic> json) =>
+      _$ApiStatusResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ApiStatusResponseToJson(this);
+}

@@ -44,6 +44,7 @@ class _AuthNotifier extends ChangeNotifier {
   models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
   List<data_classes.CombinedMatch>? savedMatches;
+  bool apiAvailable = true;
 
   _AuthNotifier({required this.ref});
 
@@ -96,6 +97,14 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.Database.saveEssentials(response.essentials);
     utilities.Global.essentials = response.essentials;
+  }
+
+  /// Checks whether the paladins API is in working state
+  Future<void> getApiStatus() async {
+    final response = await api.AuthRequests.apiStatus();
+    apiAvailable = response != null ? response.apiAvailable : false;
+
+    utilities.postFrameCallback(notifyListeners);
   }
 
   /// Checks if the user is already logged in

@@ -13,6 +13,7 @@ abstract class Urls {
   static const savedMatches = "/auth/savedMatches"; // GET
   static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
   static const deviceDetail = "/auth/deviceDetail"; // PUT
+  static const apiStatus = "/auth/apiStatus"; // GET
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET

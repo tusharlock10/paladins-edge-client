@@ -121,3 +121,13 @@ Map<String, dynamic> _$DeviceDetailResponseToJson(
     <String, dynamic>{
       'deviceDetail': instance.deviceDetail,
     };
+
+ApiStatusResponse _$ApiStatusResponseFromJson(Map<String, dynamic> json) =>
+    ApiStatusResponse(
+      apiAvailable: json['apiAvailable'] as bool,
+    );
+
+Map<String, dynamic> _$ApiStatusResponseToJson(ApiStatusResponse instance) =>
+    <String, dynamic>{
+      'apiAvailable': instance.apiAvailable,
+    };
