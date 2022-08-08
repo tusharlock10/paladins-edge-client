@@ -16,6 +16,9 @@ class PlayerDetailMatches extends HookConsumerWidget {
     final isPlayerMatchesLoading = ref.watch(
       providers.matches.select((_) => _.isPlayerMatchesLoading),
     );
+    final combinedMatchesPlayerId = ref.watch(
+      providers.matches.select((_) => _.combinedMatchesPlayerId),
+    );
     final combinedMatches = ref.watch(
       providers.matches.select((_) => _.combinedMatches),
     );
@@ -74,7 +77,9 @@ class PlayerDetailMatches extends HookConsumerWidget {
               final combinedMatch = filteredCombinedMatches.elementAt(index);
               final match = combinedMatch.match;
               final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
-                (_) => _.matchId == match.matchId,
+                (_) =>
+                    _.matchId == match.matchId &&
+                    _.playerId == combinedMatchesPlayerId,
               );
               final champion = champions.firstOrNullWhere(
                 (_) => _.championId == matchPlayer?.championId,

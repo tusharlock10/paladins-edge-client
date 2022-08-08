@@ -157,9 +157,13 @@ class ConnectProfile extends HookConsumerWidget {
         title: const Text("Connect Profile"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(0),
         child: Column(
           children: [
+            const widgets.ApiStatusMessage(
+              message:
+                  "You might face problems while connecting your profile, please try again later",
+            ),
             const SizedBox(height: 15),
             name != null
                 ? RichText(
@@ -191,24 +195,27 @@ class ConnectProfile extends HookConsumerWidget {
             const SizedBox(height: 15),
             ConnectProfileStatusIndicator(currentStep: step.value),
             Expanded(
-              child: IndexedStack(
-                index: step.value,
-                children: [
-                  ConnectProfileSearchList(
-                    isLoading: isLoading.value,
-                    onSearch: (search) => onSearch(search, ref),
-                    onTap: onTapSearchItem,
-                    isCheckingPlayer: isCheckingPlayer.value,
-                  ),
-                  CreateProfileLoadoutVerifier(
-                    isVerifying: isVerifying.value,
-                    otp: otp.value,
-                    selectedPlayer: selectedPlayer.value,
-                    onVerify: onVerify,
-                    onChangeName: () => step.value--,
-                  ),
-                  const ConnectProfileVerifiedPlayer(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: IndexedStack(
+                  index: step.value,
+                  children: [
+                    ConnectProfileSearchList(
+                      isLoading: isLoading.value,
+                      onSearch: (search) => onSearch(search, ref),
+                      onTap: onTapSearchItem,
+                      isCheckingPlayer: isCheckingPlayer.value,
+                    ),
+                    CreateProfileLoadoutVerifier(
+                      isVerifying: isVerifying.value,
+                      otp: otp.value,
+                      selectedPlayer: selectedPlayer.value,
+                      onVerify: onVerify,
+                      onChangeName: () => step.value--,
+                    ),
+                    const ConnectProfileVerifiedPlayer(),
+                  ],
+                ),
               ),
             ),
           ],
