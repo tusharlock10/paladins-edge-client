@@ -170,4 +170,18 @@ abstract class AuthRequests {
       return null;
     }
   }
+
+  static Future<responses.ApiStatusResponse?> apiStatus() async {
+    try {
+      final response = await utilities.api
+          .get<Map<String, dynamic>>(constants.Urls.apiStatus);
+      if (response.data != null) {
+        return responses.ApiStatusResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

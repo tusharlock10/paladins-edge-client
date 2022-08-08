@@ -80,6 +80,10 @@ class Home extends HookConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
+                const widgets.ApiStatusMessage(
+                  message:
+                      "You will still be able to view profiles and matches of some players",
+                ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),
                 const SizedBox(height: 20),

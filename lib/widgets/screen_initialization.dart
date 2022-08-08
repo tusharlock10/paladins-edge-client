@@ -78,6 +78,7 @@ class ScreenInitialization extends HookConsumerWidget {
         // load the essentials from hive
         // this depends on initDatabase to be completed
         authProvider.checkLogin();
+        authProvider.getApiStatus();
         authProvider.setAppInitialized();
 
         utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);

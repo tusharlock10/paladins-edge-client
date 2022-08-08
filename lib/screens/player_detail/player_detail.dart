@@ -133,12 +133,12 @@ class PlayerDetail extends HookConsumerWidget {
           ),
           const PlayerDetailMenu(),
         ],
-        title: isLoadingPlayerData
+        title: isLoadingPlayerData || player == null
             ? const Text("Player")
             : Column(
                 children: [
                   Text(
-                    player!.name,
+                    player.name,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

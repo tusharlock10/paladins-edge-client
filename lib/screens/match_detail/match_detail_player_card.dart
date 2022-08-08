@@ -92,7 +92,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final kdaFormatted = matchPlayer.playerStats.kdaFormatted;
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
-    final isBot = matchPlayer.playerStats.creditsEarned < averageCredits * 0.6;
+    final isBot =
+        matchPlayer.playerStats.creditsEarned < averageCredits * 0.6 ||
+            matchPlayer.talentId2 == 0;
     final backgroundColor = Theme.of(context).cardTheme.color;
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =

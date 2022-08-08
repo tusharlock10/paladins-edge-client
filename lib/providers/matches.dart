@@ -85,6 +85,25 @@ class _MatchesNotifier extends ChangeNotifier {
     // sort players based on their team
     matchDetails?.matchPlayers.sort((a, b) => a.team.compareTo(b.team));
 
+    final index = combinedMatches?.indexWhere(
+      (combinedMatch) =>
+          combinedMatch.match.matchId == matchDetails?.match.matchId,
+    );
+    if (index != null &&
+        index >= 0 &&
+        combinedMatches != null &&
+        matchDetails != null) {
+      final combinedMatch = combinedMatches!.elementAt(index);
+      if (combinedMatch.match.isInComplete) {
+        combinedMatches![index] = data_classes.CombinedMatch(
+          match: matchDetails!.match,
+          matchPlayers: matchDetails!.matchPlayers,
+          hide: combinedMatch.hide,
+        );
+        combinedMatches = [...combinedMatches!];
+      }
+    }
+
     notifyListeners();
   }
 
