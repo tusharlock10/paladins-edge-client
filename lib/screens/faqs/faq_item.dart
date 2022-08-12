@@ -35,7 +35,7 @@ class FaqItem extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Text(
+                  child: SelectableText(
                     faq.title,
                     textAlign: TextAlign.start,
                     style: const TextStyle(
@@ -68,7 +68,7 @@ class FaqItem extends StatelessWidget {
               expanded: Column(
                 children: [
                   const Divider(),
-                  Text(
+                  SelectableText(
                     faq.body,
                     style: const TextStyle(
                       fontSize: 16,

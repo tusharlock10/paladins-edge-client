@@ -46,7 +46,7 @@ class LoadoutItem extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 3,
-                            child: Text(
+                            child: SelectableText(
                               loadout.name,
                               textAlign: TextAlign.center,
                               style: const TextStyle(

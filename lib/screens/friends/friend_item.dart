@@ -90,14 +90,12 @@ class FriendItem extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
+                  SelectableText(
+                    friend.name,
                     onTap: onPressFriendName,
-                    child: Text(
-                      friend.name,
-                      style: theme.textTheme.headline3?.copyWith(
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
-                      ),
+                    style: theme.textTheme.headline3?.copyWith(
+                      fontSize: 16,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                   friend.title != null
