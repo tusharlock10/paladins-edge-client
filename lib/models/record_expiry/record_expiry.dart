@@ -33,33 +33,36 @@ class RecordExpiry extends HiveObject {
 
   bool isRecordExpired(RecordExpiryName recordName) {
     // checks if the provided record is expired
-    final now = DateTime.now();
-    Duration duration;
-
     switch (recordName) {
       case RecordExpiryName.champion:
-        duration = RecordExpiryDuration.championDuration;
-        return now.isAfter(_championsExpiry ?? now.add(duration));
+        return _championsExpiry != null
+            ? DateTime.now().isAfter(_championsExpiry!)
+            : true;
 
       case RecordExpiryName.searchHistory:
-        duration = RecordExpiryDuration.searchHistoryDuration;
-        return now.isAfter(_searchHistoryExpiry ?? now.add(duration));
+        return _searchHistoryExpiry != null
+            ? DateTime.now().isAfter(_searchHistoryExpiry!)
+            : true;
 
       case RecordExpiryName.bountyStore:
-        duration = RecordExpiryDuration.bountyStoreDuration;
-        return now.isAfter(_bountyStoreExpiry ?? now.add(duration));
+        return _bountyStoreExpiry != null
+            ? DateTime.now().isAfter(_bountyStoreExpiry!)
+            : true;
 
       case RecordExpiryName.playerChampion:
-        duration = RecordExpiryDuration.playerChampionDuration;
-        return now.isAfter(_playerChampionExpiry ?? now.add(duration));
+        return _playerChampionExpiry != null
+            ? DateTime.now().isAfter(_playerChampionExpiry!)
+            : true;
 
       case RecordExpiryName.queueTimeline:
-        duration = RecordExpiryDuration.queueTimelineDuration;
-        return now.isAfter(_queueTimelineExpiry ?? now.add(duration));
+        return _queueTimelineExpiry != null
+            ? DateTime.now().isAfter(_queueTimelineExpiry!)
+            : true;
 
       case RecordExpiryName.item:
-        duration = RecordExpiryDuration.itemDuration;
-        return now.isAfter(_itemExpiry ?? now.add(duration));
+        return _itemExpiry != null
+            ? DateTime.now().isAfter(_itemExpiry!)
+            : true;
 
       default:
         return true;
