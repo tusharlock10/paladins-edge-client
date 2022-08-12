@@ -137,7 +137,7 @@ class PlayerDetail extends HookConsumerWidget {
             ? const Text("Player")
             : Column(
                 children: [
-                  Text(
+                  SelectableText(
                     player.name,
                     style: const TextStyle(
                       fontSize: 18,
@@ -145,7 +145,7 @@ class PlayerDetail extends HookConsumerWidget {
                     ),
                   ),
                   if (player.title != null)
-                    Text(
+                    SelectableText(
                       player.title!,
                       style: const TextStyle(fontSize: 12),
                     ),

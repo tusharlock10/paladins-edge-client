@@ -86,7 +86,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        SelectableText(
                           champion.name.toUpperCase(),
                           style: textTheme.headline1?.copyWith(
                             fontSize: 24,
@@ -117,7 +117,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
                                   ),
                       ],
                     ),
-                    Text(
+                    SelectableText(
                       champion.title.toUpperCase(),
                       style: textTheme.headline1?.copyWith(
                         color: isLightTheme

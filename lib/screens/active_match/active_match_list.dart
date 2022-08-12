@@ -36,7 +36,7 @@ class ActiveMatchList extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                SelectableText(
                   "${playerStatus.match?.map}",
                   style: const TextStyle(fontSize: 14),
                 ),

@@ -119,6 +119,19 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       [match, matchPlayer],
     );
 
+    final onTalentPress = useCallback(
+      () {
+        if (talentUsed != null) {
+          widgets.showTalentDetailSheet(
+            context,
+            talentUsed,
+            champion,
+          );
+        }
+      },
+      [talentUsed, champion],
+    );
+
     return widgets.InteractiveCard(
       onTap: onTap,
       elevation: 5,
@@ -199,11 +212,14 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                   children: [
                     talentUsed == null
                         ? const SizedBox(height: 48, width: 48)
-                        : widgets.FastImage(
-                            imageUrl:
-                                utilities.getSmallAsset(talentUsed.imageUrl),
-                            height: 48,
-                            width: 48,
+                        : GestureDetector(
+                            onTap: onTalentPress,
+                            child: widgets.FastImage(
+                              imageUrl:
+                                  utilities.getSmallAsset(talentUsed.imageUrl),
+                              height: 48,
+                              width: 48,
+                            ),
                           ),
                     widgets.MatchPlayerLoadout(
                       champion: champion,
@@ -285,7 +301,7 @@ class _PlayerDetailUnknownMatchCard extends StatelessWidget {
                 children: [
                   const Text("Something is wrong with this match"),
                   const SizedBox(height: 10),
-                  Text("MatchID : ${match.matchId}"),
+                  SelectableText("MatchID : ${match.matchId}"),
                 ],
               ),
             ),

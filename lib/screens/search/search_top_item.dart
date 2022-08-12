@@ -58,7 +58,7 @@ class SearchTopItem extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      SelectableText(
                         player.name,
                         style: textTheme.headline6?.copyWith(fontSize: 16),
                       ),

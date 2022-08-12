@@ -111,11 +111,11 @@ class _LoadoutCard extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: Column(
                   children: [
-                    Text(
+                    SelectableText(
                       card.name,
                       maxLines: 1,
                       textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
+                      scrollPhysics: const ClampingScrollPhysics(),
                       style: textTheme.bodyText2?.copyWith(
                         fontSize: 16,
                       ),
