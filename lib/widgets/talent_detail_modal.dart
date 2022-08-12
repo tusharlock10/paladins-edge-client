@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-void showLoadoutCardDetailSheet(
-  data_classes.ShowLoadoutDetailsOptions options,
+void showTalentDetailSheet(
+  BuildContext context,
+  models.Talent talent,
+  models.Champion champion,
 ) {
-  final context = options.context;
   final screenWidth = MediaQuery.of(context).size.width;
   final width = utilities.responsiveCondition(
     context,
@@ -27,31 +27,22 @@ void showLoadoutCardDetailSheet(
     ),
     context: context,
     builder: (_) {
-      return _LoadoutCardDetail(
-        card: options.card,
-        champion: options.champion,
-        cardPoints: options.cardPoints,
-        onSliderChange: options.onSliderChange,
-        sliderFixed: options.sliderFixed,
+      return _TalentDetail(
+        talent: talent,
+        champion: champion,
       );
     },
     constraints: BoxConstraints(maxWidth: width),
   );
 }
 
-class _LoadoutCardDetail extends HookWidget {
-  final models.Card card;
+class _TalentDetail extends HookWidget {
+  final models.Talent talent;
   final models.Champion champion;
-  final bool sliderFixed;
-  final int cardPoints;
-  final void Function(int)? onSliderChange;
 
-  const _LoadoutCardDetail({
-    required this.card,
+  const _TalentDetail({
+    required this.talent,
     required this.champion,
-    required this.sliderFixed,
-    required this.cardPoints,
-    this.onSliderChange,
     Key? key,
   }) : super(key: key);
 
@@ -59,28 +50,6 @@ class _LoadoutCardDetail extends HookWidget {
   Widget build(BuildContext context) {
     // Variables
     final textTheme = Theme.of(context).textTheme;
-
-    // State
-    final amount = useState(cardPoints);
-
-    // Methods
-    final getDescriptionParts =
-        useCallback(() => utilities.getDescriptionParts(card.description), []);
-
-    final getParsedDescription = useCallback(
-      () => utilities.getParsedDescription(getDescriptionParts(), amount.value),
-      [amount.value],
-    );
-
-    final onChanged = useCallback(
-      (double value) {
-        amount.value = value.toInt();
-        if (onSliderChange != null) {
-          onSliderChange!(amount.value);
-        }
-      },
-      [],
-    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -98,12 +67,11 @@ class _LoadoutCardDetail extends HookWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widgets.ElevatedAvatar(
-                  imageUrl: card.imageUrl,
-                  imageBlurHash: card.imageBlurHash,
-                  size: 36,
+                widgets.FastImage(
+                  imageUrl: talent.imageUrl,
+                  height: 76,
+                  width: 76,
                   fit: BoxFit.cover,
-                  borderRadius: 10,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -118,7 +86,7 @@ class _LoadoutCardDetail extends HookWidget {
                       ),
                       const SizedBox(height: 2),
                       SelectableText(
-                        card.name.toUpperCase(),
+                        talent.name.toUpperCase(),
                         maxLines: 2,
                         scrollPhysics: const ClampingScrollPhysics(),
                         style: textTheme.headline1?.copyWith(fontSize: 18),
@@ -127,17 +95,17 @@ class _LoadoutCardDetail extends HookWidget {
                       Wrap(
                         direction: Axis.horizontal,
                         children: [
-                          if (card.cooldown != 0)
+                          if (talent.cooldown != 0)
                             widgets.TextChip(
                               spacing: 5,
-                              text: "${card.cooldown.toInt().toString()} sec",
+                              text: "${talent.cooldown.toInt().toString()} sec",
                               color: Colors.blueGrey,
                               icon: Icons.timelapse,
                             ),
-                          if (card.modifier != "None")
+                          if (talent.modifier != "None")
                             widgets.TextChip(
                               spacing: 5,
-                              text: card.modifier,
+                              text: talent.modifier,
                               color: Colors.teal,
                             ),
                         ],
@@ -154,30 +122,10 @@ class _LoadoutCardDetail extends HookWidget {
           child: Column(
             children: [
               SelectableText(
-                getParsedDescription(),
+                talent.description,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyText2?.copyWith(fontSize: 16),
               ),
-              const SizedBox(height: 10),
-              AbsorbPointer(
-                absorbing: sliderFixed,
-                child: Slider(
-                  value: amount.value.toDouble(),
-                  divisions: 4,
-                  min: 1,
-                  max: 5,
-                  label: "${amount.value}",
-                  onChanged: onChanged,
-                ),
-              ),
-              sliderFixed ? const SizedBox() : const SizedBox(height: 10),
-              sliderFixed
-                  ? const SizedBox()
-                  : Text(
-                      "*Change slider to view the card with different points",
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
-                    ),
             ],
           ),
         ),

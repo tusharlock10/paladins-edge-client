@@ -46,7 +46,7 @@ class SearchHistory extends HookConsumerWidget {
 
           return ListTile(
             onTap: () => onTap(search.playerId),
-            title: Text(
+            title: SelectableText(
               search.playerName,
               style: textTheme.headline6?.copyWith(fontSize: 16),
             ),

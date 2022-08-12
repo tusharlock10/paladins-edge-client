@@ -40,7 +40,7 @@ class ChampionDetailTalents extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        SelectableText(
                           talent.name.trim().toUpperCase(),
                           style: textTheme.headline1?.copyWith(fontSize: 18),
                         ),

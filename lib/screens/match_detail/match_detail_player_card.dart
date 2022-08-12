@@ -257,6 +257,21 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       [matchPlayer],
     );
 
+    final onTalentPress = useCallback(
+      () {
+        if (champion != null) {
+          if (talentUsed != null) {
+            widgets.showTalentDetailSheet(
+              context,
+              talentUsed,
+              champion,
+            );
+          }
+        }
+      },
+      [talentUsed, champion],
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Center(
@@ -385,13 +400,17 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                               Row(
                                 children: [
                                   if (talentUsed != null) ...[
-                                    widgets.FastImage(
-                                      height: 32,
-                                      width: 32,
-                                      imageUrl: talentUsed.imageUrl,
-                                      semanticText: talentUsed.name,
+                                    GestureDetector(
+                                      onTap: onTalentPress,
+                                      child: widgets.FastImage(
+                                        height: 34,
+                                        width: 34,
+                                        imageUrl: utilities
+                                            .getSmallAsset(talentUsed.imageUrl),
+                                        semanticText: talentUsed.name,
+                                      ),
                                     ),
-                                    const SizedBox(width: 3),
+                                    const SizedBox(width: 2),
                                   ],
                                   Column(
                                     crossAxisAlignment:

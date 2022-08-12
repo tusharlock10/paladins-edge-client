@@ -106,7 +106,7 @@ class PlayerChampions extends HookConsumerWidget {
           children: [
             const Text("Player Champions"),
             if (player != null)
-              Text(
+              SelectableText(
                 player.name,
                 style: const TextStyle(fontSize: 12),
               ),

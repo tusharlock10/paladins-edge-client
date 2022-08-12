@@ -46,9 +46,9 @@ class SearchLowerItem extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    SelectableText(
                       lowerSearch.name,
-                      overflow: TextOverflow.ellipsis,
+                      scrollPhysics: const ClampingScrollPhysics(),
                       style: textTheme.headline6?.copyWith(fontSize: 16),
                     ),
                     Text(
