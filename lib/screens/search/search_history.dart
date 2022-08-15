@@ -9,7 +9,11 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:timer_builder/timer_builder.dart";
 
 class SearchHistory extends HookConsumerWidget {
-  const SearchHistory({Key? key}) : super(key: key);
+  final String searchValue;
+  const SearchHistory({
+    required this.searchValue,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +24,16 @@ class SearchHistory extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
+
+    // Hooks
+    final filteredSearchHistory = useMemoized(
+      () {
+        return searchHistory.where(
+          (_) => _.playerName.toLowerCase().contains(searchValue),
+        );
+      },
+      [searchValue, searchHistory],
+    );
 
     // Methods
     final onTap = useCallback(
@@ -42,7 +56,7 @@ class SearchHistory extends HookConsumerWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final search = searchHistory[index];
+          final search = filteredSearchHistory.elementAt(index);
 
           return ListTile(
             onTap: () => onTap(search.playerId),
@@ -61,7 +75,7 @@ class SearchHistory extends HookConsumerWidget {
             ),
           );
         },
-        childCount: searchHistory.length,
+        childCount: filteredSearchHistory.length,
       ),
     );
   }

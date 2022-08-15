@@ -8,10 +8,12 @@ import "package:paladinsedge/providers/index.dart" as providers;
 class SearchAppBar extends HookConsumerWidget {
   final bool isLoading;
   final void Function(String) onSearch;
+  final void Function(String) onChangeText;
 
   const SearchAppBar({
     required this.isLoading,
     required this.onSearch,
+    required this.onChangeText,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +35,7 @@ class SearchAppBar extends HookConsumerWidget {
       () {
         searchProvider.clearSearchList();
         textController.clear();
+        onChangeText("");
       },
       [],
     );
@@ -46,6 +49,7 @@ class SearchAppBar extends HookConsumerWidget {
         controller: textController,
         maxLength: 30,
         style: textStyle,
+        onChanged: onChangeText,
         onSubmitted: isLoading ? null : onSearch,
         decoration: InputDecoration(
           hintText: "Search player",

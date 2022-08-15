@@ -25,6 +25,7 @@ class Search extends HookConsumerWidget {
 
     // State
     final isLoading = useState(false);
+    final searchValue = useState("");
 
     // Methods
     final navigateToPlayerDetail = useCallback(
@@ -48,6 +49,13 @@ class Search extends HookConsumerWidget {
           text: "Player $playerName not found",
           type: widgets.ToastType.info,
         );
+      },
+      [],
+    );
+
+    final onChangeText = useCallback(
+      (String value) {
+        searchValue.value = value.toLowerCase();
       },
       [],
     );
@@ -92,10 +100,16 @@ class Search extends HookConsumerWidget {
 
     return CustomScrollView(
       slivers: [
-        SearchAppBar(isLoading: isLoading.value, onSearch: onSearch),
+        SearchAppBar(
+          isLoading: isLoading.value,
+          onSearch: onSearch,
+          onChangeText: onChangeText,
+        ),
         topSearchList.isNotEmpty
             ? const SearchTopList()
-            : const SearchHistory(),
+            : SearchHistory(
+                searchValue: searchValue.value,
+              ),
         if (lowerSearchList.isNotEmpty) const SearchLowerList(),
       ],
     );

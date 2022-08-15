@@ -43,7 +43,7 @@ abstract class RecordExpiryDuration {
   static const searchHistoryDuration = Duration(hours: 1);
   static const bountyStoreDuration = Duration(days: 1);
   static const playerChampionDuration = Duration(days: 1);
-  static const queueTimelineDuration = Duration(minutes: 10);
+  static const queueTimelineDuration = Duration(minutes: 30);
   static const itemDuration = Duration(days: 1);
 }
 

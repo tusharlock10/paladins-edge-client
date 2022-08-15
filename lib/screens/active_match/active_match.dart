@@ -42,13 +42,15 @@ class ActiveMatch extends HookConsumerWidget {
     final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
     final player = ref.watch(providers.auth.select((_) => _.player));
-    final isLoadingPlayerStatus =
-        ref.watch(providers.players.select((_) => _.isLoadingPlayerStatus));
-    final playerStatus =
-        ref.watch(providers.players.select((_) => _.playerStatus));
-    final playerStatusPlayerId = playerId ?? player?.playerId;
+    final isLoadingPlayerStatus = ref.watch(
+      providers.players.select((_) => _.isLoadingPlayerStatus),
+    );
+    final playerStatus = ref.watch(
+      providers.players.select((_) => _.playerStatus),
+    );
 
     // Variables
+    final playerStatusPlayerId = playerId ?? player?.playerId;
     final isUserPlayer = player?.playerId == playerStatusPlayerId;
 
     // Effects
@@ -131,7 +133,7 @@ class ActiveMatch extends HookConsumerWidget {
                         status: playerStatus.status,
                         isUserPlayer: isUserPlayer,
                       )
-                    : ActiveMatchList(playerStatus: playerStatus),
+                    : const ActiveMatchList(),
           ],
         ),
       ),

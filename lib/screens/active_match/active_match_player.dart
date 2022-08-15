@@ -1,51 +1,65 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:dartx/dartx.dart";
 import "package:expandable/expandable.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:jiffy/jiffy.dart";
+import "package:intl/intl.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
-import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class _InfoLabel extends StatelessWidget {
-  final String label;
-  final String text;
-
-  const _InfoLabel({
-    required this.label,
-    required this.text,
+class _PlayerStatsCard extends StatelessWidget {
+  static const itemHeight = 46.0;
+  static const itemWidth = 110.0;
+  final String title;
+  final num stat;
+  final String? statString;
+  const _PlayerStatsCard({
+    required this.title,
+    required this.stat,
+    this.statString,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-          ),
+    // Variables
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final textTheme = Theme.of(context).textTheme;
+    final String? formattedStat;
+    formattedStat = statString ?? NumberFormat.decimalPattern().format(stat);
+
+    return SizedBox(
+      width: itemWidth,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(isLightTheme ? 0.6 : 0.20),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        Container(
-          height: 0.8,
-          width: 72,
-          color: theme.darkThemeMaterialColor,
-          margin: const EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: textTheme.bodyText2?.copyWith(fontSize: 12),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              formattedStat,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyText1?.copyWith(fontSize: 11),
+            ),
+          ],
         ),
-        Text(
-          text,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -72,11 +86,20 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final isPrivatePlayer = playerInfo.player.playerId == "0";
     final winRate = playerInfo.ranked?.winRate;
     final winRateFormatted = playerInfo.ranked?.winRateFormatted;
-    final champion = champions.firstOrNullWhere(
-      (champion) => champion.championId == playerInfo.championId,
-    );
+    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
+    final brightness = Theme.of(context).brightness;
+    final backgroundColor = Theme.of(context).cardTheme.color;
 
     // Hooks
+    final champion = useMemoized(
+      () {
+        return champions.firstOrNullWhere(
+          (champion) => champion.championId == playerInfo.championId,
+        );
+      },
+      [champions, playerInfo],
+    );
+
     final playerChampion = useMemoized(
       () {
         if (playerChampions == null) return null;
@@ -100,11 +123,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [playerChampion],
     );
 
-    final championLevel = useMemoized(
-      () => playerChampion?.level.toString(),
-      [playerChampion],
-    );
-
     final championCPM = useMemoized(
       () {
         if (playerChampion == null) return null;
@@ -114,6 +132,18 @@ class ActiveMatchPlayer extends HookConsumerWidget {
         final cpm = totalCredits / totalMatches;
 
         return "${cpm.round()} CR";
+      },
+      [playerChampion],
+    );
+
+    final championLastPlayed = useMemoized(
+      () {
+        if (playerChampion == null) return null;
+
+        return utilities.getLastPlayedTime(
+          playerChampion.lastPlayed,
+          shortFormat: true,
+        );
       },
       [playerChampion],
     );
@@ -143,6 +173,31 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [champion],
     );
 
+    final splashBackground = useMemoized(
+      () {
+        if (!showBackgroundSplash) return null;
+        if (champion == null) return null;
+
+        var splashBackground = data_classes.PlatformOptimizedImage(
+          imageUrl: champion.splashUrl,
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.splash,
+            champion.championId,
+          );
+          if (assetUrl != null) {
+            splashBackground.imageUrl = assetUrl;
+            splashBackground.isAssetImage = true;
+          }
+        }
+
+        return splashBackground;
+      },
+      [champion, showBackgroundSplash],
+    );
+
     // Methods
     final onTapPlayer = useCallback(
       () {
@@ -160,13 +215,34 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          image: champion != null && splashBackground != null
+              ? DecorationImage(
+                  image: (splashBackground.isAssetImage
+                      ? AssetImage(splashBackground.imageUrl)
+                      : CachedNetworkImageProvider(
+                          splashBackground.imageUrl,
+                        )) as ImageProvider,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                  colorFilter: ColorFilter.mode(
+                    Color.fromRGBO(
+                      255,
+                      255,
+                      255,
+                      brightness == Brightness.light ? 0.145 : 0.225,
+                    ),
+                    BlendMode.modulate,
+                  ),
+                )
+              : null,
         ),
         child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           onTap: () => playerChampion == null
               ? widgets.showToast(
                   context: context,
@@ -174,11 +250,11 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                   type: widgets.ToastType.info,
                 )
               : expandedController.toggle(),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Row(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Row(
                   children: [
                     championIcon == null
                         ? const SizedBox(height: 24 * 2, width: 24 * 2)
@@ -186,8 +262,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                             imageUrl: championIcon.imageUrl,
                             imageBlurHash: championIcon.blurHash,
                             isAssetImage: championIcon.isAssetImage,
-                            borderRadius: 7.5,
-                            size: 24,
+                            borderRadius: 12.5,
+                            size: 30,
                           ),
                     playerInfo.ranked == null
                         ? const SizedBox(width: 20)
@@ -197,8 +273,8 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                               children: [
                                 widgets.FastImage(
                                   imageUrl: playerInfo.ranked!.rankIconUrl,
-                                  height: 20,
-                                  width: 20,
+                                  height: 22,
+                                  width: 22,
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
@@ -321,63 +397,65 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                     ),
                   ],
                 ),
-                ExpandablePanel(
-                  controller: expandedController,
-                  collapsed: const SizedBox(),
-                  expanded: playerChampion != null
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  if (championPlaytime != null)
-                                    _InfoLabel(
-                                      label: "Play Time",
-                                      text: championPlaytime,
-                                    ),
-                                  if (championLevel != null)
-                                    _InfoLabel(
-                                      label: "Champ. Lvl",
-                                      text: championLevel,
-                                    ),
-                                  _InfoLabel(
-                                    label: "Champ. WR",
-                                    text: "${playerChampion.winRateFormatted}%",
+              ),
+              ExpandablePanel(
+                controller: expandedController,
+                collapsed: const SizedBox(),
+                expanded: playerChampion != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 10),
+                        child: SizedBox(
+                          height: _PlayerStatsCard.itemHeight,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: utilities.insertBetween(
+                              [
+                                const SizedBox(),
+                                _PlayerStatsCard(
+                                  title: "Play Time",
+                                  stat: 0,
+                                  statString: championPlaytime,
+                                ),
+                                _PlayerStatsCard(
+                                  title: "Level",
+                                  stat: playerChampion.level,
+                                ),
+                                _PlayerStatsCard(
+                                  title: "Matches",
+                                  stat: playerChampion.matches,
+                                ),
+                                _PlayerStatsCard(
+                                  title: "Champ. WR",
+                                  stat: 0,
+                                  statString:
+                                      "${playerChampion.winRateFormatted}%",
+                                ),
+                                if (championCPM != null)
+                                  _PlayerStatsCard(
+                                    title: "Credits/Match",
+                                    stat: 0,
+                                    statString: championCPM,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  _InfoLabel(
-                                    label: "KDA",
-                                    text: playerChampion.kdaFormatted,
-                                  ),
-                                  if (championCPM != null)
-                                    _InfoLabel(
-                                      label: "CR / Match",
-                                      text: championCPM,
-                                    ),
-                                  _InfoLabel(
-                                    label: "Last Played",
-                                    text: Jiffy(
-                                      playerChampion.lastPlayed,
-                                    ).fromNow(),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                _PlayerStatsCard(
+                                  title: "KDA",
+                                  stat: 0,
+                                  statString: playerChampion.kdaFormatted,
+                                ),
+                                _PlayerStatsCard(
+                                  title: "Last Played",
+                                  stat: 0,
+                                  statString: championLastPlayed,
+                                ),
+                                const SizedBox(),
+                              ],
+                              const SizedBox(width: 10),
+                            ),
                           ),
-                        )
-                      : const SizedBox(),
-                ),
-              ],
-            ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ),
+            ],
           ),
         ),
       ),
