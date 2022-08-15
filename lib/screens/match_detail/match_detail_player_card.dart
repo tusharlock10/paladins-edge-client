@@ -317,7 +317,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 imageBlurHash: championIcon.blurHash,
                                 isAssetImage: championIcon.isAssetImage,
                                 size: 30,
-                                borderRadius: 15,
+                                borderRadius: 12.5,
                                 greyedOut: isBot,
                                 margin: const EdgeInsets.all(2.5),
                               ),
