@@ -2,9 +2,11 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/champions.dart" as champions_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef<_MatchesNotifier> ref;
   bool isPlayerMatchesLoading = false;
   bool isMatchDetailsLoading = false;
   api.MatchDetailsResponse? matchDetails;
@@ -17,6 +19,8 @@ class _MatchesNotifier extends ChangeNotifier {
   /// holds the currently active filter
   data_classes.SelectedMatchFilter selectedFilter =
       data_classes.SelectedMatchFilter();
+
+  _MatchesNotifier({required this.ref});
 
   void resetPlayerMatches({bool forceUpdate = false}) {
     if (forceUpdate) return;
@@ -131,17 +135,20 @@ class _MatchesNotifier extends ChangeNotifier {
     String? filterName,
     data_classes.MatchFilterValue? filterValue,
   ) {
-    if (combinedMatches == null) return;
+    if (combinedMatches == null || combinedMatchesPlayerId == null) return;
 
     selectedFilter = data_classes.SelectedMatchFilter(
       name: filterName,
       value: filterValue,
     );
+    final champions = ref.read(champions_provider.champions).champions;
 
     combinedMatches = selectedFilter.isValid
         ? data_classes.MatchFilter.getFilteredMatches(
             combinedMatches: combinedMatches!,
             filter: selectedFilter,
+            champions: champions,
+            playerId: combinedMatchesPlayerId!,
           )
         : data_classes.MatchFilter.clearFilters(combinedMatches!);
 
@@ -173,4 +180,4 @@ class _MatchesNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle matches
-final matches = ChangeNotifierProvider((_) => _MatchesNotifier());
+final matches = ChangeNotifierProvider((ref) => _MatchesNotifier(ref: ref));

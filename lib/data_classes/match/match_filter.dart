@@ -1,49 +1,7 @@
-import "package:jiffy/jiffy.dart";
+import "package:dartx/dartx.dart";
 import "package:paladinsedge/data_classes/match/combined_match.dart";
-
-enum MatchFilterValueType { normal, dates }
-
-class MatchFilterValue {
-  final String value;
-  final Map<String, DateTime?> dateValue;
-  final MatchFilterValueType type;
-  final String _valueName;
-
-  String get valueName =>
-      type == MatchFilterValueType.dates ? _getDateValueName() : _valueName;
-
-  MatchFilterValue({
-    required String valueName,
-    required this.value,
-    this.dateValue = const {},
-    this.type = MatchFilterValueType.normal,
-  }) : _valueName = valueName;
-
-  bool isSameFilter(MatchFilterValue? other) {
-    if (other == null) return false;
-    if (other.type != type) return false;
-    if (value != other.value) return false;
-
-    // for date, just check if both types are equal
-    if (other.type == MatchFilterValueType.dates &&
-        type == MatchFilterValueType.dates) return true;
-
-    return true;
-  }
-
-  String _getDateValueName() {
-    final startDate = dateValue["startDate"];
-    final endDate = dateValue["endDate"];
-    if (startDate == null && endDate == null) return _valueName;
-    const formatStringLong = "MMM do yyyy";
-    const formatStringShort = "MMM d";
-
-    if (endDate == null) return Jiffy(startDate).format(formatStringLong);
-    if (startDate == null) return Jiffy(endDate).format(formatStringLong);
-
-    return "${Jiffy(startDate).format(formatStringShort)} - ${Jiffy(endDate).format(formatStringShort)}";
-  }
-}
+import "package:paladinsedge/data_classes/match/match_filter_value.dart";
+import "package:paladinsedge/models/index.dart" as models;
 
 class SelectedMatchFilter {
   final String? name;
@@ -63,59 +21,26 @@ abstract class MatchFilter {
   static const _map = "Map";
   static const _betweenDates = "Between Dates";
   static const _queue = "Queue";
+  static const _roles = "Roles";
 
-  static List<String> get filterNames => [_map, _betweenDates, _queue];
-
+  static List<String> filterNames(bool isGuest) => [
+        _map,
+        _betweenDates,
+        _queue,
+        _roles,
+      ];
   static List<MatchFilterValue>? getFilterValues(
     String filter,
   ) {
     switch (filter) {
       case _map:
-        return [
-          MatchFilterValue(valueName: "SG: BM", value: "Brightmarsh"),
-          MatchFilterValue(valueName: "SG: FM", value: "Fish Market"),
-          MatchFilterValue(valueName: "SG: SB", value: "Serpent Beach"),
-          MatchFilterValue(valueName: "SG: SK(D)", value: "Stone Keep (Day)"),
-          MatchFilterValue(valueName: "SG: SK(N)", value: "Stone Keep (Night)"),
-          MatchFilterValue(valueName: "SG: WG", value: "Warder's Gate"),
-          MatchFilterValue(valueName: "SG: SD", value: "Shattered Desert"),
-          MatchFilterValue(valueName: "SG: FG", value: "Frozen Guard "),
-          MatchFilterValue(valueName: "SG: TM", value: "Timber Mill"),
-          MatchFilterValue(valueName: "SG: AP", value: "Ascension Peak"),
-          MatchFilterValue(valueName: "SG: FI", value: "Frog Isle"),
-          MatchFilterValue(valueName: "SG: JF", value: "Jaguar Falls"),
-          MatchFilterValue(valueName: "SG: SQ", value: "Splitstone Quarry"),
-          MatchFilterValue(valueName: "SG: IM", value: "Ice Mines"),
-          MatchFilterValue(valueName: "SG: BZR", value: "Bazaar"),
-          MatchFilterValue(valueName: "TDM: DA", value: "Dragon Arena"),
-          MatchFilterValue(valueName: "TDM: TD", value: "Trade District"),
-          MatchFilterValue(valueName: "TDM: SJ", value: "Snowfall Junction"),
-          MatchFilterValue(valueName: "TDM: ABS", value: "Abyss"),
-          MatchFilterValue(
-            valueName: "ONS: MA",
-            value: "Magistrate's Archives",
-          ),
-          MatchFilterValue(valueName: "ONS: MP", value: "Marauder's Port"),
-          MatchFilterValue(valueName: "ONS: FR", value: "Foreman's Rise"),
-          MatchFilterValue(valueName: "ONS: PC", value: "Primal Court"),
-        ];
+        return MatchFilterValues.map;
       case _betweenDates:
-        return [
-          MatchFilterValue(
-            value: "Select Dates",
-            valueName: "Select Dates",
-            type: MatchFilterValueType.dates,
-          ),
-        ];
+        return MatchFilterValues.betweenDates;
       case _queue:
-        return [
-          MatchFilterValue(value: "Casual Siege", valueName: "SG"),
-          MatchFilterValue(value: "Team Deathmatch ", valueName: "TDM"),
-          MatchFilterValue(value: "Onslaught", valueName: "ONS"),
-          MatchFilterValue(value: "Ranked Keyboard", valueName: "RNK: KBM"),
-          MatchFilterValue(value: "Ranked Controller ", valueName: "RNK: CON"),
-          MatchFilterValue(value: "Siege: Beyond", valueName: "SG: BYD"),
-        ];
+        return MatchFilterValues.queue;
+      case _roles:
+        return MatchFilterValues.roles;
       default:
         return null;
     }
@@ -131,6 +56,8 @@ abstract class MatchFilter {
         return "Filter matches from certain dates";
       case _queue:
         return "Filter matches based on their queue";
+      case _roles:
+        return "Filter matches based on role of champion played";
       default:
         return "";
     }
@@ -139,6 +66,8 @@ abstract class MatchFilter {
   static List<CombinedMatch> getFilteredMatches({
     required List<CombinedMatch> combinedMatches,
     required SelectedMatchFilter filter,
+    required List<models.Champion> champions,
+    required String playerId,
   }) {
     switch (filter.name) {
       case _map:
@@ -147,6 +76,8 @@ abstract class MatchFilter {
         return _filterByBetweenDates(combinedMatches, filter);
       case _queue:
         return _filterByQueue(combinedMatches, filter);
+      case _roles:
+        return _filterByRoles(combinedMatches, filter, champions, playerId);
       default:
         return combinedMatches;
     }
@@ -210,4 +141,30 @@ abstract class MatchFilter {
                 ),
               )
               .toList();
+
+  static List<CombinedMatch> _filterByRoles(
+    List<CombinedMatch> combinedMatches,
+    SelectedMatchFilter filter,
+    List<models.Champion> champions,
+    String playerId,
+  ) {
+    if (filter.value == null) return combinedMatches;
+    final roleChampionIds = champions
+        .where((_) => _.role == filter.value!.value)
+        .map((_) => _.championId);
+    final roleChampionIdsSet = Set.from(roleChampionIds);
+
+    return combinedMatches.map(
+      (combinedMatch) {
+        final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
+          (_) => _.playerId == playerId,
+        );
+        if (matchPlayer == null) return combinedMatch;
+
+        return combinedMatch.copyWith(
+          hide: !roleChampionIdsSet.contains(matchPlayer.championId),
+        );
+      },
+    ).toList();
+  }
 }
