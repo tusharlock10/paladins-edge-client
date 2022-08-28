@@ -43,6 +43,7 @@ abstract class Urls {
   // match
   static const matchDetails = "/match/matchDetails"; // GET
   static const playerMatches = "/match/playerMatches"; // GET
+  static const commonMatches = "/match/commonMatches"; // POST
 
   // loadout
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET

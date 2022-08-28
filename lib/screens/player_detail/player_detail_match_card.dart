@@ -17,6 +17,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
   final models.Champion? champion;
   final models.Match match;
   final bool isSavedMatch;
+  final bool isCommonMatch;
 
   static const itemExtent = _itemHeight + _itemMargin * 2;
   static const _itemMargin = 7.0;
@@ -27,6 +28,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     required this.champion,
     required this.match,
     this.isSavedMatch = false,
+    this.isCommonMatch = false,
     Key? key,
   }) : super(key: key);
 
@@ -102,11 +104,13 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
+        String routeName = screens.MatchDetail.routeName;
+        if (isSavedMatch) routeName = screens.MatchDetail.savedMatchRouteName;
+        if (isCommonMatch) routeName = screens.MatchDetail.commonMatchRouteName;
+
         utilities.Navigation.navigate(
           context,
-          isSavedMatch
-              ? screens.MatchDetail.savedMatchRouteName
-              : screens.MatchDetail.routeName,
+          routeName,
           params: {
             "matchId": match.matchId,
             if (!isSavedMatch) "playerId": matchPlayer.playerId,
@@ -116,7 +120,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
           },
         );
       },
-      [match, matchPlayer],
+      [match, matchPlayer, isSavedMatch, isCommonMatch],
     );
 
     final onTalentPress = useCallback(

@@ -7,6 +7,11 @@ part "settings.g.dart";
 // model for storing user settings locally
 @HiveType(typeId: TypeIds.settings)
 class Settings extends HiveObject {
+  /// Used to check whether to show other playerMatches or user playerMatches
+  /// in commonMatches
+  @HiveField(1, defaultValue: false)
+  bool showUserPlayerMatches = false;
+
   // initialize _themeMode to the system theme
   /// 0 means theme is system based, 1 means light theme, 2 means dark theme
   @HiveField(0)

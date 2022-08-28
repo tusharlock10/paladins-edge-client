@@ -20,16 +20,21 @@ class PlayerDetailMenu extends HookConsumerWidget {
     // Providers
     final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
-    final selectedFilter =
-        ref.watch(providers.matches.select((_) => _.selectedFilter));
-    final selectedSort =
-        ref.watch(providers.matches.select((_) => _.selectedSort));
+    final userPlayer = ref.watch(providers.auth.select((_) => _.player));
+    final selectedFilter = ref.watch(
+      providers.matches.select((_) => _.selectedFilter),
+    );
+    final selectedSort = ref.watch(
+      providers.matches.select((_) => _.selectedSort),
+    );
     final player = ref.watch(providers.players.select((_) => _.playerData));
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final playerStatus = ref.watch(
       providers.players.select((_) => _.playerStatus),
     );
 
     // Variables
+    final isUserPlayer = player?.playerId == userPlayer?.playerId;
     final brightness = Theme.of(context).brightness;
     final isValidFilterAndSort = selectedFilter.isValid ||
         selectedSort != data_classes.MatchSort.defaultSort;
@@ -112,6 +117,36 @@ class PlayerDetailMenu extends HookConsumerWidget {
       [],
     );
 
+    final onCommonMatches = useCallback(
+      () {
+        if (player == null) return;
+        if (isGuest) {
+          utilities.Navigation.pop(context);
+          widgets.showLoginModal(
+            data_classes.ShowLoginModalOptions(
+              context: context,
+              loginCta: constants.LoginCTA.commonMatches,
+            ),
+          );
+
+          return;
+        }
+
+        utilities.Analytics.logEvent(
+          constants.AnalyticsEvent.commonMatches,
+        );
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(
+          context,
+          screens.CommonMatches.routeName,
+          params: {
+            "playerId": player.playerId,
+          },
+        );
+      },
+      [isGuest, player],
+    );
+
     final onClear = useCallback(
       () {
         matchesProvider.clearAppliedFiltersAndSort();
@@ -172,6 +207,17 @@ class PlayerDetailMenu extends HookConsumerWidget {
           child: Center(child: Text("match actions")),
         ),
         const PopupMenuDivider(height: 10),
+        if (!isUserPlayer)
+          PopupMenuItem(
+            enabled: false,
+            child: widgets.Button(
+              label: "Common\nMatches",
+              elevation: 4,
+              onPressed: onCommonMatches,
+              color: Colors.pink,
+              labelStyle: const TextStyle(fontSize: 11),
+            ),
+          ),
         PopupMenuItem(
           enabled: false,
           child: widgets.Button(

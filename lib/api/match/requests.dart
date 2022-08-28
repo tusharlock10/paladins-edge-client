@@ -42,4 +42,22 @@ abstract class MatchRequests {
       return null;
     }
   }
+
+  static Future<responses.CommonMatchesResponse?> commonMatches({
+    required List<String> playerIds,
+  }) async {
+    try {
+      final response = await utilities.api.post<Map<String, dynamic>>(
+        constants.Urls.commonMatches,
+        data: {"playerIds": playerIds},
+      );
+      if (response.data != null) {
+        return responses.CommonMatchesResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

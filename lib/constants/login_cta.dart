@@ -29,4 +29,9 @@ messages to other players, and start discussions.
 you to save the matches that you like and also lets you view them later.
 """
       .replaceAll("\n", " ");
+
+  static final commonMatches = """Common matches allows you to view
+the matches in which you and this player played together, either as allies or foes
+"""
+      .replaceAll("\n", " ");
 }

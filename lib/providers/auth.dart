@@ -44,7 +44,7 @@ class _AuthNotifier extends ChangeNotifier {
   models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
   List<data_classes.CombinedMatch>? savedMatches;
-  bool apiAvailable = true;
+  bool? apiAvailable = true;
 
   _AuthNotifier({required this.ref});
 
@@ -102,7 +102,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// Checks whether the paladins API is in working state
   Future<void> getApiStatus() async {
     final response = await api.AuthRequests.apiStatus();
-    apiAvailable = response != null ? response.apiAvailable : false;
+    apiAvailable = response?.apiAvailable;
 
     utilities.postFrameCallback(notifyListeners);
   }
@@ -470,8 +470,13 @@ class _AuthNotifier extends ChangeNotifier {
       constants.AnalyticsEvent.changeTheme,
       {"theme": themeName},
     );
+    utilities.Database.saveSettings(settings);
+    notifyListeners();
+  }
 
-    // save the settings after changing the theme
+  /// Toggle showUserPlayerMatches for commonMatches
+  void toggleShowUserPlayerMatches(bool? value) {
+    settings.showUserPlayerMatches = value ?? false;
     utilities.Database.saveSettings(settings);
     notifyListeners();
   }
