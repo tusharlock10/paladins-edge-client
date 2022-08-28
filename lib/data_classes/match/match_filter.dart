@@ -130,17 +130,29 @@ abstract class MatchFilter {
   static List<CombinedMatch> _filterByQueue(
     List<CombinedMatch> combinedMatches,
     SelectedMatchFilter filter,
-  ) =>
-      filter.value == null
-          ? combinedMatches
-          : combinedMatches
-              .map(
-                (combinedMatch) => combinedMatch.copyWith(
-                  hide:
-                      !combinedMatch.match.queue.contains(filter.value!.value),
-                ),
-              )
-              .toList();
+  ) {
+    if (filter.value == null) return combinedMatches;
+
+    if (filter.value!.valueName == "Other") {
+      final queueValues = MatchFilterValues.queue.map((_) => _.value);
+
+      return combinedMatches
+          .map(
+            (combinedMatch) => combinedMatch.copyWith(
+              hide: queueValues.contains(combinedMatch.match.queue),
+            ),
+          )
+          .toList();
+    }
+
+    return combinedMatches
+        .map(
+          (combinedMatch) => combinedMatch.copyWith(
+            hide: !combinedMatch.match.queue.contains(filter.value!.value),
+          ),
+        )
+        .toList();
+  }
 
   static List<CombinedMatch> _filterByRoles(
     List<CombinedMatch> combinedMatches,
