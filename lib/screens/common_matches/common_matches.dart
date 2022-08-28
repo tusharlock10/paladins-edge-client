@@ -54,12 +54,6 @@ class CommonMatches extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        print("Inuse effect");
-        print("$playerId playerId");
-        print("$commonMatchesPlayerId commonMatchesPlayerId");
-        print("$userPlayerId userPlayerId");
-        print("${commonMatches?.length} commonMatches?.length");
-
         if (userPlayerId != null && playerId != commonMatchesPlayerId) {
           matchesProvider.getCommonMatches(
             userPlayerId: userPlayerId,
@@ -130,7 +124,6 @@ class CommonMatches extends HookConsumerWidget {
 
   static Page _routeBuilder(_, GoRouterState state) {
     final paramPlayerId = state.params["playerId"];
-    print("$paramPlayerId paramPlayerId");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

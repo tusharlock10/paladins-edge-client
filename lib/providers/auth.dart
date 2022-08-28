@@ -476,7 +476,6 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Toggle showUserPlayerMatches for commonMatches
   void toggleShowUserPlayerMatches(bool? value) {
-    print("Value is : $value");
     settings.showUserPlayerMatches = value ?? false;
     utilities.Database.saveSettings(settings);
     notifyListeners();
