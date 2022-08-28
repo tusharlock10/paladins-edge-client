@@ -1,6 +1,7 @@
 export "./active_match/index.dart";
 export "./champion_detail/index.dart";
 export "./champions/index.dart";
+export "./common_matches/index.dart";
 export "./connect_profile/index.dart";
 export "./create_loadout/index.dart";
 export "./faqs/index.dart";

@@ -16,6 +16,7 @@ class Button extends StatelessWidget {
   final IconData? leading;
   final IconData? trailing;
   final double? elevation;
+  final TextStyle? labelStyle;
 
   const Button({
     required this.label,
@@ -27,6 +28,7 @@ class Button extends StatelessWidget {
     this.leading,
     this.trailing,
     this.elevation,
+    this.labelStyle,
     Key? key,
   }) : super(key: key);
 
@@ -70,7 +72,7 @@ class Button extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       color: disabled ? null : outlinedColor,
-                    ),
+                    ).merge(labelStyle),
                   ),
                   if (trailing != null)
                     Padding(
@@ -112,7 +114,7 @@ class Button extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       color: disabled ? null : color2,
-                    ),
+                    ).merge(labelStyle),
                   ),
                   if (trailing != null)
                     Padding(

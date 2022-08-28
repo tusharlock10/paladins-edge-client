@@ -15,7 +15,7 @@ class _QueueState extends ChangeNotifier {
   List<models.Queue> timeline = [];
   int selectedQueueId = constants.QueueId.casualSiege;
 
-  // data related to charting
+  /// Charting data
   int smallestUnit =
       28; // i.e. it provides 28 minutes of granularity in the chart
   List<models.Queue> selectedTimeline = [];

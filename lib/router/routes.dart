@@ -13,6 +13,7 @@ final _playerDetailRoutes = [
   screens.Friends.goRoute,
   screens.MatchDetail.goRoute,
   screens.ActiveMatch.goRoute,
+  screens.CommonMatches.goRouteBuilder(_commonMatchesRoutes),
 ];
 
 final _savedMatchesRoutes = [
@@ -38,4 +39,8 @@ final rootRoutes = [
   screens.Login.goRouteBuilder(_loginRoutes),
   screens.ConnectProfile.goRoute,
   screens.Main.goRouteBuilder(_mainRoutes),
+];
+
+final _commonMatchesRoutes = [
+  screens.MatchDetail.commonMatchGoRoute,
 ];

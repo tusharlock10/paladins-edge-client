@@ -39,3 +39,21 @@ Map<String, dynamic> _$PlayerMatchesResponseToJson(
       'matches': instance.matches,
       'matchPlayers': instance.matchPlayers,
     };
+
+CommonMatchesResponse _$CommonMatchesResponseFromJson(
+        Map<String, dynamic> json) =>
+    CommonMatchesResponse(
+      matches: (json['matches'] as List<dynamic>)
+          .map((e) => Match.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      matchPlayers: (json['matchPlayers'] as List<dynamic>)
+          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CommonMatchesResponseToJson(
+        CommonMatchesResponse instance) =>
+    <String, dynamic>{
+      'matches': instance.matches,
+      'matchPlayers': instance.matchPlayers,
+    };

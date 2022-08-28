@@ -7,16 +7,23 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef<_MatchesNotifier> ref;
-  bool isPlayerMatchesLoading = false;
+
+  /// Match detail
   bool isMatchDetailsLoading = false;
   api.MatchDetailsResponse? matchDetails;
+
+  /// Player matches
+  bool isPlayerMatchesLoading = false;
   String? combinedMatchesPlayerId;
   List<data_classes.CombinedMatch>? combinedMatches;
 
-  /// holds the currently active sort
-  String selectedSort = data_classes.MatchSort.defaultSort;
+  /// Common matches
+  bool isCommonMatchesLoading = false;
+  String? commonMatchesPlayerId;
+  List<data_classes.CombinedMatch>? commonMatches;
 
-  /// holds the currently active filter
+  /// Matches filter and sorting
+  String selectedSort = data_classes.MatchSort.defaultSort;
   data_classes.SelectedMatchFilter selectedFilter =
       data_classes.SelectedMatchFilter();
 
@@ -155,6 +162,56 @@ class _MatchesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void getCommonMatches({
+    required String userPlayerId,
+    required String playerId,
+  }) async {
+    isCommonMatchesLoading = true;
+    commonMatchesPlayerId = playerId;
+    utilities.postFrameCallback(notifyListeners);
+
+    final response = await api.MatchRequests.commonMatches(
+      playerIds: [userPlayerId, playerId],
+    );
+    if (response == null) {
+      isCommonMatchesLoading = false;
+      commonMatches = null;
+      notifyListeners();
+
+      return;
+    }
+
+    // create list of commonMatches using a temp. map
+    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    for (final match in response.matches) {
+      tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
+        match: match,
+        matchPlayers: [],
+      );
+    }
+    for (final matchPlayer in response.matchPlayers) {
+      final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
+      if (existingCombinedMatch == null) continue;
+
+      tempMatchesMap[matchPlayer.matchId] = existingCombinedMatch.copyWith(
+        matchPlayers: [...existingCombinedMatch.matchPlayers, matchPlayer],
+      );
+    }
+
+    isCommonMatchesLoading = false;
+    commonMatches = tempMatchesMap.values.toList();
+
+    // sort commonMatches based on date
+    if (commonMatches != null) {
+      commonMatches = data_classes.MatchSort.getSortedMatches(
+        combinedMatches: commonMatches!,
+        sort: data_classes.MatchSort.defaultSort,
+      );
+    }
+
+    notifyListeners();
+  }
+
   /// Clears all applied filters and sort on combinedMatches
   void clearAppliedFiltersAndSort() {
     if (combinedMatches == null) return;
@@ -173,9 +230,12 @@ class _MatchesNotifier extends ChangeNotifier {
   void clearData() {
     isPlayerMatchesLoading = false;
     isMatchDetailsLoading = false;
+    isCommonMatchesLoading = false;
     matchDetails = null;
     combinedMatchesPlayerId = null;
     combinedMatches = null;
+    commonMatchesPlayerId = null;
+    commonMatches = null;
   }
 }
 
