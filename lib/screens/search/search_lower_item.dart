@@ -29,7 +29,7 @@ class SearchLowerItem extends HookWidget {
           },
         );
       },
-      [],
+      [lowerSearch],
     );
 
     return Card(

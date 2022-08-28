@@ -31,7 +31,7 @@ class SearchTopItem extends HookWidget {
           },
         );
       },
-      [],
+      [player],
     );
 
     return Card(
