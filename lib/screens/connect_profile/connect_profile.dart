@@ -162,7 +162,7 @@ class ConnectProfile extends HookConsumerWidget {
           children: [
             const widgets.ApiStatusMessage(
               message:
-                  "You might face problems while connecting your profile, please try again later",
+                  "You might face problems while connecting your profile. Please try again later",
             ),
             const SizedBox(height: 15),
             name != null
