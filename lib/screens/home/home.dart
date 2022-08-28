@@ -16,14 +16,17 @@ class Home extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
-    final favouriteFriends = ref.watch(
-      providers.auth.select((_) => _.user?.favouriteFriends),
-    );
-    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final queueProvider = ref.read(providers.queue);
     final itemsProvider = ref.read(providers.items);
     final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
+    final favouriteFriends = ref.watch(
+      providers.auth.select((_) => _.user?.favouriteFriends),
+    );
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+    final apiAvailable = ref.watch(
+      providers.auth.select((_) => _.apiAvailable),
+    );
 
     // Effects
     useEffect(
@@ -80,9 +83,10 @@ class Home extends HookConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                const widgets.ApiStatusMessage(
-                  message:
-                      "You will still be able to view profiles and matches of some players",
+                widgets.ApiStatusMessage(
+                  message: apiAvailable == null
+                      ? "Our servers will be up soon. Please try again later"
+                      : "You won't be able to view updated data as Paladins services are down. Please try again later",
                 ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),

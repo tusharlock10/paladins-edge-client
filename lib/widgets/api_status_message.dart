@@ -16,21 +16,23 @@ class ApiStatusMessage extends ConsumerWidget {
       providers.auth.select((_) => _.apiAvailable),
     );
 
-    if (apiAvailable) {
+    if (apiAvailable == true) {
       return const SizedBox();
     }
 
     return Container(
       height: 64,
       width: double.infinity,
-      color: Colors.red,
+      color: apiAvailable == null ? Colors.orangeAccent : Colors.red,
       padding: const EdgeInsets.only(top: 2),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "It looks like Paladins API is not working right now!",
-            style: TextStyle(
+          Text(
+            apiAvailable == null
+                ? "Paladins Edge servers are under maintenance"
+                : "It looks like Paladins API is unavailable right now",
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold,
