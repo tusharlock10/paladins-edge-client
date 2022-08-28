@@ -88,7 +88,7 @@ abstract class MatchFilterValues {
     MatchFilterValue(value: "Onslaught", valueName: "ONS"),
     MatchFilterValue(value: "Ranked Keyboard", valueName: "RNK: KBM"),
     MatchFilterValue(value: "Ranked Controller ", valueName: "RNK: CON"),
-    MatchFilterValue(value: "Siege: Beyond", valueName: "SG: BYD"),
+    MatchFilterValue(value: "Other", valueName: "Other"),
   ];
 
   static const roles = [

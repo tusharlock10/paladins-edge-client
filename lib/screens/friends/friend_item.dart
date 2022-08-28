@@ -22,19 +22,30 @@ class FriendItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
-    final favouriteFriends =
-        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final favouriteFriends = ref.watch(
+      providers.auth.select((_) => _.user?.favouriteFriends),
+    );
 
     // Variables
     const double itemHeight = 85;
     final theme = Theme.of(context);
-    final bool isFavourite =
-        favouriteFriends?.contains(friend.playerId) ?? false;
+    final bool isFavourite = isOtherPlayer
+        ? false
+        : favouriteFriends?.contains(friend.playerId) ?? false;
 
     // State
     final isSelected = useState(false);
 
     // Methods
+    final onTapFriend = useCallback(
+      () {
+        if (!isOtherPlayer) {
+          isSelected.value = !isSelected.value;
+        }
+      },
+      [isOtherPlayer, isSelected.value],
+    );
+
     final onFavouriteFriend = useCallback(
       () async {
         if (isOtherPlayer) return;
@@ -72,7 +83,7 @@ class FriendItem extends HookConsumerWidget {
     return widgets.InteractiveCard(
       elevation: 7,
       borderRadius: 10,
-      onTap: () => isSelected.value = !isSelected.value,
+      onTap: onTapFriend,
       padding: const EdgeInsets.only(left: 10),
       child: SizedBox(
         height: itemHeight,
