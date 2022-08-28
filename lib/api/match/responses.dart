@@ -32,3 +32,18 @@ class PlayerMatchesResponse {
       _$PlayerMatchesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerMatchesResponseToJson(this);
 }
+
+@JsonSerializable()
+class CommonMatchesResponse {
+  final List<Match> matches;
+  final List<MatchPlayer> matchPlayers;
+
+  CommonMatchesResponse({
+    required this.matches,
+    required this.matchPlayers,
+  });
+
+  factory CommonMatchesResponse.fromJson(Map<String, dynamic> json) =>
+      _$CommonMatchesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$CommonMatchesResponseToJson(this);
+}

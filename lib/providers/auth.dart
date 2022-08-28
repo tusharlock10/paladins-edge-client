@@ -470,8 +470,13 @@ class _AuthNotifier extends ChangeNotifier {
       constants.AnalyticsEvent.changeTheme,
       {"theme": themeName},
     );
+    utilities.Database.saveSettings(settings);
+    notifyListeners();
+  }
 
-    // save the settings after changing the theme
+  /// Toggle showUserPlayerMatches for commonMatches
+  void toggleShowUserPlayerMatches(bool? value) {
+    settings.showUserPlayerMatches = value ?? false;
     utilities.Database.saveSettings(settings);
     notifyListeners();
   }

@@ -16,13 +16,17 @@ class SettingsAdapter extends TypeAdapter<Settings> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Settings().._themeMode = fields[0] as int;
+    return Settings()
+      ..showUserPlayerMatches = fields[1] == null ? false : fields[1] as bool
+      .._themeMode = fields[0] as int;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
+      ..writeByte(2)
       ..writeByte(1)
+      ..write(obj.showUserPlayerMatches)
       ..writeByte(0)
       ..write(obj._themeMode);
   }

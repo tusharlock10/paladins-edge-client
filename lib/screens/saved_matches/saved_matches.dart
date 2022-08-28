@@ -26,8 +26,9 @@ class SavedMatches extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
-    final savedMatches =
-        ref.watch(providers.auth.select((_) => _.savedMatches));
+    final savedMatches = ref.watch(
+      providers.auth.select((_) => _.savedMatches),
+    );
 
     // Effects
     useEffect(

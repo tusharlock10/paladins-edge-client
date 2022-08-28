@@ -6,18 +6,29 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/player_detail/player_detail_match_card.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
-class SavedMatchesList extends HookConsumerWidget {
-  const SavedMatchesList({Key? key}) : super(key: key);
+class CommonMatchesList extends HookConsumerWidget {
+  final String playerId;
+  const CommonMatchesList({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
-    final savedMatches = ref.watch(
-      providers.auth.select((_) => _.savedMatches),
+    final showUserPlayerMatches = ref.watch(
+      providers.auth.select((_) => _.settings.showUserPlayerMatches),
+    );
+    final userPlayerId = ref.watch(
+      providers.auth.select((_) => _.player?.playerId),
+    );
+    final commonMatches = ref.watch(
+      providers.matches.select((_) => _.commonMatches),
     );
 
     // Variables
+    final matchPlayerId = showUserPlayerMatches ? userPlayerId : playerId;
     final size = MediaQuery.of(context).size;
     final crossAxisCount = utilities.responsiveCondition(
       context,
@@ -34,11 +45,11 @@ class SavedMatchesList extends HookConsumerWidget {
         )
         .toDouble();
 
-    return savedMatches == null
+    return commonMatches == null
         ? const SliverToBoxAdapter(child: SizedBox())
         : SliverPadding(
             padding: EdgeInsets.only(
-              top: 15,
+              top: 10,
               bottom: 50,
               right: horizontalPadding,
               left: horizontalPadding,
@@ -50,11 +61,11 @@ class SavedMatchesList extends HookConsumerWidget {
               ),
               delegate: SliverChildBuilderDelegate(
                 (_, index) {
-                  final combinedMatch = savedMatches.elementAt(index);
+                  final combinedMatch = commonMatches.elementAt(index);
                   final match = combinedMatch.match;
                   final matchPlayer =
                       combinedMatch.matchPlayers.firstOrNullWhere(
-                    (_) => _.matchId == match.matchId,
+                    (_) => _.playerId == matchPlayerId,
                   );
                   final champion = champions.firstOrNullWhere(
                     (_) => _.championId == matchPlayer?.championId,
@@ -64,10 +75,9 @@ class SavedMatchesList extends HookConsumerWidget {
                     matchPlayer: matchPlayer,
                     champion: champion,
                     match: match,
-                    isSavedMatch: true,
                   );
                 },
-                childCount: savedMatches.length,
+                childCount: commonMatches.length,
               ),
             ),
           );

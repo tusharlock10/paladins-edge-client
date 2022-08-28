@@ -2,21 +2,32 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/providers/champions.dart" as champions_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _MatchesNotifier extends ChangeNotifier {
-  bool isPlayerMatchesLoading = false;
+  final ChangeNotifierProviderRef<_MatchesNotifier> ref;
+
+  /// Match detail
   bool isMatchDetailsLoading = false;
   api.MatchDetailsResponse? matchDetails;
+
+  /// Player matches
+  bool isPlayerMatchesLoading = false;
   String? combinedMatchesPlayerId;
   List<data_classes.CombinedMatch>? combinedMatches;
 
-  /// holds the currently active sort
-  String selectedSort = data_classes.MatchSort.defaultSort;
+  /// Common matches
+  bool isCommonMatchesLoading = false;
+  String? commonMatchesPlayerId;
+  List<data_classes.CombinedMatch>? commonMatches;
 
-  /// holds the currently active filter
+  /// Matches filter and sorting
+  String selectedSort = data_classes.MatchSort.defaultSort;
   data_classes.SelectedMatchFilter selectedFilter =
       data_classes.SelectedMatchFilter();
+
+  _MatchesNotifier({required this.ref});
 
   void resetPlayerMatches({bool forceUpdate = false}) {
     if (forceUpdate) return;
@@ -131,19 +142,72 @@ class _MatchesNotifier extends ChangeNotifier {
     String? filterName,
     data_classes.MatchFilterValue? filterValue,
   ) {
-    if (combinedMatches == null) return;
+    if (combinedMatches == null || combinedMatchesPlayerId == null) return;
 
     selectedFilter = data_classes.SelectedMatchFilter(
       name: filterName,
       value: filterValue,
     );
+    final champions = ref.read(champions_provider.champions).champions;
 
     combinedMatches = selectedFilter.isValid
         ? data_classes.MatchFilter.getFilteredMatches(
             combinedMatches: combinedMatches!,
             filter: selectedFilter,
+            champions: champions,
+            playerId: combinedMatchesPlayerId!,
           )
         : data_classes.MatchFilter.clearFilters(combinedMatches!);
+
+    notifyListeners();
+  }
+
+  void getCommonMatches({
+    required String userPlayerId,
+    required String playerId,
+  }) async {
+    isCommonMatchesLoading = true;
+    commonMatchesPlayerId = playerId;
+    utilities.postFrameCallback(notifyListeners);
+
+    final response = await api.MatchRequests.commonMatches(
+      playerIds: [userPlayerId, playerId],
+    );
+    if (response == null) {
+      isCommonMatchesLoading = false;
+      commonMatches = null;
+      notifyListeners();
+
+      return;
+    }
+
+    // create list of commonMatches using a temp. map
+    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    for (final match in response.matches) {
+      tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
+        match: match,
+        matchPlayers: [],
+      );
+    }
+    for (final matchPlayer in response.matchPlayers) {
+      final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
+      if (existingCombinedMatch == null) continue;
+
+      tempMatchesMap[matchPlayer.matchId] = existingCombinedMatch.copyWith(
+        matchPlayers: [...existingCombinedMatch.matchPlayers, matchPlayer],
+      );
+    }
+
+    isCommonMatchesLoading = false;
+    commonMatches = tempMatchesMap.values.toList();
+
+    // sort commonMatches based on date
+    if (commonMatches != null) {
+      commonMatches = data_classes.MatchSort.getSortedMatches(
+        combinedMatches: commonMatches!,
+        sort: data_classes.MatchSort.defaultSort,
+      );
+    }
 
     notifyListeners();
   }
@@ -166,11 +230,14 @@ class _MatchesNotifier extends ChangeNotifier {
   void clearData() {
     isPlayerMatchesLoading = false;
     isMatchDetailsLoading = false;
+    isCommonMatchesLoading = false;
     matchDetails = null;
     combinedMatchesPlayerId = null;
     combinedMatches = null;
+    commonMatchesPlayerId = null;
+    commonMatches = null;
   }
 }
 
 /// Provider to handle matches
-final matches = ChangeNotifierProvider((_) => _MatchesNotifier());
+final matches = ChangeNotifierProvider((ref) => _MatchesNotifier(ref: ref));

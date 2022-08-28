@@ -31,6 +31,7 @@ abstract class AnalyticsEvent {
   static const otherPlayerFriends = "other_player_friends";
   static const otherPlayerChampions = "other_player_champions";
   static const playerMatchesFilterSort = "player_matches_filter_sort";
+  static const commonMatches = "common_matches";
 
   // other player champions
   static const otherPlayerViewLoadout = "other_player_view_loadout";
