@@ -20,14 +20,15 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class ConnectProfile extends HookConsumerWidget {
   static const routeName = "connect-profile";
   static const routePath = "/connect-profile";
-  static final goRoute = GoRoute(
-    name: routeName,
-    path: routePath,
-    pageBuilder: _routeBuilder,
-    redirect: _playerConnectedRedirect,
-  );
-
   const ConnectProfile({Key? key}) : super(key: key);
+
+  static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
+        name: routeName,
+        path: routePath,
+        routes: routes,
+        pageBuilder: _routeBuilder,
+        redirect: _playerConnectedRedirect,
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,6 +49,7 @@ class ConnectProfile extends HookConsumerWidget {
     final isLoading = useState(false);
     final isCheckingPlayer = useState<String?>(null);
     final isVerifying = useState(false);
+    final showVerifyHelp = useState(false);
     final step = useState(0); // at which step of the process the user is at
     final selectedPlayer =
         useState<api.LowerSearch?>(null); // the player selected in search step
@@ -84,6 +86,7 @@ class ConnectProfile extends HookConsumerWidget {
     final onVerificationFailed = useCallback(
       (String? reason) {
         isVerifying.value = false;
+        showVerifyHelp.value = true;
 
         widgets.showToast(
           context: context,
@@ -161,7 +164,9 @@ class ConnectProfile extends HookConsumerWidget {
         child: Column(
           children: [
             const widgets.ApiStatusMessage(
-              message:
+              paladinsApiUnavailableMessage:
+                  "You might face problems while connecting your profile. Please try again later",
+              serverMaintenanceMessage:
                   "You might face problems while connecting your profile. Please try again later",
             ),
             const SizedBox(height: 15),
@@ -208,6 +213,7 @@ class ConnectProfile extends HookConsumerWidget {
                     ),
                     CreateProfileLoadoutVerifier(
                       isVerifying: isVerifying.value,
+                      showVerifyHelp: showVerifyHelp.value,
                       otp: otp.value,
                       selectedPlayer: selectedPlayer.value,
                       onVerify: onVerify,

@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/screens/connect_profile/connect_profile_verify_help.dart";
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class CreateProfileLoadoutVerifier extends StatelessWidget {
   final bool isVerifying;
+  final bool showVerifyHelp;
   final String otp;
   final api.LowerSearch? selectedPlayer;
   final void Function() onVerify;
@@ -15,6 +17,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
     required this.selectedPlayer,
     required this.onVerify,
     required this.onChangeName,
+    required this.showVerifyHelp,
     Key? key,
   }) : super(key: key);
 
@@ -60,7 +63,10 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
             ),
           ),
           const Text(
-            "Click verify once you have created and saved your loadout",
+            "Wait a few seconds after saving",
+          ),
+          const Text(
+            "Click verify once done",
           ),
           const SizedBox(height: 15),
           SizedBox(
@@ -83,6 +89,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
                     ),
             ),
           ),
+          const SizedBox(height: 5),
           SizedBox(
             width: 150,
             child: TextButton(
@@ -97,6 +104,8 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 5),
+          if (showVerifyHelp) const ConnectProfileVerifyHelp(),
         ],
       ),
     );

@@ -3,9 +3,11 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/feedback/feedback_input_landscape.dart";
 import "package:paladinsedge/screens/feedback/feedback_input_portrait.dart";
+import "package:paladinsedge/screens/feedback/feedback_support_contact.dart";
 import "package:paladinsedge/screens/feedback/feedback_type_selector.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
@@ -19,16 +21,33 @@ class Feedback extends HookConsumerWidget {
     pageBuilder: _routeBuilder,
   );
 
+  static const connectProfileRouteName = "connect-profile-feedback";
+  static const connectProfileRoutePath = "feedback";
+  static final connectProfileGoRoute = GoRoute(
+    name: connectProfileRouteName,
+    path: connectProfileRoutePath,
+    pageBuilder: _routeBuilder,
+  );
+
   const Feedback({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final feedbackProvider = ref.read(providers.feedback);
-    final isSubmitting =
-        ref.watch(providers.feedback.select((_) => _.isSubmitting));
-    final description =
-        ref.watch(providers.feedback.select((_) => _.description));
+    final selectedFeedbackType = ref.watch(
+      providers.feedback.select((_) => _.selectedFeedbackType),
+    );
+    final isSubmitting = ref.watch(
+      providers.feedback.select((_) => _.isSubmitting),
+    );
+    final description = ref.watch(
+      providers.feedback.select((_) => _.description),
+    );
+
+    // Variables
+    final isSupport =
+        selectedFeedbackType == data_classes.FeedbackTypes.support;
 
     // Effects
     useEffect(
@@ -54,7 +73,9 @@ class Feedback extends HookConsumerWidget {
         if (!result) {
           widgets.showToast(
             context: context,
-            text: "Unable to submit feedback",
+            text: isSupport
+                ? "Unable to submit support ticket"
+                : "Unable to submit feedback",
             type: widgets.ToastType.error,
           );
 
@@ -64,16 +85,18 @@ class Feedback extends HookConsumerWidget {
         goBack();
         widgets.showToast(
           context: context,
-          text: "Thank you for feedback",
+          text: isSupport
+              ? "We'll get back to you soon"
+              : "Thank you for feedback",
           type: widgets.ToastType.success,
         );
       },
-      [],
+      [isSupport],
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Provide Feedback"),
+        title: Text(isSupport ? "Support Ticket" : "Provide Feedback"),
       ),
       body: ListView(
         physics: const ClampingScrollPhysics(),
@@ -89,6 +112,8 @@ class Feedback extends HookConsumerWidget {
               mobile: const FeedbackInputPortrait(),
             ),
           ),
+          const SizedBox(height: 15),
+          const FeedbackSupportContact(),
           const SizedBox(height: 30),
           Center(
             child: isSubmitting

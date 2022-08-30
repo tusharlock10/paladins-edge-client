@@ -117,10 +117,10 @@ class _LoadoutCardDetail extends HookWidget {
                         style: textTheme.bodyText1?.copyWith(fontSize: 12),
                       ),
                       const SizedBox(height: 2),
-                      SelectableText(
+                      Text(
                         card.name.toUpperCase(),
-                        maxLines: 2,
-                        scrollPhysics: const ClampingScrollPhysics(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: textTheme.headline1?.copyWith(fontSize: 18),
                       ),
                       const SizedBox(height: 2),

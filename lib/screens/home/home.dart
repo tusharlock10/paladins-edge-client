@@ -24,9 +24,6 @@ class Home extends HookConsumerWidget {
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final apiAvailable = ref.watch(
-      providers.auth.select((_) => _.apiAvailable),
-    );
 
     // Effects
     useEffect(
@@ -83,10 +80,11 @@ class Home extends HookConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                widgets.ApiStatusMessage(
-                  message: apiAvailable == null
-                      ? "Our servers will be up soon. Please try again later"
-                      : "You won't be able to view updated data as Paladins services are down. Please try again later",
+                const widgets.ApiStatusMessage(
+                  paladinsApiUnavailableMessage:
+                      "You won't be able to view updated data as Paladins services are down. Please try again later",
+                  serverMaintenanceMessage:
+                      "Our servers will be up soon. Please try again later",
                 ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),

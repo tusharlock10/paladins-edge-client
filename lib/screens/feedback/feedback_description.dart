@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
 
@@ -16,8 +17,13 @@ class FeedbackDescription extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final feedbackProvider = ref.read(providers.feedback);
+    final selectedFeedbackType = ref.watch(
+      providers.feedback.select((_) => _.selectedFeedbackType),
+    );
 
     // Variables
+    final isSupport =
+        data_classes.FeedbackTypes.support == selectedFeedbackType;
     final cursorColor = Theme.of(context).brightness == Brightness.dark
         ? theme.darkThemeMaterialColor.shade50
         : null;
@@ -69,11 +75,15 @@ class FeedbackDescription extends ConsumerWidget {
                   maxLines: null,
                   textInputAction: TextInputAction.newline,
                   expands: true,
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 10,
+                    ),
                     border: InputBorder.none,
-                    hintText: "Write your feedback here...",
+                    hintText: isSupport
+                        ? "Describe your issue here..."
+                        : "Write your feedback here...",
                   ),
                   style: const TextStyle(fontSize: 18),
                   onChanged: feedbackProvider.changeDescription,
