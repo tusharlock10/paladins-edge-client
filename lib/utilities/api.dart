@@ -1,4 +1,6 @@
 import "package:dio/dio.dart";
+import "package:firebase_performance/firebase_performance.dart";
+import "package:flutter/foundation.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mime/mime.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
@@ -12,7 +14,7 @@ final api = Dio(
     receiveTimeout: constants.apiTimeout,
     connectTimeout: constants.apiTimeout,
   ),
-);
+)..interceptors.add(_FirebasePerformanceLogger());
 
 /// Upload an image to the provided S3 URL
 Future<bool> uploadImage({
@@ -41,4 +43,57 @@ Future<bool> uploadImage({
   } catch (_) {
     return false;
   }
+}
+
+class _FirebasePerformanceLogger extends Interceptor {
+  @override
+  void onRequest(options, handler) {
+    final httpMethod = _getHttpMethod(options.method);
+    final metric = FirebasePerformance.instance
+        .newHttpMetric(options.uri.toString(), httpMethod);
+    metric.start();
+    options.extra["metric"] = metric;
+    handler.next(options);
+  }
+
+  @override
+  void onResponse(response, handler) {
+    final metric = response.requestOptions.extra["metric"] as HttpMetric;
+    metric.httpResponseCode = response.statusCode;
+    metric.responseContentType =
+        response.headers.value(Headers.contentTypeHeader);
+    metric.stop();
+
+    final message =
+        "${response.requestOptions.method} ${response.statusCode} ${response.realUri}";
+    debugPrint(message);
+    handler.next(response);
+  }
+
+  @override
+  void onError(error, handler) {
+    final metric = error.requestOptions.extra["metric"] as HttpMetric;
+    metric.httpResponseCode = error.response?.statusCode;
+    metric.responseContentType =
+        error.response?.headers.value(Headers.contentTypeHeader);
+    metric.stop();
+    handler.next(error);
+  }
+}
+
+HttpMethod _getHttpMethod(String method) {
+  switch (method.toUpperCase()) {
+    case "GET":
+      return HttpMethod.Get;
+    case "POST":
+      return HttpMethod.Post;
+    case "PATCH":
+      return HttpMethod.Patch;
+    case "PUT":
+      return HttpMethod.Put;
+    case "DELETE":
+      return HttpMethod.Delete;
+  }
+
+  return HttpMethod.Options;
 }
