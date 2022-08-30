@@ -30,6 +30,18 @@ class AppDrawer extends HookConsumerWidget {
     // State
     final isLoggingOut = useState(false);
 
+    // Hooks
+    final showPlayerDependentButtons = useMemoized(
+      () {
+        // to show or hide buttons dependant on player info
+        // this scenario happens on connect profile screen
+        // if user is a guest, then show the button but ask for
+        // login on the specific screen
+        return player != null || isGuest;
+      },
+      [],
+    );
+
     // Methods
     final navigateToLogin = useCallback(
       () {
@@ -143,10 +155,13 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFeedback = useCallback(
       () {
+        final routeName = showPlayerDependentButtons
+            ? screens.Feedback.routeName
+            : screens.Feedback.connectProfileRouteName;
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Feedback.routeName);
+        utilities.Navigation.navigate(context, routeName);
       },
-      [],
+      [showPlayerDependentButtons],
     );
 
     final onGlobalChatHelper = useCallback(
@@ -201,21 +216,13 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFAQ = useCallback(
       () {
+        final routeName = showPlayerDependentButtons
+            ? screens.Faqs.routeName
+            : screens.Faqs.connectProfileRouteName;
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Faqs.routeName);
+        utilities.Navigation.navigate(context, routeName);
       },
-      [],
-    );
-
-    final showPlayerDependentButtons = useCallback(
-      () {
-        // to show or hide buttons dependant on player info
-        // this scenario happens on connect profile screen
-        // if user is a guest, then show the button but ask for
-        // login on the specific screen
-        return player != null || isGuest;
-      },
-      [],
+      [showPlayerDependentButtons],
     );
 
     return Drawer(
@@ -232,12 +239,12 @@ class AppDrawer extends HookConsumerWidget {
               subTitle: getThemeName(),
               onPressed: onChangeTheme,
             ),
-            if (showPlayerDependentButtons())
+            if (showPlayerDependentButtons)
               AppDrawerButton(
                 label: "Friends",
                 onPressed: onFriends,
               ),
-            if (showPlayerDependentButtons())
+            if (showPlayerDependentButtons)
               AppDrawerButton(
                 label: "Active Match",
                 onPressed: onActiveMatch,
@@ -246,14 +253,16 @@ class AppDrawer extends HookConsumerWidget {
               label: "Feedback",
               onPressed: onFeedback,
             ),
-            AppDrawerButton(
-              label: "Global Chat",
-              onPressed: onGlobalChat,
-            ),
-            AppDrawerButton(
-              label: "Saved Matches",
-              onPressed: onSavedMatches,
-            ),
+            if (showPlayerDependentButtons)
+              AppDrawerButton(
+                label: "Global Chat",
+                onPressed: onGlobalChat,
+              ),
+            if (showPlayerDependentButtons)
+              AppDrawerButton(
+                label: "Saved Matches",
+                onPressed: onSavedMatches,
+              ),
             AppDrawerButton(
               label: "FAQs",
               onPressed: onFAQ,

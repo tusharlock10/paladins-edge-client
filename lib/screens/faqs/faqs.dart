@@ -24,6 +24,13 @@ class Faqs extends HookConsumerWidget {
     path: loginRoutePath,
     pageBuilder: _routeBuilder,
   );
+  static const connectProfileRouteName = "connect-profile-faqs";
+  static const connectProfileRoutePath = "faqs";
+  static final connectProfileGoRoute = GoRoute(
+    name: connectProfileRouteName,
+    path: connectProfileRoutePath,
+    pageBuilder: _routeBuilder,
+  );
 
   const Faqs({Key? key}) : super(key: key);
 
