@@ -4,6 +4,27 @@ import "package:paladinsedge/constants/index.dart" show TypeIds;
 
 part "queue.g.dart";
 
+@HiveType(typeId: TypeIds.queueRegion)
+@JsonSerializable()
+class QueueRegion {
+  /// region of the matches
+  @HiveField(0)
+  final String region;
+
+  /// Number of matches being played currently in this region
+  @HiveField(1)
+  final int activeMatchCount;
+
+  QueueRegion({
+    required this.region,
+    required this.activeMatchCount,
+  });
+
+  factory QueueRegion.fromJson(Map<String, dynamic> json) =>
+      _$QueueRegionFromJson(json);
+  Map<String, dynamic> toJson() => _$QueueRegionToJson(this);
+}
+
 @HiveType(typeId: TypeIds.queue)
 @JsonSerializable()
 class Queue {
@@ -23,11 +44,16 @@ class Queue {
   @HiveField(3)
   final DateTime createdAt;
 
+  /// A breakup of the matches by region
+  @HiveField(4, defaultValue: [])
+  final List<QueueRegion> queueRegions;
+
   Queue({
     required this.queueId,
     required this.name,
     required this.activeMatchCount,
     required this.createdAt,
+    required this.queueRegions,
   });
 
   factory Queue.fromJson(Map<String, dynamic> json) => _$QueueFromJson(json);

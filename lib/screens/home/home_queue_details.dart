@@ -3,6 +3,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/home/home_queue_card.dart";
+import "package:paladinsedge/screens/home/home_queue_region_card.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -14,8 +15,9 @@ class HomeQueueDetails extends HookConsumerWidget {
     // Providers
     final queueProvider = ref.read(providers.queue);
     final queue = ref.watch(providers.queue.select((_) => _.queue));
-    final selectedQueueId =
-        ref.watch(providers.queue.select((_) => _.selectedQueueId));
+    final selectedQueueId = ref.watch(
+      providers.queue.select((_) => _.selectedQueueId),
+    );
     final isLoading = ref.watch(providers.queue.select((_) => _.isLoading));
 
     // Variables
@@ -84,16 +86,16 @@ class HomeQueueDetails extends HookConsumerWidget {
                           horizontal: 20,
                           vertical: 15,
                         ),
-                        children: queue
-                            .where((queue) => queue.queueId != 0)
-                            .map(
-                              (queue) => HomeQueueCard(
-                                queue: queue,
-                                isSelected: selectedQueueId == queue.queueId,
-                                onTap: getQueueTimeline,
+                        children: [
+                          const HomeQueueRegionCard(),
+                          ...queue.where((queue) => queue.queueId != 0).map(
+                                (queue) => HomeQueueCard(
+                                  queue: queue,
+                                  isSelected: selectedQueueId == queue.queueId,
+                                  onTap: getQueueTimeline,
+                                ),
                               ),
-                            )
-                            .toList(),
+                        ],
                       ),
               ],
             ),
