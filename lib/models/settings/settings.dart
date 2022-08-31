@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
 import "package:paladinsedge/constants/index.dart" show TypeIds;
+import "package:paladinsedge/data_classes/common/region.dart" show Region;
 
 part "settings.g.dart";
 
@@ -11,6 +12,10 @@ class Settings extends HiveObject {
   /// in commonMatches
   @HiveField(1, defaultValue: false)
   bool showUserPlayerMatches = false;
+
+  /// Used to store the value of selected queue by user in db
+  @HiveField(2, defaultValue: Region.all)
+  String selectedQueueRegion = Region.all;
 
   // initialize _themeMode to the system theme
   /// 0 means theme is system based, 1 means light theme, 2 means dark theme

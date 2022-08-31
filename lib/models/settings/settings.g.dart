@@ -18,15 +18,18 @@ class SettingsAdapter extends TypeAdapter<Settings> {
     };
     return Settings()
       ..showUserPlayerMatches = fields[1] == null ? false : fields[1] as bool
+      ..selectedQueueRegion = fields[2] == null ? 'ALL' : fields[2] as String
       .._themeMode = fields[0] as int;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(1)
       ..write(obj.showUserPlayerMatches)
+      ..writeByte(2)
+      ..write(obj.selectedQueueRegion)
       ..writeByte(0)
       ..write(obj._themeMode);
   }

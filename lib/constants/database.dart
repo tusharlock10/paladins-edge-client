@@ -66,6 +66,7 @@ abstract class TypeIds {
   static const bountyStore = 13;
   static const queue = 14;
   static const item = 15;
+  static const queueRegion = 16;
 }
 
 abstract class StorageKeys {
