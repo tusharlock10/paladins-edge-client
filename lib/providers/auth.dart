@@ -335,8 +335,8 @@ class _AuthNotifier extends ChangeNotifier {
       user!.favouriteFriends = response.favouriteFriends;
     }
 
-    utilities.Database.saveUser(user!);
     notifyListeners();
+    utilities.Database.saveUser(user!);
 
     return result;
   }
@@ -409,8 +409,8 @@ class _AuthNotifier extends ChangeNotifier {
       user!.savedMatches = response.savedMatches;
     }
 
-    utilities.Database.saveUser(user!);
     notifyListeners();
+    utilities.Database.saveUser(user!);
 
     return result;
   }
@@ -466,19 +466,26 @@ class _AuthNotifier extends ChangeNotifier {
     } else if (themeMode == ThemeMode.system) {
       themeName = "system";
     }
+    notifyListeners();
     utilities.Analytics.logEvent(
       constants.AnalyticsEvent.changeTheme,
       {"theme": themeName},
     );
     utilities.Database.saveSettings(settings);
-    notifyListeners();
   }
 
   /// Toggle showUserPlayerMatches for commonMatches
   void toggleShowUserPlayerMatches(bool? value) {
     settings.showUserPlayerMatches = value ?? false;
-    utilities.Database.saveSettings(settings);
     notifyListeners();
+    utilities.Database.saveSettings(settings);
+  }
+
+  /// Set queue region in settings
+  void setQueueRegions(String region) {
+    settings.selectedQueueRegion = region;
+    notifyListeners();
+    utilities.Database.saveSettings(settings);
   }
 
   void clearData() {

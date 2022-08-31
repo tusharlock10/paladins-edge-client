@@ -37,10 +37,15 @@ final _loginRoutes = [
 
 final rootRoutes = [
   screens.Login.goRouteBuilder(_loginRoutes),
-  screens.ConnectProfile.goRoute,
+  screens.ConnectProfile.goRouteBuilder(_connectProfileRoutes),
   screens.Main.goRouteBuilder(_mainRoutes),
 ];
 
 final _commonMatchesRoutes = [
   screens.MatchDetail.commonMatchGoRoute,
+];
+
+final _connectProfileRoutes = [
+  screens.Feedback.connectProfileGoRoute,
+  screens.Faqs.connectProfileGoRoute,
 ];

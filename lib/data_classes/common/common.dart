@@ -11,3 +11,9 @@ class BottomTabPage {
     required this.icon,
   });
 }
+
+enum ApiStatus {
+  available,
+  serverMaintenance,
+  paladinsApiUnavailable,
+}

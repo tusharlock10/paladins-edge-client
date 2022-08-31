@@ -11,8 +11,9 @@ class FeedbackTypeSelector extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final feedbackProvider = ref.read(providers.feedback);
-    final selectedFeedbackType =
-        ref.watch(providers.feedback.select((_) => _.selectedFeedbackType));
+    final selectedFeedbackType = ref.watch(
+      providers.feedback.select((_) => _.selectedFeedbackType),
+    );
 
     // Variables
     final theme = Theme.of(context);

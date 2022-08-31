@@ -1,8 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
-
-
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
@@ -11,7 +9,6 @@ const releaseTag = isWeb ? "beta" : "stable";
 abstract class NotificationChannels {
   static const friends = "friends";
 }
-
 
 abstract class ImageAspectRatios {
   // ratio = width/height
@@ -80,5 +77,6 @@ const partyColors = [
 abstract class RemoteConfigParams {
   static const enableGuestLogin = "enableGuestLogin";
   static const showBackgroundSplash = "showBackgroundSplash";
+  static const paladinsApiUnavailable = "paladinsApiUnavailable";
+  static const serverMaintenance = "serverMaintenance";
 }
-
