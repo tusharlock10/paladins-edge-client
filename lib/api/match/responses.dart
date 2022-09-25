@@ -1,5 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
-import "package:paladinsedge/models/index.dart" show Match, MatchPlayer;
+import "package:paladinsedge/models/index.dart"
+    show Match, MatchPlayer, TopMatch;
 
 part "responses.g.dart";
 
@@ -46,4 +47,17 @@ class CommonMatchesResponse {
   factory CommonMatchesResponse.fromJson(Map<String, dynamic> json) =>
       _$CommonMatchesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$CommonMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class TopMatchesResponse {
+  final List<TopMatch> topMatches;
+
+  TopMatchesResponse({
+    required this.topMatches,
+  });
+
+  factory TopMatchesResponse.fromJson(Map<String, dynamic> json) =>
+      _$TopMatchesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TopMatchesResponseToJson(this);
 }

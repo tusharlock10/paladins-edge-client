@@ -3,6 +3,56 @@
 part of 'match.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class TopMatchAdapter extends TypeAdapter<TopMatch> {
+  @override
+  final int typeId = 17;
+
+  @override
+  TopMatch read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return TopMatch(
+      matchId: fields[0] as String,
+      type: fields[1] as String,
+      value: fields[2] as int,
+      playerName: fields[3] as String?,
+      playerId: fields[4] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, TopMatch obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.matchId)
+      ..writeByte(1)
+      ..write(obj.type)
+      ..writeByte(2)
+      ..write(obj.value)
+      ..writeByte(3)
+      ..write(obj.playerName)
+      ..writeByte(4)
+      ..write(obj.playerId);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TopMatchAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
@@ -140,4 +190,20 @@ Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
       'isRankedMatch': instance.isRankedMatch,
       'championBans': instance.championBans,
       'isInComplete': instance.isInComplete,
+    };
+
+TopMatch _$TopMatchFromJson(Map<String, dynamic> json) => TopMatch(
+      matchId: json['matchId'] as String,
+      type: json['type'] as String,
+      value: json['value'] as int,
+      playerName: json['playerName'] as String?,
+      playerId: json['playerId'] as String?,
+    );
+
+Map<String, dynamic> _$TopMatchToJson(TopMatch instance) => <String, dynamic>{
+      'matchId': instance.matchId,
+      'type': instance.type,
+      'value': instance.value,
+      'playerName': instance.playerName,
+      'playerId': instance.playerId,
     };

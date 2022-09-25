@@ -19,6 +19,7 @@ abstract class Database {
   static Box<models.PlayerChampion>? _playerChampionBox;
   static Box<models.Queue>? _queueTimelineBox;
   static Box<models.Item>? _itemBox;
+  static Box<models.TopMatch>? _topMatchBox;
 
   // getters
   static Box<String>? get tokenBox => _tokenBox;
@@ -34,29 +35,14 @@ abstract class Database {
       _playerChampionBox;
   static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
   static Box<models.Item>? get itemBox => _itemBox;
+  static Box<models.TopMatch>? get topMatchBox => _topMatchBox;
 
   static Future<void> initialize() async {
     if (_init) return;
     await Hive.initFlutter();
-    // register the generated adapters here
-    Hive.registerAdapter(models.ChampionAdapter());
-    Hive.registerAdapter(models.AbilityAdapter());
-    Hive.registerAdapter(models.TalentAdapter());
-    Hive.registerAdapter(models.CardAdapter());
-    Hive.registerAdapter(models.PlayerAdapter());
-    Hive.registerAdapter(models.RankedAdapter());
-    Hive.registerAdapter(models.UserAdapter());
-    Hive.registerAdapter(models.SettingsAdapter());
-    Hive.registerAdapter(models.EssentialsAdapter());
-    Hive.registerAdapter(models.SearchHistoryAdapter());
-    Hive.registerAdapter(models.RecordExpiryAdapter());
-    Hive.registerAdapter(models.BountyStoreAdapter());
-    Hive.registerAdapter(models.PlayerChampionAdapter());
-    Hive.registerAdapter(models.QueueAdapter());
-    Hive.registerAdapter(models.ItemAdapter());
+    _registerAdapters();
 
     _init = true;
-
     // initialize boxes here
     _tokenBox = await Hive.openBox<String>(constants.HiveBoxes.token);
     _userBox = await Hive.openBox<models.User>(constants.HiveBoxes.user);
@@ -83,6 +69,9 @@ abstract class Database {
     );
     _itemBox = await Hive.openBox<models.Item>(
       constants.HiveBoxes.item,
+    );
+    _topMatchBox = await Hive.openBox<models.TopMatch>(
+      constants.HiveBoxes.topMatch,
     );
 
     // check if recordExpiry contains any data
@@ -128,6 +117,9 @@ abstract class Database {
   static void saveQueue(models.Queue queue) => _queueTimelineBox?.add(queue);
 
   static void saveItem(models.Item item) => _itemBox?.add(item);
+
+  static void saveTopMatch(models.TopMatch topMatch) =>
+      _topMatchBox?.add(topMatch);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
@@ -241,6 +233,20 @@ abstract class Database {
     return items == null || items.isEmpty ? null : items;
   }
 
+  static List<models.TopMatch>? getTopMatches() {
+    // check if topMatch records have expired
+    if (_recordExpiry!.isRecordExpired(constants.RecordExpiryName.topMatch)) {
+      // if the data is expired, then clear topMatch box
+      // and renew the recordExpiry for topMatch records
+      _topMatchBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryName.topMatch);
+    }
+
+    final topMatches = _topMatchBox?.values.toList();
+
+    return topMatches == null || topMatches.isEmpty ? null : topMatches;
+  }
+
   // clear all the boxes
   static Future<void> clear() async {
     final boxes = [
@@ -256,6 +262,26 @@ abstract class Database {
     await Future.wait(futures);
 
     return;
+  }
+
+  static void _registerAdapters() {
+    // register the generated adapters here
+    Hive.registerAdapter(models.ChampionAdapter());
+    Hive.registerAdapter(models.AbilityAdapter());
+    Hive.registerAdapter(models.TalentAdapter());
+    Hive.registerAdapter(models.CardAdapter());
+    Hive.registerAdapter(models.PlayerAdapter());
+    Hive.registerAdapter(models.RankedAdapter());
+    Hive.registerAdapter(models.UserAdapter());
+    Hive.registerAdapter(models.SettingsAdapter());
+    Hive.registerAdapter(models.EssentialsAdapter());
+    Hive.registerAdapter(models.SearchHistoryAdapter());
+    Hive.registerAdapter(models.RecordExpiryAdapter());
+    Hive.registerAdapter(models.BountyStoreAdapter());
+    Hive.registerAdapter(models.PlayerChampionAdapter());
+    Hive.registerAdapter(models.QueueAdapter());
+    Hive.registerAdapter(models.ItemAdapter());
+    Hive.registerAdapter(models.TopMatchAdapter());
   }
 
   /// renews the expiry date on saved records.

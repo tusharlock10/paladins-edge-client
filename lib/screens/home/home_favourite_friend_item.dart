@@ -58,12 +58,11 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
       child: Card(
-        elevation: 7,
         clipBehavior: Clip.antiAlias,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),

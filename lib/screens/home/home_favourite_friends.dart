@@ -11,11 +11,13 @@ class HomeFavouriteFriends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final isLoadingFavouriteFriends =
-        ref.watch(providers.friends.select((_) => _.isLoadingFavouriteFriends));
+    final isLoadingFavouriteFriends = ref.watch(
+      providers.friends.select((_) => _.isLoadingFavouriteFriends),
+    );
     final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final favouriteFriends =
-        ref.watch(providers.auth.select((_) => _.user?.favouriteFriends));
+    final favouriteFriends = ref.watch(
+      providers.auth.select((_) => _.user?.favouriteFriends),
+    );
     final friendsProvider = ref.read(providers.friends);
 
     // Variables
@@ -95,16 +97,14 @@ class HomeFavouriteFriends extends HookConsumerWidget {
                     ),
                   )
                 : SizedBox(
-                    height: 90,
+                    height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: favouritePlayers.length,
                       itemExtent: 300,
-                      itemBuilder: (_, index) {
-                        final friend = favouritePlayers[index];
-
-                        return HomeFavouriteFriendItem(friend: friend);
-                      },
+                      itemBuilder: (_, index) => HomeFavouriteFriendItem(
+                        friend: favouritePlayers[index],
+                      ),
                     ),
                   );
   }

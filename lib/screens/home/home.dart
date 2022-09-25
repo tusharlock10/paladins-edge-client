@@ -7,6 +7,7 @@ import "package:paladinsedge/screens/home/home_bounty_store_details.dart";
 import "package:paladinsedge/screens/home/home_favourite_friends.dart";
 import "package:paladinsedge/screens/home/home_queue_chart.dart";
 import "package:paladinsedge/screens/home/home_queue_details.dart";
+import "package:paladinsedge/screens/home/home_top_matches.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -18,6 +19,7 @@ class Home extends HookConsumerWidget {
     //  Providers
     final queueProvider = ref.read(providers.queue);
     final itemsProvider = ref.read(providers.items);
+    final matchesProvider = ref.read(providers.matches);
     final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
     final favouriteFriends = ref.watch(
@@ -31,6 +33,7 @@ class Home extends HookConsumerWidget {
         bountyStoreProvider.loadBountyStore(false);
         queueProvider.getQueueTimeline(false);
         itemsProvider.loadItems(false);
+        matchesProvider.loadTopMatches(false);
 
         return;
       },
@@ -44,6 +47,7 @@ class Home extends HookConsumerWidget {
           bountyStoreProvider.loadBountyStore(true),
           queueProvider.getQueueTimeline(true),
           itemsProvider.loadItems(true),
+          matchesProvider.loadTopMatches(true),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),
         ]);
@@ -88,6 +92,8 @@ class Home extends HookConsumerWidget {
                 ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),
+                const SizedBox(height: 20),
+                const HomeTopMatches(),
                 const SizedBox(height: 20),
                 const HomeQueueDetails(),
                 const SizedBox(height: 20),
