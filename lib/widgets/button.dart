@@ -92,7 +92,7 @@ class Button extends StatelessWidget {
             width: 128,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: color1,
+                backgroundColor: color1,
                 elevation: disabled ? 0 : elevation,
                 shape: const StadiumBorder(),
               ),
