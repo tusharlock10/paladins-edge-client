@@ -1,5 +1,6 @@
 import "package:firebase_remote_config/firebase_remote_config.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:pub_semver/pub_semver.dart";
 
 abstract class RemoteConfig {
   static final _firebaseRemoteConfig = FirebaseRemoteConfig.instance
@@ -9,10 +10,11 @@ abstract class RemoteConfig {
         minimumFetchInterval: const Duration(minutes: 5),
       ),
     );
-  static const _remoteConfigDefaults = {
+  static final _remoteConfigDefaults = {
     constants.RemoteConfigParams.enableGuestLogin: true,
     constants.RemoteConfigParams.paladinsApiUnavailable: false,
     constants.RemoteConfigParams.serverMaintenance: false,
+    constants.RemoteConfigParams.lowestSupportedVersion: "1.0.0",
   };
 
   /// Getters
@@ -24,6 +26,12 @@ abstract class RemoteConfig {
       .getBool(constants.RemoteConfigParams.paladinsApiUnavailable);
   static bool get serverMaintenance => _firebaseRemoteConfig
       .getBool(constants.RemoteConfigParams.serverMaintenance);
+  static Version get lowestSupportedVersion {
+    final version = _firebaseRemoteConfig
+        .getString(constants.RemoteConfigParams.lowestSupportedVersion);
+
+    return Version.parse(version);
+  }
 
   /// Setup for Remote Config
 

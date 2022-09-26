@@ -11,6 +11,7 @@ abstract class HiveBoxes {
   static const playerChampion = "playerChampion";
   static const queueTimeline = "queueTimeline";
   static const item = "item";
+  static const topMatch = "topMatch";
 
   static const allBoxes = [
     token,
@@ -25,6 +26,7 @@ abstract class HiveBoxes {
     playerChampion,
     queueTimeline,
     item,
+    topMatch,
   ];
 }
 
@@ -35,6 +37,7 @@ enum RecordExpiryName {
   playerChampion,
   queueTimeline,
   item,
+  topMatch,
 }
 
 abstract class RecordExpiryDuration {
@@ -45,6 +48,7 @@ abstract class RecordExpiryDuration {
   static const playerChampionDuration = Duration(days: 1);
   static const queueTimelineDuration = Duration(minutes: 30);
   static const itemDuration = Duration(days: 1);
+  static const topMatchDuration = Duration(hours: 6);
 }
 
 abstract class TypeIds {
@@ -67,6 +71,7 @@ abstract class TypeIds {
   static const queue = 14;
   static const item = 15;
   static const queueRegion = 16;
+  static const topMatch = 17;
 }
 
 abstract class StorageKeys {

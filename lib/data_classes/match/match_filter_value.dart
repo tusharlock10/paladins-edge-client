@@ -84,7 +84,7 @@ abstract class MatchFilterValues {
 
   static const queue = [
     MatchFilterValue(value: "Casual Siege", valueName: "SG"),
-    MatchFilterValue(value: "Team Deathmatch ", valueName: "TDM"),
+    MatchFilterValue(value: "Team Deathmatch", valueName: "TDM"),
     MatchFilterValue(value: "Onslaught", valueName: "ONS"),
     MatchFilterValue(value: "Ranked Keyboard", valueName: "RNK: KBM"),
     MatchFilterValue(value: "Ranked Controller ", valueName: "RNK: CON"),

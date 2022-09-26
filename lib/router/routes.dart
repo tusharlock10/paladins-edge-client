@@ -29,6 +29,7 @@ final _mainRoutes = [
   screens.GlobalChat.goRoute,
   screens.Faqs.goRoute,
   screens.SavedMatches.goRouteBuilder(_savedMatchesRoutes),
+  screens.MatchDetail.topMatchGoRoute,
 ];
 
 final _loginRoutes = [

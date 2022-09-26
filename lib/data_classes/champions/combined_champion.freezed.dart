@@ -190,14 +190,13 @@ abstract class _CombinedChampion implements CombinedChampion {
       final ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
 
   @override
-  Champion get champion => throw _privateConstructorUsedError;
+  Champion get champion;
   @override
-  PlayerChampion? get playerChampion => throw _privateConstructorUsedError;
+  PlayerChampion? get playerChampion;
   @override
-  bool get hide => throw _privateConstructorUsedError;
+  bool get hide;
   @override // used for filtering
-  ChampionsSearchCondition? get searchCondition =>
-      throw _privateConstructorUsedError;
+  ChampionsSearchCondition? get searchCondition;
   @override
   @JsonKey(ignore: true)
   _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>

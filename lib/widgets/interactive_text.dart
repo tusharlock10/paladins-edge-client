@@ -16,23 +16,20 @@ class InteractiveText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 0,
-      child: SelectableText(
-        text,
-        onTap: onTap,
-        enableInteractiveSelection: onTap != null,
-        maxLines: 1,
-        scrollPhysics: const ClampingScrollPhysics(),
-        style: onTap == null || !showUnderline
-            ? style
-            : style.copyWith(
-                decoration: TextDecoration.underline,
-                decorationColor: style.color,
-                decorationStyle: TextDecorationStyle.solid,
-                decorationThickness: 1.5,
-              ),
-      ),
+    return SelectableText(
+      text,
+      onTap: onTap,
+      enableInteractiveSelection: onTap != null,
+      maxLines: 1,
+      scrollPhysics: const ClampingScrollPhysics(),
+      style: onTap == null || !showUnderline
+          ? style
+          : style.copyWith(
+              decoration: TextDecoration.underline,
+              decorationColor: style.color,
+              decorationStyle: TextDecorationStyle.solid,
+              decorationThickness: 1.5,
+            ),
     );
   }
 }

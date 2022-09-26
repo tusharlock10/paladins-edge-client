@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" show ThemeMode;
 import "package:hive/hive.dart";
 import "package:paladinsedge/constants/index.dart" show TypeIds;
 import "package:paladinsedge/data_classes/common/region.dart" show Region;

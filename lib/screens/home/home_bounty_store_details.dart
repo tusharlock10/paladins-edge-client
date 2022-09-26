@@ -11,10 +11,12 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final isLoading =
-        ref.watch(providers.bountyStore.select((_) => _.isLoading));
-    final bountyStore =
-        ref.watch(providers.bountyStore.select((_) => _.bountyStore));
+    final isLoading = ref.watch(
+      providers.bountyStore.select((_) => _.isLoading),
+    );
+    final bountyStore = ref.watch(
+      providers.bountyStore.select((_) => _.bountyStore),
+    );
 
     // Variables
     const itemHeight = 100;

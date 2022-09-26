@@ -2,6 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/champions.dart" as champions_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
@@ -21,6 +22,10 @@ class _MatchesNotifier extends ChangeNotifier {
   bool isCommonMatchesLoading = false;
   String? commonMatchesPlayerId;
   List<data_classes.CombinedMatch>? commonMatches;
+
+  /// Top matches
+  bool isTopMatchesLoading = true;
+  List<models.TopMatch>? topMatches;
 
   /// Matches filter and sorting
   String selectedSort = data_classes.MatchSort.defaultSort;
@@ -224,6 +229,31 @@ class _MatchesNotifier extends ChangeNotifier {
     selectedSort = data_classes.MatchSort.defaultSort;
 
     utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Loads the `topMatches` data from local db and syncs it with server
+  Future<void> loadTopMatches(bool forceUpdate) async {
+    final savedTopMatches =
+        forceUpdate ? null : utilities.Database.getTopMatches();
+
+    if (savedTopMatches != null) {
+      isTopMatchesLoading = false;
+      topMatches = savedTopMatches;
+
+      return utilities.postFrameCallback(notifyListeners);
+    }
+
+    final response = await api.MatchRequests.topMatches();
+    if (response == null) return;
+
+    isTopMatchesLoading = false;
+    topMatches = response.topMatches;
+    notifyListeners();
+
+    // save topMatches locally for future use
+    // clear topMatches first if forceUpdate
+    if (forceUpdate) await utilities.Database.topMatchBox?.clear();
+    topMatches?.forEach(utilities.Database.saveTopMatch);
   }
 
   /// Clears all user sensitive data upon logout

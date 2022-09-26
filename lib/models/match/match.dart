@@ -1,6 +1,8 @@
 // The match that is completed
 
+import "package:hive/hive.dart";
 import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/constants/index.dart" show TypeIds;
 import "package:paladinsedge/models/player/player.dart" show Ranked;
 
 part "match.g.dart";
@@ -240,4 +242,40 @@ class Match {
 
   factory Match.fromJson(Map<String, dynamic> json) => _$MatchFromJson(json);
   Map<String, dynamic> toJson() => _$MatchToJson(this);
+}
+
+@HiveType(typeId: TypeIds.topMatch)
+@JsonSerializable()
+class TopMatch {
+  /// id of the top match
+  @HiveField(0)
+  final String matchId;
+
+  /// type of to match
+  @HiveField(1)
+  final String type;
+
+  /// value to show for this top match
+  @HiveField(2)
+  final int value;
+
+  /// name of the player for this record
+  @HiveField(3)
+  final String? playerName;
+
+  /// id of the player for this record
+  @HiveField(4)
+  final String? playerId;
+
+  TopMatch({
+    required this.matchId,
+    required this.type,
+    required this.value,
+    required this.playerName,
+    required this.playerId,
+  });
+
+  factory TopMatch.fromJson(Map<String, dynamic> json) =>
+      _$TopMatchFromJson(json);
+  Map<String, dynamic> toJson() => _$TopMatchToJson(this);
 }

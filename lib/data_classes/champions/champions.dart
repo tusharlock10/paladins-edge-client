@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" show MaterialColor, IconData;
 import "package:json_annotation/json_annotation.dart";
 
 part "champions.g.dart";
