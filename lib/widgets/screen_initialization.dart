@@ -3,10 +3,12 @@ import "package:firebase_performance/firebase_performance.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:package_info_plus/package_info_plus.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:pub_semver/pub_semver.dart";
 
 /// Screen initialization widget
 /// Wrap a screen with this widget
@@ -33,12 +35,27 @@ class ScreenInitialization extends HookConsumerWidget {
     final isInitialized = ref.watch(
       providers.auth.select((_) => _.isInitialized),
     );
+    final isForceUpdatePending = ref.watch(
+      providers.auth.select((_) => _.isForceUpdatePending),
+    );
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
+    // Methods
     final initApp = useCallback(
       () async {
+        final result = await Future.wait([
+          utilities.RemoteConfig.initialize(),
+          PackageInfo.fromPlatform(),
+        ]);
+        final packageInfo = result.last as PackageInfo;
+
+        final currentVersion = Version.parse(packageInfo.version);
+        if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
+          return authProvider.setForceUpdatePending();
+        }
+
         await utilities.Database.initialize();
         authProvider.loadSettings();
         authProvider.loadPaladinsAssets();
@@ -64,7 +81,6 @@ class ScreenInitialization extends HookConsumerWidget {
         utilities.RealtimeGlobalChat.initialize();
         await Future.wait([
           utilities.RSACrypto.initialize(),
-          utilities.RemoteConfig.initialize(),
           utilities.RealtimeGlobalChat.initialize(),
           FirebasePerformance.instance.setPerformanceCollectionEnabled(
             !constants.isDebug,
@@ -111,20 +127,46 @@ class ScreenInitialization extends HookConsumerWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const widgets.LoadingIndicator(
-                  lineWidth: 2,
-                  size: 28,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  "Please Wait",
-                  style: textTheme.bodyText1?.copyWith(
-                    fontSize: 16,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                ),
+                isForceUpdatePending
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Pending update",
+                                style: textTheme.headline1?.copyWith(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Unfortunately this new update brings some breaking changes due to which you are required to update",
+                                textAlign: TextAlign.center,
+                                style: textTheme.bodyText1?.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.white.withOpacity(0.85),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : widgets.LoadingIndicator(
+                        lineWidth: 2,
+                        size: 28,
+                        color: Colors.white,
+                        label: Text(
+                          "Please Wait",
+                          style: textTheme.bodyText1?.copyWith(
+                            fontSize: 16,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                        ),
+                      ),
               ],
             ),
           );

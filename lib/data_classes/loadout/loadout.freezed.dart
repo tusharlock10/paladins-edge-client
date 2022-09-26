@@ -143,9 +143,9 @@ abstract class _LoadoutValidationResult implements LoadoutValidationResult {
       required final String error}) = _$_LoadoutValidationResult;
 
   @override
-  bool get result => throw _privateConstructorUsedError;
+  bool get result;
   @override
-  String get error => throw _privateConstructorUsedError;
+  String get error;
   @override
   @JsonKey(ignore: true)
   _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
@@ -369,17 +369,17 @@ abstract class _DraftLoadout implements DraftLoadout {
       final String? loadoutHash}) = _$_DraftLoadout;
 
   @override
-  int get championId => throw _privateConstructorUsedError;
+  int get championId;
   @override
-  String get playerId => throw _privateConstructorUsedError;
+  String get playerId;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  List<LoadoutCard?> get loadoutCards => throw _privateConstructorUsedError;
+  List<LoadoutCard?> get loadoutCards;
   @override
-  bool get isImported => throw _privateConstructorUsedError;
+  bool get isImported;
   @override
-  String? get loadoutHash => throw _privateConstructorUsedError;
+  String? get loadoutHash;
   @override
   @JsonKey(ignore: true)
   _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>

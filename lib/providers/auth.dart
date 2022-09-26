@@ -37,6 +37,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// once set to true, cannot be false again
   /// all screens are obliged to use this widget
   bool isInitialized = false;
+  bool isForceUpdatePending = false;
   bool isGuest = true;
   String? token;
   models.User? user;
@@ -50,6 +51,11 @@ class _AuthNotifier extends ChangeNotifier {
 
   void setAppInitialized() {
     isInitialized = true;
+    notifyListeners();
+  }
+
+  void setForceUpdatePending() {
+    isForceUpdatePending = true;
     notifyListeners();
   }
 

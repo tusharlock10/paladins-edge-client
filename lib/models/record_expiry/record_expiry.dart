@@ -31,6 +31,10 @@ class RecordExpiry extends HiveObject {
   @HiveField(5)
   DateTime? _itemExpiry;
 
+  /// date at which the saved topMatch record will expire
+  @HiveField(6)
+  DateTime? _topMatchExpiry;
+
   bool isRecordExpired(RecordExpiryName recordName) {
     // checks if the provided record is expired
     switch (recordName) {
@@ -64,6 +68,11 @@ class RecordExpiry extends HiveObject {
             ? DateTime.now().isAfter(_itemExpiry!)
             : true;
 
+      case RecordExpiryName.topMatch:
+        return _topMatchExpiry != null
+            ? DateTime.now().isAfter(_topMatchExpiry!)
+            : true;
+
       default:
         return true;
     }
@@ -73,32 +82,43 @@ class RecordExpiry extends HiveObject {
     // renews the expiry date of a record
     switch (recordName) {
       case RecordExpiryName.champion:
-        _championsExpiry =
-            DateTime.now().add(RecordExpiryDuration.championDuration);
+        _championsExpiry = DateTime.now().add(
+          RecordExpiryDuration.championDuration,
+        );
         return;
 
       case RecordExpiryName.searchHistory:
-        _searchHistoryExpiry =
-            DateTime.now().add(RecordExpiryDuration.searchHistoryDuration);
+        _searchHistoryExpiry = DateTime.now().add(
+          RecordExpiryDuration.searchHistoryDuration,
+        );
         return;
 
       case RecordExpiryName.bountyStore:
-        _bountyStoreExpiry =
-            DateTime.now().add(RecordExpiryDuration.bountyStoreDuration);
+        _bountyStoreExpiry = DateTime.now().add(
+          RecordExpiryDuration.bountyStoreDuration,
+        );
         return;
 
       case RecordExpiryName.playerChampion:
-        _playerChampionExpiry =
-            DateTime.now().add(RecordExpiryDuration.playerChampionDuration);
+        _playerChampionExpiry = DateTime.now().add(
+          RecordExpiryDuration.playerChampionDuration,
+        );
         return;
 
       case RecordExpiryName.queueTimeline:
-        _queueTimelineExpiry =
-            DateTime.now().add(RecordExpiryDuration.queueTimelineDuration);
+        _queueTimelineExpiry = DateTime.now().add(
+          RecordExpiryDuration.queueTimelineDuration,
+        );
         return;
 
       case RecordExpiryName.item:
         _itemExpiry = DateTime.now().add(RecordExpiryDuration.itemDuration);
+        return;
+
+      case RecordExpiryName.topMatch:
+        _topMatchExpiry = DateTime.now().add(
+          RecordExpiryDuration.topMatchDuration,
+        );
         return;
     }
   }

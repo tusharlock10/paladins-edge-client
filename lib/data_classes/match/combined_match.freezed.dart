@@ -167,11 +167,11 @@ abstract class _CombinedMatch implements CombinedMatch {
       final bool hide}) = _$_CombinedMatch;
 
   @override
-  Match get match => throw _privateConstructorUsedError;
+  Match get match;
   @override
-  List<MatchPlayer> get matchPlayers => throw _privateConstructorUsedError;
+  List<MatchPlayer> get matchPlayers;
   @override
-  bool get hide => throw _privateConstructorUsedError;
+  bool get hide;
   @override
   @JsonKey(ignore: true)
   _$$_CombinedMatchCopyWith<_$_CombinedMatch> get copyWith =>

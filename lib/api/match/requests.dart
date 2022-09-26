@@ -60,4 +60,19 @@ abstract class MatchRequests {
       return null;
     }
   }
+
+  static Future<responses.TopMatchesResponse?> topMatches() async {
+    try {
+      final response = await utilities.api.get<Map<String, dynamic>>(
+        constants.Urls.topMatches,
+      );
+      if (response.data != null) {
+        return responses.TopMatchesResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

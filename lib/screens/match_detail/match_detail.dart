@@ -32,6 +32,13 @@ class MatchDetail extends HookConsumerWidget {
     path: commonMatchRoutePath,
     pageBuilder: _routeBuilder,
   );
+  static const topMatchRouteName = "top-match";
+  static const topMatchRoutePath = "match/:matchId";
+  static final topMatchGoRoute = GoRoute(
+    name: topMatchRouteName,
+    path: topMatchRoutePath,
+    pageBuilder: _routeBuilder,
+  );
   final String matchId;
   final bool isSavedMatch;
 

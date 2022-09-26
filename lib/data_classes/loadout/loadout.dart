@@ -1,4 +1,4 @@
-import "package:flutter/material.dart" hide Card;
+import "package:flutter/material.dart" show Color, BuildContext;
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:paladinsedge/models/index.dart"
     show Champion, Loadout, LoadoutCard, Card;

@@ -8,8 +8,9 @@ node ./web_builder/index.js
 
 echo "Cloning flutter";
 git clone https://github.com/flutter/flutter.git
+git fetch
 git pull
-git checkout tags/3.0.4
+git checkout tags/v3.3.0
 flutter precache
 export PATH="$PATH:`pwd`/flutter/bin";
 
