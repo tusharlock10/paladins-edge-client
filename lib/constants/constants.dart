@@ -4,7 +4,7 @@ import "package:flutter/material.dart";
 const isDebug = kDebugMode;
 const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
-const releaseTag = isWeb ? "beta" : "stable";
+const releaseTag = "stable";
 
 abstract class NotificationChannels {
   static const friends = "friends";
@@ -79,4 +79,5 @@ abstract class RemoteConfigParams {
   static const showBackgroundSplash = "showBackgroundSplash";
   static const paladinsApiUnavailable = "paladinsApiUnavailable";
   static const serverMaintenance = "serverMaintenance";
+  static const lowestSupportedVersion = "lowestSupportedVersion";
 }
