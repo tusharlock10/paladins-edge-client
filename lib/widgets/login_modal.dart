@@ -120,7 +120,7 @@ class _LoginModal extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "To experience all features of Paladins Edge, please login",
+                  "Login to experience all features of Paladins Edge",
                   style: textTheme.bodyText1?.copyWith(fontSize: 14),
                 ),
               ],
