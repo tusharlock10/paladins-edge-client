@@ -60,6 +60,7 @@ class PlayerDetail extends HookConsumerWidget {
     // Methods
     final getPlayerDetails = useCallback(
       ({bool forceUpdate = false}) async {
+        matchesProvider.clearAppliedFiltersAndSort();
         if (!isSamePlayerMatches || forceUpdate) {
           matchesProvider.resetPlayerMatches(forceUpdate: forceUpdate);
         }
