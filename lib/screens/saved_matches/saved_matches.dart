@@ -20,6 +20,7 @@ class SavedMatches extends HookConsumerWidget {
         path: routePath,
         pageBuilder: _routeBuilder,
         routes: routes,
+        redirect: utilities.Navigation.protectedRouteRedirect,
       );
 
   @override

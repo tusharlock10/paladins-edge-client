@@ -4,7 +4,6 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/screens/app_drawer/index.dart";
-import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/main/main_bottom_tabs.dart";
 import "package:paladinsedge/screens/main/main_pages.dart";
 import "package:paladinsedge/screens/main/main_pages_stack.dart";
@@ -24,7 +23,6 @@ class Main extends HookWidget {
         path: routePath,
         pageBuilder: _routeBuilder,
         routes: routes,
-        redirect: _routeRedirect,
       );
 
   @override
@@ -66,16 +64,4 @@ class Main extends HookWidget {
 
   static Page _routeBuilder(_, __) =>
       const CupertinoPage(child: Main(startIndex: 0));
-
-  static String? _routeRedirect(GoRouterState _) {
-    if (utilities.Global.isInitialRoute && !utilities.Global.isAuthenticated) {
-      utilities.Global.isInitialRoute = false;
-
-      return screens.Login.routePath;
-    } else {
-      utilities.Global.isInitialRoute = false;
-    }
-
-    return null;
-  }
 }
