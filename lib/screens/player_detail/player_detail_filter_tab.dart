@@ -14,9 +14,6 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final matchesProvider = ref.read(providers.matches);
-    final isGuest = ref.watch(
-      providers.auth.select((_) => _.isGuest),
-    );
     final selectedFilter = ref.watch(
       providers.matches.select((_) => _.selectedFilter),
     );
@@ -67,7 +64,7 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         physics: const ClampingScrollPhysics(),
-        children: data_classes.MatchFilter.filterNames(isGuest).map(
+        children: data_classes.MatchFilter.filterNames.map(
           (filterName) {
             final isFilterOpened = openedFilterName.value == filterName;
             final isFilterNameSelected = selectedFilter.name == filterName;

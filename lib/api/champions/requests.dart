@@ -57,4 +57,41 @@ abstract class ChampionsRequests {
 
     return null;
   }
+
+  static Future<responses.FavouriteChampionsResponse?>
+      favouriteChampions() async {
+    try {
+      final response = await utilities.api.get<Map<String, dynamic>>(
+        constants.Urls.favouriteChampions,
+      );
+      if (response.data != null) {
+        return responses.FavouriteChampionsResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<responses.UpdateFavouriteChampionResponse?>
+      updateFavouriteChampion({
+    required int championId,
+  }) async {
+    try {
+      final response = await utilities.api.put<Map<String, dynamic>>(
+        constants.Urls.updateFavouriteChampion,
+        data: {"championId": championId},
+      );
+      if (response.data != null) {
+        return responses.UpdateFavouriteChampionResponse.fromJson(
+          response.data!,
+        );
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

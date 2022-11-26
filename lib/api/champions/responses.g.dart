@@ -33,3 +33,31 @@ Map<String, dynamic> _$PlayerChampionsResponseToJson(
     <String, dynamic>{
       'playerChampions': instance.playerChampions,
     };
+
+FavouriteChampionsResponse _$FavouriteChampionsResponseFromJson(
+        Map<String, dynamic> json) =>
+    FavouriteChampionsResponse(
+      favouriteChampions: (json['favouriteChampions'] as List<dynamic>)
+          .map((e) => e as int)
+          .toList(),
+    );
+
+Map<String, dynamic> _$FavouriteChampionsResponseToJson(
+        FavouriteChampionsResponse instance) =>
+    <String, dynamic>{
+      'favouriteChampions': instance.favouriteChampions,
+    };
+
+UpdateFavouriteChampionResponse _$UpdateFavouriteChampionResponseFromJson(
+        Map<String, dynamic> json) =>
+    UpdateFavouriteChampionResponse(
+      favouriteChampions: (json['favouriteChampions'] as List<dynamic>)
+          .map((e) => e as int)
+          .toList(),
+    );
+
+Map<String, dynamic> _$UpdateFavouriteChampionResponseToJson(
+        UpdateFavouriteChampionResponse instance) =>
+    <String, dynamic>{
+      'favouriteChampions': instance.favouriteChampions,
+    };

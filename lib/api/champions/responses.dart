@@ -24,3 +24,26 @@ class PlayerChampionsResponse {
       _$PlayerChampionsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerChampionsResponseToJson(this);
 }
+
+@JsonSerializable()
+class FavouriteChampionsResponse {
+  final List<int> favouriteChampions;
+
+  FavouriteChampionsResponse({required this.favouriteChampions});
+
+  factory FavouriteChampionsResponse.fromJson(Map<String, dynamic> json) =>
+      _$FavouriteChampionsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$FavouriteChampionsResponseToJson(this);
+}
+
+@JsonSerializable()
+class UpdateFavouriteChampionResponse {
+  final List<int> favouriteChampions;
+
+  UpdateFavouriteChampionResponse({required this.favouriteChampions});
+
+  factory UpdateFavouriteChampionResponse.fromJson(Map<String, dynamic> json) =>
+      _$UpdateFavouriteChampionResponseFromJson(json);
+  Map<String, dynamic> toJson() =>
+      _$UpdateFavouriteChampionResponseToJson(this);
+}

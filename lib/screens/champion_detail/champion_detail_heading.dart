@@ -20,23 +20,21 @@ class ChampionDetailHeading extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Variables
-    final textTheme = Theme.of(context).textTheme;
+    // Providers
+    final championsProvider = ref.read(providers.champions);
     final isLightTheme = ref.watch(
       providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
     );
+    final favouriteChampions = ref.watch(
+      providers.champions.select((_) => _.favouriteChampions),
+    );
+
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
     final health = utilities.humanizeNumber(champion.health);
     final birthDay = Jiffy(champion.releaseDate).format("MMM do");
-    String range = "";
-    if (champion.damageFallOffRange == 0) {
-      range = "Range ∞";
-    } else if (champion.damageFallOffRange < 0) {
-      range = "Range ${champion.damageFallOffRange.abs().toInt()}";
-    } else {
-      range = "Fall-off ${champion.damageFallOffRange.toInt()}";
-    }
 
     // Hooks
     final championIcon = useMemoized(
@@ -62,6 +60,34 @@ class ChampionDetailHeading extends HookConsumerWidget {
       [champion],
     );
 
+    final range = useMemoized(
+      () {
+        if (champion.damageFallOffRange == 0) {
+          return "Range ∞";
+        } else if (champion.damageFallOffRange < 0) {
+          return "Range ${champion.damageFallOffRange.abs().toInt()}";
+        }
+
+        return "Fall-off ${champion.damageFallOffRange.toInt()}";
+      },
+      [champion],
+    );
+
+    final isFavourite = useMemoized(
+      () {
+        return favouriteChampions.contains(champion.championId);
+      },
+      [favouriteChampions, champion],
+    );
+
+    // Methods
+    final onPressFavourite = useCallback(
+      () {
+        championsProvider.markFavouriteChampion(champion.championId);
+      },
+      [champion],
+    );
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -76,69 +102,70 @@ class ChampionDetailHeading extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SelectableText(
-                          champion.name.toUpperCase(),
-                          style: textTheme.headline1?.copyWith(
-                            fontSize: 24,
-                          ),
-                        ),
-                        champion.unlockCost == null
-                            ? const SizedBox()
-                            : champion.unlockCost == 0
-                                ? Text(
-                                    "Free Unlock",
-                                    style: textTheme.bodyText1
-                                        ?.copyWith(fontSize: 12),
-                                  )
-                                : Row(
-                                    children: [
-                                      Assets.icons.gold
-                                          .image(height: 15, width: 15),
-                                      const SizedBox(width: 2),
-                                      Text(
-                                        NumberFormat.decimalPattern().format(
-                                          champion.unlockCost,
-                                        ),
-                                        style: textTheme.headline1?.copyWith(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                      ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SelectableText(
+                    champion.name.toUpperCase(),
+                    style: textTheme.headline1?.copyWith(
+                      fontSize: 24,
                     ),
-                    SelectableText(
-                      champion.title.toUpperCase(),
-                      style: textTheme.headline1?.copyWith(
-                        color: isLightTheme
-                            ? const Color.fromARGB(255, 88, 88, 88)
-                            : const Color.fromARGB(210, 145, 203, 28),
-                        fontSize: 14,
-                      ),
+                  ),
+                  SelectableText(
+                    champion.title.toUpperCase(),
+                    style: textTheme.headline1?.copyWith(
+                      color: isLightTheme
+                          ? const Color.fromARGB(255, 88, 88, 88)
+                          : const Color.fromARGB(210, 145, 203, 28),
+                      fontSize: 14,
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      "$dps DPS | $health Health | $range",
-                      style: textTheme.bodyText1?.copyWith(fontSize: 10),
-                    ),
-                    Text(
-                      "B'day on $birthDay",
-                      style: textTheme.bodyText1?.copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    "$dps DPS | $health Health | $range",
+                    style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                  ),
+                  Text(
+                    "B'day on $birthDay",
+                    style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                  ),
+                ],
               ),
             ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              champion.unlockCost == null
+                  ? const SizedBox()
+                  : champion.unlockCost == 0
+                      ? Text(
+                          "Free Unlock",
+                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        )
+                      : Row(
+                          children: [
+                            Assets.icons.gold.image(height: 15, width: 15),
+                            const SizedBox(width: 2),
+                            Text(
+                              NumberFormat.decimalPattern().format(
+                                champion.unlockCost,
+                              ),
+                              style: textTheme.headline1?.copyWith(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+              const SizedBox(height: 10),
+              widgets.FavouriteStar(
+                isFavourite: isFavourite,
+                onPress: onPressFavourite,
+                size: 28,
+              ),
+            ],
           ),
         ],
       ),

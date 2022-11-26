@@ -23,12 +23,13 @@ abstract class MatchFilter {
   static const _queue = "Queue";
   static const _roles = "Roles";
 
-  static List<String> filterNames(bool isGuest) => [
+  static List<String> get filterNames => [
         _map,
         _betweenDates,
         _queue,
         _roles,
       ];
+
   static List<MatchFilterValue>? getFilterValues(
     String filter,
   ) {

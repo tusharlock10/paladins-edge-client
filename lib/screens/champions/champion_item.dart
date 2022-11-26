@@ -33,6 +33,9 @@ class ChampionItem extends HookConsumerWidget {
     final selectedSort = ref.watch(
       providers.champions.select((_) => _.selectedSort),
     );
+    final favouriteChampions = ref.watch(
+      providers.champions.select((_) => _.favouriteChampions),
+    );
 
     // Variables
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
@@ -126,6 +129,13 @@ class ChampionItem extends HookConsumerWidget {
         return championIcon;
       },
       [champion],
+    );
+
+    final isFavourite = useMemoized(
+      () {
+        return favouriteChampions.contains(champion.championId);
+      },
+      [favouriteChampions, champion],
     );
 
     // Methods
@@ -248,6 +258,17 @@ class ChampionItem extends HookConsumerWidget {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: widgets.FavouriteStar(
+                  isFavourite: isFavourite,
+                  hidden: !isFavourite,
+                  size: 28,
+                ),
               ),
             ),
           ],
