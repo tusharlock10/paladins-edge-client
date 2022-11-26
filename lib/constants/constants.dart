@@ -42,6 +42,8 @@ abstract class QueueId {
   static const trainingTeamDeathmatch = 470;
   static const trainingOnslaught = 453;
   static const testMaps = 445;
+  static const chooseAny = 10296;
+  static const trainingChooseAny = 10297;
 
   static List<int> get list {
     return [
@@ -56,6 +58,8 @@ abstract class QueueId {
       trainingTeamDeathmatch,
       trainingOnslaught,
       testMaps,
+      chooseAny,
+      trainingChooseAny,
     ];
   }
 }

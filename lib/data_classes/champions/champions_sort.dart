@@ -3,6 +3,7 @@ import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/data_classes/champions/combined_champion.dart";
 
 abstract class ChampionsSort {
+  static const _favourite = "Favourite";
   static const _name = "Name";
   static const _level = "Level";
   static const _health = "Health";
@@ -11,30 +12,26 @@ abstract class ChampionsSort {
   static const _dps = "DPS";
   static const _lastPlayed = "Last Played";
 
-  static String get defaultSort => _name;
+  static String get defaultSort => _favourite;
 
-  static List<String> championSorts(bool isGuest) => isGuest
-      ? [
-          _name,
-          _health,
-          _releasedDate,
-          _dps,
-        ]
-      : [
-          _name,
-          _health,
-          _releasedDate,
-          _dps,
-          _level,
-          _winRate,
-          _lastPlayed,
-        ];
+  static List<String> championSorts(bool isGuest) => [
+        _name,
+        _health,
+        _releasedDate,
+        _dps,
+        if (!isGuest) _level,
+        if (!isGuest) _winRate,
+        if (!isGuest) _lastPlayed,
+      ];
 
   static List<CombinedChampion> getSortedChampions({
     required List<CombinedChampion> combinedChampions,
+    required Set<int> favouriteChampions,
     required String sort,
   }) {
     switch (sort) {
+      case _favourite:
+        return _sortByFavourite(combinedChampions, favouriteChampions);
       case _name:
         return _sortByName(combinedChampions);
       case _health:
@@ -57,7 +54,7 @@ abstract class ChampionsSort {
   static String getSortDescription(String sort) {
     switch (sort) {
       case _name:
-        return "Sort champions based on their name (Default)";
+        return "Sort champions based on their name";
       case _health:
         return "Sort champions based on their health";
       case _releasedDate:
@@ -80,6 +77,8 @@ abstract class ChampionsSort {
     required String sort,
   }) {
     switch (sort) {
+      case _favourite:
+        return null;
       case _name:
         return null;
       case _health:
@@ -111,8 +110,33 @@ abstract class ChampionsSort {
 
   static List<CombinedChampion> clearSorting(
     List<CombinedChampion> combinedChampions,
+    Set<int> favouriteChampions,
   ) =>
-      _sortByName(combinedChampions);
+      _sortByFavourite(combinedChampions, favouriteChampions);
+
+  static List<CombinedChampion> _sortByFavourite(
+    List<CombinedChampion> combinedChampions,
+    Set<int> favouriteChampions,
+  ) {
+    List<CombinedChampion> favourites = [];
+    List<CombinedChampion> notFavourites = [];
+    for (final combinedChampion in combinedChampions) {
+      if (favouriteChampions.contains(combinedChampion.champion.championId)) {
+        favourites.add(combinedChampion);
+      } else {
+        notFavourites.add(combinedChampion);
+      }
+    }
+
+    favourites = favourites
+        .filter((_) => favouriteChampions.contains(_.champion.championId))
+        .sortedWith((a, b) => a.champion.name.compareTo(b.champion.name));
+    notFavourites = notFavourites
+        .filter((_) => !favouriteChampions.contains(_.champion.championId))
+        .sortedWith((a, b) => a.champion.name.compareTo(b.champion.name));
+
+    return favourites.append(notFavourites).toList();
+  }
 
   static List<CombinedChampion> _sortByName(
     List<CombinedChampion> combinedChampions,

@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 1.5.1
+version: 1.7.0
 
 homepage: "https://paladinsedge.app"
 
@@ -42,7 +42,7 @@ dependencies:
   hive: 2.2.3
   hive_flutter: 1.1.0
   overlay_support: ^2.0.1
-  expand_widget: ^2.1.0
+  expand_widget: ^3.1.0
   package_info_plus: "^1.4.2"
   flutter_dotenv: ^5.0.2
   flutter_local_notifications: ^9.6.1
