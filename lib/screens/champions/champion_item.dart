@@ -30,6 +30,7 @@ class ChampionItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final search = ref.watch(providers.champions.select((_) => _.search));
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final selectedSort = ref.watch(
       providers.champions.select((_) => _.selectedSort),
     );
@@ -260,17 +261,18 @@ class ChampionItem extends HookConsumerWidget {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: widgets.FavouriteStar(
-                  isFavourite: isFavourite,
-                  hidden: !isFavourite,
-                  size: 28,
+            if (!isGuest)
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: widgets.FavouriteStar(
+                    isFavourite: isFavourite,
+                    hidden: !isFavourite,
+                    size: 28,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

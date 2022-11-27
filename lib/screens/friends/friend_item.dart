@@ -146,17 +146,10 @@ class FriendItem extends HookConsumerWidget {
                     padding: const EdgeInsets.only(top: 5, right: 5),
                     child: Align(
                       alignment: Alignment.topRight,
-                      child: IconButton(
-                        iconSize: 28,
-                        onPressed: onFavouriteFriend,
-                        icon: Icon(
-                          isFavourite
-                              ? Icons.star
-                              : Icons.star_outline_outlined,
-                          color: isFavourite
-                              ? Colors.yellow
-                              : theme.textTheme.bodyText1?.color,
-                        ),
+                      child: widgets.FavouriteStar(
+                        isFavourite: isFavourite,
+                        size: 28,
+                        onPress: onFavouriteFriend,
                       ),
                     ),
                   ),

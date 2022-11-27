@@ -22,6 +22,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final championsProvider = ref.read(providers.champions);
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final isLightTheme = ref.watch(
       providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
     );
@@ -160,11 +161,12 @@ class ChampionDetailHeading extends HookConsumerWidget {
                           ],
                         ),
               const SizedBox(height: 10),
-              widgets.FavouriteStar(
-                isFavourite: isFavourite,
-                onPress: onPressFavourite,
-                size: 28,
-              ),
+              if (!isGuest)
+                widgets.FavouriteStar(
+                  isFavourite: isFavourite,
+                  onPress: onPressFavourite,
+                  size: 28,
+                ),
             ],
           ),
         ],

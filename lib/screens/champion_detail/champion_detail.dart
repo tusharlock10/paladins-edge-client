@@ -58,7 +58,7 @@ class ChampionDetail extends HookConsumerWidget {
     useEffect(
       () {
         if (champions.isEmpty) {
-          championsProvider.loadCombinedChampions(false);
+          championsProvider.loadCombinedChampions();
         }
 
         return;

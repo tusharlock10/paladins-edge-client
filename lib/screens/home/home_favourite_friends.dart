@@ -11,6 +11,7 @@ class HomeFavouriteFriends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final friendsProvider = ref.read(providers.friends);
     final isLoadingFavouriteFriends = ref.watch(
       providers.friends.select((_) => _.isLoadingFavouriteFriends),
     );
@@ -18,7 +19,6 @@ class HomeFavouriteFriends extends HookConsumerWidget {
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
-    final friendsProvider = ref.read(providers.friends);
 
     // Variables
     final headingText =
