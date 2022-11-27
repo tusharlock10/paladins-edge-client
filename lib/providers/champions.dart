@@ -48,7 +48,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Runs the `_loadChampions` and `_loadUserPlayerChampions` functions
   /// combines the result of them into one single entity of CombinedChampion
-  Future<void> loadCombinedChampions(bool forceUpdate) async {
+  Future<void> loadCombinedChampions([bool forceUpdate = false]) async {
     // don't show loading indicator when refreshing
     if (!forceUpdate) isLoadingCombinedChampions = true;
 
@@ -57,6 +57,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       // return previous value if forceUpdate
       _loadChampions(forceUpdate),
       _loadUserPlayerChampions(forceUpdate),
+      _loadFavouriteChampions(),
     ]);
 
     // if champions is null, then abort this operation
@@ -73,8 +74,11 @@ class _ChampionsNotifier extends ChangeNotifier {
     champions = result.first as List<models.Champion>;
 
     // userPlayerChampions might be null on isGuest or forceUpdate
-    if (result.last != null) {
-      userPlayerChampions = result.last as List<models.PlayerChampion>;
+    if (result[1] != null) {
+      userPlayerChampions = result[1] as List<models.PlayerChampion>;
+    }
+    if (result[2] != null) {
+      favouriteChampions = result[2] as Set<int>;
     }
 
     combinedChampions = champions.map((champion) {
@@ -204,15 +208,6 @@ class _ChampionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch the favourite champions for the user
-  Future<void> getFavouriteChampions() async {
-    final response = await api.ChampionsRequests.favouriteChampions();
-    if (response != null) {
-      favouriteChampions = response.favouriteChampions.toSet();
-      notifyListeners();
-    }
-  }
-
   /// Fetch mark a champion favourite for the user
   Future<void> markFavouriteChampion(int championId) async {
     final favouriteChampionsClone = {...favouriteChampions};
@@ -320,6 +315,13 @@ class _ChampionsNotifier extends ChangeNotifier {
     response.playerChampions.forEach(utilities.Database.savePlayerChampion);
 
     return response.playerChampions;
+  }
+
+  /// Fetch the favourite champions for the user
+  Future<Set<int>?> _loadFavouriteChampions() async {
+    final response = await api.ChampionsRequests.favouriteChampions();
+
+    return response?.favouriteChampions.toSet();
   }
 }
 

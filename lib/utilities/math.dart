@@ -29,19 +29,19 @@ int roundToNearestTenth(
   bool ceil = false,
   bool floor = false,
 }) {
-  double exponent = number.toString().length - 1;
-  exponent = max(exponent - offset, 0);
-  final nearestMultiple = pow(10, exponent).toInt();
+  double exponent = number.toString().length - 1; // number=1733, exponent=3
+  exponent = max(exponent - offset, 0); // offset=0, exponent=3
+  final nearestMultiple = pow(10, exponent).toInt(); // 1000
 
   double result = (number / nearestMultiple); // 1733/1000 = 1.7
   int intResult;
 
   if (ceil) {
-    intResult = result.ceil() * nearestMultiple;
+    intResult = result.ceil() * nearestMultiple; // 2000
   } else if (floor) {
-    intResult = result.floor() * nearestMultiple;
+    intResult = result.floor() * nearestMultiple; // 1000
   } else {
-    intResult = result.round() * nearestMultiple;
+    intResult = result.round() * nearestMultiple; // 2000
   }
 
   return intResult;
