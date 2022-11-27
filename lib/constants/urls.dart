@@ -19,6 +19,9 @@ abstract class Urls {
   static const allChampions = "/champions/allChampions"; // GET
   static const playerChampions = "/champions/playerChampions"; // GET
   static const batchPlayerChampions = "/champions/batchPlayerChampions"; // POST
+  static const favouriteChampions = "/champions/favouriteChampions"; // GET
+  static const updateFavouriteChampion =
+      "/champions/updateFavouriteChampion"; // PUT
 
   // players
   static const searchPlayers = "/players/searchPlayers"; // GET

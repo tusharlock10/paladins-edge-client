@@ -14,8 +14,10 @@ class ChampionsFilterTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final championsProvider = ref.read(providers.champions);
-    final selectedFilter =
-        ref.watch(providers.champions.select((_) => _.selectedFilter));
+    final selectedFilter = ref.watch(
+      providers.champions.select((_) => _.selectedFilter),
+    );
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -57,7 +59,7 @@ class ChampionsFilterTab extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         physics: const ClampingScrollPhysics(),
-        children: data_classes.ChampionsFilter.filterNames.map(
+        children: data_classes.ChampionsFilter.filterNames(isGuest).map(
           (filterName) {
             final isFilterOpened = openedFilterName.value == filterName;
             final isFilterNameSelected = selectedFilter.name == filterName;

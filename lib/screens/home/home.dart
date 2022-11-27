@@ -22,6 +22,7 @@ class Home extends HookConsumerWidget {
     final matchesProvider = ref.read(providers.matches);
     final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
+    final championsProvider = ref.read(providers.champions);
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
@@ -48,6 +49,7 @@ class Home extends HookConsumerWidget {
           queueProvider.getQueueTimeline(true),
           itemsProvider.loadItems(true),
           matchesProvider.loadTopMatches(true),
+          championsProvider.getFavouriteChampions(),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),
         ]);

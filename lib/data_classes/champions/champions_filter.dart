@@ -15,16 +15,24 @@ class SelectedChampionsFilter {
 }
 
 abstract class ChampionsFilter {
+  static const _favourite = "Favourites";
   static const _damageType = "Damage Type";
   static const _role = "Role";
   static const _freeRotation = "Free Rotation";
 
-  static List<String> get filterNames => [_role, _damageType, _freeRotation];
+  static List<String> filterNames(bool isGuest) => [
+        if (!isGuest) _favourite,
+        _role,
+        _damageType,
+        _freeRotation,
+      ];
 
   static List<String>? getFilterValues(
     String filter,
   ) {
     switch (filter) {
+      case _favourite:
+        return [true.toString(), false.toString()];
       case _role:
         return ["Damage", "Flank", "Support", "Tank"];
       case _damageType:
@@ -40,6 +48,8 @@ abstract class ChampionsFilter {
     String filter,
   ) {
     switch (filter) {
+      case _favourite:
+        return "Filter champions based on they are your favourite";
       case _role:
         return "Filter champions by their role in the game";
       case _damageType:
@@ -54,8 +64,15 @@ abstract class ChampionsFilter {
   static List<CombinedChampion> getFilteredChampions({
     required List<CombinedChampion> combinedChampions,
     required SelectedChampionsFilter filter,
+    required Set<int> favouriteChampions,
   }) {
     switch (filter.name) {
+      case _favourite:
+        return _filterByFavourite(
+          combinedChampions,
+          filter,
+          favouriteChampions,
+        );
       case _role:
         return _filterByRole(combinedChampions, filter);
       case _damageType:
@@ -136,6 +153,23 @@ abstract class ChampionsFilter {
 
     return false;
   }
+
+  static List<CombinedChampion> _filterByFavourite(
+    List<CombinedChampion> combinedChampions,
+    SelectedChampionsFilter filter,
+    Set<int> favouriteChampions,
+  ) =>
+      combinedChampions
+          .map(
+            (combinedChampion) => combinedChampion.copyWith(
+              hide: favouriteChampions
+                      .contains(combinedChampion.champion.championId)
+                      .toString() !=
+                  filter.value,
+              searchCondition: null,
+            ),
+          )
+          .toList();
 
   static List<CombinedChampion> _filterByRole(
     List<CombinedChampion> combinedChampions,

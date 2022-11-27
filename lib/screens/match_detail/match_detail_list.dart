@@ -228,41 +228,47 @@ class MatchDetailList extends HookConsumerWidget {
     }
 
     // Widgets
-    final winningTeamColumn = Column(
-      children: [
-        if (winningTeamStats != null)
-          MatchDetailTeamHeader(
-            teamStats: winningTeamStats,
-            isWinningTeam: true,
-            bannedChampions: winningTeamBans,
-          ),
-        for (int playerIndex = 0;
-            playerIndex < winningTeamMatchPlayers.length;
-            playerIndex++)
-          MatchDetailPlayerCard(
-            matchPlayer: winningTeamMatchPlayers[playerIndex],
-            averageCredits: averageCredits,
-          ),
-      ],
-    );
+    final winningTeamColumn = match == null
+        ? const SizedBox()
+        : Column(
+            children: [
+              if (winningTeamStats != null)
+                MatchDetailTeamHeader(
+                  teamStats: winningTeamStats,
+                  isWinningTeam: true,
+                  bannedChampions: winningTeamBans,
+                ),
+              for (int playerIndex = 0;
+                  playerIndex < winningTeamMatchPlayers.length;
+                  playerIndex++)
+                MatchDetailPlayerCard(
+                  matchPlayer: winningTeamMatchPlayers[playerIndex],
+                  match: match,
+                  averageCredits: averageCredits,
+                ),
+            ],
+          );
 
-    final losingTeamColumn = Column(
-      children: [
-        if (losingTeamStats != null)
-          MatchDetailTeamHeader(
-            teamStats: losingTeamStats,
-            isWinningTeam: false,
-            bannedChampions: losingTeamBans,
-          ),
-        for (int playerIndex = 0;
-            playerIndex < losingTeamMatchPlayers.length;
-            playerIndex++)
-          MatchDetailPlayerCard(
-            matchPlayer: losingTeamMatchPlayers[playerIndex],
-            averageCredits: averageCredits,
-          ),
-      ],
-    );
+    final losingTeamColumn = match == null
+        ? const SizedBox()
+        : Column(
+            children: [
+              if (losingTeamStats != null)
+                MatchDetailTeamHeader(
+                  teamStats: losingTeamStats,
+                  isWinningTeam: false,
+                  bannedChampions: losingTeamBans,
+                ),
+              for (int playerIndex = 0;
+                  playerIndex < losingTeamMatchPlayers.length;
+                  playerIndex++)
+                MatchDetailPlayerCard(
+                  matchPlayer: losingTeamMatchPlayers[playerIndex],
+                  match: match,
+                  averageCredits: averageCredits,
+                ),
+            ],
+          );
 
     return SliverToBoxAdapter(
       child: isLandscape

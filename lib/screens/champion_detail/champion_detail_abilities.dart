@@ -86,10 +86,11 @@ class ChampionDetailAbilities extends StatelessWidget {
                       utilities.convertAbilityDescription(
                         ability.description,
                       ),
+                      indicatorIconSize: 24,
+                      indicatorIconColor:
+                          textTheme.bodyText2?.color?.withOpacity(0.8),
                       maxLines: 3,
-                      arrowSize: 24,
                       overflow: TextOverflow.fade,
-                      arrowColor: textTheme.bodyText2?.color?.withOpacity(0.8),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             fontSize: 13,

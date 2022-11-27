@@ -68,10 +68,12 @@ class _PlayerStatsCard extends StatelessWidget {
 
 class MatchDetailPlayerCard extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
+  final models.Match match;
   final double averageCredits;
 
   const MatchDetailPlayerCard({
     required this.matchPlayer,
+    required this.match,
     required this.averageCredits,
     Key? key,
   }) : super(key: key);
@@ -99,6 +101,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
+    final damagePerMinute = match.matchDuration < 1
+        ? 0
+        : matchPlayer.playerStats.totalDamageDealt / (match.matchDuration / 60);
 
     // Hooks
     final champion = useMemoized(
@@ -546,6 +551,11 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                               _PlayerStatsCard(
                                 title: "Damage",
                                 stat: matchPlayer.playerStats.totalDamageDealt,
+                              ),
+                            if (damagePerMinute != 0)
+                              _PlayerStatsCard(
+                                title: "Damage/min.",
+                                stat: damagePerMinute,
                               ),
                             if (matchPlayer.playerStats.healingDone != 0)
                               _PlayerStatsCard(

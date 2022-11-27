@@ -38,6 +38,9 @@ class _ChampionsNotifier extends ChangeNotifier {
   /// holds the currently active filter
   String selectedSort = data_classes.ChampionsSort.defaultSort;
 
+  // holds the list of favourite champions of the user
+  Set<int> favouriteChampions = {};
+
   /// Finds and returns the champion from its championId
   models.Champion? findChampion(int championId) {
     return champions.firstOrNullWhere((_) => _.championId == championId);
@@ -90,6 +93,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     clearAppliedFiltersAndSort();
     combinedChampions = data_classes.ChampionsSort.getSortedChampions(
       combinedChampions: combinedChampions!,
+      favouriteChampions: favouriteChampions,
       sort: selectedSort,
     );
 
@@ -179,6 +183,7 @@ class _ChampionsNotifier extends ChangeNotifier {
         ? data_classes.ChampionsFilter.getFilteredChampions(
             combinedChampions: combinedChampions!,
             filter: selectedFilter,
+            favouriteChampions: favouriteChampions,
           )
         : data_classes.ChampionsFilter.clearFilters(combinedChampions!);
 
@@ -192,10 +197,41 @@ class _ChampionsNotifier extends ChangeNotifier {
     selectedSort = sort;
     combinedChampions = data_classes.ChampionsSort.getSortedChampions(
       combinedChampions: combinedChampions!,
+      favouriteChampions: favouriteChampions,
       sort: sort,
     );
 
     notifyListeners();
+  }
+
+  /// Fetch the favourite champions for the user
+  Future<void> getFavouriteChampions() async {
+    final response = await api.ChampionsRequests.favouriteChampions();
+    if (response != null) {
+      favouriteChampions = response.favouriteChampions.toSet();
+      notifyListeners();
+    }
+  }
+
+  /// Fetch mark a champion favourite for the user
+  Future<void> markFavouriteChampion(int championId) async {
+    final favouriteChampionsClone = {...favouriteChampions};
+    if (favouriteChampions.contains(championId)) {
+      favouriteChampions.remove(championId);
+    } else {
+      favouriteChampions.add(championId);
+    }
+    favouriteChampions = {...favouriteChampions};
+    notifyListeners();
+
+    final response = await api.ChampionsRequests.updateFavouriteChampion(
+      championId: championId,
+    );
+    favouriteChampions = response != null
+        ? response.favouriteChampions.toSet()
+        : favouriteChampionsClone;
+
+    setSort(selectedSort);
   }
 
   /// Clears all applied filters and sort on combinedChampions
@@ -208,6 +244,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
     combinedChampions = data_classes.ChampionsSort.clearSorting(
       combinedChampions!,
+      favouriteChampions,
     );
     selectedFilter = data_classes.SelectedChampionsFilter(
       name: selectedFilter.name,
@@ -229,6 +266,7 @@ class _ChampionsNotifier extends ChangeNotifier {
     playerChampions = null;
     selectedFilter = data_classes.SelectedChampionsFilter();
     selectedSort = data_classes.ChampionsSort.defaultSort;
+    favouriteChampions = {};
   }
 
   /// Loads the `champions` data from local db and syncs it with server
