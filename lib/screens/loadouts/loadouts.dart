@@ -81,7 +81,7 @@ class Loadouts extends HookConsumerWidget {
         // check if champions exists,
         // if not, then get champions
         if (champion == null) {
-          championsProvider.loadCombinedChampions(false);
+          championsProvider.loadCombinedChampions();
         }
 
         return;

@@ -101,9 +101,6 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
-    final damagePerMinute = match.matchDuration < 1
-        ? 0
-        : matchPlayer.playerStats.totalDamageDealt / (match.matchDuration / 60);
 
     // Hooks
     final champion = useMemoized(
@@ -113,6 +110,19 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
         );
       },
       [matchPlayer, champions],
+    );
+    final damagePerMinute = useMemoized(
+      () {
+        // matchDuration is in seconds
+        final result = match.matchDuration < 1
+            ? 0
+            : matchPlayer.playerStats.totalDamageDealt *
+                60 /
+                match.matchDuration;
+
+        return result.toInt();
+      },
+      [match, matchPlayer],
     );
     final playerItemsUsed = useMemoized(
       () {
