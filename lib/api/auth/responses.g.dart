@@ -55,17 +55,6 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
       'reason': instance.reason,
     };
 
-EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>
-    EssentialsResponse(
-      essentials:
-          Essentials.fromJson(json['essentials'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$EssentialsResponseToJson(EssentialsResponse instance) =>
-    <String, dynamic>{
-      'essentials': instance.essentials,
-    };
-
 FaqsResponse _$FaqsResponseFromJson(Map<String, dynamic> json) => FaqsResponse(
       faqs: (json['faqs'] as List<dynamic>)
           .map((e) => FAQ.fromJson(e as Map<String, dynamic>))

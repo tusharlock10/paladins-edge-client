@@ -163,13 +163,6 @@ class ConnectProfile extends HookConsumerWidget {
         padding: const EdgeInsets.all(0),
         child: Column(
           children: [
-            const widgets.ApiStatusMessage(
-              paladinsApiUnavailableMessage:
-                  "You might face problems while connecting your profile. Please try again later",
-              serverMaintenanceMessage:
-                  "You might face problems while connecting your profile. Please try again later",
-            ),
-            const SizedBox(height: 15),
             name != null
                 ? RichText(
                     text: TextSpan(

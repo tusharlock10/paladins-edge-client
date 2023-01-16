@@ -54,19 +54,6 @@ class ClaimPlayerResponse {
 }
 
 @JsonSerializable()
-class EssentialsResponse {
-  final Essentials essentials;
-
-  EssentialsResponse({
-    required this.essentials,
-  });
-
-  factory EssentialsResponse.fromJson(Map<String, dynamic> json) =>
-      _$EssentialsResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$EssentialsResponseToJson(this);
-}
-
-@JsonSerializable()
 class FaqsResponse {
   final List<FAQ> faqs;
 

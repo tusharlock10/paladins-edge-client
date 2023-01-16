@@ -45,7 +45,6 @@ class _AuthNotifier extends ChangeNotifier {
   models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
   List<data_classes.CombinedMatch>? savedMatches;
-  bool? apiAvailable = true;
 
   _AuthNotifier({required this.ref});
 
@@ -90,7 +89,7 @@ class _AuthNotifier extends ChangeNotifier {
     // getting the essential data from local until the api call is completed
     final savedEssentials = utilities.Database.getEssentials();
 
-    api.EssentialsResponse? response;
+    models.Essentials? response;
     while (true) {
       response = await api.AuthRequests.essentials();
       if (response == null && savedEssentials != null) {
@@ -99,18 +98,11 @@ class _AuthNotifier extends ChangeNotifier {
         return;
       }
       if (response != null) break;
+      await Future.delayed(const Duration(seconds: 1));
     }
 
-    utilities.Database.saveEssentials(response.essentials);
-    utilities.Global.essentials = response.essentials;
-  }
-
-  /// Checks whether the paladins API is in working state
-  Future<void> getApiStatus() async {
-    final response = await api.AuthRequests.apiStatus();
-    apiAvailable = response?.apiAvailable;
-
-    utilities.postFrameCallback(notifyListeners);
+    utilities.Database.saveEssentials(response);
+    utilities.Global.essentials = response;
   }
 
   /// Checks if the user is already logged in
@@ -190,8 +182,7 @@ class _AuthNotifier extends ChangeNotifier {
     if (player != null) utilities.Global.isPlayerConnected = true;
     _recordLoginAnalytics();
 
-    // upon successful login, send FCM token and deviceDetail to server
-    _sendFCMToken();
+    // upon successful login, send deviceDetail to server
     _sendDeviceDetail();
     // save response in local db
     _saveResponse(response);
@@ -555,14 +546,6 @@ class _AuthNotifier extends ChangeNotifier {
     }
 
     return _GetFirebaseUserResponse(firebaseUser: firebaseUser);
-  }
-
-  /// Send the FCM token to server, only works on `Android`
-  /// for sending notification fcm token is used only
-  /// for the server, and not stored on the app/ browser
-  Future<void> _sendFCMToken() async {
-    final fcmToken = await utilities.Messaging.initMessaging();
-    if (fcmToken != null) await api.AuthRequests.fcmToken(fcmToken: fcmToken);
   }
 
   /// Send device details to server

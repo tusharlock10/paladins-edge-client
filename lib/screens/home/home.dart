@@ -84,12 +84,6 @@ class Home extends HookConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                const widgets.ApiStatusMessage(
-                  paladinsApiUnavailableMessage:
-                      "You won't be able to view updated data as Paladins services are down. Please try again later",
-                  serverMaintenanceMessage:
-                      "Our servers will be up soon. Please try again later",
-                ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),
                 const SizedBox(height: 20),

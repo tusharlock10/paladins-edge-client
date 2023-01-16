@@ -50,7 +50,7 @@ class FeedbackImage extends HookConsumerWidget {
                     fit: StackFit.expand,
                     children: [
                       Image.memory(
-                        selectedImageBytes!,
+                        selectedImageBytes,
                         fit: BoxFit.cover,
                       ),
                       Column(

@@ -7,13 +7,13 @@ abstract class Urls {
   static const logout = "/auth/logout"; // POST
   static const checkPlayerClaimed = "/auth/checkPlayerClaimed"; // GET
   static const claimPlayer = "/auth/claimPlayer"; // POST
-  static const fcmToken = "/auth/fcmToken"; // POST
-  static const essentials = "/auth/essentials"; // GET
   static const faqs = "/auth/faqs"; // GET
   static const savedMatches = "/auth/savedMatches"; // GET
   static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
   static const deviceDetail = "/auth/deviceDetail"; // PUT
-  static const apiStatus = "/auth/apiStatus"; // GET
+
+  // common
+  static const essentials = "/common/essentials"; // GET
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET

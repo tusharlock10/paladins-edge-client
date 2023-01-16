@@ -1,4 +1,5 @@
 import "package:paladinsedge/api/auth/responses.dart" as responses;
+import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -46,29 +47,15 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.EssentialsResponse?> essentials() async {
-    try {
-      final response = await utilities.api
-          .get<Map<String, dynamic>>(constants.Urls.essentials);
-      if (response.data != null) {
-        return responses.EssentialsResponse.fromJson(response.data!);
-      }
+  static Future<models.Essentials?> essentials() async {
+    final input = ApiRequestInput<models.Essentials>(
+      url: constants.Urls.essentials,
+      method: HttpMethod.get,
+      fromJson: models.Essentials.fromJson,
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  static Future<bool> fcmToken({required String fcmToken}) async {
-    try {
-      await utilities.api
-          .post(constants.Urls.fcmToken, data: {"fcmToken": fcmToken});
-
-      return true;
-    } catch (_) {
-      return false;
-    }
+    return response?.data;
   }
 
   static Future<responses.LoginResponse?> login({
@@ -163,20 +150,6 @@ abstract class AuthRequests {
       );
       if (response.data != null) {
         return responses.DeviceDetailResponse.fromJson(response.data!);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  static Future<responses.ApiStatusResponse?> apiStatus() async {
-    try {
-      final response = await utilities.api
-          .get<Map<String, dynamic>>(constants.Urls.apiStatus);
-      if (response.data != null) {
-        return responses.ApiStatusResponse.fromJson(response.data!);
       }
 
       return null;
