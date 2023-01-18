@@ -267,9 +267,9 @@ abstract class Database {
   static void _registerAdapters() {
     // register the generated adapters here
     Hive.registerAdapter(models.ChampionAdapter());
-    Hive.registerAdapter(models.AbilityAdapter());
-    Hive.registerAdapter(models.TalentAdapter());
-    Hive.registerAdapter(models.CardAdapter());
+    Hive.registerAdapter(models.ChampionAbilityAdapter());
+    Hive.registerAdapter(models.ChampionTalentAdapter());
+    Hive.registerAdapter(models.ChampionCardAdapter());
     Hive.registerAdapter(models.PlayerAdapter());
     Hive.registerAdapter(models.RankedAdapter());
     Hive.registerAdapter(models.UserAdapter());

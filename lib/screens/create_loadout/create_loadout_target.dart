@@ -141,7 +141,7 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                   Row(
                     children: draftLoadout.loadoutCards.mapIndexed(
                       (index, loadoutCard) {
-                        return DragTarget<models.Card>(
+                        return DragTarget<models.ChampionCard>(
                           onWillAccept: (_) => true,
                           onAccept: (card) =>
                               loadoutProvider.onAcceptDragCard(card, index),

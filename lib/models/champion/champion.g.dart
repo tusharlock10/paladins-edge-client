@@ -6,17 +6,17 @@ part of 'champion.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AbilityAdapter extends TypeAdapter<Ability> {
+class ChampionAbilityAdapter extends TypeAdapter<ChampionAbility> {
   @override
   final int typeId = 1;
 
   @override
-  Ability read(BinaryReader reader) {
+  ChampionAbility read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Ability(
+    return ChampionAbility(
       abilityId: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
@@ -28,7 +28,7 @@ class AbilityAdapter extends TypeAdapter<Ability> {
   }
 
   @override
-  void write(BinaryWriter writer, Ability obj) {
+  void write(BinaryWriter writer, ChampionAbility obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -53,22 +53,22 @@ class AbilityAdapter extends TypeAdapter<Ability> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AbilityAdapter &&
+      other is ChampionAbilityAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class TalentAdapter extends TypeAdapter<Talent> {
+class ChampionTalentAdapter extends TypeAdapter<ChampionTalent> {
   @override
   final int typeId = 2;
 
   @override
-  Talent read(BinaryReader reader) {
+  ChampionTalent read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Talent(
+    return ChampionTalent(
       talentId: fields[0] as int,
       talentId2: fields[1] as int,
       name: fields[2] as String,
@@ -81,7 +81,7 @@ class TalentAdapter extends TypeAdapter<Talent> {
   }
 
   @override
-  void write(BinaryWriter writer, Talent obj) {
+  void write(BinaryWriter writer, ChampionTalent obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -108,22 +108,22 @@ class TalentAdapter extends TypeAdapter<Talent> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TalentAdapter &&
+      other is ChampionTalentAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class CardAdapter extends TypeAdapter<Card> {
+class ChampionCardAdapter extends TypeAdapter<ChampionCard> {
   @override
   final int typeId = 3;
 
   @override
-  Card read(BinaryReader reader) {
+  ChampionCard read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Card(
+    return ChampionCard(
       cardId: fields[0] as int,
       cardId2: fields[1] as int,
       name: fields[2] as String,
@@ -136,7 +136,7 @@ class CardAdapter extends TypeAdapter<Card> {
   }
 
   @override
-  void write(BinaryWriter writer, Card obj) {
+  void write(BinaryWriter writer, ChampionCard obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -163,7 +163,7 @@ class CardAdapter extends TypeAdapter<Card> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CardAdapter &&
+      other is ChampionCardAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -232,9 +232,9 @@ class ChampionAdapter extends TypeAdapter<Champion> {
       weaponDamage: fields[13] as double,
       fireRate: fields[14] as double,
       lore: fields[15] as String,
-      abilities: (fields[16] as List).cast<Ability>(),
-      talents: (fields[17] as List).cast<Talent>(),
-      cards: (fields[18] as List).cast<Card>(),
+      abilities: (fields[16] as List).cast<ChampionAbility>(),
+      talents: (fields[17] as List).cast<ChampionTalent>(),
+      cards: (fields[18] as List).cast<ChampionCard>(),
       latestChampion: fields[19] as bool,
       onFreeRotation: fields[20] as bool,
       unlockCost: fields[22] as int?,
@@ -306,7 +306,8 @@ class ChampionAdapter extends TypeAdapter<Champion> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Ability _$AbilityFromJson(Map<String, dynamic> json) => Ability(
+ChampionAbility _$ChampionAbilityFromJson(Map<String, dynamic> json) =>
+    ChampionAbility(
       abilityId: json['abilityId'] as int,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
@@ -316,7 +317,8 @@ Ability _$AbilityFromJson(Map<String, dynamic> json) => Ability(
       description: json['description'] as String,
     );
 
-Map<String, dynamic> _$AbilityToJson(Ability instance) => <String, dynamic>{
+Map<String, dynamic> _$ChampionAbilityToJson(ChampionAbility instance) =>
+    <String, dynamic>{
       'abilityId': instance.abilityId,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
@@ -326,7 +328,8 @@ Map<String, dynamic> _$AbilityToJson(Ability instance) => <String, dynamic>{
       'description': instance.description,
     };
 
-Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
+ChampionTalent _$ChampionTalentFromJson(Map<String, dynamic> json) =>
+    ChampionTalent(
       talentId: json['talentId'] as int,
       talentId2: json['talentId2'] as int,
       name: json['name'] as String,
@@ -337,7 +340,8 @@ Talent _$TalentFromJson(Map<String, dynamic> json) => Talent(
       unlockLevel: json['unlockLevel'] as int?,
     );
 
-Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
+Map<String, dynamic> _$ChampionTalentToJson(ChampionTalent instance) =>
+    <String, dynamic>{
       'talentId': instance.talentId,
       'talentId2': instance.talentId2,
       'name': instance.name,
@@ -348,7 +352,7 @@ Map<String, dynamic> _$TalentToJson(Talent instance) => <String, dynamic>{
       'unlockLevel': instance.unlockLevel,
     };
 
-Card _$CardFromJson(Map<String, dynamic> json) => Card(
+ChampionCard _$ChampionCardFromJson(Map<String, dynamic> json) => ChampionCard(
       cardId: json['cardId'] as int,
       cardId2: json['cardId2'] as int,
       name: json['name'] as String,
@@ -359,7 +363,8 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
       modifier: json['modifier'] as String,
     );
 
-Map<String, dynamic> _$CardToJson(Card instance) => <String, dynamic>{
+Map<String, dynamic> _$ChampionCardToJson(ChampionCard instance) =>
+    <String, dynamic>{
       'cardId': instance.cardId,
       'cardId2': instance.cardId2,
       'name': instance.name,
@@ -398,13 +403,13 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) => Champion(
       fireRate: (json['fireRate'] as num).toDouble(),
       lore: json['lore'] as String,
       abilities: (json['abilities'] as List<dynamic>)
-          .map((e) => Ability.fromJson(e as Map<String, dynamic>))
+          .map((e) => ChampionAbility.fromJson(e as Map<String, dynamic>))
           .toList(),
       talents: (json['talents'] as List<dynamic>)
-          .map((e) => Talent.fromJson(e as Map<String, dynamic>))
+          .map((e) => ChampionTalent.fromJson(e as Map<String, dynamic>))
           .toList(),
       cards: (json['cards'] as List<dynamic>)
-          .map((e) => Card.fromJson(e as Map<String, dynamic>))
+          .map((e) => ChampionCard.fromJson(e as Map<String, dynamic>))
           .toList(),
       latestChampion: json['latestChampion'] as bool,
       onFreeRotation: json['onFreeRotation'] as bool,

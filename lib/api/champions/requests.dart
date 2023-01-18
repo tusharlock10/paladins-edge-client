@@ -1,25 +1,23 @@
-import "package:paladinsedge/api/champions/responses.dart" as responses;
+import "package:paladinsedge/api/base/requests.dart";
+import "package:paladinsedge/api/champions/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class ChampionsRequests {
-  static Future<responses.AllChampionsResponse?> allChampions() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.allChampions,
-      );
-      if (response.data != null) {
-        return responses.AllChampionsResponse.fromJson(response.data!);
-      }
+  static Future<ChampionsResponse> champions() async {
+    final input = ApiRequestInput<ChampionsResponse>(
+      url: constants.Urls.champions,
+      method: HttpMethod.get,
+      fromJson: ChampionsResponse.fromJson,
+      defaultValue: ChampionsResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<responses.PlayerChampionsResponse?> playerChampions({
+  static Future<PlayerChampionsResponse?> playerChampions({
     required String playerId,
     bool forceUpdate = false,
   }) async {
@@ -32,7 +30,7 @@ abstract class ChampionsRequests {
         },
       );
       if (response.data != null) {
-        return responses.PlayerChampionsResponse.fromJson(response.data!);
+        return PlayerChampionsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -41,7 +39,7 @@ abstract class ChampionsRequests {
     }
   }
 
-  static Future<responses.PlayerChampionsResponse?> batchPlayerChampions({
+  static Future<PlayerChampionsResponse?> batchPlayerChampions({
     required List<data_classes.BatchPlayerChampionsPayload>
         playerChampionsQuery,
   }) async {
@@ -52,20 +50,19 @@ abstract class ChampionsRequests {
       },
     );
     if (response.data != null) {
-      return responses.PlayerChampionsResponse.fromJson(response.data!);
+      return PlayerChampionsResponse.fromJson(response.data!);
     }
 
     return null;
   }
 
-  static Future<responses.FavouriteChampionsResponse?>
-      favouriteChampions() async {
+  static Future<FavouriteChampionsResponse?> favouriteChampions() async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.favouriteChampions,
       );
       if (response.data != null) {
-        return responses.FavouriteChampionsResponse.fromJson(response.data!);
+        return FavouriteChampionsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -74,8 +71,7 @@ abstract class ChampionsRequests {
     }
   }
 
-  static Future<responses.UpdateFavouriteChampionResponse?>
-      updateFavouriteChampion({
+  static Future<UpdateFavouriteChampionResponse?> updateFavouriteChampion({
     required int championId,
   }) async {
     try {
@@ -84,7 +80,7 @@ abstract class ChampionsRequests {
         data: {"championId": championId},
       );
       if (response.data != null) {
-        return responses.UpdateFavouriteChampionResponse.fromJson(
+        return UpdateFavouriteChampionResponse.fromJson(
           response.data!,
         );
       }

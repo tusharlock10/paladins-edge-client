@@ -4,14 +4,20 @@ import "package:paladinsedge/models/index.dart" show Champion, PlayerChampion;
 part "responses.g.dart";
 
 @JsonSerializable()
-class AllChampionsResponse {
-  final List<Champion> champions;
+class ChampionsResponse {
+  final bool success;
+  final String? error;
+  final List<Champion>? data;
 
-  AllChampionsResponse({required this.champions});
+  ChampionsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
-  factory AllChampionsResponse.fromJson(Map<String, dynamic> json) =>
-      _$AllChampionsResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$AllChampionsResponseToJson(this);
+  factory ChampionsResponse.fromJson(Map<String, dynamic> json) =>
+      _$ChampionsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ChampionsResponseToJson(this);
 }
 
 @JsonSerializable()

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart" show Color, BuildContext;
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:paladinsedge/models/index.dart"
-    show Champion, Loadout, LoadoutCard, Card;
+    show Champion, Loadout, LoadoutCard, ChampionCard;
 
 part "loadout.freezed.dart";
 
@@ -49,7 +49,7 @@ class DraftLoadout with _$DraftLoadout {
 class ShowLoadoutDetailsOptions {
   final BuildContext context;
   final Champion champion;
-  final Card card;
+  final ChampionCard card;
   final bool sliderFixed;
   int cardPoints;
   void Function(int)? onSliderChange;

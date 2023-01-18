@@ -9,7 +9,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class LoadoutDeckCard extends HookWidget {
   final double imageHeight;
   final double imageWidth;
-  final models.Card card;
+  final models.ChampionCard card;
   final models.Champion champion;
   final models.LoadoutCard loadoutCard;
   final bool sliderFixed;

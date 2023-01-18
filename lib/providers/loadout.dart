@@ -68,7 +68,7 @@ class _LoadoutNotifier extends ChangeNotifier {
 
   /// Inserts the loadoutCard at the appropriate index
   /// when the user drags the card to dragTarget
-  void onAcceptDragCard(models.Card card, int index) {
+  void onAcceptDragCard(models.ChampionCard card, int index) {
     final loadoutCardsClone = [...draftLoadout.loadoutCards];
     loadoutCardsClone[index] = models.LoadoutCard(
       cardId2: card.cardId2,

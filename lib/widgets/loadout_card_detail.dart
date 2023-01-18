@@ -40,7 +40,7 @@ void showLoadoutCardDetailSheet(
 }
 
 class _LoadoutCardDetail extends HookWidget {
-  final models.Card card;
+  final models.ChampionCard card;
   final models.Champion champion;
   final bool sliderFixed;
   final int cardPoints;

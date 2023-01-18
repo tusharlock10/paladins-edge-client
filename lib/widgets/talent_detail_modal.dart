@@ -7,7 +7,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 
 void showTalentDetailSheet(
   BuildContext context,
-  models.Talent talent,
+  models.ChampionTalent talent,
   models.Champion champion,
 ) {
   final screenWidth = MediaQuery.of(context).size.width;
@@ -37,7 +37,7 @@ void showTalentDetailSheet(
 }
 
 class _TalentDetail extends HookWidget {
-  final models.Talent talent;
+  final models.ChampionTalent talent;
   final models.Champion champion;
 
   const _TalentDetail({

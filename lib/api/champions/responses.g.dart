@@ -6,18 +6,20 @@ part of 'responses.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AllChampionsResponse _$AllChampionsResponseFromJson(
-        Map<String, dynamic> json) =>
-    AllChampionsResponse(
-      champions: (json['champions'] as List<dynamic>)
-          .map((e) => Champion.fromJson(e as Map<String, dynamic>))
+ChampionsResponse _$ChampionsResponseFromJson(Map<String, dynamic> json) =>
+    ChampionsResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Champion.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$AllChampionsResponseToJson(
-        AllChampionsResponse instance) =>
+Map<String, dynamic> _$ChampionsResponseToJson(ChampionsResponse instance) =>
     <String, dynamic>{
-      'champions': instance.champions,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 PlayerChampionsResponse _$PlayerChampionsResponseFromJson(

@@ -7,7 +7,7 @@ part "champion.g.dart";
 
 @HiveType(typeId: TypeIds.championAbility)
 @JsonSerializable()
-class Ability {
+class ChampionAbility {
   /// Paladins ability id
   @HiveField(0)
   final int abilityId;
@@ -36,7 +36,7 @@ class Ability {
   @HiveField(6)
   final String description;
 
-  Ability({
+  ChampionAbility({
     required this.abilityId,
     required this.name,
     required String imageUrl,
@@ -46,14 +46,14 @@ class Ability {
     required this.description,
   }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
-  factory Ability.fromJson(Map<String, dynamic> json) =>
-      _$AbilityFromJson(json);
-  Map<String, dynamic> toJson() => _$AbilityToJson(this);
+  factory ChampionAbility.fromJson(Map<String, dynamic> json) =>
+      _$ChampionAbilityFromJson(json);
+  Map<String, dynamic> toJson() => _$ChampionAbilityToJson(this);
 }
 
 @HiveType(typeId: TypeIds.championTalent)
 @JsonSerializable()
-class Talent {
+class ChampionTalent {
   /// Paladins talent id
   @HiveField(0)
   final int talentId;
@@ -86,7 +86,7 @@ class Talent {
   @HiveField(7)
   final int? unlockLevel;
 
-  Talent({
+  ChampionTalent({
     required this.talentId,
     required this.talentId2,
     required this.name,
@@ -97,13 +97,14 @@ class Talent {
     this.unlockLevel,
   }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
-  factory Talent.fromJson(Map<String, dynamic> json) => _$TalentFromJson(json);
-  Map<String, dynamic> toJson() => _$TalentToJson(this);
+  factory ChampionTalent.fromJson(Map<String, dynamic> json) =>
+      _$ChampionTalentFromJson(json);
+  Map<String, dynamic> toJson() => _$ChampionTalentToJson(this);
 }
 
 @HiveType(typeId: TypeIds.championCard)
 @JsonSerializable()
-class Card {
+class ChampionCard {
   /// Paladins card id
   @HiveField(0)
   final int cardId;
@@ -136,7 +137,7 @@ class Card {
   @HiveField(7)
   final String modifier;
 
-  Card({
+  ChampionCard({
     required this.cardId,
     required this.cardId2,
     required this.name,
@@ -147,8 +148,9 @@ class Card {
     required this.modifier,
   }) : imageUrl = utilities.getUrlFromKey(imageUrl);
 
-  factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
-  Map<String, dynamic> toJson() => _$CardToJson(this);
+  factory ChampionCard.fromJson(Map<String, dynamic> json) =>
+      _$ChampionCardFromJson(json);
+  Map<String, dynamic> toJson() => _$ChampionCardToJson(this);
 }
 
 @HiveType(typeId: TypeIds.championTag)
@@ -240,15 +242,15 @@ class Champion {
 
   /// List of all the abilities of th champion
   @HiveField(16)
-  final List<Ability> abilities;
+  final List<ChampionAbility> abilities;
 
   /// List of all the talents of th champion
   @HiveField(17)
-  final List<Talent> talents;
+  final List<ChampionTalent> talents;
 
   /// List of all the cards of th champion
   @HiveField(18)
-  final List<Card> cards;
+  final List<ChampionCard> cards;
 
   /// Whether the champion is newly added in the game
   @HiveField(19)
@@ -289,7 +291,10 @@ class Champion {
         headerUrl = utilities.getUrlFromKey(headerUrl),
         splashUrl = utilities.getUrlFromKey(splashUrl);
 
-  factory Champion.fromJson(Map<String, dynamic> json) =>
-      _$ChampionFromJson(json);
+  factory Champion.fromJson(Map<String, dynamic> json) {
+    print("CHAMPION IS ::: $json");
+
+    return _$ChampionFromJson(json);
+  }
   Map<String, dynamic> toJson() => _$ChampionToJson(this);
 }

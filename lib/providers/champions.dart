@@ -272,10 +272,10 @@ class _ChampionsNotifier extends ChangeNotifier {
         forceUpdate ? null : utilities.Database.getChampions();
     if (savedChampions != null) return savedChampions;
 
-    final response = await api.ChampionsRequests.allChampions();
-    if (response == null) return null;
+    final response = await api.ChampionsRequests.champions();
+    if (!response.success) return null;
 
-    final champions = response.champions;
+    final champions = response.data!;
 
     // clear the champions in db if forceUpdate
     // save champion locally for future use

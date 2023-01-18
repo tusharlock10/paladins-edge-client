@@ -1,7 +1,7 @@
 import "package:paladinsedge/models/index.dart" as models;
 
 class LoadoutItem {
-  final models.Card? card;
+  final models.ChampionCard? card;
   final int cardLevel;
 
   const LoadoutItem({

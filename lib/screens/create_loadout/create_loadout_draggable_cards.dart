@@ -48,7 +48,7 @@ class CreateLoadoutDraggableCards extends ConsumerWidget {
             );
           }
 
-          return Draggable<models.Card>(
+          return Draggable<models.ChampionCard>(
             data: card,
             affinity: Axis.vertical,
             maxSimultaneousDrags: 1,

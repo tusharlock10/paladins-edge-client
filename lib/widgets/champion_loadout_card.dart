@@ -9,7 +9,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class ChampionLoadoutCard extends HookWidget {
   final double imageWidth;
   final double imageHeight;
-  final models.Card? card;
+  final models.ChampionCard? card;
   final models.Champion? champion;
   final void Function()? onPress;
 
@@ -69,7 +69,7 @@ class ChampionLoadoutCard extends HookWidget {
 
 class _LoadoutCard extends StatelessWidget {
   final void Function() onPress;
-  final models.Card card;
+  final models.ChampionCard card;
   final double imageWidth;
   final double imageHeight;
 
