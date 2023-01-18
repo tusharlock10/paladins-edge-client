@@ -17,11 +17,11 @@ class TopMatchAdapter extends TypeAdapter<TopMatch> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TopMatch(
-      matchId: fields[0] as String,
+      matchId: fields[0] as int,
       type: fields[1] as String,
       value: fields[2] as int,
-      playerName: fields[3] as String?,
-      playerId: fields[4] as String?,
+      playerName: fields[3] as String,
+      playerId: fields[4] as int,
     );
   }
 
@@ -193,11 +193,11 @@ Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
     };
 
 TopMatch _$TopMatchFromJson(Map<String, dynamic> json) => TopMatch(
-      matchId: json['matchId'] as String,
+      matchId: json['matchId'] as int,
       type: json['type'] as String,
       value: json['value'] as int,
-      playerName: json['playerName'] as String?,
-      playerId: json['playerId'] as String?,
+      playerName: json['playerName'] as String,
+      playerId: json['playerId'] as int,
     );
 
 Map<String, dynamic> _$TopMatchToJson(TopMatch instance) => <String, dynamic>{

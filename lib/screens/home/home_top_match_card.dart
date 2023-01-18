@@ -27,7 +27,7 @@ class HomeTopMatchCard extends HookConsumerWidget {
           context,
           screens.MatchDetail.topMatchRouteName,
           params: {
-            "matchId": topMatch.matchId,
+            "matchId": topMatch.matchId.toString(),
           },
         );
       },

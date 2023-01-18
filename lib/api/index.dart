@@ -1,9 +1,8 @@
 export "./auth/index.dart";
 export "./base/index.dart";
-export "./bounty_store/index.dart";
 export "./champions/index.dart";
+export "./common/index.dart";
 export "./feedback/index.dart";
-export "./items/index.dart";
 export "./loadout/index.dart";
 export "./match/index.dart";
 export "./players/index.dart";

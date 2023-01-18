@@ -60,12 +60,16 @@ Map<String, dynamic> _$CommonMatchesResponseToJson(
 
 TopMatchesResponse _$TopMatchesResponseFromJson(Map<String, dynamic> json) =>
     TopMatchesResponse(
-      topMatches: (json['topMatches'] as List<dynamic>)
-          .map((e) => TopMatch.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => TopMatch.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$TopMatchesResponseToJson(TopMatchesResponse instance) =>
     <String, dynamic>{
-      'topMatches': instance.topMatches,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };

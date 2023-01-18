@@ -249,7 +249,7 @@ class Match {
 class TopMatch {
   /// id of the top match
   @HiveField(0)
-  final String matchId;
+  final int matchId;
 
   /// type of to match
   @HiveField(1)
@@ -261,11 +261,11 @@ class TopMatch {
 
   /// name of the player for this record
   @HiveField(3)
-  final String? playerName;
+  final String playerName;
 
   /// id of the player for this record
   @HiveField(4)
-  final String? playerId;
+  final int playerId;
 
   TopMatch({
     required this.matchId,

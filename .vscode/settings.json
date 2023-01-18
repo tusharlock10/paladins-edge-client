@@ -2,5 +2,6 @@
   "cSpell.words": [
     "datagrid",
     "syncfusion"
-  ]
+  ],
+  "cmake.configureOnOpen": false
 }

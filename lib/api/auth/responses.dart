@@ -1,6 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart"
-    show User, Player, Essentials, FAQ, Match, MatchPlayer, DeviceDetail;
+    show User, Player, FAQ, Match, MatchPlayer, DeviceDetail;
 
 part "responses.g.dart";
 

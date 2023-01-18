@@ -1,5 +1,4 @@
 import "package:paladinsedge/api/auth/responses.dart" as responses;
-import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -45,17 +44,6 @@ abstract class AuthRequests {
     } catch (_) {
       return null;
     }
-  }
-
-  static Future<models.Essentials?> essentials() async {
-    final input = ApiRequestInput<models.Essentials>(
-      url: constants.Urls.essentials,
-      method: HttpMethod.get,
-      fromJson: models.Essentials.fromJson,
-    );
-    final response = await ApiRequest.apiRequest(input);
-
-    return response?.data;
   }
 
   static Future<responses.LoginResponse?> login({

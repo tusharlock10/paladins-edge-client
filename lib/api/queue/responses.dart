@@ -5,9 +5,15 @@ part "responses.g.dart";
 
 @JsonSerializable()
 class QueueTimelineResponse {
-  final List<Queue> timeline;
+  final bool success;
+  final String? error;
+  final List<Queue>? data;
 
-  QueueTimelineResponse({required this.timeline});
+  QueueTimelineResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory QueueTimelineResponse.fromJson(Map<String, dynamic> json) =>
       _$QueueTimelineResponseFromJson(json);

@@ -17,7 +17,6 @@ class BountyStoreAdapter extends TypeAdapter<BountyStore> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BountyStore(
-      bountyStoreId: fields[0] as String,
       skinName: fields[1] as String,
       championId: fields[2] as int,
       championName: fields[3] as String,
@@ -31,9 +30,7 @@ class BountyStoreAdapter extends TypeAdapter<BountyStore> {
   @override
   void write(BinaryWriter writer, BountyStore obj) {
     writer
-      ..writeByte(8)
-      ..writeByte(0)
-      ..write(obj.bountyStoreId)
+      ..writeByte(7)
       ..writeByte(1)
       ..write(obj.skinName)
       ..writeByte(2)
@@ -66,7 +63,6 @@ class BountyStoreAdapter extends TypeAdapter<BountyStore> {
 // **************************************************************************
 
 BountyStore _$BountyStoreFromJson(Map<String, dynamic> json) => BountyStore(
-      bountyStoreId: json['bountyStoreId'] as String,
       skinName: json['skinName'] as String,
       championId: json['championId'] as int,
       championName: json['championName'] as String,
@@ -78,7 +74,6 @@ BountyStore _$BountyStoreFromJson(Map<String, dynamic> json) => BountyStore(
 
 Map<String, dynamic> _$BountyStoreToJson(BountyStore instance) =>
     <String, dynamic>{
-      'bountyStoreId': instance.bountyStoreId,
       'skinName': instance.skinName,
       'championId': instance.championId,
       'championName': instance.championName,

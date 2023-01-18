@@ -19,11 +19,11 @@ class _ItemsNotifier extends ChangeNotifier {
       return utilities.postFrameCallback(notifyListeners);
     }
 
-    final response = await api.ItemRequests.itemDetails();
-    if (response == null) return;
+    final response = await api.CommonRequests.items();
+    if (!response.success) return;
 
     if (!forceUpdate) isLoading = false;
-    items = response.items;
+    items = response.data;
     notifyListeners();
 
     // save items locally for future use

@@ -1,5 +1,4 @@
 import "package:dio/dio.dart";
-import "package:paladinsedge/api/base/responses.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class HttpMethod {
@@ -14,6 +13,7 @@ class ApiRequestInput<T> {
   String url;
   String method;
   T Function(Map<String, dynamic>) fromJson;
+  T defaultValue;
   Map<String, String>? pathParams;
   Map<String, String>? queryParams;
   dynamic payload;
@@ -22,6 +22,7 @@ class ApiRequestInput<T> {
     required this.url,
     required this.method,
     required this.fromJson,
+    required this.defaultValue,
     this.pathParams,
     this.queryParams,
     this.payload,
@@ -29,7 +30,7 @@ class ApiRequestInput<T> {
 }
 
 abstract class ApiRequest {
-  static Future<ApiResponse<T>?> apiRequest<T>(ApiRequestInput<T> input) async {
+  static Future<T> apiRequest<T>(ApiRequestInput<T> input) async {
     final Future<Response<Map<String, dynamic>>> responseFuture;
     final url = _getUrlFromPathParams(input);
 
@@ -72,20 +73,14 @@ abstract class ApiRequest {
         throw UnimplementedError();
     }
 
-    try {
-      final response = await responseFuture;
-      if (response.data != null) {
-        return ApiResponse.fromJson(response.data!, _getFromJson<T>(input));
-      }
+    // TODO: add try catch here
+    final response = await responseFuture;
 
-      return null;
-    } catch (_) {
-      return null;
+    if (response.data != null) {
+      return input.fromJson(response.data as Map<String, dynamic>);
     }
-  }
 
-  static T Function(Object?) _getFromJson<T>(ApiRequestInput input) {
-    return (Object? json) => input.fromJson(json as Map<String, dynamic>) as T;
+    return input.defaultValue;
   }
 
   static String _getUrlFromPathParams(ApiRequestInput input) {

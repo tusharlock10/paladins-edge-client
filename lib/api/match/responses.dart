@@ -51,10 +51,14 @@ class CommonMatchesResponse {
 
 @JsonSerializable()
 class TopMatchesResponse {
-  final List<TopMatch> topMatches;
+  final bool success;
+  final String? error;
+  final List<TopMatch>? data;
 
   TopMatchesResponse({
-    required this.topMatches,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory TopMatchesResponse.fromJson(Map<String, dynamic> json) =>

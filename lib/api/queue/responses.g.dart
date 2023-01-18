@@ -9,13 +9,17 @@ part of 'responses.dart';
 QueueTimelineResponse _$QueueTimelineResponseFromJson(
         Map<String, dynamic> json) =>
     QueueTimelineResponse(
-      timeline: (json['timeline'] as List<dynamic>)
-          .map((e) => Queue.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Queue.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$QueueTimelineResponseToJson(
         QueueTimelineResponse instance) =>
     <String, dynamic>{
-      'timeline': instance.timeline,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };

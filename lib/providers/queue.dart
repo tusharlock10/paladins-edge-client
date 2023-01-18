@@ -44,9 +44,11 @@ class _QueueNotifier extends ChangeNotifier {
       final response = await api.QueueRequests.queueTimeline();
 
       isLoading = false;
-      if (response == null) return utilities.postFrameCallback(notifyListeners);
+      if (!response.success) {
+        return utilities.postFrameCallback(notifyListeners);
+      }
 
-      timeline = response.timeline;
+      timeline = response.data!;
       timeline.sort((a, b) => a.createdAt.compareTo(b.createdAt));
       if (forceUpdate) await utilities.Database.queueTimelineBox?.clear();
       timeline.forEach(utilities.Database.saveQueue);

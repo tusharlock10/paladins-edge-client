@@ -280,6 +280,7 @@ abstract class Database {
     Hive.registerAdapter(models.BountyStoreAdapter());
     Hive.registerAdapter(models.PlayerChampionAdapter());
     Hive.registerAdapter(models.QueueAdapter());
+    Hive.registerAdapter(models.QueueRegionAdapter());
     Hive.registerAdapter(models.ItemAdapter());
     Hive.registerAdapter(models.TopMatchAdapter());
   }

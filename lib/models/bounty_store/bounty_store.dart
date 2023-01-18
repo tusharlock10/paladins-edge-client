@@ -7,10 +7,6 @@ part "bounty_store.g.dart";
 @HiveType(typeId: TypeIds.bountyStore)
 @JsonSerializable()
 class BountyStore {
-  /// id of the bounty item
-  @HiveField(0)
-  final String bountyStoreId;
-
   /// name of the champion skin
   @HiveField(1)
   final String skinName;
@@ -40,7 +36,6 @@ class BountyStore {
   final String type;
 
   BountyStore({
-    required this.bountyStoreId,
     required this.skinName,
     required this.championId,
     required this.championName,

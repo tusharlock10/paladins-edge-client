@@ -1,9 +1,10 @@
-import "package:paladinsedge/api/match/responses.dart" as responses;
+import "package:paladinsedge/api/base/requests.dart";
+import "package:paladinsedge/api/match/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class MatchRequests {
-  static Future<responses.MatchDetailsResponse?> matchDetails({
+  static Future<MatchDetailsResponse?> matchDetails({
     required String matchId,
   }) async {
     try {
@@ -12,7 +13,7 @@ abstract class MatchRequests {
         queryParameters: {"matchId": matchId},
       );
       if (response.data != null) {
-        return responses.MatchDetailsResponse.fromJson(response.data!);
+        return MatchDetailsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -21,7 +22,7 @@ abstract class MatchRequests {
     }
   }
 
-  static Future<responses.PlayerMatchesResponse?> playerMatches({
+  static Future<PlayerMatchesResponse?> playerMatches({
     required String playerId,
     bool forceUpdate = false,
   }) async {
@@ -34,7 +35,7 @@ abstract class MatchRequests {
         },
       );
       if (response.data != null) {
-        return responses.PlayerMatchesResponse.fromJson(response.data!);
+        return PlayerMatchesResponse.fromJson(response.data!);
       }
 
       return null;
@@ -43,7 +44,7 @@ abstract class MatchRequests {
     }
   }
 
-  static Future<responses.CommonMatchesResponse?> commonMatches({
+  static Future<CommonMatchesResponse?> commonMatches({
     required List<String> playerIds,
   }) async {
     try {
@@ -52,7 +53,7 @@ abstract class MatchRequests {
         data: {"playerIds": playerIds},
       );
       if (response.data != null) {
-        return responses.CommonMatchesResponse.fromJson(response.data!);
+        return CommonMatchesResponse.fromJson(response.data!);
       }
 
       return null;
@@ -61,18 +62,15 @@ abstract class MatchRequests {
     }
   }
 
-  static Future<responses.TopMatchesResponse?> topMatches() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.topMatches,
-      );
-      if (response.data != null) {
-        return responses.TopMatchesResponse.fromJson(response.data!);
-      }
+  static Future<TopMatchesResponse> topMatches() async {
+    final input = ApiRequestInput<TopMatchesResponse>(
+      url: constants.Urls.topMatches,
+      method: HttpMethod.get,
+      fromJson: TopMatchesResponse.fromJson,
+      defaultValue: TopMatchesResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 }

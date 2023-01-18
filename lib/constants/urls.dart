@@ -14,6 +14,8 @@ abstract class Urls {
 
   // common
   static const essentials = "/common/essentials"; // GET
+  static const bountyStore = "/common/bountyStore"; // GET
+  static const items = "/common/items"; // GET
 
   // champions
   static const allChampions = "/champions/allChampions"; // GET
@@ -35,19 +37,13 @@ abstract class Urls {
   static const playerInferred = "/players/playerInferred"; // GET
 
   // queue
-  static const queueTimeline = "/queue/queueTimeline"; // GET
+  static const queueTimeline = "/queue/timeline"; // GET
 
-  // bountyStore
-  static const bountyStoreDetails = "/bountyStore/bountyStoreDetails"; // GET
-
-  // items
-  static const itemDetails = "/items/itemDetails"; // GET
-
-  // match
+  // matches
   static const matchDetails = "/match/matchDetails"; // GET
   static const playerMatches = "/match/playerMatches"; // GET
   static const commonMatches = "/match/commonMatches"; // POST
-  static const topMatches = "/match/topMatches"; // GET
+  static const topMatches = "/matches/top"; // GET
 
   // loadout
   static const playerLoadouts = "/loadout/playerLoadouts"; // GET

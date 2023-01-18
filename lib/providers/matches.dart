@@ -244,10 +244,10 @@ class _MatchesNotifier extends ChangeNotifier {
     }
 
     final response = await api.MatchRequests.topMatches();
-    if (response == null) return;
+    if (!response.success) return;
 
     isTopMatchesLoading = false;
-    topMatches = response.topMatches;
+    topMatches = response.data;
     notifyListeners();
 
     // save topMatches locally for future use

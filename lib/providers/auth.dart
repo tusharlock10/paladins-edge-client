@@ -88,21 +88,19 @@ class _AuthNotifier extends ChangeNotifier {
 
     // getting the essential data from local until the api call is completed
     final savedEssentials = utilities.Database.getEssentials();
+    if (savedEssentials != null) {
+      utilities.Global.essentials = savedEssentials;
+    }
 
-    models.Essentials? response;
+    api.EssentialsResponse response;
     while (true) {
-      response = await api.AuthRequests.essentials();
-      if (response == null && savedEssentials != null) {
-        utilities.Global.essentials = savedEssentials;
-
-        return;
-      }
-      if (response != null) break;
+      response = await api.CommonRequests.essentials();
+      if (response.success) break;
       await Future.delayed(const Duration(seconds: 1));
     }
 
-    utilities.Database.saveEssentials(response);
-    utilities.Global.essentials = response;
+    utilities.Database.saveEssentials(response.data!);
+    utilities.Global.essentials = response.data!;
   }
 
   /// Checks if the user is already logged in

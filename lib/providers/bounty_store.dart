@@ -20,11 +20,11 @@ class _BountyStoreNotifier extends ChangeNotifier {
       return utilities.postFrameCallback(notifyListeners);
     }
 
-    final response = await api.BountyStoreRequests.bountyStoreDetails();
-    if (response == null) return;
+    final response = await api.CommonRequests.bountyStore();
+    if (!response.success) return;
 
     if (!forceUpdate) isLoading = false;
-    bountyStore = response.bountyStore;
+    bountyStore = response.data;
     notifyListeners();
 
     // save bountyStore locally for future use
