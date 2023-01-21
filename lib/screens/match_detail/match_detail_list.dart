@@ -12,9 +12,10 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailList extends HookConsumerWidget {
-  final String matchId;
+  final int matchId;
   final data_classes.CombinedMatch? combinedMatch;
   final bool isSavedMatch;
+
   const MatchDetailList({
     required this.matchId,
     required this.combinedMatch,

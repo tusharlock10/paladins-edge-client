@@ -25,7 +25,7 @@ class SearchLowerItem extends HookWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": lowerSearch.playerId,
+            "playerId": lowerSearch.playerId.toString(),
           },
         );
       },
@@ -52,7 +52,7 @@ class SearchLowerItem extends HookWidget {
                       style: textTheme.headline6?.copyWith(fontSize: 16),
                     ),
                     Text(
-                      lowerSearch.playerId,
+                      lowerSearch.playerId.toString(),
                       style: textTheme.bodyText1?.copyWith(fontSize: 12),
                     ),
                   ],

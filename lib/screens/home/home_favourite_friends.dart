@@ -17,7 +17,7 @@ class HomeFavouriteFriends extends HookConsumerWidget {
     );
     final friends = ref.watch(providers.friends.select((_) => _.friends));
     final favouriteFriends = ref.watch(
-      providers.auth.select((_) => _.user?.favouriteFriends),
+      providers.auth.select((_) => _.user?.favouriteFriendIds),
     );
 
     // Variables

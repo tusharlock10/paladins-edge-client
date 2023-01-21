@@ -117,9 +117,9 @@ Map<String, dynamic> _$MatchPlayerChampionCardToJson(
     };
 
 MatchPlayer _$MatchPlayerFromJson(Map<String, dynamic> json) => MatchPlayer(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       playerName: json['playerName'] as String,
-      matchId: json['matchId'] as String,
+      matchId: json['matchId'] as int,
       championId: json['championId'] as int,
       talentId2: json['talentId2'] as int,
       skin: json['skin'] as String,
@@ -162,7 +162,7 @@ Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
     };
 
 Match _$MatchFromJson(Map<String, dynamic> json) => Match(
-      matchId: json['matchId'] as String,
+      matchId: json['matchId'] as int,
       winningTeam: json['winningTeam'] as int,
       team1Score: json['team1Score'] as int,
       team2Score: json['team2Score'] as int,

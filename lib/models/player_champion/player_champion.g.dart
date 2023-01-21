@@ -17,7 +17,7 @@ class PlayerChampionAdapter extends TypeAdapter<PlayerChampion> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PlayerChampion(
-      playerId: fields[0] as String,
+      playerId: fields[0] as int,
       championId: fields[1] as int,
       totalAssists: fields[2] as int,
       totalDeaths: fields[3] as int,
@@ -79,7 +79,7 @@ class PlayerChampionAdapter extends TypeAdapter<PlayerChampion> {
 
 PlayerChampion _$PlayerChampionFromJson(Map<String, dynamic> json) =>
     PlayerChampion(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       championId: json['championId'] as int,
       totalAssists: json['totalAssists'] as int,
       totalDeaths: json['totalDeaths'] as int,

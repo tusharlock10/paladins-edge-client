@@ -13,7 +13,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class PlayerDetail extends HookConsumerWidget {
   static const routeName = "player";
   static const routePath = "player/:playerId";
-  final String playerId;
+  final int playerId;
 
   const PlayerDetail({
     required this.playerId,
@@ -173,16 +173,11 @@ class PlayerDetail extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final playerId = paramPlayerId;
-
-    return CupertinoPage(child: PlayerDetail(playerId: playerId));
+    return CupertinoPage(child: PlayerDetail(playerId: paramPlayerId));
   }
 }

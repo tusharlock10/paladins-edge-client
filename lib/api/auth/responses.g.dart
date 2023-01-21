@@ -8,18 +8,18 @@ part of 'responses.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-      token: json['token'] as String,
-      player: json['player'] == null
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
           ? null
-          : Player.fromJson(json['player'] as Map<String, dynamic>),
+          : LoginData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
-      'user': instance.user,
-      'token': instance.token,
-      'player': instance.player,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 CheckPlayerClaimedResponse _$CheckPlayerClaimedResponseFromJson(

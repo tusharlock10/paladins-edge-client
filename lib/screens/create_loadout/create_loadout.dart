@@ -172,15 +172,11 @@ class CreateLoadout extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params["championId"];
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
     if (paramChampionId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
-    final championId = int.tryParse(paramChampionId);
-    if (championId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
 
-    return CupertinoPage(child: CreateLoadout(championId: championId));
+    return CupertinoPage(child: CreateLoadout(championId: paramChampionId));
   }
 }

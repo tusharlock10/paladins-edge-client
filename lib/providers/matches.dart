@@ -15,12 +15,12 @@ class _MatchesNotifier extends ChangeNotifier {
 
   /// Player matches
   bool isPlayerMatchesLoading = false;
-  String? combinedMatchesPlayerId;
+  int? combinedMatchesPlayerId;
   List<data_classes.CombinedMatch>? combinedMatches;
 
   /// Common matches
   bool isCommonMatchesLoading = false;
-  String? commonMatchesPlayerId;
+  int? commonMatchesPlayerId;
   List<data_classes.CombinedMatch>? commonMatches;
 
   /// Top matches
@@ -45,7 +45,7 @@ class _MatchesNotifier extends ChangeNotifier {
 
   /// get the matches for this playerId
   Future<void> getPlayerMatches({
-    required String playerId,
+    required int playerId,
     bool forceUpdate = false,
   }) async {
     final response = await api.MatchRequests.playerMatches(
@@ -57,7 +57,7 @@ class _MatchesNotifier extends ChangeNotifier {
     if (response == null) return notifyListeners();
 
     // create list of combinedMatches using a temp. map
-    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    final Map<int, data_classes.CombinedMatch> tempMatchesMap = {};
     for (final match in response.matches) {
       tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
         match: match,
@@ -89,7 +89,7 @@ class _MatchesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getMatchDetails(String matchId) async {
+  Future<void> getMatchDetails(int matchId) async {
     isMatchDetailsLoading = true;
     utilities.postFrameCallback(notifyListeners);
 
@@ -168,8 +168,8 @@ class _MatchesNotifier extends ChangeNotifier {
   }
 
   void getCommonMatches({
-    required String userPlayerId,
-    required String playerId,
+    required int userPlayerId,
+    required int playerId,
   }) async {
     isCommonMatchesLoading = true;
     commonMatchesPlayerId = playerId;
@@ -187,7 +187,7 @@ class _MatchesNotifier extends ChangeNotifier {
     }
 
     // create list of commonMatches using a temp. map
-    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    final Map<int, data_classes.CombinedMatch> tempMatchesMap = {};
     for (final match in response.matches) {
       tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
         match: match,

@@ -20,7 +20,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
     final authProvider = ref.read(providers.auth);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final savedMatches = ref.watch(
-      providers.auth.select((_) => _.user?.savedMatches ?? []),
+      providers.auth.select((_) => _.user?.savedMatchIds ?? []),
     );
     // Variables
     final match = combinedMatch?.match;
@@ -89,7 +89,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
           ),
           if (match != null)
             Text(
-              match.matchId,
+              match.matchId.toString(),
               style: const TextStyle(fontSize: 12),
             ),
         ],

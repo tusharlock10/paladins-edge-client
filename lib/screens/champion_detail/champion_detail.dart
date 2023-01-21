@@ -97,7 +97,7 @@ class ChampionDetail extends HookConsumerWidget {
           screens.Loadouts.routeName,
           params: {
             "championId": champion.championId.toString(),
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },
@@ -197,14 +197,11 @@ class ChampionDetail extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final param = state.params["championId"];
-    if (param == null) return const CupertinoPage(child: screens.NotFound());
-
-    final championId = int.tryParse(param);
-    if (championId == null) {
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    if (paramChampionId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    return CupertinoPage(child: ChampionDetail(championId: championId));
+    return CupertinoPage(child: ChampionDetail(championId: paramChampionId));
   }
 }

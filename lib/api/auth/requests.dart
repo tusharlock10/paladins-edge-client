@@ -1,11 +1,12 @@
-import "package:paladinsedge/api/auth/responses.dart" as responses;
+import "package:paladinsedge/api/auth/responses.dart";
+import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class AuthRequests {
-  static Future<responses.CheckPlayerClaimedResponse?> checkPlayerClaimed({
-    required String playerId,
+  static Future<CheckPlayerClaimedResponse?> checkPlayerClaimed({
+    required int playerId,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
@@ -15,7 +16,7 @@ abstract class AuthRequests {
         },
       );
       if (response.data != null) {
-        return responses.CheckPlayerClaimedResponse.fromJson(response.data!);
+        return CheckPlayerClaimedResponse.fromJson(response.data!);
       }
 
       return null;
@@ -24,8 +25,8 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.ClaimPlayerResponse?> claimPlayer({
-    required String playerId,
+  static Future<ClaimPlayerResponse?> claimPlayer({
+    required int playerId,
     required String verification,
   }) async {
     try {
@@ -37,7 +38,7 @@ abstract class AuthRequests {
         },
       );
       if (response.data != null) {
-        return responses.ClaimPlayerResponse.fromJson(response.data!);
+        return ClaimPlayerResponse.fromJson(response.data!);
       }
 
       return null;
@@ -46,30 +47,28 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.LoginResponse?> login({
+  static Future<LoginResponse> login({
     required String uid,
     required String email,
     required String name,
     required String verification,
   }) async {
-    try {
-      final response = await utilities.api.post<Map<String, dynamic>>(
-        constants.Urls.login,
-        data: {
-          "uid": uid,
-          "email": email,
-          "name": name,
-          "verification": verification,
-        },
-      );
-      if (response.data != null) {
-        return responses.LoginResponse.fromJson(response.data!);
-      }
+    final payload = {
+      "uid": uid,
+      "email": email,
+      "name": name,
+      "verification": verification,
+    };
+    final input = ApiRequestInput<LoginResponse>(
+      url: constants.Urls.login,
+      method: HttpMethod.post,
+      fromJson: LoginResponse.fromJson,
+      defaultValue: LoginResponse(),
+      payload: payload,
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
   static Future<bool> logout() async {
@@ -82,12 +81,12 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.FaqsResponse?> faqs() async {
+  static Future<FaqsResponse?> faqs() async {
     try {
       final response =
           await utilities.api.get<Map<String, dynamic>>(constants.Urls.faqs);
       if (response.data != null) {
-        return responses.FaqsResponse.fromJson(response.data!);
+        return FaqsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -96,12 +95,12 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.SavedMatchesResponse?> savedMatches() async {
+  static Future<SavedMatchesResponse?> savedMatches() async {
     try {
       final response = await utilities.api
           .get<Map<String, dynamic>>(constants.Urls.savedMatches);
       if (response.data != null) {
-        return responses.SavedMatchesResponse.fromJson(response.data!);
+        return SavedMatchesResponse.fromJson(response.data!);
       }
 
       return null;
@@ -110,8 +109,8 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.UpdateSavedMatchesResponse?> updateSavedMatches({
-    required String matchId,
+  static Future<UpdateSavedMatchesResponse?> updateSavedMatches({
+    required int matchId,
   }) async {
     try {
       final response = await utilities.api.put<Map<String, dynamic>>(
@@ -119,7 +118,7 @@ abstract class AuthRequests {
         data: {"matchId": matchId},
       );
       if (response.data != null) {
-        return responses.UpdateSavedMatchesResponse.fromJson(response.data!);
+        return UpdateSavedMatchesResponse.fromJson(response.data!);
       }
 
       return null;
@@ -128,7 +127,7 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<responses.DeviceDetailResponse?> deviceDetail({
+  static Future<DeviceDetailResponse?> deviceDetail({
     required models.DeviceDetail deviceDetail,
   }) async {
     try {
@@ -137,7 +136,7 @@ abstract class AuthRequests {
         data: {"deviceDetail": deviceDetail},
       );
       if (response.data != null) {
-        return responses.DeviceDetailResponse.fromJson(response.data!);
+        return DeviceDetailResponse.fromJson(response.data!);
       }
 
       return null;

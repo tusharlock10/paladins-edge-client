@@ -18,7 +18,7 @@ abstract class ChampionsRequests {
   }
 
   static Future<PlayerChampionsResponse?> playerChampions({
-    required String playerId,
+    required int playerId,
     bool forceUpdate = false,
   }) async {
     try {

@@ -155,11 +155,11 @@ abstract class _LoadoutValidationResult implements LoadoutValidationResult {
 /// @nodoc
 mixin _$DraftLoadout {
   int get championId => throw _privateConstructorUsedError;
-  String get playerId => throw _privateConstructorUsedError;
+  int get playerId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<LoadoutCard?> get loadoutCards => throw _privateConstructorUsedError;
   bool get isImported => throw _privateConstructorUsedError;
-  String? get loadoutHash => throw _privateConstructorUsedError;
+  int? get loadoutHash => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DraftLoadoutCopyWith<DraftLoadout> get copyWith =>
@@ -173,11 +173,11 @@ abstract class $DraftLoadoutCopyWith<$Res> {
       _$DraftLoadoutCopyWithImpl<$Res>;
   $Res call(
       {int championId,
-      String playerId,
+      int playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
       bool isImported,
-      String? loadoutHash});
+      int? loadoutHash});
 }
 
 /// @nodoc
@@ -205,7 +205,7 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
       playerId: playerId == freezed
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -221,7 +221,7 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
       loadoutHash: loadoutHash == freezed
           ? _value.loadoutHash
           : loadoutHash // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -235,11 +235,11 @@ abstract class _$$_DraftLoadoutCopyWith<$Res>
   @override
   $Res call(
       {int championId,
-      String playerId,
+      int playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
       bool isImported,
-      String? loadoutHash});
+      int? loadoutHash});
 }
 
 /// @nodoc
@@ -270,7 +270,7 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
       playerId: playerId == freezed
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -286,7 +286,7 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
       loadoutHash: loadoutHash == freezed
           ? _value.loadoutHash
           : loadoutHash // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -306,7 +306,7 @@ class _$_DraftLoadout implements _DraftLoadout {
   @override
   final int championId;
   @override
-  final String playerId;
+  final int playerId;
   @override
   final String name;
   final List<LoadoutCard?> _loadoutCards;
@@ -319,7 +319,7 @@ class _$_DraftLoadout implements _DraftLoadout {
   @override
   final bool isImported;
   @override
-  final String? loadoutHash;
+  final int? loadoutHash;
 
   @override
   String toString() {
@@ -362,16 +362,16 @@ class _$_DraftLoadout implements _DraftLoadout {
 abstract class _DraftLoadout implements DraftLoadout {
   factory _DraftLoadout(
       {required final int championId,
-      required final String playerId,
+      required final int playerId,
       required final String name,
       required final List<LoadoutCard?> loadoutCards,
       required final bool isImported,
-      final String? loadoutHash}) = _$_DraftLoadout;
+      final int? loadoutHash}) = _$_DraftLoadout;
 
   @override
   int get championId;
   @override
-  String get playerId;
+  int get playerId;
   @override
   String get name;
   @override
@@ -379,7 +379,7 @@ abstract class _DraftLoadout implements DraftLoadout {
   @override
   bool get isImported;
   @override
-  String? get loadoutHash;
+  int? get loadoutHash;
   @override
   @JsonKey(ignore: true)
   _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>

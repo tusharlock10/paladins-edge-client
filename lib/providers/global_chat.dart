@@ -36,7 +36,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
         globalChatUser = player == null
             ? types.User(id: const Uuid().v4())
             : types.User(
-                id: player.playerId,
+                id: player.playerId.toString(),
                 imageUrl: player.avatarUrl,
                 firstName: player.name,
                 metadata: const {

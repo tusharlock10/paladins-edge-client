@@ -5,7 +5,7 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class MatchRequests {
   static Future<MatchDetailsResponse?> matchDetails({
-    required String matchId,
+    required int matchId,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
@@ -23,7 +23,7 @@ abstract class MatchRequests {
   }
 
   static Future<PlayerMatchesResponse?> playerMatches({
-    required String playerId,
+    required int playerId,
     bool forceUpdate = false,
   }) async {
     try {
@@ -45,7 +45,7 @@ abstract class MatchRequests {
   }
 
   static Future<CommonMatchesResponse?> commonMatches({
-    required List<String> playerIds,
+    required List<int> playerIds,
   }) async {
     try {
       final response = await utilities.api.post<Map<String, dynamic>>(

@@ -26,7 +26,7 @@ abstract class PlayersRequests {
   }
 
   static Future<responses.PlayerDetailResponse?> playerDetail({
-    required String playerId,
+    required int playerId,
     required bool forceUpdate,
   }) async {
     try {
@@ -45,7 +45,7 @@ abstract class PlayersRequests {
   }
 
   static Future<responses.BatchPlayerDetailsResponse?> batchPlayerDetail({
-    required List<String> playerIds,
+    required List<int> playerIds,
   }) async {
     try {
       final response = await utilities.api.post<Map<String, dynamic>>(
@@ -63,7 +63,7 @@ abstract class PlayersRequests {
   }
 
   static Future<responses.PlayerStatusResponse?> playerStatus({
-    required String playerId,
+    required int playerId,
     bool onlyStatus = false,
   }) async {
     try {
@@ -85,7 +85,7 @@ abstract class PlayersRequests {
   }
 
   static Future<responses.FriendsResponse?> friends({
-    required String playerId,
+    required int playerId,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
@@ -119,7 +119,7 @@ abstract class PlayersRequests {
 
   static Future<responses.UpdateFavouriteFriendResponse?>
       updateFavouriteFriend({
-    required String playerId,
+    required int playerId,
   }) async {
     try {
       final response = await utilities.api.put<Map<String, dynamic>>(
@@ -152,7 +152,7 @@ abstract class PlayersRequests {
   }
 
   static Future<responses.PlayerInferredResponse?> playerInferred({
-    required String playerId,
+    required int playerId,
   }) async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(

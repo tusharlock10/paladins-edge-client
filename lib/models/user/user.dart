@@ -17,7 +17,7 @@ class User {
 
   /// paladins playerId of the connected player
   @HiveField(5)
-  final String? playerId;
+  final int? playerId;
 
   /// uid provided by the oauth provider
   @HiveField(6)
@@ -25,18 +25,18 @@ class User {
 
   /// list of playerId of the user's favourite friends
   @HiveField(7)
-  List<String> favouriteFriends;
+  List<int> favouriteFriendIds;
 
   /// list of matchId
   @HiveField(8)
-  List<String> savedMatches;
+  List<int> savedMatchIds;
 
   User({
     required this.name,
     required this.email,
     required this.uid,
-    required this.favouriteFriends,
-    required this.savedMatches,
+    required this.favouriteFriendIds,
+    required this.savedMatchIds,
     this.playerId,
   });
 

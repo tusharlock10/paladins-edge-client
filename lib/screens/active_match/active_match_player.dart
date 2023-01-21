@@ -207,7 +207,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": playerInfo.player.playerId,
+            "playerId": playerInfo.player.playerId.toString(),
           },
         );
       },

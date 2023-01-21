@@ -23,7 +23,7 @@ class _PlayersNotifier extends ChangeNotifier {
   /// [onlyStatus] param if false, will get the active match details as well
   /// else it will not get the active match details
   Future<void> getPlayerStatus({
-    required String playerId,
+    required int playerId,
     bool forceUpdate = false,
     bool onlyStatus = false,
   }) async {
@@ -39,7 +39,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
     playerStatus ??= api.PlayerStatusResponse(
       inMatch: false,
-      playerId: "0",
+      playerId: 0,
       status: "Unknown",
       match: null,
     );
@@ -50,7 +50,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
   /// get the playerInferred from the api
   Future<void> getPlayerInferred({
-    required String playerId,
+    required int playerId,
   }) async {
     isLoadingPlayerInferred = true;
     utilities.postFrameCallback(notifyListeners);
@@ -104,7 +104,7 @@ class _PlayersNotifier extends ChangeNotifier {
 
   Future<void> insertSearchHistory({
     required String playerName,
-    required String playerId,
+    required int playerId,
   }) async {
     // remove existing searchItem
     final index = searchHistory.indexWhere((_) => _.playerId == playerId);
@@ -176,7 +176,7 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   Future<void> getPlayerData({
-    required String playerId,
+    required int playerId,
     required bool forceUpdate,
   }) async {
     if (!forceUpdate) {

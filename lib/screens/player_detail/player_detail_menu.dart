@@ -62,7 +62,9 @@ class PlayerDetailMenu extends HookConsumerWidget {
         utilities.Navigation.navigate(
           context,
           screens.ActiveMatch.routeName,
-          params: {"playerId": player.playerId},
+          params: {
+            "playerId": player.playerId.toString(),
+          },
         );
       },
       [player],
@@ -80,7 +82,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           context,
           screens.Friends.routeName,
           params: {
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },
@@ -99,7 +101,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           context,
           screens.PlayerChampions.routeName,
           params: {
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },
@@ -140,7 +142,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           context,
           screens.CommonMatches.routeName,
           params: {
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },

@@ -37,7 +37,7 @@ class SearchHistory extends HookConsumerWidget {
 
     // Methods
     final onTap = useCallback(
-      (String playerId) {
+      (int playerId) {
         utilities.Analytics.logEvent(
           constants.AnalyticsEvent.clickSearchHistory,
         );
@@ -46,7 +46,7 @@ class SearchHistory extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": playerId,
+            "playerId": playerId.toString(),
           },
         );
       },

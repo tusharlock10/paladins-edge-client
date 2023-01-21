@@ -265,7 +265,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": matchPlayer.playerId,
+            "playerId": matchPlayer.playerId.toString(),
           },
         );
       },

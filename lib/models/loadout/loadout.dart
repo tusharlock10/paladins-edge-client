@@ -24,7 +24,7 @@ class Loadout {
   final int championId;
 
   /// if of the player that loadout belongs to
-  final String playerId;
+  final int playerId;
 
   /// name of the loadout
   final String name;
@@ -37,7 +37,7 @@ class Loadout {
 
   /// hash of deckId if imported from paladins api
   /// else its a hash using uuid of is created
-  final String? loadoutHash;
+  final int? loadoutHash;
 
   Loadout({
     required this.championId,

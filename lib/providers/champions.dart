@@ -26,7 +26,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   List<data_classes.CombinedChampion>? combinedChampions;
 
   /// stores the playerId associated with the playerChampions
-  String? playerChampionsPlayerId;
+  int? playerChampionsPlayerId;
 
   /// holds playerChampions data for other players
   List<models.PlayerChampion>? playerChampions;
@@ -106,7 +106,7 @@ class _ChampionsNotifier extends ChangeNotifier {
 
   /// Get the `playerChampions` data for the playerId
   Future<void> getPlayerChampions({
-    required String playerId,
+    required int playerId,
     bool forceUpdate = false,
   }) async {
     isLoadingPlayerChampions = true;

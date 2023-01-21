@@ -182,7 +182,7 @@ class _RecentPartyMemberCard extends HookWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },

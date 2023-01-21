@@ -25,7 +25,7 @@ class _FriendsNotifier extends ChangeNotifier {
   Future<void> getUserFriends([bool forceUpdate = false]) async {
     final playerId = ref.read(auth_provider.auth).player?.playerId;
     final favouriteFriends =
-        ref.read(auth_provider.auth).user?.favouriteFriends;
+        ref.read(auth_provider.auth).user?.favouriteFriendIds;
     if (playerId == null) return;
 
     if (!forceUpdate) {
@@ -71,7 +71,7 @@ class _FriendsNotifier extends ChangeNotifier {
   }
 
   Future<void> getOtherFriends(
-    String playerId, [
+    int playerId, [
     bool forceUpdate = false,
   ]) async {
     if (!forceUpdate) {
@@ -122,7 +122,7 @@ class _FriendsNotifier extends ChangeNotifier {
     this.friends = response.favouriteFriends + friends;
 
     final user = ref.read(auth_provider.auth).user;
-    user!.favouriteFriends =
+    user!.favouriteFriendIds =
         response.favouriteFriends.map((_) => _.playerId).toList();
     utilities.Database.saveUser(user);
 

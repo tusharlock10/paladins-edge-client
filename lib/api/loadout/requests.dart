@@ -5,7 +5,7 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class LoadoutRequests {
   static Future<responses.PlayerLoadoutsResponse?> playerLoadouts({
-    required String playerId,
+    required int playerId,
     required int championId,
     bool forceUpdate = false,
   }) async {
@@ -69,7 +69,7 @@ abstract class LoadoutRequests {
   }
 
   static Future<responses.DeletePlayerLoadoutResponse?> deletePlayerLoadout({
-    required String loadoutHash,
+    required int loadoutHash,
     bool? dryRun,
   }) async {
     try {

@@ -112,8 +112,8 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
           context,
           routeName,
           params: {
-            "matchId": match.matchId,
-            if (!isSavedMatch) "playerId": matchPlayer.playerId,
+            "matchId": match.matchId.toString(),
+            if (!isSavedMatch) "playerId": matchPlayer.playerId.toString(),
           },
           queryParams: {
             if (isSavedMatch) "isSavedMatch": "true",

@@ -9,7 +9,7 @@ part of 'champions.dart';
 BatchPlayerChampionsPayload _$BatchPlayerChampionsPayloadFromJson(
         Map<String, dynamic> json) =>
     BatchPlayerChampionsPayload(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       championId: json['championId'] as int,
     );
 

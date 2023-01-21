@@ -26,7 +26,7 @@ class Friends extends HookConsumerWidget {
     pageBuilder: _userRouteBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
-  final String? otherPlayerId;
+  final int? otherPlayerId;
 
   const Friends({
     this.otherPlayerId,
@@ -113,17 +113,12 @@ class Friends extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final otherPlayerId = paramPlayerId;
-
-    return CupertinoPage(child: Friends(otherPlayerId: otherPlayerId));
+    return CupertinoPage(child: Friends(otherPlayerId: paramPlayerId));
   }
 
   static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());

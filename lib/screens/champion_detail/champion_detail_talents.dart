@@ -57,8 +57,7 @@ class ChampionDetailTalents extends StatelessWidget {
                               if (talent.cooldown != 0)
                                 widgets.TextChip(
                                   spacing: 5,
-                                  text:
-                                      "${talent.cooldown.toInt().toString()} sec",
+                                  text: "${talent.cooldown.toInt()} sec",
                                   color: Colors.blueGrey,
                                   icon: Icons.timelapse,
                                 ),

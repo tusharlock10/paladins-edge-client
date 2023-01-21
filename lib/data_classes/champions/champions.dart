@@ -5,7 +5,7 @@ part "champions.g.dart";
 
 @JsonSerializable()
 class BatchPlayerChampionsPayload {
-  final String playerId;
+  final int playerId;
   final int championId;
 
   BatchPlayerChampionsPayload({

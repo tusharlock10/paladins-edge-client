@@ -16,7 +16,7 @@ class _LoadoutNotifier extends ChangeNotifier {
 
   /// Get the `loadouts` data for the champion of that player
   Future<void> getPlayerLoadouts({
-    required String playerId,
+    required int playerId,
     required int championId,
     bool forceUpdate = false,
   }) async {
@@ -47,7 +47,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   /// instantiates the loadout with championId and playerId
   void createDraftLoadout({
     required int championId,
-    required String playerId,
+    required int playerId,
     required models.Loadout? loadout,
   }) {
     isEditingLoadout = loadout != null;
@@ -164,7 +164,7 @@ class _LoadoutNotifier extends ChangeNotifier {
   }
 
   /// Deletes a loadout using its loadoutHash
-  Future<void> deleteLoadout(String loadoutHash) async {
+  Future<void> deleteLoadout(int loadoutHash) async {
     if (loadouts == null) return;
 
     final loadoutsClone = [...loadouts!];

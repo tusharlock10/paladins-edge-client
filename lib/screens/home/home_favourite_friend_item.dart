@@ -30,7 +30,7 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": friend.playerId,
+            "playerId": friend.playerId.toString(),
           },
         );
       },

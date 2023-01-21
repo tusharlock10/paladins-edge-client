@@ -7,7 +7,8 @@ import "package:paladinsedge/screens/player_detail/player_detail_match_card.dart
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class CommonMatchesList extends HookConsumerWidget {
-  final String playerId;
+  final int playerId;
+
   const CommonMatchesList({
     required this.playerId,
     Key? key,

@@ -60,11 +60,11 @@ class Ranked {
 class Player {
   /// paladins player id
   @HiveField(0)
-  final String playerId;
+  final int playerId;
 
   /// id of the connected user model
   @HiveField(1)
-  final String? userId;
+  final int? userId;
 
   /// name of the player in the game eg. tusharlock10
   @HiveField(2)
@@ -173,7 +173,7 @@ class Player {
 @JsonSerializable()
 class LowerSearchPlayer {
   /// paladins player id
-  final String playerId;
+  final int playerId;
 
   /// name of the player in the game eg. tusharlock10
   final String name;

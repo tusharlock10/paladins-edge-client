@@ -163,7 +163,7 @@ class _AuthNotifier extends ChangeNotifier {
       verification: verification,
     );
 
-    if (response == null) {
+    if (!response.success) {
       return data_classes.SignInProviderResponse(
         result: false,
         errorCode: 5,
@@ -171,9 +171,10 @@ class _AuthNotifier extends ChangeNotifier {
       );
     }
 
-    user = response.user;
-    token = response.token;
-    player = response.player;
+    final loginData = response.data!;
+    user = loginData.user;
+    token = loginData.token;
+    player = loginData.player;
 
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
@@ -183,7 +184,7 @@ class _AuthNotifier extends ChangeNotifier {
     // upon successful login, send deviceDetail to server
     _sendDeviceDetail();
     // save response in local db
-    _saveResponse(response);
+    _saveResponse(loginData);
 
     isGuest = false;
     notifyListeners();
@@ -241,7 +242,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   Future<bool?> checkPlayerClaimed(
-    String playerId,
+    int playerId,
   ) async {
     final response = await api.AuthRequests.checkPlayerClaimed(
       playerId: playerId,
@@ -253,7 +254,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// Claim a player profile and connect it to the user
   Future<api.ClaimPlayerResponse?> claimPlayer(
     String otp,
-    String playerId,
+    int playerId,
   ) async {
     // Sends an otp and playerId to server to check
     // if a loadout exists with that OTP
@@ -286,28 +287,28 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Marks, un-marks a `friend` player as favourite
   Future<data_classes.FavouriteFriendResult> markFavouriteFriend(
-    String playerId,
+    int playerId,
   ) async {
     if (user == null) return data_classes.FavouriteFriendResult.unauthorized;
 
-    final favouriteFriendsClone = List<String>.from(user!.favouriteFriends);
+    final favouriteFriendsClone = List<int>.from(user!.favouriteFriendIds);
     data_classes.FavouriteFriendResult result;
 
-    if (!user!.favouriteFriends.contains(playerId)) {
+    if (!user!.favouriteFriendIds.contains(playerId)) {
       // player is not in the favouriteFriends, so we need to add him
 
       // check if user already has max number of friends
-      if (user!.favouriteFriends.length >=
+      if (user!.favouriteFriendIds.length >=
           utilities.Global.essentials!.maxFavouriteFriends) {
         return data_classes.FavouriteFriendResult.limitReached;
       }
 
-      user!.favouriteFriends.add(playerId);
+      user!.favouriteFriendIds.add(playerId);
       result = data_classes.FavouriteFriendResult.added;
       utilities.Analytics.logEvent(constants.AnalyticsEvent.markFriend);
     } else {
       // if he is in the favouriteFriends, then remove him
-      user!.favouriteFriends.remove(playerId);
+      user!.favouriteFriendIds.remove(playerId);
       result = data_classes.FavouriteFriendResult.removed;
       utilities.Analytics.logEvent(constants.AnalyticsEvent.unmarkFriend);
     }
@@ -324,10 +325,10 @@ class _AuthNotifier extends ChangeNotifier {
     if (response == null) {
       // if the response fails for some reason, revert back the change
       // set newPlayerAdded to false
-      user!.favouriteFriends = favouriteFriendsClone;
+      user!.favouriteFriendIds = favouriteFriendsClone;
       result = data_classes.FavouriteFriendResult.reverted;
     } else {
-      user!.favouriteFriends = response.favouriteFriends;
+      user!.favouriteFriendIds = List<int>.from(response.favouriteFriends);
     }
 
     notifyListeners();
@@ -338,7 +339,7 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Saves/ Un-saves a `match` for later reference
   Future<data_classes.SaveMatchResult> saveMatch(
-    String matchId,
+    int matchId,
   ) async {
     if (user == null) return data_classes.SaveMatchResult.unauthorized;
 
@@ -357,23 +358,23 @@ class _AuthNotifier extends ChangeNotifier {
     }
     if (combinedMatch == null) return data_classes.SaveMatchResult.reverted;
 
-    final savedMatchesClone = List<String>.from(user!.savedMatches);
+    final savedMatchesClone = List<int>.from(user!.savedMatchIds);
 
-    if (!user!.savedMatches.contains(matchId)) {
+    if (!user!.savedMatchIds.contains(matchId)) {
       // matchId is not in savedMatches, so we need to add it
 
       // check if user already has max number of saved matches
-      if (user!.favouriteFriends.length >=
+      if (user!.favouriteFriendIds.length >=
           utilities.Global.essentials!.maxSavedMatches) {
         return data_classes.SaveMatchResult.limitReached;
       }
 
-      user!.savedMatches.add(matchId);
+      user!.savedMatchIds.add(matchId);
       result = data_classes.SaveMatchResult.added;
       savedMatches = [...?savedMatches, combinedMatch];
     } else {
       // if match is in savedMatches, then remove it
-      user!.savedMatches.remove(matchId);
+      user!.savedMatchIds.remove(matchId);
       result = data_classes.SaveMatchResult.removed;
       if (savedMatches != null) {
         savedMatches = savedMatches!
@@ -396,12 +397,12 @@ class _AuthNotifier extends ChangeNotifier {
 
     if (response == null) {
       // if the response fails for some reason, revert back the change
-      user!.savedMatches = savedMatchesClone;
+      user!.savedMatchIds = savedMatchesClone;
       _restoreSavedMatches(combinedMatch, result);
 
       result = data_classes.SaveMatchResult.reverted;
     } else {
-      user!.savedMatches = response.savedMatches;
+      user!.savedMatchIds = List<int>.from(response.savedMatches);
     }
 
     notifyListeners();
@@ -416,7 +417,7 @@ class _AuthNotifier extends ChangeNotifier {
     if (response == null) return;
 
     // create list of combinedMatches using a temp. map
-    final Map<String, data_classes.CombinedMatch> tempMatchesMap = {};
+    final Map<int, data_classes.CombinedMatch> tempMatchesMap = {};
     for (final match in response.matches) {
       tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
         match: match,
@@ -435,7 +436,7 @@ class _AuthNotifier extends ChangeNotifier {
     savedMatches = tempMatchesMap.values.toList();
     if (user != null && savedMatches != null) {
       final matchIds = savedMatches!.map((_) => _.match.matchId);
-      user!.savedMatches = matchIds.toList();
+      user!.savedMatchIds = List<int>.from(matchIds);
       utilities.Database.saveUser(user!);
     }
     notifyListeners();
@@ -573,11 +574,11 @@ class _AuthNotifier extends ChangeNotifier {
     }
   }
 
-  void _saveResponse(api.LoginResponse response) {
-    utilities.Database.saveUser(response.user);
-    utilities.Database.saveToken(response.token);
-    if (response.player != null) {
-      utilities.Database.savePlayer(response.player!);
+  void _saveResponse(data_classes.LoginData loginData) {
+    utilities.Database.saveUser(loginData.user);
+    utilities.Database.saveToken(loginData.token);
+    if (loginData.player != null) {
+      utilities.Database.savePlayer(loginData.player!);
     }
   }
 

@@ -66,7 +66,7 @@ class PlayerAdapter extends TypeAdapter<Player> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Player(
-      playerId: fields[0] as String,
+      playerId: fields[0] as int,
       name: fields[2] as String,
       avatarUrl: fields[4] as String,
       avatarBlurHash: fields[5] as String?,
@@ -80,7 +80,7 @@ class PlayerAdapter extends TypeAdapter<Player> {
       accountCreationDate: fields[13] as DateTime,
       lastLoginDate: fields[14] as DateTime,
       ranked: fields[15] as Ranked,
-      userId: fields[1] as String?,
+      userId: fields[1] as int?,
       title: fields[3] as String?,
       lastUpdatedFriends: fields[16] as DateTime?,
       lastUpdatedPlayer: fields[17] as DateTime?,
@@ -172,7 +172,7 @@ Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
     };
 
 Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       name: json['name'] as String,
       avatarUrl: json['avatarUrl'] as String,
       avatarBlurHash: json['avatarBlurHash'] as String?,
@@ -187,7 +187,7 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
           DateTime.parse(json['accountCreationDate'] as String),
       lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
       ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
-      userId: json['userId'] as String?,
+      userId: json['userId'] as int?,
       title: json['title'] as String?,
       lastUpdatedFriends: json['lastUpdatedFriends'] == null
           ? null
@@ -232,7 +232,7 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
 
 LowerSearchPlayer _$LowerSearchPlayerFromJson(Map<String, dynamic> json) =>
     LowerSearchPlayer(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       name: json['name'] as String,
       isPrivate: json['isPrivate'] as bool,
       platform: json['platform'] as String,

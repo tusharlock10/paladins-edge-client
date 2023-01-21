@@ -7,7 +7,7 @@ part of 'player_inferred.dart';
 // **************************************************************************
 
 BasicPlayer _$BasicPlayerFromJson(Map<String, dynamic> json) => BasicPlayer(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       name: json['name'] as String,
       avatarUrl: json['avatarUrl'] as String,
       avatarBlurHash: json['avatarBlurHash'] as String?,
@@ -25,13 +25,13 @@ Map<String, dynamic> _$BasicPlayerToJson(BasicPlayer instance) =>
 
 PlayerInferred _$PlayerInferredFromJson(Map<String, dynamic> json) =>
     PlayerInferred(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       recentlyPlayedChampions:
           (json['recentlyPlayedChampions'] as List<dynamic>)
               .map((e) => e as int)
               .toList(),
       recentlyPlayedQueues: (json['recentlyPlayedQueues'] as List<dynamic>)
-          .map((e) => e as String)
+          .map((e) => e as int)
           .toList(),
       recentPartyMembers: (json['recentPartyMembers'] as List<dynamic>)
           .map((e) => BasicPlayer.fromJson(e as Map<String, dynamic>))

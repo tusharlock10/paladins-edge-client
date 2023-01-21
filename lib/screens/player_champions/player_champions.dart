@@ -20,7 +20,7 @@ class PlayerChampions extends HookConsumerWidget {
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  final String playerId;
+  final int playerId;
 
   const PlayerChampions({
     required this.playerId,
@@ -76,7 +76,7 @@ class PlayerChampions extends HookConsumerWidget {
           screens.Loadouts.routeName,
           params: {
             "championId": champion.championId.toString(),
-            "playerId": player.playerId,
+            "playerId": player.playerId.toString(),
           },
         );
       },
@@ -201,16 +201,11 @@ class PlayerChampions extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final playerId = paramPlayerId;
-
-    return CupertinoPage(child: PlayerChampions(playerId: playerId));
+    return CupertinoPage(child: PlayerChampions(playerId: paramPlayerId));
   }
 }

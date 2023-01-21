@@ -47,7 +47,7 @@ class ConnectProfile extends HookConsumerWidget {
           : (Random().nextInt(899999) + 100000).toString(),
     );
     final isLoading = useState(false);
-    final isCheckingPlayer = useState<String?>(null);
+    final isCheckingPlayer = useState<int?>(null);
     final isVerifying = useState(false);
     final showVerifyHelp = useState(false);
     final step = useState(0); // at which step of the process the user is at

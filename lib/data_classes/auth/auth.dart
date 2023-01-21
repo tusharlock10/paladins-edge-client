@@ -1,4 +1,9 @@
 import "package:flutter/material.dart";
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/player/player.dart";
+import "package:paladinsedge/models/user/user.dart";
+
+part "auth.g.dart";
 
 enum FavouriteFriendResult {
   removed,
@@ -30,4 +35,21 @@ class SignInProviderResponse {
     this.errorCode,
     this.errorMessage,
   });
+}
+
+@JsonSerializable()
+class LoginData {
+  final User user;
+  final String token;
+  final Player? player;
+
+  LoginData({
+    required this.user,
+    required this.token,
+    this.player,
+  });
+
+  factory LoginData.fromJson(Map<String, dynamic> json) =>
+      _$LoginDataFromJson(json);
+  Map<String, dynamic> toJson() => _$LoginDataToJson(this);
 }

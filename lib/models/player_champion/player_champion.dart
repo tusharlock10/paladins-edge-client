@@ -10,7 +10,7 @@ part "player_champion.g.dart";
 class PlayerChampion {
   /// Paladins playerId to which this champion data belong
   @HiveField(0)
-  final String playerId;
+  final int playerId;
 
   /// Paladins champion id
   @HiveField(1)

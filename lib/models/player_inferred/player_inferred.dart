@@ -7,7 +7,7 @@ part "player_inferred.g.dart";
 @JsonSerializable()
 class BasicPlayer {
   /// paladins player id
-  final String playerId;
+  final int playerId;
 
   /// name of the player in the game eg. tusharlock10
   final String name;
@@ -37,12 +37,13 @@ class BasicPlayer {
 @JsonSerializable()
 class PlayerInferred {
   /// paladins player id this data belongs to
-  final String playerId;
+  final int playerId;
 
   /// list of championIds, the player has played recently
   final List<int> recentlyPlayedChampions;
+
   // list of queues, the player has played recently
-  final List<String> recentlyPlayedQueues;
+  final List<int> recentlyPlayedQueues;
 
   /// list of party members the player has played with the most
   final List<BasicPlayer> recentPartyMembers;

@@ -8,7 +8,7 @@ part of 'responses.dart';
 
 LowerSearch _$LowerSearchFromJson(Map<String, dynamic> json) => LowerSearch(
       name: json['name'] as String,
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       isPrivate: json['isPrivate'] as bool,
       platform: json['platform'] as String,
     );
@@ -84,7 +84,7 @@ Map<String, dynamic> _$BatchPlayerDetailsResponseToJson(
 PlayerStatusResponse _$PlayerStatusResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerStatusResponse(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       inMatch: json['inMatch'] as bool,
       status: json['status'] as String,
       match: json['match'] == null

@@ -10,7 +10,7 @@ part "search_history.g.dart";
 class SearchHistory extends HiveObject {
   /// id of the searched player
   @HiveField(0)
-  final String playerId;
+  final int playerId;
 
   /// name of the searched player
   @HiveField(1)

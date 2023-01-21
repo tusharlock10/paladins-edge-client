@@ -130,7 +130,7 @@ class _LoadoutCardDetail extends HookWidget {
                           if (card.cooldown != 0)
                             widgets.TextChip(
                               spacing: 5,
-                              text: "${card.cooldown.toInt().toString()} sec",
+                              text: "${card.cooldown.toInt()} sec",
                               color: Colors.blueGrey,
                               icon: Icons.timelapse,
                             ),

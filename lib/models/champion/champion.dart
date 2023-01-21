@@ -291,10 +291,7 @@ class Champion {
         headerUrl = utilities.getUrlFromKey(headerUrl),
         splashUrl = utilities.getUrlFromKey(splashUrl);
 
-  factory Champion.fromJson(Map<String, dynamic> json) {
-    print("CHAMPION IS ::: $json");
-
-    return _$ChampionFromJson(json);
-  }
+  factory Champion.fromJson(Map<String, dynamic> json) =>
+      _$ChampionFromJson(json);
   Map<String, dynamic> toJson() => _$ChampionToJson(this);
 }

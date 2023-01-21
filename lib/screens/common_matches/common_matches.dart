@@ -14,7 +14,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class CommonMatches extends HookConsumerWidget {
   static const routeName = "common-matches";
   static const routePath = "common-matches";
-  final String playerId;
+  final int playerId;
 
   const CommonMatches({
     required this.playerId,
@@ -123,16 +123,11 @@ class CommonMatches extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final playerId = paramPlayerId;
-
-    return CupertinoPage(child: CommonMatches(playerId: playerId));
+    return CupertinoPage(child: CommonMatches(playerId: paramPlayerId));
   }
 }

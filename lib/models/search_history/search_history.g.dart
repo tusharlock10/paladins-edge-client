@@ -17,7 +17,7 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SearchHistory(
-      playerId: fields[0] as String,
+      playerId: fields[0] as int,
       playerName: fields[1] as String,
       time: fields[2] as DateTime,
     );
@@ -52,7 +52,7 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
 
 SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
     SearchHistory(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       playerName: json['playerName'] as String,
       time: DateTime.parse(json['time'] as String),
     );

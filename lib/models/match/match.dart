@@ -111,13 +111,13 @@ class MatchPlayerChampionCard {
 @JsonSerializable()
 class MatchPlayer {
   /// player id as per paladins api
-  final String playerId;
+  final int playerId;
 
   /// name of the player
   final String playerName;
 
   /// id of the match it is connected to
-  final String matchId;
+  final int matchId;
 
   /// champion id as per paladins api
   final int championId;
@@ -186,7 +186,7 @@ class MatchPlayer {
 @JsonSerializable()
 class Match {
   /// id of the match
-  final String matchId;
+  final int matchId;
 
   /// team that won the match
   final int winningTeam;

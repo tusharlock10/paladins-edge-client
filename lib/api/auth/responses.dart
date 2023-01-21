@@ -1,4 +1,5 @@
 import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/data_classes/index.dart" show LoginData;
 import "package:paladinsedge/models/index.dart"
     show User, Player, FAQ, Match, MatchPlayer, DeviceDetail;
 
@@ -6,14 +7,14 @@ part "responses.g.dart";
 
 @JsonSerializable()
 class LoginResponse {
-  final User user;
-  final String token;
-  final Player? player;
+  final bool success;
+  final String? error;
+  final LoginData? data;
 
   LoginResponse({
-    required this.user,
-    required this.token,
-    this.player,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>

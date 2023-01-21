@@ -68,7 +68,7 @@ abstract class MatchFilter {
     required List<CombinedMatch> combinedMatches,
     required SelectedMatchFilter filter,
     required List<models.Champion> champions,
-    required String playerId,
+    required int playerId,
   }) {
     switch (filter.name) {
       case _map:
@@ -159,7 +159,7 @@ abstract class MatchFilter {
     List<CombinedMatch> combinedMatches,
     SelectedMatchFilter filter,
     List<models.Champion> champions,
-    String playerId,
+    int playerId,
   ) {
     if (filter.value == null) return combinedMatches;
     final roleChampionIds = champions

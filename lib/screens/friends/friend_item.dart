@@ -23,7 +23,7 @@ class FriendItem extends HookConsumerWidget {
     // Providers
     final authProvider = ref.read(providers.auth);
     final favouriteFriends = ref.watch(
-      providers.auth.select((_) => _.user?.favouriteFriends),
+      providers.auth.select((_) => _.user?.favouriteFriendIds),
     );
 
     // Variables
@@ -73,7 +73,7 @@ class FriendItem extends HookConsumerWidget {
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": friend.playerId,
+            "playerId": friend.playerId.toString(),
           },
         );
       },

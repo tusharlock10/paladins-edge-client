@@ -29,13 +29,13 @@ class Search extends HookConsumerWidget {
 
     // Methods
     final navigateToPlayerDetail = useCallback(
-      (String playerId) {
+      (int playerId) {
         utilities.unFocusKeyboard(context);
         utilities.Navigation.navigate(
           context,
           screens.PlayerDetail.routeName,
           params: {
-            "playerId": playerId,
+            "playerId": playerId.toString(),
           },
         );
       },

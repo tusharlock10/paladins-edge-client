@@ -53,7 +53,7 @@ class ActiveMatchPlayersInfo {
 
 @JsonSerializable()
 class ActiveMatchPlayerDetail {
-  String playerId;
+  int playerId;
   String playerName;
   String platform;
   int level;

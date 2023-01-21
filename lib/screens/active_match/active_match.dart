@@ -29,7 +29,7 @@ class ActiveMatch extends HookConsumerWidget {
     pageBuilder: _userRouteBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
-  final String? playerId;
+  final int? playerId;
 
   const ActiveMatch({
     this.playerId,
@@ -141,17 +141,12 @@ class ActiveMatch extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final playerId = paramPlayerId;
-
-    return CupertinoPage(child: ActiveMatch(playerId: playerId));
+    return CupertinoPage(child: ActiveMatch(playerId: paramPlayerId));
   }
 
   static Page _userRouteBuilder(_, __) =>

@@ -23,7 +23,7 @@ class Home extends HookConsumerWidget {
     final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
     final favouriteFriends = ref.watch(
-      providers.auth.select((_) => _.user?.favouriteFriends),
+      providers.auth.select((_) => _.user?.favouriteFriendIds),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 

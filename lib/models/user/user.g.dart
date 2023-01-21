@@ -20,9 +20,9 @@ class UserAdapter extends TypeAdapter<User> {
       name: fields[1] as String,
       email: fields[2] as String,
       uid: fields[6] as String,
-      favouriteFriends: (fields[7] as List).cast<String>(),
-      savedMatches: (fields[8] as List).cast<String>(),
-      playerId: fields[5] as String?,
+      favouriteFriendIds: (fields[7] as List).cast<int>(),
+      savedMatchIds: (fields[8] as List).cast<int>(),
+      playerId: fields[5] as int?,
     );
   }
 
@@ -39,9 +39,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(6)
       ..write(obj.uid)
       ..writeByte(7)
-      ..write(obj.favouriteFriends)
+      ..write(obj.favouriteFriendIds)
       ..writeByte(8)
-      ..write(obj.savedMatches);
+      ..write(obj.savedMatchIds);
   }
 
   @override
@@ -63,13 +63,13 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       name: json['name'] as String,
       email: json['email'] as String,
       uid: json['uid'] as String,
-      favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
-          .map((e) => e as String)
+      favouriteFriendIds: (json['favouriteFriendIds'] as List<dynamic>)
+          .map((e) => e as int)
           .toList(),
-      savedMatches: (json['savedMatches'] as List<dynamic>)
-          .map((e) => e as String)
+      savedMatchIds: (json['savedMatchIds'] as List<dynamic>)
+          .map((e) => e as int)
           .toList(),
-      playerId: json['playerId'] as String?,
+      playerId: json['playerId'] as int?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -77,6 +77,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'playerId': instance.playerId,
       'uid': instance.uid,
-      'favouriteFriends': instance.favouriteFriends,
-      'savedMatches': instance.savedMatches,
+      'favouriteFriendIds': instance.favouriteFriendIds,
+      'savedMatchIds': instance.savedMatchIds,
     };

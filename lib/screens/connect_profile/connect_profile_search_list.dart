@@ -7,7 +7,7 @@ import "package:paladinsedge/screens/connect_profile/connect_profile_search_item
 
 class ConnectProfileSearchList extends ConsumerWidget {
   final bool isLoading;
-  final String? isCheckingPlayer;
+  final int? isCheckingPlayer;
   final void Function(String) onSearch;
   final void Function(api.LowerSearch) onTap;
 

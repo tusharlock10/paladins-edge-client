@@ -17,7 +17,7 @@ class Loadouts extends HookConsumerWidget {
   static const routeName = "loadouts";
   static const routePath = "loadouts/:playerId";
   final int championId;
-  final String playerId;
+  final int playerId;
 
   const Loadouts({
     required this.playerId,
@@ -149,7 +149,7 @@ class Loadouts extends HookConsumerWidget {
           screens.CreateLoadout.routeName,
           params: {
             "championId": championId.toString(),
-            "playerId": playerId,
+            "playerId": playerId.toString(),
           },
         );
       },
@@ -170,7 +170,7 @@ class Loadouts extends HookConsumerWidget {
           screens.CreateLoadout.routeName,
           params: {
             "championId": championId.toString(),
-            "playerId": playerId,
+            "playerId": playerId.toString(),
           },
         );
       },
@@ -325,26 +325,16 @@ class Loadouts extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params["championId"];
-    final paramPlayerId = state.params["playerId"];
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
     if (paramChampionId == null || paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    final championId = int.tryParse(paramChampionId);
-    if (championId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    if (int.tryParse(paramPlayerId) == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-    final playerId = paramPlayerId;
-
     return CupertinoPage(
       child: Loadouts(
-        playerId: playerId,
-        championId: championId,
+        playerId: paramChampionId,
+        championId: paramPlayerId,
       ),
     );
   }

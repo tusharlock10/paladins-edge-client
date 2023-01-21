@@ -4,7 +4,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfileSearchItem extends StatelessWidget {
   final api.LowerSearch searchItem;
-  final String? isCheckingPlayer;
+  final int? isCheckingPlayer;
   final void Function(api.LowerSearch) onTap;
 
   const ConnectProfileSearchItem({
@@ -49,7 +49,7 @@ class ConnectProfileSearchItem extends StatelessWidget {
             ),
           ),
           Text(
-            searchItem.playerId,
+            searchItem.playerId.toString(),
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey.shade700,

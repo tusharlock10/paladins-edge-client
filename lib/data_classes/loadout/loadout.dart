@@ -17,17 +17,17 @@ class LoadoutValidationResult with _$LoadoutValidationResult {
 class DraftLoadout with _$DraftLoadout {
   factory DraftLoadout({
     required int championId,
-    required String playerId,
+    required int playerId,
     required String name,
     required List<LoadoutCard?> loadoutCards,
     required bool isImported,
-    String? loadoutHash,
+    int? loadoutHash,
   }) = _DraftLoadout;
 
   factory DraftLoadout.empty() {
     return DraftLoadout(
       championId: 0,
-      playerId: "",
+      playerId: 0,
       name: "New Loadout",
       loadoutCards: List<LoadoutCard?>.filled(5, null),
       isImported: false,

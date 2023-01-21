@@ -56,7 +56,7 @@ Map<String, dynamic> _$ActiveMatchPlayersInfoToJson(
 ActiveMatchPlayerDetail _$ActiveMatchPlayerDetailFromJson(
         Map<String, dynamic> json) =>
     ActiveMatchPlayerDetail(
-      playerId: json['playerId'] as String,
+      playerId: json['playerId'] as int,
       playerName: json['playerName'] as String,
       platform: json['platform'] as String,
       level: json['level'] as int,

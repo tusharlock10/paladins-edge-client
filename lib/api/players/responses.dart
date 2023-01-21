@@ -7,7 +7,7 @@ part "responses.g.dart";
 @JsonSerializable()
 class LowerSearch {
   final String name;
-  final String playerId;
+  final int playerId;
   final bool isPrivate;
   final String platform;
 
@@ -76,7 +76,7 @@ class BatchPlayerDetailsResponse {
 
 @JsonSerializable()
 class PlayerStatusResponse {
-  final String playerId;
+  final int playerId;
   final bool inMatch;
   final String status;
   final ActiveMatch? match;
