@@ -83,7 +83,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     // Variables
     final expandedController = ExpandableController(initialExpanded: false);
     final textTheme = Theme.of(context).textTheme;
-    final isPrivatePlayer = playerInfo.player.playerId == "0";
+    final isPrivatePlayer = playerInfo.player.playerId == 0;
     final winRate = playerInfo.ranked?.winRate;
     final winRateFormatted = playerInfo.ranked?.winRateFormatted;
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;

@@ -5,11 +5,9 @@ abstract class Urls {
   // auth
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
-  static const checkPlayerClaimed = "/auth/checkPlayerClaimed"; // GET
+  static const checkPlayerClaimed = "/auth/checkPlayerClaimed/:playerId"; // GET
   static const claimPlayer = "/auth/claimPlayer"; // POST
   static const faqs = "/auth/faqs"; // GET
-  static const savedMatches = "/auth/savedMatches"; // GET
-  static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
   static const deviceDetail = "/auth/deviceDetail"; // PUT
 
   // common
@@ -21,17 +19,17 @@ abstract class Urls {
   static const champions = "/champions"; // GET
   static const playerChampions = "/champions/playerChampions"; // GET
   static const batchPlayerChampions = "/champions/batchPlayerChampions"; // POST
-  static const favouriteChampions = "/champions/favouriteChampions"; // GET
+  static const favouriteChampions = "/champions/favourite"; // GET
   static const updateFavouriteChampion =
       "/champions/updateFavouriteChampion"; // PUT
 
   // players
-  static const searchPlayers = "/players/searchPlayers"; // GET
+  static const searchPlayers = "/players/search/:playerName"; // GET
   static const playerDetail = "/players/playerDetail"; // GET
   static const batchPlayerDetails = "/players/batchPlayerDetails"; // POST
   static const playerStatus = "/players/playerStatus"; // GET
   static const friends = "/players/friends"; // GET
-  static const favouriteFriends = "/players/favouriteFriends"; // GET
+  static const favouriteFriends = "/players/favourite"; // GET
   static const updateFavouriteFriend = "/players/updateFavouriteFriend"; // PUT
   static const searchHistory = "/players/searchHistory"; // GET
   static const playerInferred = "/players/playerInferred"; // GET
@@ -43,6 +41,8 @@ abstract class Urls {
   static const matchDetails = "/match/matchDetails"; // GET
   static const playerMatches = "/match/playerMatches"; // GET
   static const commonMatches = "/match/commonMatches"; // POST
+  static const savedMatches = "/matches/saved"; // GET
+  static const saveMatch = "/matches/save/:matchId"; // PUT
   static const topMatches = "/matches/top"; // GET
 
   // loadout

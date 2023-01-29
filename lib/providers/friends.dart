@@ -101,7 +101,7 @@ class _FriendsNotifier extends ChangeNotifier {
 
     final response = await api.PlayersRequests.favouriteFriends();
 
-    if (response == null) {
+    if (!response.success) {
       if (!forceUpdate) {
         isLoadingFavouriteFriends = false;
         notifyListeners();
@@ -110,20 +110,19 @@ class _FriendsNotifier extends ChangeNotifier {
       return;
     }
 
+    final favouriteFriends = response.data!;
     final friends = this.friends ?? [];
-    final favouriteFriendsFromApi =
-        response.favouriteFriends.map((_) => _.playerId).toList();
+    final favouriteFriendIds = favouriteFriends.map((_) => _.playerId).toList();
 
     // find favourite players
     friends.removeWhere(
-      (friend) => favouriteFriendsFromApi.contains(friend.playerId),
+      (friend) => favouriteFriendIds.contains(friend.playerId),
     );
 
-    this.friends = response.favouriteFriends + friends;
+    this.friends = response.data! + friends;
 
     final user = ref.read(auth_provider.auth).user;
-    user!.favouriteFriendIds =
-        response.favouriteFriends.map((_) => _.playerId).toList();
+    user!.favouriteFriendIds = favouriteFriends.map((_) => _.playerId).toList();
     utilities.Database.saveUser(user);
 
     if (!forceUpdate) isLoadingFavouriteFriends = false;

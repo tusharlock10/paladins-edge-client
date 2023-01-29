@@ -2,6 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
@@ -12,8 +13,8 @@ class _PlayersNotifier extends ChangeNotifier {
   models.Player? playerData;
   api.PlayerStatusResponse? playerStatus;
   models.PlayerInferred? playerInferred;
-  List<api.LowerSearch> lowerSearchList = [];
-  List<models.Player> topSearchList = [];
+  List<data_classes.LowerSearch> lowerSearchPlayers = [];
+  List<models.Player> topSearchPlayers = [];
   List<models.SearchHistory> searchHistory = [];
   final ChangeNotifierProviderRef<_PlayersNotifier> ref;
 
@@ -123,7 +124,7 @@ class _PlayersNotifier extends ChangeNotifier {
     searchHistory.forEach(utilities.Database.saveSearchHistory);
   }
 
-  Future<api.SearchPlayersResponse?> searchByName({
+  Future<api.SearchPlayersResponse> searchByName({
     required String playerName,
     required bool simpleResults,
     required bool addInSearchHistory,
@@ -137,13 +138,14 @@ class _PlayersNotifier extends ChangeNotifier {
       simpleResults: simpleResults,
     );
 
-    if (response == null) {
+    if (!response.success) {
       // return false when api call is not successful
-      return null;
+      return response;
     }
+    final searchPlayersData = response.data!;
 
-    if (response.exactMatch) {
-      playerData = response.playerData;
+    if (searchPlayersData.exactMatch) {
+      playerData = searchPlayersData.player;
 
       if (addInSearchHistory && playerData != null) {
         await insertSearchHistory(
@@ -152,10 +154,10 @@ class _PlayersNotifier extends ChangeNotifier {
         );
       }
     } else {
-      topSearchList = response.searchData.topSearchList;
-      lowerSearchList = response.searchData.lowerSearchList;
+      topSearchPlayers = searchPlayersData.topSearchPlayers;
+      lowerSearchPlayers = searchPlayersData.lowerSearchPlayers;
 
-      if (topSearchList.isEmpty && lowerSearchList.isEmpty) {
+      if (topSearchPlayers.isEmpty && lowerSearchPlayers.isEmpty) {
         onNotFound(playerName);
       }
     }
@@ -170,8 +172,8 @@ class _PlayersNotifier extends ChangeNotifier {
   }
 
   void clearSearchList() {
-    topSearchList = [];
-    lowerSearchList = [];
+    topSearchPlayers = [];
+    lowerSearchPlayers = [];
     notifyListeners();
   }
 
@@ -221,8 +223,8 @@ class _PlayersNotifier extends ChangeNotifier {
     playerData = null;
     playerStatus = null;
     playerInferred = null;
-    lowerSearchList = [];
-    topSearchList = [];
+    lowerSearchPlayers = [];
+    topSearchPlayers = [];
     searchHistory = [];
   }
 }

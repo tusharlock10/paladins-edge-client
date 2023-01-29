@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class SearchLowerItem extends HookWidget {
-  final api.LowerSearch lowerSearch;
+  final data_classes.LowerSearch lowerSearch;
 
   const SearchLowerItem({
     required this.lowerSearch,

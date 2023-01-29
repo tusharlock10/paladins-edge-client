@@ -56,19 +56,16 @@ abstract class ChampionsRequests {
     return null;
   }
 
-  static Future<FavouriteChampionsResponse?> favouriteChampions() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.favouriteChampions,
-      );
-      if (response.data != null) {
-        return FavouriteChampionsResponse.fromJson(response.data!);
-      }
+  static Future<FavouriteChampionsResponse> favouriteChampions() async {
+    final input = ApiRequestInput<FavouriteChampionsResponse>(
+      url: constants.Urls.favouriteChampions,
+      method: HttpMethod.get,
+      fromJson: FavouriteChampionsResponse.fromJson,
+      defaultValue: FavouriteChampionsResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
   static Future<UpdateFavouriteChampionResponse?> updateFavouriteChampion({

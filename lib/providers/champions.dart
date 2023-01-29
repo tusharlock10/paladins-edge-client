@@ -320,8 +320,11 @@ class _ChampionsNotifier extends ChangeNotifier {
   /// Fetch the favourite champions for the user
   Future<Set<int>?> _loadFavouriteChampions() async {
     final response = await api.ChampionsRequests.favouriteChampions();
+    if (!response.success) {
+      return <int>{};
+    }
 
-    return response?.favouriteChampions.toSet();
+    return response.data!.toSet();
   }
 }
 

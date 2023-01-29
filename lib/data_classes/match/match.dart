@@ -1,5 +1,9 @@
 import "package:flutter/material.dart" show MaterialColor, IconData;
-import "package:paladinsedge/models/index.dart" as models;
+import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/models/index.dart"
+    show MatchPlayerItem, Item, MatchPlayer, Match;
+
+part "match.g.dart";
 
 class MatchTeamStats {
   int kills;
@@ -28,11 +32,26 @@ class MatchPlayerHighestStat {
 }
 
 class MatchPlayerItemUsed {
-  final models.MatchPlayerItem playerItem;
-  final models.Item item;
+  final MatchPlayerItem playerItem;
+  final Item item;
 
   const MatchPlayerItemUsed({
     required this.playerItem,
     required this.item,
   });
+}
+
+@JsonSerializable()
+class MatchesData {
+  final List<Match> matches;
+  final List<MatchPlayer> matchPlayers;
+
+  MatchesData({
+    required this.matches,
+    required this.matchPlayers,
+  });
+
+  factory MatchesData.fromJson(Map<String, dynamic> json) =>
+      _$MatchesDataFromJson(json);
+  Map<String, dynamic> toJson() => _$MatchesDataToJson(this);
 }

@@ -1,4 +1,8 @@
+import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/models/index.dart" show Player;
+
+part "players.g.dart";
 
 class LoadoutItem {
   final models.ChampionCard? card;
@@ -34,4 +38,40 @@ class RecentWinStats {
     required this.rankedMatches,
     required this.rankedWins,
   });
+}
+
+@JsonSerializable()
+class LowerSearch {
+  final String name;
+  final int playerId;
+  final String platform;
+
+  LowerSearch({
+    required this.name,
+    required this.playerId,
+    required this.platform,
+  });
+
+  factory LowerSearch.fromJson(Map<String, dynamic> json) =>
+      _$LowerSearchFromJson(json);
+  Map<String, dynamic> toJson() => _$LowerSearchToJson(this);
+}
+
+@JsonSerializable()
+class SearchPlayersData {
+  final List<Player> topSearchPlayers;
+  final List<LowerSearch> lowerSearchPlayers;
+  final bool exactMatch;
+  final Player? player;
+
+  SearchPlayersData({
+    required this.topSearchPlayers,
+    required this.lowerSearchPlayers,
+    required this.exactMatch,
+    this.player,
+  });
+
+  factory SearchPlayersData.fromJson(Map<String, dynamic> json) =>
+      _$SearchPlayersDataFromJson(json);
+  Map<String, dynamic> toJson() => _$SearchPlayersDataToJson(this);
 }

@@ -17,7 +17,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
+    final matchesProvider = ref.read(providers.matches);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final savedMatches = ref.watch(
       providers.auth.select((_) => _.user?.savedMatchIds ?? []),
@@ -45,7 +45,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
         if (match == null) return;
         if (isGuest) return guestLogin();
 
-        final result = await authProvider.saveMatch(match.matchId);
+        final result = await matchesProvider.saveMatch(match.matchId);
 
         if (result == data_classes.SaveMatchResult.limitReached) {
           // user already has max number of savedMatches

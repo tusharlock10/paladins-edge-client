@@ -32,7 +32,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
     // Variables
     final brightness = Theme.of(context).brightness;
     final textController = useTextEditingController();
-    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
+    final textStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.white,
           fontSize: 16,
         );

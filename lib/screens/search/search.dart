@@ -17,10 +17,10 @@ class Search extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
-    final topSearchList =
-        ref.watch(providers.players.select((_) => _.topSearchList));
-    final lowerSearchList =
-        ref.watch(providers.players.select((_) => _.lowerSearchList));
+    final topSearchPlayers =
+        ref.watch(providers.players.select((_) => _.topSearchPlayers));
+    final lowerSearchPlayers =
+        ref.watch(providers.players.select((_) => _.lowerSearchPlayers));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // State
@@ -76,11 +76,15 @@ class Search extends HookConsumerWidget {
           addInSearchHistory: addInSearchHistory && !isGuest,
           onNotFound: onNotFound,
         );
-
         isLoading.value = false;
 
-        if (response != null && response.exactMatch) {
-          navigateToPlayerDetail(response.playerData!.playerId);
+        if (!response.success) {
+          return;
+        }
+        final searchPlayersData = response.data!;
+
+        if (searchPlayersData.exactMatch && searchPlayersData.player != null) {
+          navigateToPlayerDetail(searchPlayersData.player!.playerId);
         }
       },
       [],
@@ -105,12 +109,12 @@ class Search extends HookConsumerWidget {
           onSearch: onSearch,
           onChangeText: onChangeText,
         ),
-        topSearchList.isNotEmpty
+        topSearchPlayers.isNotEmpty
             ? const SearchTopList()
             : SearchHistory(
                 searchValue: searchValue.value,
               ),
-        if (lowerSearchList.isNotEmpty) const SearchLowerList(),
+        if (lowerSearchPlayers.isNotEmpty) const SearchLowerList(),
       ],
     );
   }

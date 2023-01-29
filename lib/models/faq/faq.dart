@@ -4,10 +4,12 @@ part "faq.g.dart";
 
 @JsonSerializable()
 class FAQ {
+  int position;
   String title;
   String body;
 
   FAQ({
+    required this.position,
     required this.title,
     required this.body,
   });

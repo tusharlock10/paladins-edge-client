@@ -14,7 +14,7 @@ class SavedMatchesList extends HookConsumerWidget {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
     final savedMatches = ref.watch(
-      providers.auth.select((_) => _.savedMatches),
+      providers.matches.select((_) => _.savedMatches),
     );
 
     // Variables

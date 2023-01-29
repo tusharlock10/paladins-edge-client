@@ -5,8 +5,8 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/app_drawer/index.dart";
 import "package:paladinsedge/screens/connect_profile/connect_profile_loadout_verifier.dart";
@@ -51,12 +51,13 @@ class ConnectProfile extends HookConsumerWidget {
     final isVerifying = useState(false);
     final showVerifyHelp = useState(false);
     final step = useState(0); // at which step of the process the user is at
-    final selectedPlayer =
-        useState<api.LowerSearch?>(null); // the player selected in search step
+    final selectedPlayer = useState<data_classes.LowerSearch?>(
+      null,
+    ); // the player selected in search step
 
     // Methods
     final onTapSearchItem = useCallback(
-      (api.LowerSearch searchItem) async {
+      (data_classes.LowerSearch searchItem) async {
         isCheckingPlayer.value = searchItem.playerId;
         final exists = await authProvider.checkPlayerClaimed(
           searchItem.playerId,
@@ -107,12 +108,16 @@ class ConnectProfile extends HookConsumerWidget {
           otp.value,
           selectedPlayer.value!.playerId,
         );
+        if (!result.success) {
+          onVerificationFailed(result.error);
+        }
+        final claimPlayerData = result.data!;
 
-        if (result != null && result.verified) {
+        if (claimPlayerData.verified) {
           isVerifying.value = false;
           step.value++;
         } else {
-          onVerificationFailed(result?.reason);
+          onVerificationFailed(claimPlayerData.reason);
         }
       },
       [],

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/screens/connect_profile/connect_profile_verify_help.dart";
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -7,7 +7,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
   final bool isVerifying;
   final bool showVerifyHelp;
   final String otp;
-  final api.LowerSearch? selectedPlayer;
+  final data_classes.LowerSearch? selectedPlayer;
   final void Function() onVerify;
   final void Function() onChangeName;
 

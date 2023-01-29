@@ -234,7 +234,6 @@ LowerSearchPlayer _$LowerSearchPlayerFromJson(Map<String, dynamic> json) =>
     LowerSearchPlayer(
       playerId: json['playerId'] as int,
       name: json['name'] as String,
-      isPrivate: json['isPrivate'] as bool,
       platform: json['platform'] as String,
     );
 
@@ -242,6 +241,5 @@ Map<String, dynamic> _$LowerSearchPlayerToJson(LowerSearchPlayer instance) =>
     <String, dynamic>{
       'playerId': instance.playerId,
       'name': instance.name,
-      'isPrivate': instance.isPrivate,
       'platform': instance.platform,
     };

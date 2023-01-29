@@ -1,50 +1,20 @@
 import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/data_classes/index.dart" show SearchPlayersData;
 import "package:paladinsedge/models/index.dart"
     show Player, ActiveMatch, SearchHistory, PlayerInferred;
 
 part "responses.g.dart";
 
 @JsonSerializable()
-class LowerSearch {
-  final String name;
-  final int playerId;
-  final bool isPrivate;
-  final String platform;
-
-  LowerSearch({
-    required this.name,
-    required this.playerId,
-    required this.isPrivate,
-    required this.platform,
-  });
-
-  factory LowerSearch.fromJson(Map<String, dynamic> json) =>
-      _$LowerSearchFromJson(json);
-  Map<String, dynamic> toJson() => _$LowerSearchToJson(this);
-}
-
-@JsonSerializable()
-class SearchData {
-  final List<Player> topSearchList;
-  final List<LowerSearch> lowerSearchList;
-
-  SearchData({required this.lowerSearchList, required this.topSearchList});
-
-  factory SearchData.fromJson(Map<String, dynamic> json) =>
-      _$SearchDataFromJson(json);
-  Map<String, dynamic> toJson() => _$SearchDataToJson(this);
-}
-
-@JsonSerializable()
 class SearchPlayersResponse {
-  final SearchData searchData;
-  final bool exactMatch;
-  final Player? playerData;
+  final bool success;
+  final String? error;
+  final SearchPlayersData? data;
 
   SearchPlayersResponse({
-    required this.searchData,
-    required this.exactMatch,
-    this.playerData,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory SearchPlayersResponse.fromJson(Map<String, dynamic> json) =>
@@ -106,9 +76,15 @@ class FriendsResponse {
 
 @JsonSerializable()
 class FavouriteFriendsResponse {
-  final List<Player> favouriteFriends;
+  final bool success;
+  final String? error;
+  final List<Player>? data;
 
-  FavouriteFriendsResponse({required this.favouriteFriends});
+  FavouriteFriendsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory FavouriteFriendsResponse.fromJson(Map<String, dynamic> json) =>
       _$FavouriteFriendsResponseFromJson(json);

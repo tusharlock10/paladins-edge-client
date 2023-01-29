@@ -39,15 +39,17 @@ Map<String, dynamic> _$PlayerChampionsResponseToJson(
 FavouriteChampionsResponse _$FavouriteChampionsResponseFromJson(
         Map<String, dynamic> json) =>
     FavouriteChampionsResponse(
-      favouriteChampions: (json['favouriteChampions'] as List<dynamic>)
-          .map((e) => e as int)
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)?.map((e) => e as int).toList(),
     );
 
 Map<String, dynamic> _$FavouriteChampionsResponseToJson(
         FavouriteChampionsResponse instance) =>
     <String, dynamic>{
-      'favouriteChampions': instance.favouriteChampions,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 UpdateFavouriteChampionResponse _$UpdateFavouriteChampionResponseFromJson(

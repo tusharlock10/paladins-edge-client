@@ -9,15 +9,15 @@ class SearchTopList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchProvider = ref.watch(providers.players);
-    final topSearchList = searchProvider.topSearchList;
-    final childCount = topSearchList.length;
+    final topSearchPlayers = searchProvider.topSearchPlayers;
+    final childCount = topSearchPlayers.length;
 
     return SliverPadding(
       padding: const EdgeInsets.all(10),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return SearchTopItem(player: topSearchList[index]);
+            return SearchTopItem(player: topSearchPlayers[index]);
           },
           childCount: childCount,
         ),

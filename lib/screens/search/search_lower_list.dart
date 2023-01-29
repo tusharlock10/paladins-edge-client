@@ -11,8 +11,8 @@ class SearchLowerList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchProvider = ref.watch(providers.players);
-    final lowerSearchList = searchProvider.lowerSearchList;
-    final childCount = min(lowerSearchList.length, 20);
+    final lowerSearchPlayers = searchProvider.lowerSearchPlayers;
+    final childCount = min(lowerSearchPlayers.length, 20);
 
     return SliverPadding(
       padding: const EdgeInsets.all(10),
@@ -26,7 +26,7 @@ class SearchLowerList extends ConsumerWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             return SearchLowerItem(
-              lowerSearch: lowerSearchList[index],
+              lowerSearch: lowerSearchPlayers[index],
             );
           },
           childCount: childCount,

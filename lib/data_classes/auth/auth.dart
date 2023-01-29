@@ -53,3 +53,22 @@ class LoginData {
       _$LoginDataFromJson(json);
   Map<String, dynamic> toJson() => _$LoginDataToJson(this);
 }
+
+@JsonSerializable()
+class ClaimPlayerData {
+  final bool verified;
+  final User? user;
+  final Player? player;
+  final String? reason;
+
+  ClaimPlayerData({
+    required this.verified,
+    this.user,
+    this.player,
+    this.reason,
+  });
+
+  factory ClaimPlayerData.fromJson(Map<String, dynamic> json) =>
+      _$ClaimPlayerDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ClaimPlayerDataToJson(this);
+}

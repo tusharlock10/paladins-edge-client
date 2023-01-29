@@ -1,5 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
-import "package:paladinsedge/data_classes/index.dart" show LoginData;
+import "package:paladinsedge/data_classes/index.dart"
+    show LoginData, ClaimPlayerData, MatchesData;
 import "package:paladinsedge/models/index.dart"
     show User, Player, FAQ, Match, MatchPlayer, DeviceDetail;
 
@@ -23,11 +24,32 @@ class LoginResponse {
 }
 
 @JsonSerializable()
+class LogoutResponse {
+  final bool success;
+  final String? error;
+  final bool? data;
+
+  LogoutResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
+
+  factory LogoutResponse.fromJson(Map<String, dynamic> json) =>
+      _$LogoutResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$LogoutResponseToJson(this);
+}
+
+@JsonSerializable()
 class CheckPlayerClaimedResponse {
-  final bool exists;
+  final bool success;
+  final String? error;
+  final bool? data;
 
   CheckPlayerClaimedResponse({
-    required this.exists,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory CheckPlayerClaimedResponse.fromJson(Map<String, dynamic> json) =>
@@ -37,16 +59,14 @@ class CheckPlayerClaimedResponse {
 
 @JsonSerializable()
 class ClaimPlayerResponse {
-  final bool verified;
-  final User? user;
-  final Player? player;
-  final String? reason;
+  final bool success;
+  final String? error;
+  final ClaimPlayerData? data;
 
   ClaimPlayerResponse({
-    required this.verified,
-    this.user,
-    this.player,
-    this.reason,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory ClaimPlayerResponse.fromJson(Map<String, dynamic> json) =>
@@ -56,10 +76,14 @@ class ClaimPlayerResponse {
 
 @JsonSerializable()
 class FaqsResponse {
-  final List<FAQ> faqs;
+  final bool success;
+  final String? error;
+  final List<FAQ>? data;
 
   FaqsResponse({
-    required this.faqs,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory FaqsResponse.fromJson(Map<String, dynamic> json) =>
@@ -69,12 +93,14 @@ class FaqsResponse {
 
 @JsonSerializable()
 class SavedMatchesResponse {
-  final List<Match> matches;
-  final List<MatchPlayer> matchPlayers;
+  final bool success;
+  final String? error;
+  final MatchesData? data;
 
   SavedMatchesResponse({
-    required this.matches,
-    required this.matchPlayers,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory SavedMatchesResponse.fromJson(Map<String, dynamic> json) =>
@@ -93,6 +119,23 @@ class UpdateSavedMatchesResponse {
   factory UpdateSavedMatchesResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateSavedMatchesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateSavedMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class SaveMatchResponse {
+  final bool success;
+  final String? error;
+  final String? data;
+
+  SaveMatchResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
+
+  factory SaveMatchResponse.fromJson(Map<String, dynamic> json) =>
+      _$SaveMatchResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SaveMatchResponseToJson(this);
 }
 
 @JsonSerializable()

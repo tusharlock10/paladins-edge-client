@@ -22,66 +22,84 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'data': instance.data,
     };
 
+LogoutResponse _$LogoutResponseFromJson(Map<String, dynamic> json) =>
+    LogoutResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] as bool?,
+    );
+
+Map<String, dynamic> _$LogoutResponseToJson(LogoutResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
+    };
+
 CheckPlayerClaimedResponse _$CheckPlayerClaimedResponseFromJson(
         Map<String, dynamic> json) =>
     CheckPlayerClaimedResponse(
-      exists: json['exists'] as bool,
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] as bool?,
     );
 
 Map<String, dynamic> _$CheckPlayerClaimedResponseToJson(
         CheckPlayerClaimedResponse instance) =>
     <String, dynamic>{
-      'exists': instance.exists,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 ClaimPlayerResponse _$ClaimPlayerResponseFromJson(Map<String, dynamic> json) =>
     ClaimPlayerResponse(
-      verified: json['verified'] as bool,
-      user: json['user'] == null
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      player: json['player'] == null
-          ? null
-          : Player.fromJson(json['player'] as Map<String, dynamic>),
-      reason: json['reason'] as String?,
+          : ClaimPlayerData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ClaimPlayerResponseToJson(
         ClaimPlayerResponse instance) =>
     <String, dynamic>{
-      'verified': instance.verified,
-      'user': instance.user,
-      'player': instance.player,
-      'reason': instance.reason,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 FaqsResponse _$FaqsResponseFromJson(Map<String, dynamic> json) => FaqsResponse(
-      faqs: (json['faqs'] as List<dynamic>)
-          .map((e) => FAQ.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => FAQ.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
     <String, dynamic>{
-      'faqs': instance.faqs,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 SavedMatchesResponse _$SavedMatchesResponseFromJson(
         Map<String, dynamic> json) =>
     SavedMatchesResponse(
-      matches: (json['matches'] as List<dynamic>)
-          .map((e) => Match.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      matchPlayers: (json['matchPlayers'] as List<dynamic>)
-          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : MatchesData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SavedMatchesResponseToJson(
         SavedMatchesResponse instance) =>
     <String, dynamic>{
-      'matches': instance.matches,
-      'matchPlayers': instance.matchPlayers,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 UpdateSavedMatchesResponse _$UpdateSavedMatchesResponseFromJson(
@@ -96,6 +114,20 @@ Map<String, dynamic> _$UpdateSavedMatchesResponseToJson(
         UpdateSavedMatchesResponse instance) =>
     <String, dynamic>{
       'savedMatches': instance.savedMatches,
+    };
+
+SaveMatchResponse _$SaveMatchResponseFromJson(Map<String, dynamic> json) =>
+    SaveMatchResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] as String?,
+    );
+
+Map<String, dynamic> _$SaveMatchResponseToJson(SaveMatchResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 DeviceDetailResponse _$DeviceDetailResponseFromJson(

@@ -6,53 +6,22 @@ part of 'responses.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LowerSearch _$LowerSearchFromJson(Map<String, dynamic> json) => LowerSearch(
-      name: json['name'] as String,
-      playerId: json['playerId'] as int,
-      isPrivate: json['isPrivate'] as bool,
-      platform: json['platform'] as String,
-    );
-
-Map<String, dynamic> _$LowerSearchToJson(LowerSearch instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'playerId': instance.playerId,
-      'isPrivate': instance.isPrivate,
-      'platform': instance.platform,
-    };
-
-SearchData _$SearchDataFromJson(Map<String, dynamic> json) => SearchData(
-      lowerSearchList: (json['lowerSearchList'] as List<dynamic>)
-          .map((e) => LowerSearch.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      topSearchList: (json['topSearchList'] as List<dynamic>)
-          .map((e) => Player.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$SearchDataToJson(SearchData instance) =>
-    <String, dynamic>{
-      'topSearchList': instance.topSearchList,
-      'lowerSearchList': instance.lowerSearchList,
-    };
-
 SearchPlayersResponse _$SearchPlayersResponseFromJson(
         Map<String, dynamic> json) =>
     SearchPlayersResponse(
-      searchData:
-          SearchData.fromJson(json['searchData'] as Map<String, dynamic>),
-      exactMatch: json['exactMatch'] as bool,
-      playerData: json['playerData'] == null
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
           ? null
-          : Player.fromJson(json['playerData'] as Map<String, dynamic>),
+          : SearchPlayersData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SearchPlayersResponseToJson(
         SearchPlayersResponse instance) =>
     <String, dynamic>{
-      'searchData': instance.searchData,
-      'exactMatch': instance.exactMatch,
-      'playerData': instance.playerData,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 PlayerDetailResponse _$PlayerDetailResponseFromJson(
@@ -116,15 +85,19 @@ Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) =>
 FavouriteFriendsResponse _$FavouriteFriendsResponseFromJson(
         Map<String, dynamic> json) =>
     FavouriteFriendsResponse(
-      favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
-          .map((e) => Player.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$FavouriteFriendsResponseToJson(
         FavouriteFriendsResponse instance) =>
     <String, dynamic>{
-      'favouriteFriends': instance.favouriteFriends,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 UpdateFavouriteFriendResponse _$UpdateFavouriteFriendResponseFromJson(

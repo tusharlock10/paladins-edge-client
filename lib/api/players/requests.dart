@@ -1,31 +1,31 @@
-import "package:paladinsedge/api/players/responses.dart" as responses;
+import "package:paladinsedge/api/base/requests.dart";
+import "package:paladinsedge/api/players/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class PlayersRequests {
-  static Future<responses.SearchPlayersResponse?> searchPlayers({
+  static Future<SearchPlayersResponse> searchPlayers({
     required String playerName,
     required bool simpleResults,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.searchPlayers,
-        queryParameters: {
-          "playerName": playerName,
-          "simpleResults": simpleResults,
-        },
-      );
-      if (response.data != null) {
-        return responses.SearchPlayersResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<SearchPlayersResponse>(
+      url: constants.Urls.searchPlayers,
+      method: HttpMethod.get,
+      fromJson: SearchPlayersResponse.fromJson,
+      defaultValue: SearchPlayersResponse(),
+      pathParams: {
+        "playerName": playerName,
+      },
+      queryParams: {
+        "simpleResults": simpleResults.toString(),
+      },
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<responses.PlayerDetailResponse?> playerDetail({
+  static Future<PlayerDetailResponse?> playerDetail({
     required int playerId,
     required bool forceUpdate,
   }) async {
@@ -35,7 +35,7 @@ abstract class PlayersRequests {
         queryParameters: {"playerId": playerId, "forceUpdate": forceUpdate},
       );
       if (response.data != null) {
-        return responses.PlayerDetailResponse.fromJson(response.data!);
+        return PlayerDetailResponse.fromJson(response.data!);
       }
 
       return null;
@@ -44,7 +44,7 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.BatchPlayerDetailsResponse?> batchPlayerDetail({
+  static Future<BatchPlayerDetailsResponse?> batchPlayerDetail({
     required List<int> playerIds,
   }) async {
     try {
@@ -53,7 +53,7 @@ abstract class PlayersRequests {
         data: {"playerIds": playerIds},
       );
       if (response.data != null) {
-        return responses.BatchPlayerDetailsResponse.fromJson(response.data!);
+        return BatchPlayerDetailsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -62,7 +62,7 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.PlayerStatusResponse?> playerStatus({
+  static Future<PlayerStatusResponse?> playerStatus({
     required int playerId,
     bool onlyStatus = false,
   }) async {
@@ -75,7 +75,7 @@ abstract class PlayersRequests {
         },
       );
       if (response.data != null) {
-        return responses.PlayerStatusResponse.fromJson(response.data!);
+        return PlayerStatusResponse.fromJson(response.data!);
       }
 
       return null;
@@ -84,7 +84,7 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.FriendsResponse?> friends({
+  static Future<FriendsResponse?> friends({
     required int playerId,
   }) async {
     try {
@@ -93,7 +93,7 @@ abstract class PlayersRequests {
         queryParameters: {"playerId": playerId},
       );
       if (response.data != null) {
-        return responses.FriendsResponse.fromJson(response.data!);
+        return FriendsResponse.fromJson(response.data!);
       }
 
       return null;
@@ -102,23 +102,19 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.FavouriteFriendsResponse?> favouriteFriends() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.favouriteFriends,
-      );
-      if (response.data != null) {
-        return responses.FavouriteFriendsResponse.fromJson(response.data!);
-      }
+  static Future<FavouriteFriendsResponse> favouriteFriends() async {
+    final input = ApiRequestInput<FavouriteFriendsResponse>(
+      url: constants.Urls.searchPlayers,
+      method: HttpMethod.get,
+      fromJson: FavouriteFriendsResponse.fromJson,
+      defaultValue: FavouriteFriendsResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<responses.UpdateFavouriteFriendResponse?>
-      updateFavouriteFriend({
+  static Future<UpdateFavouriteFriendResponse?> updateFavouriteFriend({
     required int playerId,
   }) async {
     try {
@@ -127,7 +123,7 @@ abstract class PlayersRequests {
         data: {"playerId": playerId},
       );
       if (response.data != null) {
-        return responses.UpdateFavouriteFriendResponse.fromJson(response.data!);
+        return UpdateFavouriteFriendResponse.fromJson(response.data!);
       }
 
       return null;
@@ -136,13 +132,13 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.SearchHistoryResponse?> searchHistory() async {
+  static Future<SearchHistoryResponse?> searchHistory() async {
     try {
       final response = await utilities.api.get<Map<String, dynamic>>(
         constants.Urls.searchHistory,
       );
       if (response.data != null) {
-        return responses.SearchHistoryResponse.fromJson(response.data!);
+        return SearchHistoryResponse.fromJson(response.data!);
       }
 
       return null;
@@ -151,7 +147,7 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.PlayerInferredResponse?> playerInferred({
+  static Future<PlayerInferredResponse?> playerInferred({
     required int playerId,
   }) async {
     try {
@@ -160,7 +156,7 @@ abstract class PlayersRequests {
         queryParameters: {"playerId": playerId},
       );
       if (response.data != null) {
-        return responses.PlayerInferredResponse.fromJson(response.data!);
+        return PlayerInferredResponse.fromJson(response.data!);
       }
 
       return null;

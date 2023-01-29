@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
-import "package:paladinsedge/api/index.dart" as api;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ConnectProfileSearchItem extends StatelessWidget {
-  final api.LowerSearch searchItem;
+  final data_classes.LowerSearch searchItem;
   final int? isCheckingPlayer;
-  final void Function(api.LowerSearch) onTap;
+  final void Function(data_classes.LowerSearch) onTap;
 
   const ConnectProfileSearchItem({
     required this.searchItem,

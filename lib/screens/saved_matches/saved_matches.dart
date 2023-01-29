@@ -26,16 +26,16 @@ class SavedMatches extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
+    final matchesProvider = ref.read(providers.matches);
     final savedMatches = ref.watch(
-      providers.auth.select((_) => _.savedMatches),
+      providers.matches.select((_) => _.savedMatches),
     );
 
     // Effects
     useEffect(
       () {
         if (savedMatches == null) {
-          authProvider.getSavedMatches();
+          matchesProvider.getSavedMatches();
         }
 
         return;
@@ -45,7 +45,7 @@ class SavedMatches extends HookConsumerWidget {
 
     return Scaffold(
       body: widgets.Refresh(
-        onRefresh: authProvider.getSavedMatches,
+        onRefresh: matchesProvider.getSavedMatches,
         edgeOffset: utilities.getTopEdgeOffset(context),
         child: CustomScrollView(
           slivers: [
@@ -61,7 +61,7 @@ class SavedMatches extends HookConsumerWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: widgets.RefreshButton(
                       color: Colors.white,
-                      onRefresh: authProvider.getSavedMatches,
+                      onRefresh: matchesProvider.getSavedMatches,
                     ),
                   ),
                 ),

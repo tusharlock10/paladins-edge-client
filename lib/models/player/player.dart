@@ -178,16 +178,12 @@ class LowerSearchPlayer {
   /// name of the player in the game eg. tusharlock10
   final String name;
 
-  /// is the player profile private
-  final bool isPrivate;
-
   /// at which platform is he playing eg. Steam
   final String platform;
 
   LowerSearchPlayer({
     required this.playerId,
     required this.name,
-    required this.isPrivate,
     required this.platform,
   });
 
