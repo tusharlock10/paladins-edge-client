@@ -54,3 +54,18 @@ Map<String, dynamic> _$ItemsResponseToJson(ItemsResponse instance) =>
       'error': instance.error,
       'data': instance.data,
     };
+
+FaqsResponse _$FaqsResponseFromJson(Map<String, dynamic> json) => FaqsResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => FAQ.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
+    };

@@ -14,14 +14,14 @@ Future<models.DeviceDetail?> getDeviceDetail() async {
 
   if (constants.isWeb) {
     return models.DeviceDetail(
-      platform: "web",
-      webDeviceInfo: result,
+      platform: constants.DevicePlatforms.web,
+      webDevice: result,
     );
   }
   if (Platform.isAndroid) {
     return models.DeviceDetail(
-      platform: "android",
-      androidDeviceInfo: result,
+      platform: constants.DevicePlatforms.android,
+      androidDevice: result,
     );
   }
 

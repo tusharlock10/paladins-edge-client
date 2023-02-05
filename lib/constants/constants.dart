@@ -85,3 +85,8 @@ abstract class RemoteConfigParams {
   static const serverMaintenance = "serverMaintenance";
   static const lowestSupportedVersion = "lowestSupportedVersion";
 }
+
+abstract class DevicePlatforms {
+  static const android = "android";
+  static const web = "web";
+}

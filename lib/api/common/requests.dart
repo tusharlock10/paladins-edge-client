@@ -38,4 +38,16 @@ abstract class CommonRequests {
 
     return response;
   }
+
+  static Future<FaqsResponse> faq() async {
+    final input = ApiRequestInput<FaqsResponse>(
+      url: constants.Urls.faq,
+      method: HttpMethod.get,
+      fromJson: FaqsResponse.fromJson,
+      defaultValue: FaqsResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
+
+    return response;
+  }
 }

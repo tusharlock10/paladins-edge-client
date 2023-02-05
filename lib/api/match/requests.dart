@@ -44,6 +44,31 @@ abstract class MatchRequests {
     }
   }
 
+  static Future<SavedMatchesResponse> savedMatches() async {
+    final input = ApiRequestInput<SavedMatchesResponse>(
+      url: constants.Urls.savedMatches,
+      method: HttpMethod.get,
+      fromJson: SavedMatchesResponse.fromJson,
+      defaultValue: SavedMatchesResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
+
+    return response;
+  }
+
+  static Future<SaveMatchResponse> saveMatch({required int matchId}) async {
+    final input = ApiRequestInput<SaveMatchResponse>(
+      url: constants.Urls.saveMatch,
+      method: HttpMethod.post,
+      fromJson: SaveMatchResponse.fromJson,
+      defaultValue: SaveMatchResponse(),
+      pathParams: {"matchId": matchId.toString()},
+    );
+    final response = await ApiRequest.apiRequest(input);
+
+    return response;
+  }
+
   static Future<CommonMatchesResponse?> commonMatches({
     required List<int> playerIds,
   }) async {

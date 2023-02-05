@@ -92,7 +92,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final deaths = matchPlayer.playerStats.deaths;
     final assists = matchPlayer.playerStats.assists;
     final kdaFormatted = matchPlayer.playerStats.kdaFormatted;
-    final isPrivatePlayer = matchPlayer.playerId == "0";
+    final isPrivatePlayer = matchPlayer.playerId == 0;
     final partyNumber = matchPlayer.partyNumber;
     final isBot =
         matchPlayer.playerStats.creditsEarned < averageCredits * 0.6 ||

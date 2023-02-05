@@ -1,4 +1,5 @@
 import "package:json_annotation/json_annotation.dart";
+import "package:paladinsedge/data_classes/index.dart" show MatchesData;
 import "package:paladinsedge/models/index.dart"
     show Match, MatchPlayer, TopMatch;
 
@@ -32,6 +33,53 @@ class PlayerMatchesResponse {
   factory PlayerMatchesResponse.fromJson(Map<String, dynamic> json) =>
       _$PlayerMatchesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class SavedMatchesResponse {
+  final bool success;
+  final String? error;
+  final MatchesData? data;
+
+  SavedMatchesResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
+
+  factory SavedMatchesResponse.fromJson(Map<String, dynamic> json) =>
+      _$SavedMatchesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SavedMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class UpdateSavedMatchesResponse {
+  final List<String> savedMatches;
+
+  UpdateSavedMatchesResponse({
+    required this.savedMatches,
+  });
+
+  factory UpdateSavedMatchesResponse.fromJson(Map<String, dynamic> json) =>
+      _$UpdateSavedMatchesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UpdateSavedMatchesResponseToJson(this);
+}
+
+@JsonSerializable()
+class SaveMatchResponse {
+  final bool success;
+  final String? error;
+  final String? data;
+
+  SaveMatchResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
+
+  factory SaveMatchResponse.fromJson(Map<String, dynamic> json) =>
+      _$SaveMatchResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SaveMatchResponseToJson(this);
 }
 
 @JsonSerializable()

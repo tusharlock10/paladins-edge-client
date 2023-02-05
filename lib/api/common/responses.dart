@@ -1,6 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart"
-    show Essentials, BountyStore, Item;
+    show Essentials, BountyStore, Item, FAQ;
 
 part "responses.g.dart";
 
@@ -53,4 +53,21 @@ class ItemsResponse {
   factory ItemsResponse.fromJson(Map<String, dynamic> json) =>
       _$ItemsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ItemsResponseToJson(this);
+}
+
+@JsonSerializable()
+class FaqsResponse {
+  final bool success;
+  final String? error;
+  final List<FAQ>? data;
+
+  FaqsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
+
+  factory FaqsResponse.fromJson(Map<String, dynamic> json) =>
+      _$FaqsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$FaqsResponseToJson(this);
 }

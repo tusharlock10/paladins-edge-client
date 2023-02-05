@@ -142,7 +142,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
 
   /// listener for receiving new messages
   void _onMessage(types.TextMessage message) {
-    if (message.author.id != _player?.playerId) {
+    if (message.author.id != _player?.playerId.toString()) {
       messages = [message, ...messages];
       utilities.postFrameCallback(notifyListeners);
     }

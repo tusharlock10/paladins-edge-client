@@ -131,7 +131,7 @@ class _MatchesNotifier extends ChangeNotifier {
   /// Gets all the saved matches for this user
   Future<void> getSavedMatches() async {
     final user = ref.read(auth_provider.auth).user;
-    final response = await api.AuthRequests.savedMatches();
+    final response = await api.MatchRequests.savedMatches();
     if (!response.success) return;
 
     // create list of combinedMatches using a temp. map
@@ -215,7 +215,7 @@ class _MatchesNotifier extends ChangeNotifier {
     // update the saved matches in backend
     // update the UI for the latest changes from backend
 
-    final response = await api.AuthRequests.saveMatch(
+    final response = await api.MatchRequests.saveMatch(
       matchId: matchId,
     );
 

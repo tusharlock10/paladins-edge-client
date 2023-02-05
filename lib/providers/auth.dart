@@ -104,7 +104,6 @@ class _AuthNotifier extends ChangeNotifier {
   /// Checks if the user is already logged in
   bool checkLogin() {
     token = utilities.Database.getToken();
-    print("Token is :: ");
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
@@ -341,7 +340,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   void getFAQs() async {
-    final response = await api.AuthRequests.faqs();
+    final response = await api.CommonRequests.faq();
     if (response.success) {
       faqs = response.data;
       notifyListeners();
@@ -450,7 +449,7 @@ class _AuthNotifier extends ChangeNotifier {
     final deviceDetail = await utilities.getDeviceDetail();
 
     if (deviceDetail != null) {
-      await api.AuthRequests.deviceDetail(
+      await api.AuthRequests.registerDevice(
         deviceDetail: deviceDetail,
       );
     }

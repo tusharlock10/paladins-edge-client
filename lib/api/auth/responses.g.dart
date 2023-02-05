@@ -69,78 +69,22 @@ Map<String, dynamic> _$ClaimPlayerResponseToJson(
       'data': instance.data,
     };
 
-FaqsResponse _$FaqsResponseFromJson(Map<String, dynamic> json) => FaqsResponse(
-      success: json['success'] as bool? ?? false,
-      error: json['error'] as String?,
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => FAQ.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'error': instance.error,
-      'data': instance.data,
-    };
-
-SavedMatchesResponse _$SavedMatchesResponseFromJson(
+DeviceDetailResponse _$DeviceDetailResponseFromJson(
         Map<String, dynamic> json) =>
-    SavedMatchesResponse(
+    DeviceDetailResponse(
       success: json['success'] as bool? ?? false,
       error: json['error'] as String?,
       data: json['data'] == null
           ? null
-          : MatchesData.fromJson(json['data'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$SavedMatchesResponseToJson(
-        SavedMatchesResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'error': instance.error,
-      'data': instance.data,
-    };
-
-UpdateSavedMatchesResponse _$UpdateSavedMatchesResponseFromJson(
-        Map<String, dynamic> json) =>
-    UpdateSavedMatchesResponse(
-      savedMatches: (json['savedMatches'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-    );
-
-Map<String, dynamic> _$UpdateSavedMatchesResponseToJson(
-        UpdateSavedMatchesResponse instance) =>
-    <String, dynamic>{
-      'savedMatches': instance.savedMatches,
-    };
-
-SaveMatchResponse _$SaveMatchResponseFromJson(Map<String, dynamic> json) =>
-    SaveMatchResponse(
-      success: json['success'] as bool? ?? false,
-      error: json['error'] as String?,
-      data: json['data'] as String?,
-    );
-
-Map<String, dynamic> _$SaveMatchResponseToJson(SaveMatchResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'error': instance.error,
-      'data': instance.data,
-    };
-
-DeviceDetailResponse _$DeviceDetailResponseFromJson(
-        Map<String, dynamic> json) =>
-    DeviceDetailResponse(
-      deviceDetail:
-          DeviceDetail.fromJson(json['deviceDetail'] as Map<String, dynamic>),
+          : DeviceDetail.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DeviceDetailResponseToJson(
         DeviceDetailResponse instance) =>
     <String, dynamic>{
-      'deviceDetail': instance.deviceDetail,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 ApiStatusResponse _$ApiStatusResponseFromJson(Map<String, dynamic> json) =>
