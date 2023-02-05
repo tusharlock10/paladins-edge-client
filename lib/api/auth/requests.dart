@@ -12,9 +12,7 @@ abstract class AuthRequests {
       method: HttpMethod.get,
       fromJson: CheckPlayerClaimedResponse.fromJson,
       defaultValue: CheckPlayerClaimedResponse(),
-      pathParams: {
-        "playerId": playerId.toString(),
-      },
+      pathParams: {"playerId": playerId},
     );
     final response = await ApiRequest.apiRequest(input);
 

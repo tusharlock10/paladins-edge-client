@@ -5,23 +5,23 @@ abstract class Urls {
   // auth
   static const login = "/auth/login"; // POST
   static const logout = "/auth/logout"; // POST
-  static const checkPlayerClaimed = "/auth/checkPlayerClaimed/:playerId"; // GET
-  static const claimPlayer = "/auth/claimPlayer"; // POST
+  static const claimPlayer = "/auth/claim/player"; // POST
+  static const checkPlayerClaimed = "/auth/claim/check/:playerId"; // GET
   static const registerDevice = "/auth/device/register"; // PUT
 
   // common
   static const essentials = "/common/essentials"; // GET
-  static const bountyStore = "/common/bountyStore"; // GET
+  static const bountyStore = "/common/bounty"; // GET
   static const items = "/common/items"; // GET
   static const faq = "/common/faq"; // GET
 
   // champions
   static const champions = "/champions"; // GET
-  static const playerChampions = "/champions/playerChampions"; // GET
-  static const batchPlayerChampions = "/champions/batchPlayerChampions"; // POST
+  static const playerChampions = "/champions/player/:playerId"; // GET
+  static const batchPlayerChampions = "/champions/player/batch"; // POST
   static const favouriteChampions = "/champions/favourite"; // GET
-  static const updateFavouriteChampion =
-      "/champions/updateFavouriteChampion"; // PUT
+  static const markFavouriteChampion =
+      "/champions/favourite/:championId"; // POST
 
   // players
   static const searchPlayers = "/players/search/:playerName"; // GET

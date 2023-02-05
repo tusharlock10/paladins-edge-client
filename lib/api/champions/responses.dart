@@ -22,9 +22,15 @@ class ChampionsResponse {
 
 @JsonSerializable()
 class PlayerChampionsResponse {
-  final List<PlayerChampion> playerChampions;
+  final bool success;
+  final String? error;
+  final List<PlayerChampion>? data;
 
-  PlayerChampionsResponse({required this.playerChampions});
+  PlayerChampionsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory PlayerChampionsResponse.fromJson(Map<String, dynamic> json) =>
       _$PlayerChampionsResponseFromJson(json);
@@ -50,9 +56,15 @@ class FavouriteChampionsResponse {
 
 @JsonSerializable()
 class UpdateFavouriteChampionResponse {
-  final List<int> favouriteChampions;
+  final bool success;
+  final String? error;
+  final String? data;
 
-  UpdateFavouriteChampionResponse({required this.favouriteChampions});
+  UpdateFavouriteChampionResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory UpdateFavouriteChampionResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateFavouriteChampionResponseFromJson(json);

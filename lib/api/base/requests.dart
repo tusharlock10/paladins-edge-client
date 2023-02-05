@@ -14,8 +14,8 @@ class ApiRequestInput<T> {
   String method;
   T Function(Map<String, dynamic>) fromJson;
   T defaultValue;
-  Map<String, String>? pathParams;
-  Map<String, String>? queryParams;
+  Map<String, dynamic>? pathParams;
+  Map<String, dynamic>? queryParams;
   dynamic payload;
 
   ApiRequestInput({
@@ -92,7 +92,7 @@ abstract class ApiRequest {
 
     for (final paramKey in pathParams.keys) {
       final value = pathParams[paramKey]!;
-      url = url.replaceAll(":$paramKey", value);
+      url = url.replaceAll(":$paramKey", value.toString());
     }
 
     return url;

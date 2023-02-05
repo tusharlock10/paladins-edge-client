@@ -117,9 +117,9 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
 
     isLoadingPlayerChampions = false;
-    if (response != null) {
+    if (response.success) {
       playerChampionsPlayerId = playerId;
-      playerChampions = response.playerChampions;
+      playerChampions = response.data;
     }
 
     notifyListeners();
@@ -136,11 +136,8 @@ class _ChampionsNotifier extends ChangeNotifier {
     );
 
     isLoadingPlayerChampions = false;
-    if (response != null) {
-      // set playerChampionsPlayerId to null because it doesn't belong to a specific playerId
-      playerChampionsPlayerId = null;
-      playerChampions = response.playerChampions;
-    }
+    playerChampionsPlayerId = null;
+    playerChampions = response.data;
 
     notifyListeners();
   }
@@ -219,12 +216,14 @@ class _ChampionsNotifier extends ChangeNotifier {
     favouriteChampions = {...favouriteChampions};
     notifyListeners();
 
-    final response = await api.ChampionsRequests.updateFavouriteChampion(
+    final response = await api.ChampionsRequests.markFavouriteChampion(
       championId: championId,
     );
-    favouriteChampions = response != null
-        ? response.favouriteChampions.toSet()
-        : favouriteChampionsClone;
+
+    // if the request fails, revert the changes
+    if (!response.success) {
+      favouriteChampions = favouriteChampionsClone;
+    }
 
     setSort(selectedSort);
   }
@@ -307,14 +306,14 @@ class _ChampionsNotifier extends ChangeNotifier {
       forceUpdate: forceUpdate,
     );
 
-    if (response == null) return null;
+    if (!response.success) return null;
 
     // clear the playerChampions in db if forceUpdate
     // save playerChampions locally for future use
     if (forceUpdate) await utilities.Database.playerChampionBox?.clear();
-    response.playerChampions.forEach(utilities.Database.savePlayerChampion);
+    response.data!.forEach(utilities.Database.savePlayerChampion);
 
-    return response.playerChampions;
+    return response.data;
   }
 
   /// Fetch the favourite champions for the user

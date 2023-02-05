@@ -25,15 +25,19 @@ Map<String, dynamic> _$ChampionsResponseToJson(ChampionsResponse instance) =>
 PlayerChampionsResponse _$PlayerChampionsResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerChampionsResponse(
-      playerChampions: (json['playerChampions'] as List<dynamic>)
-          .map((e) => PlayerChampion.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => PlayerChampion.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$PlayerChampionsResponseToJson(
         PlayerChampionsResponse instance) =>
     <String, dynamic>{
-      'playerChampions': instance.playerChampions,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 FavouriteChampionsResponse _$FavouriteChampionsResponseFromJson(
@@ -55,13 +59,15 @@ Map<String, dynamic> _$FavouriteChampionsResponseToJson(
 UpdateFavouriteChampionResponse _$UpdateFavouriteChampionResponseFromJson(
         Map<String, dynamic> json) =>
     UpdateFavouriteChampionResponse(
-      favouriteChampions: (json['favouriteChampions'] as List<dynamic>)
-          .map((e) => e as int)
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] as String?,
     );
 
 Map<String, dynamic> _$UpdateFavouriteChampionResponseToJson(
         UpdateFavouriteChampionResponse instance) =>
     <String, dynamic>{
-      'favouriteChampions': instance.favouriteChampions,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };

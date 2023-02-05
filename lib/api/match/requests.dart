@@ -62,7 +62,7 @@ abstract class MatchRequests {
       method: HttpMethod.post,
       fromJson: SaveMatchResponse.fromJson,
       defaultValue: SaveMatchResponse(),
-      pathParams: {"matchId": matchId.toString()},
+      pathParams: {"matchId": matchId},
     );
     final response = await ApiRequest.apiRequest(input);
 

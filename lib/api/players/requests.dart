@@ -13,12 +13,8 @@ abstract class PlayersRequests {
       method: HttpMethod.get,
       fromJson: SearchPlayersResponse.fromJson,
       defaultValue: SearchPlayersResponse(),
-      pathParams: {
-        "playerName": playerName,
-      },
-      queryParams: {
-        "simpleResults": simpleResults.toString(),
-      },
+      pathParams: {"playerName": playerName},
+      queryParams: {"simpleResults": simpleResults},
     );
     final response = await ApiRequest.apiRequest(input);
 
