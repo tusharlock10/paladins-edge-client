@@ -5,8 +5,7 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
-import "package:paladinsedge/screens/feedback/feedback_input_landscape.dart";
-import "package:paladinsedge/screens/feedback/feedback_input_portrait.dart";
+import "package:paladinsedge/screens/feedback/feedback_description.dart";
 import "package:paladinsedge/screens/feedback/feedback_support_contact.dart";
 import "package:paladinsedge/screens/feedback/feedback_type_selector.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -103,14 +102,9 @@ class Feedback extends HookConsumerWidget {
         children: [
           const SizedBox(height: 20),
           const FeedbackTypeSelector(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: utilities.responsiveCondition(
-              context,
-              desktop: const FeedbackInputLandscape(),
-              tablet: const FeedbackInputLandscape(),
-              mobile: const FeedbackInputPortrait(),
-            ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: FeedbackDescription(),
           ),
           const SizedBox(height: 15),
           const FeedbackSupportContact(),

@@ -6,12 +6,10 @@ part "feedback.g.dart";
 class Feedback {
   String description;
   String type;
-  String? imageUrl;
 
   Feedback({
     required this.description,
     required this.type,
-    this.imageUrl,
   });
 
   factory Feedback.fromJson(Map<String, dynamic> json) =>

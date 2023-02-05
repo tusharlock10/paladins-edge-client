@@ -5,13 +5,7 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
 
 class FeedbackDescription extends ConsumerWidget {
-  final double? width;
-  final double? height;
-  const FeedbackDescription({
-    this.width,
-    this.height,
-    Key? key,
-  }) : super(key: key);
+  const FeedbackDescription({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,70 +22,66 @@ class FeedbackDescription extends ConsumerWidget {
         ? theme.darkThemeMaterialColor.shade50
         : null;
 
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Card(
-        elevation: 10,
-        clipBehavior: Clip.hardEdge,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
+    return Card(
+      elevation: 10,
+      clipBehavior: Clip.hardEdge,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            alignment: Alignment.centerLeft,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            child: const Text(
+              "Description",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              margin: const EdgeInsets.symmetric(horizontal: 15),
-              alignment: Alignment.centerLeft,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Colors.grey,
-                  ),
+          Expanded(
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                textSelectionTheme: TextSelectionThemeData(
+                  cursorColor: cursorColor,
+                  selectionColor: cursorColor,
+                  selectionHandleColor: cursorColor,
                 ),
               ),
-              child: const Text(
-                "Description",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  textSelectionTheme: TextSelectionThemeData(
-                    cursorColor: cursorColor,
-                    selectionColor: cursorColor,
-                    selectionHandleColor: cursorColor,
+              child: TextField(
+                minLines: null,
+                maxLines: null,
+                textInputAction: TextInputAction.newline,
+                expands: true,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
                   ),
+                  border: InputBorder.none,
+                  hintText: isSupport
+                      ? "Describe your issue here..."
+                      : "Write your feedback here...",
                 ),
-                child: TextField(
-                  minLines: null,
-                  maxLines: null,
-                  textInputAction: TextInputAction.newline,
-                  expands: true,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10,
-                    ),
-                    border: InputBorder.none,
-                    hintText: isSupport
-                        ? "Describe your issue here..."
-                        : "Write your feedback here...",
-                  ),
-                  style: const TextStyle(fontSize: 18),
-                  onChanged: feedbackProvider.changeDescription,
-                ),
+                style: const TextStyle(fontSize: 18),
+                onChanged: feedbackProvider.changeDescription,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

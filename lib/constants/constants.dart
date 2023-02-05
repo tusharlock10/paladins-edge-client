@@ -26,8 +26,6 @@ abstract class ImageAspectRatios {
   static const rankIcon = 1;
 
   static const loadoutCard = 1 / 2;
-
-  static const feedbackImage = 4 / 3;
 }
 
 abstract class QueueId {
