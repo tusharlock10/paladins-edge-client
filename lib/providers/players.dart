@@ -11,7 +11,7 @@ class _PlayersNotifier extends ChangeNotifier {
   bool isLoadingPlayerStatus = false;
   bool isLoadingPlayerInferred = false;
   models.Player? playerData;
-  api.PlayerStatusResponse? playerStatus;
+  data_classes.PlayerStatus? playerStatus;
   models.PlayerInferred? playerInferred;
   List<data_classes.LowerSearch> lowerSearchPlayers = [];
   List<models.Player> topSearchPlayers = [];
@@ -33,17 +33,18 @@ class _PlayersNotifier extends ChangeNotifier {
       utilities.postFrameCallback(notifyListeners);
     }
 
-    playerStatus = await api.PlayersRequests.playerStatus(
+    final response = await api.PlayersRequests.playerStatus(
       playerId: playerId,
       onlyStatus: onlyStatus,
     );
-
-    playerStatus ??= api.PlayerStatusResponse(
-      inMatch: false,
-      playerId: 0,
-      status: "Unknown",
-      match: null,
-    );
+    playerStatus = response.success
+        ? response.data
+        : data_classes.PlayerStatus(
+            inMatch: false,
+            playerId: 0,
+            status: "Unknown",
+            match: null,
+          );
 
     if (!forceUpdate) isLoadingPlayerStatus = false;
     notifyListeners();
@@ -59,7 +60,9 @@ class _PlayersNotifier extends ChangeNotifier {
     final response = await api.PlayersRequests.playerInferred(
       playerId: playerId,
     );
-    playerInferred = response?.playerInferred;
+    if (response.success) {
+      playerInferred = response.data;
+    }
 
     isLoadingPlayerInferred = false;
     notifyListeners();
@@ -76,14 +79,14 @@ class _PlayersNotifier extends ChangeNotifier {
     if (savedSearchHistory == null) {
       final response = await api.PlayersRequests.searchHistory();
 
-      if (response == null) {
+      if (!response.success) {
         searchHistory = [];
 
         return;
       }
 
-      searchHistory = response.searchHistory;
-      response.searchHistory.forEach(utilities.Database.saveSearchHistory);
+      searchHistory = response.data!;
+      searchHistory.forEach(utilities.Database.saveSearchHistory);
     } else {
       searchHistory = savedSearchHistory;
     }
@@ -186,19 +189,19 @@ class _PlayersNotifier extends ChangeNotifier {
       utilities.postFrameCallback(notifyListeners);
     }
 
-    final response = await api.PlayersRequests.playerDetail(
+    final response = await api.PlayersRequests.player(
       playerId: playerId,
       forceUpdate: forceUpdate,
     );
 
-    if (response == null) {
+    if (!response.success) {
       if (!forceUpdate) isLoadingPlayerData = false;
       notifyListeners();
 
       return;
     }
 
-    playerData = response.player;
+    playerData = response.data;
 
     await insertSearchHistory(
       playerName: playerData!.name,

@@ -324,16 +324,14 @@ class _AuthNotifier extends ChangeNotifier {
     final response =
         await api.PlayersRequests.updateFavouriteFriend(playerId: playerId);
 
-    if (response == null) {
+    if (!response.success) {
       // if the response fails for some reason, revert back the change
       // set newPlayerAdded to false
       user!.favouriteFriendIds = favouriteFriendsClone;
       result = data_classes.FavouriteFriendResult.reverted;
-    } else {
-      user!.favouriteFriendIds = List<int>.from(response.favouriteFriends);
+      notifyListeners();
     }
 
-    notifyListeners();
     utilities.Database.saveUser(user!);
 
     return result;

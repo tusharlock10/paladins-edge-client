@@ -1,6 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/models/index.dart" as models;
-import "package:paladinsedge/models/index.dart" show Player;
+import "package:paladinsedge/models/index.dart" show Player, ActiveMatch;
 
 part "players.g.dart";
 
@@ -74,4 +74,23 @@ class SearchPlayersData {
   factory SearchPlayersData.fromJson(Map<String, dynamic> json) =>
       _$SearchPlayersDataFromJson(json);
   Map<String, dynamic> toJson() => _$SearchPlayersDataToJson(this);
+}
+
+@JsonSerializable()
+class PlayerStatus {
+  final int playerId;
+  final bool inMatch;
+  final String status;
+  final ActiveMatch? match;
+
+  PlayerStatus({
+    required this.playerId,
+    required this.inMatch,
+    required this.status,
+    required this.match,
+  });
+
+  factory PlayerStatus.fromJson(Map<String, dynamic> json) =>
+      _$PlayerStatusFromJson(json);
+  Map<String, dynamic> toJson() => _$PlayerStatusToJson(this);
 }

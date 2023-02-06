@@ -34,7 +34,7 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     final response = await api.PlayersRequests.friends(playerId: playerId);
-    if (response == null) {
+    if (!response.success) {
       isLoadingFriends = false;
       notifyListeners();
 
@@ -42,7 +42,7 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     if (!forceUpdate) isLoadingFriends = false;
-    final friends = response.friends;
+    final friends = response.data!;
 
     if (favouriteFriends != null) {
       // sort the friends on the basis on name
@@ -80,7 +80,7 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     final response = await api.PlayersRequests.friends(playerId: playerId);
-    if (response == null) {
+    if (!response.success) {
       isLoadingFriends = false;
       notifyListeners();
 
@@ -88,7 +88,7 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     if (!forceUpdate) isLoadingFriends = false;
-    otherPlayerFriends = response.friends;
+    otherPlayerFriends = response.data;
 
     notifyListeners();
   }

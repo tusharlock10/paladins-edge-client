@@ -1,7 +1,6 @@
 import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/api/players/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
-import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class PlayersRequests {
   static Future<SearchPlayersResponse> searchPlayers({
@@ -21,81 +20,68 @@ abstract class PlayersRequests {
     return response;
   }
 
-  static Future<PlayerDetailResponse?> playerDetail({
+  static Future<PlayerDetailResponse> player({
     required int playerId,
     required bool forceUpdate,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.playerDetail,
-        queryParameters: {"playerId": playerId, "forceUpdate": forceUpdate},
-      );
-      if (response.data != null) {
-        return PlayerDetailResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<PlayerDetailResponse>(
+      url: constants.Urls.player,
+      method: HttpMethod.get,
+      fromJson: PlayerDetailResponse.fromJson,
+      defaultValue: PlayerDetailResponse(),
+      pathParams: {"playerId": playerId},
+      queryParams: {"forceUpdate": forceUpdate},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<BatchPlayerDetailsResponse?> batchPlayerDetail({
+  static Future<BatchPlayerDetailsResponse> batchPlayer({
     required List<int> playerIds,
   }) async {
-    try {
-      final response = await utilities.api.post<Map<String, dynamic>>(
-        constants.Urls.batchPlayerDetails,
-        data: {"playerIds": playerIds},
-      );
-      if (response.data != null) {
-        return BatchPlayerDetailsResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<BatchPlayerDetailsResponse>(
+      url: constants.Urls.batchPlayer,
+      method: HttpMethod.post,
+      fromJson: BatchPlayerDetailsResponse.fromJson,
+      defaultValue: BatchPlayerDetailsResponse(),
+      payload: {"playersQuery": playerIds},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<PlayerStatusResponse?> playerStatus({
+  static Future<PlayerStatusResponse> playerStatus({
     required int playerId,
-    bool onlyStatus = false,
+    required bool onlyStatus,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.playerStatus,
-        queryParameters: {
-          "playerId": playerId,
-          "onlyStatus": onlyStatus,
-        },
-      );
-      if (response.data != null) {
-        return PlayerStatusResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<PlayerStatusResponse>(
+      url: constants.Urls.playerStatus,
+      method: HttpMethod.get,
+      fromJson: PlayerStatusResponse.fromJson,
+      defaultValue: PlayerStatusResponse(),
+      pathParams: {"playerId": playerId},
+      queryParams: {"onlyStatus": onlyStatus},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<FriendsResponse?> friends({
+  static Future<FriendsResponse> friends({
     required int playerId,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.friends,
-        queryParameters: {"playerId": playerId},
-      );
-      if (response.data != null) {
-        return FriendsResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<FriendsResponse>(
+      url: constants.Urls.friends,
+      method: HttpMethod.get,
+      fromJson: FriendsResponse.fromJson,
+      defaultValue: FriendsResponse(),
+      pathParams: {"playerId": playerId},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
   static Future<FavouriteFriendsResponse> favouriteFriends() async {
@@ -110,54 +96,44 @@ abstract class PlayersRequests {
     return response;
   }
 
-  static Future<UpdateFavouriteFriendResponse?> updateFavouriteFriend({
+  static Future<UpdateFavouriteFriendResponse> updateFavouriteFriend({
     required int playerId,
   }) async {
-    try {
-      final response = await utilities.api.put<Map<String, dynamic>>(
-        constants.Urls.updateFavouriteFriend,
-        data: {"playerId": playerId},
-      );
-      if (response.data != null) {
-        return UpdateFavouriteFriendResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<UpdateFavouriteFriendResponse>(
+      url: constants.Urls.markFavouriteFriend,
+      method: HttpMethod.post,
+      fromJson: UpdateFavouriteFriendResponse.fromJson,
+      defaultValue: UpdateFavouriteFriendResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<SearchHistoryResponse?> searchHistory() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.searchHistory,
-      );
-      if (response.data != null) {
-        return SearchHistoryResponse.fromJson(response.data!);
-      }
+  static Future<SearchHistoryResponse> searchHistory() async {
+    final input = ApiRequestInput<SearchHistoryResponse>(
+      url: constants.Urls.searchHistory,
+      method: HttpMethod.get,
+      fromJson: SearchHistoryResponse.fromJson,
+      defaultValue: SearchHistoryResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<PlayerInferredResponse?> playerInferred({
+  static Future<PlayerInferredResponse> playerInferred({
     required int playerId,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.playerInferred,
-        queryParameters: {"playerId": playerId},
-      );
-      if (response.data != null) {
-        return PlayerInferredResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<PlayerInferredResponse>(
+      url: constants.Urls.playerInferred,
+      method: HttpMethod.get,
+      fromJson: PlayerInferredResponse.fromJson,
+      defaultValue: PlayerInferredResponse(),
+      pathParams: {"playerId": playerId},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 }

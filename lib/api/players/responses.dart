@@ -1,5 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
-import "package:paladinsedge/data_classes/index.dart" show SearchPlayersData;
+import "package:paladinsedge/data_classes/index.dart"
+    show SearchPlayersData, PlayerStatus;
 import "package:paladinsedge/models/index.dart"
     show Player, ActiveMatch, SearchHistory, PlayerInferred;
 
@@ -24,9 +25,15 @@ class SearchPlayersResponse {
 
 @JsonSerializable()
 class PlayerDetailResponse {
-  final Player player;
+  final bool success;
+  final String? error;
+  final Player? data;
 
-  PlayerDetailResponse({required this.player});
+  PlayerDetailResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory PlayerDetailResponse.fromJson(Map<String, dynamic> json) =>
       _$PlayerDetailResponseFromJson(json);
@@ -35,9 +42,15 @@ class PlayerDetailResponse {
 
 @JsonSerializable()
 class BatchPlayerDetailsResponse {
-  final List<Player> players;
+  final bool success;
+  final String? error;
+  final List<Player>? data;
 
-  BatchPlayerDetailsResponse({required this.players});
+  BatchPlayerDetailsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory BatchPlayerDetailsResponse.fromJson(Map<String, dynamic> json) =>
       _$BatchPlayerDetailsResponseFromJson(json);
@@ -46,16 +59,14 @@ class BatchPlayerDetailsResponse {
 
 @JsonSerializable()
 class PlayerStatusResponse {
-  final int playerId;
-  final bool inMatch;
-  final String status;
-  final ActiveMatch? match;
+  final bool success;
+  final String? error;
+  final PlayerStatus? data;
 
   PlayerStatusResponse({
-    required this.playerId,
-    required this.inMatch,
-    required this.status,
-    required this.match,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory PlayerStatusResponse.fromJson(Map<String, dynamic> json) =>
@@ -65,9 +76,15 @@ class PlayerStatusResponse {
 
 @JsonSerializable()
 class FriendsResponse {
-  final List<Player> friends;
+  final bool success;
+  final String? error;
+  final List<Player>? data;
 
-  FriendsResponse({required this.friends});
+  FriendsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory FriendsResponse.fromJson(Map<String, dynamic> json) =>
       _$FriendsResponseFromJson(json);
@@ -93,9 +110,15 @@ class FavouriteFriendsResponse {
 
 @JsonSerializable()
 class UpdateFavouriteFriendResponse {
-  final List<String> favouriteFriends;
+  final bool success;
+  final String? error;
+  final String? data;
 
-  UpdateFavouriteFriendResponse({required this.favouriteFriends});
+  UpdateFavouriteFriendResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory UpdateFavouriteFriendResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateFavouriteFriendResponseFromJson(json);
@@ -104,10 +127,14 @@ class UpdateFavouriteFriendResponse {
 
 @JsonSerializable()
 class SearchHistoryResponse {
-  final List<SearchHistory> searchHistory;
+  final bool success;
+  final String? error;
+  final List<SearchHistory>? data;
 
   SearchHistoryResponse({
-    required this.searchHistory,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory SearchHistoryResponse.fromJson(Map<String, dynamic> json) =>
@@ -117,10 +144,14 @@ class SearchHistoryResponse {
 
 @JsonSerializable()
 class PlayerInferredResponse {
-  final PlayerInferred playerInferred;
+  final bool success;
+  final String? error;
+  final PlayerInferred? data;
 
   PlayerInferredResponse({
-    required this.playerInferred,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory PlayerInferredResponse.fromJson(Map<String, dynamic> json) =>

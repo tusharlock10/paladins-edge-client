@@ -40,3 +40,20 @@ Map<String, dynamic> _$SearchPlayersDataToJson(SearchPlayersData instance) =>
       'exactMatch': instance.exactMatch,
       'player': instance.player,
     };
+
+PlayerStatus _$PlayerStatusFromJson(Map<String, dynamic> json) => PlayerStatus(
+      playerId: json['playerId'] as int,
+      inMatch: json['inMatch'] as bool,
+      status: json['status'] as String,
+      match: json['match'] == null
+          ? null
+          : ActiveMatch.fromJson(json['match'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PlayerStatusToJson(PlayerStatus instance) =>
+    <String, dynamic>{
+      'playerId': instance.playerId,
+      'inMatch': instance.inMatch,
+      'status': instance.status,
+      'match': instance.match,
+    };
