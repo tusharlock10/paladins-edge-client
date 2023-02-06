@@ -69,3 +69,21 @@ Map<String, dynamic> _$FaqsResponseToJson(FaqsResponse instance) =>
       'error': instance.error,
       'data': instance.data,
     };
+
+SubmitFeedbackResponse _$SubmitFeedbackResponseFromJson(
+        Map<String, dynamic> json) =>
+    SubmitFeedbackResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : Feedback.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$SubmitFeedbackResponseToJson(
+        SubmitFeedbackResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
+    };

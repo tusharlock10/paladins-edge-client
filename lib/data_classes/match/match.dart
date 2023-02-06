@@ -42,6 +42,21 @@ class MatchPlayerItemUsed {
 }
 
 @JsonSerializable()
+class MatchData {
+  final Match match;
+  final List<MatchPlayer> matchPlayers;
+
+  MatchData({
+    required this.match,
+    required this.matchPlayers,
+  });
+
+  factory MatchData.fromJson(Map<String, dynamic> json) =>
+      _$MatchDataFromJson(json);
+  Map<String, dynamic> toJson() => _$MatchDataToJson(this);
+}
+
+@JsonSerializable()
 class MatchesData {
   final List<Match> matches;
   final List<MatchPlayer> matchPlayers;

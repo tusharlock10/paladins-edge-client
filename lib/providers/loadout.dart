@@ -2,7 +2,6 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
-import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -33,7 +32,7 @@ class _LoadoutNotifier extends ChangeNotifier {
     );
 
     if (!forceUpdate) isGettingLoadouts = false;
-    if (response != null) loadouts = response.loadouts;
+    if (response.success) loadouts = response.data;
 
     notifyListeners();
   }
@@ -149,18 +148,18 @@ class _LoadoutNotifier extends ChangeNotifier {
     isSavingLoadout = true;
     notifyListeners();
 
-    final result = isEditingLoadout
-        ? await api.LoadoutRequests.updatePlayerLoadout(loadout: loadout)
-        : await api.LoadoutRequests.savePlayerLoadout(loadout: loadout);
+    final response = isEditingLoadout
+        ? await api.LoadoutRequests.updateLoadout(loadout: loadout)
+        : await api.LoadoutRequests.createLoadout(loadout: loadout);
 
-    if (result != null) {
-      _updateLoadouts(result.loadout);
+    if (response.success) {
+      _updateLoadouts(response.data!);
     }
 
     isSavingLoadout = false;
     notifyListeners();
 
-    return result != null;
+    return response.success;
   }
 
   /// Deletes a loadout using its loadoutHash
@@ -173,11 +172,10 @@ class _LoadoutNotifier extends ChangeNotifier {
     notifyListeners();
 
     // make api call to delete loadout
-    final response = await api.LoadoutRequests.deletePlayerLoadout(
+    final response = await api.LoadoutRequests.deleteLoadout(
       loadoutHash: loadoutHash,
-      dryRun: constants.isDebug,
     );
-    if (response == null) {
+    if (!response.success) {
       // revert the changes in case of failure
       loadouts = loadoutsClone;
       notifyListeners();

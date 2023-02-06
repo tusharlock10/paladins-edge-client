@@ -1,6 +1,7 @@
 import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/api/common/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/models/index.dart" as models;
 
 abstract class CommonRequests {
   static Future<EssentialsResponse> essentials() async {
@@ -45,6 +46,21 @@ abstract class CommonRequests {
       method: HttpMethod.get,
       fromJson: FaqsResponse.fromJson,
       defaultValue: FaqsResponse(),
+    );
+    final response = await ApiRequest.apiRequest(input);
+
+    return response;
+  }
+
+  static Future<SubmitFeedbackResponse> feedback({
+    required models.Feedback feedback,
+  }) async {
+    final input = ApiRequestInput<SubmitFeedbackResponse>(
+      url: constants.Urls.feedback,
+      method: HttpMethod.post,
+      fromJson: SubmitFeedbackResponse.fromJson,
+      defaultValue: SubmitFeedbackResponse(),
+      payload: feedback,
     );
     final response = await ApiRequest.apiRequest(input);
 

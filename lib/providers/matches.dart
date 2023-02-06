@@ -13,7 +13,7 @@ class _MatchesNotifier extends ChangeNotifier {
 
   /// Match detail
   bool isMatchDetailsLoading = false;
-  api.MatchDetailsResponse? matchDetails;
+  data_classes.MatchData? matchDetails;
 
   /// Player matches
   bool isPlayerMatchesLoading = false;
@@ -59,17 +59,18 @@ class _MatchesNotifier extends ChangeNotifier {
     );
     if (!forceUpdate) isPlayerMatchesLoading = false;
 
-    if (response == null) return notifyListeners();
+    if (!response.success) return notifyListeners();
+    final matchesData = response.data!;
 
     // create list of combinedMatches using a temp. map
     final Map<int, data_classes.CombinedMatch> tempMatchesMap = {};
-    for (final match in response.matches) {
+    for (final match in matchesData.matches) {
       tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
         match: match,
         matchPlayers: [],
       );
     }
-    for (final matchPlayer in response.matchPlayers) {
+    for (final matchPlayer in matchesData.matchPlayers) {
       final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
       if (existingCombinedMatch == null) continue;
 
@@ -101,7 +102,7 @@ class _MatchesNotifier extends ChangeNotifier {
     final response = await api.MatchRequests.matchDetails(matchId: matchId);
 
     isMatchDetailsLoading = false;
-    matchDetails = response;
+    matchDetails = response.data;
 
     // sort players based on their team
     matchDetails?.matchPlayers.sort((a, b) => a.team.compareTo(b.team));
@@ -288,23 +289,24 @@ class _MatchesNotifier extends ChangeNotifier {
     final response = await api.MatchRequests.commonMatches(
       playerIds: [userPlayerId, playerId],
     );
-    if (response == null) {
+    if (!response.success) {
       isCommonMatchesLoading = false;
       commonMatches = null;
       notifyListeners();
 
       return;
     }
+    final matchesData = response.data!;
 
     // create list of commonMatches using a temp. map
     final Map<int, data_classes.CombinedMatch> tempMatchesMap = {};
-    for (final match in response.matches) {
+    for (final match in matchesData.matches) {
       tempMatchesMap[match.matchId] = data_classes.CombinedMatch(
         match: match,
         matchPlayers: [],
       );
     }
-    for (final matchPlayer in response.matchPlayers) {
+    for (final matchPlayer in matchesData.matchPlayers) {
       final existingCombinedMatch = tempMatchesMap[matchPlayer.matchId];
       if (existingCombinedMatch == null) continue;
 

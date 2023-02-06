@@ -9,37 +9,51 @@ part of 'responses.dart';
 PlayerLoadoutsResponse _$PlayerLoadoutsResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerLoadoutsResponse(
-      loadouts: (json['loadouts'] as List<dynamic>)
-          .map((e) => Loadout.fromJson(e as Map<String, dynamic>))
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Loadout.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$PlayerLoadoutsResponseToJson(
         PlayerLoadoutsResponse instance) =>
     <String, dynamic>{
-      'loadouts': instance.loadouts,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
-SavePlayerLoadoutResponse _$SavePlayerLoadoutResponseFromJson(
+CreateLoadoutResponse _$CreateLoadoutResponseFromJson(
         Map<String, dynamic> json) =>
-    SavePlayerLoadoutResponse(
-      loadout: Loadout.fromJson(json['loadout'] as Map<String, dynamic>),
+    CreateLoadoutResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : Loadout.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$SavePlayerLoadoutResponseToJson(
-        SavePlayerLoadoutResponse instance) =>
+Map<String, dynamic> _$CreateLoadoutResponseToJson(
+        CreateLoadoutResponse instance) =>
     <String, dynamic>{
-      'loadout': instance.loadout,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
-DeletePlayerLoadoutResponse _$DeletePlayerLoadoutResponseFromJson(
+DeleteLoadoutResponse _$DeleteLoadoutResponseFromJson(
         Map<String, dynamic> json) =>
-    DeletePlayerLoadoutResponse(
-      loadout: Loadout.fromJson(json['loadout'] as Map<String, dynamic>),
+    DeleteLoadoutResponse(
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] as bool?,
     );
 
-Map<String, dynamic> _$DeletePlayerLoadoutResponseToJson(
-        DeletePlayerLoadoutResponse instance) =>
+Map<String, dynamic> _$DeleteLoadoutResponseToJson(
+        DeleteLoadoutResponse instance) =>
     <String, dynamic>{
-      'loadout': instance.loadout,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };

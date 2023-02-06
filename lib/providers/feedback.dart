@@ -31,13 +31,12 @@ class _FeedbackNotifier extends ChangeNotifier {
       type: selectedFeedbackType,
     );
 
-    final response =
-        await api.FeedbackRequests.submitFeedback(feedback: feedback);
+    final response = await api.CommonRequests.feedback(feedback: feedback);
 
     isSubmitting = false;
     notifyListeners();
 
-    return response != null;
+    return response.success;
   }
 
   /// Clears all data

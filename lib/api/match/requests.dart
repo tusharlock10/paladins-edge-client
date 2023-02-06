@@ -1,47 +1,38 @@
 import "package:paladinsedge/api/base/requests.dart";
 import "package:paladinsedge/api/match/responses.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
-import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class MatchRequests {
-  static Future<MatchDetailsResponse?> matchDetails({
+  static Future<MatchDetailsResponse> matchDetails({
     required int matchId,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.matchDetails,
-        queryParameters: {"matchId": matchId},
-      );
-      if (response.data != null) {
-        return MatchDetailsResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<MatchDetailsResponse>(
+      url: constants.Urls.matchDetails,
+      method: HttpMethod.get,
+      fromJson: MatchDetailsResponse.fromJson,
+      defaultValue: MatchDetailsResponse(),
+      pathParams: {"matchId": matchId},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
-  static Future<PlayerMatchesResponse?> playerMatches({
+  static Future<PlayerMatchesResponse> playerMatches({
     required int playerId,
     bool forceUpdate = false,
   }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.playerMatches,
-        queryParameters: {
-          "playerId": playerId,
-          "forceUpdate": forceUpdate,
-        },
-      );
-      if (response.data != null) {
-        return PlayerMatchesResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<PlayerMatchesResponse>(
+      url: constants.Urls.playerMatches,
+      method: HttpMethod.get,
+      fromJson: PlayerMatchesResponse.fromJson,
+      defaultValue: PlayerMatchesResponse(),
+      pathParams: {"playerId": playerId},
+      queryParams: {"forceUpdate": forceUpdate},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
   static Future<SavedMatchesResponse> savedMatches() async {
@@ -69,22 +60,19 @@ abstract class MatchRequests {
     return response;
   }
 
-  static Future<CommonMatchesResponse?> commonMatches({
+  static Future<CommonMatchesResponse> commonMatches({
     required List<int> playerIds,
   }) async {
-    try {
-      final response = await utilities.api.post<Map<String, dynamic>>(
-        constants.Urls.commonMatches,
-        data: {"playerIds": playerIds},
-      );
-      if (response.data != null) {
-        return CommonMatchesResponse.fromJson(response.data!);
-      }
+    final input = ApiRequestInput<CommonMatchesResponse>(
+      url: constants.Urls.commonMatches,
+      method: HttpMethod.get,
+      fromJson: CommonMatchesResponse.fromJson,
+      defaultValue: CommonMatchesResponse(),
+      queryParams: {"playerIds": playerIds},
+    );
+    final response = await ApiRequest.apiRequest(input);
 
-      return null;
-    } catch (_) {
-      return null;
-    }
+    return response;
   }
 
   static Future<TopMatchesResponse> topMatches() async {

@@ -5,9 +5,15 @@ part "responses.g.dart";
 
 @JsonSerializable()
 class PlayerLoadoutsResponse {
-  final List<Loadout> loadouts;
+  final bool success;
+  final String? error;
+  final List<Loadout>? data;
 
-  PlayerLoadoutsResponse({required this.loadouts});
+  PlayerLoadoutsResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
   factory PlayerLoadoutsResponse.fromJson(Map<String, dynamic> json) =>
       _$PlayerLoadoutsResponseFromJson(json);
@@ -15,23 +21,35 @@ class PlayerLoadoutsResponse {
 }
 
 @JsonSerializable()
-class SavePlayerLoadoutResponse {
-  final Loadout loadout;
+class CreateLoadoutResponse {
+  final bool success;
+  final String? error;
+  final Loadout? data;
 
-  SavePlayerLoadoutResponse({required this.loadout});
+  CreateLoadoutResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
-  factory SavePlayerLoadoutResponse.fromJson(Map<String, dynamic> json) =>
-      _$SavePlayerLoadoutResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$SavePlayerLoadoutResponseToJson(this);
+  factory CreateLoadoutResponse.fromJson(Map<String, dynamic> json) =>
+      _$CreateLoadoutResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$CreateLoadoutResponseToJson(this);
 }
 
 @JsonSerializable()
-class DeletePlayerLoadoutResponse {
-  final Loadout loadout;
+class DeleteLoadoutResponse {
+  final bool success;
+  final String? error;
+  final bool? data;
 
-  DeletePlayerLoadoutResponse({required this.loadout});
+  DeleteLoadoutResponse({
+    this.success = false,
+    this.error,
+    this.data,
+  });
 
-  factory DeletePlayerLoadoutResponse.fromJson(Map<String, dynamic> json) =>
-      _$DeletePlayerLoadoutResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$DeletePlayerLoadoutResponseToJson(this);
+  factory DeleteLoadoutResponse.fromJson(Map<String, dynamic> json) =>
+      _$DeleteLoadoutResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$DeleteLoadoutResponseToJson(this);
 }

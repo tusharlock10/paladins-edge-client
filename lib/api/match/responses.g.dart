@@ -9,35 +9,37 @@ part of 'responses.dart';
 MatchDetailsResponse _$MatchDetailsResponseFromJson(
         Map<String, dynamic> json) =>
     MatchDetailsResponse(
-      match: Match.fromJson(json['match'] as Map<String, dynamic>),
-      matchPlayers: (json['matchPlayers'] as List<dynamic>)
-          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : MatchData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MatchDetailsResponseToJson(
         MatchDetailsResponse instance) =>
     <String, dynamic>{
-      'match': instance.match,
-      'matchPlayers': instance.matchPlayers,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 PlayerMatchesResponse _$PlayerMatchesResponseFromJson(
         Map<String, dynamic> json) =>
     PlayerMatchesResponse(
-      matches: (json['matches'] as List<dynamic>)
-          .map((e) => Match.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      matchPlayers: (json['matchPlayers'] as List<dynamic>)
-          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : MatchesData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PlayerMatchesResponseToJson(
         PlayerMatchesResponse instance) =>
     <String, dynamic>{
-      'matches': instance.matches,
-      'matchPlayers': instance.matchPlayers,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 SavedMatchesResponse _$SavedMatchesResponseFromJson(
@@ -89,19 +91,19 @@ Map<String, dynamic> _$SaveMatchResponseToJson(SaveMatchResponse instance) =>
 CommonMatchesResponse _$CommonMatchesResponseFromJson(
         Map<String, dynamic> json) =>
     CommonMatchesResponse(
-      matches: (json['matches'] as List<dynamic>)
-          .map((e) => Match.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      matchPlayers: (json['matchPlayers'] as List<dynamic>)
-          .map((e) => MatchPlayer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      success: json['success'] as bool? ?? false,
+      error: json['error'] as String?,
+      data: json['data'] == null
+          ? null
+          : MatchesData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CommonMatchesResponseToJson(
         CommonMatchesResponse instance) =>
     <String, dynamic>{
-      'matches': instance.matches,
-      'matchPlayers': instance.matchPlayers,
+      'success': instance.success,
+      'error': instance.error,
+      'data': instance.data,
     };
 
 TopMatchesResponse _$TopMatchesResponseFromJson(Map<String, dynamic> json) =>

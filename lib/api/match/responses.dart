@@ -1,5 +1,6 @@
 import "package:json_annotation/json_annotation.dart";
-import "package:paladinsedge/data_classes/index.dart" show MatchesData;
+import "package:paladinsedge/data_classes/index.dart"
+    show MatchData, MatchesData;
 import "package:paladinsedge/models/index.dart"
     show Match, MatchPlayer, TopMatch;
 
@@ -7,12 +8,14 @@ part "responses.g.dart";
 
 @JsonSerializable()
 class MatchDetailsResponse {
-  final Match match;
-  final List<MatchPlayer> matchPlayers;
+  final bool success;
+  final String? error;
+  final MatchData? data;
 
   MatchDetailsResponse({
-    required this.match,
-    required this.matchPlayers,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory MatchDetailsResponse.fromJson(Map<String, dynamic> json) =>
@@ -22,12 +25,14 @@ class MatchDetailsResponse {
 
 @JsonSerializable()
 class PlayerMatchesResponse {
-  final List<Match> matches;
-  final List<MatchPlayer> matchPlayers;
+  final bool success;
+  final String? error;
+  final MatchesData? data;
 
   PlayerMatchesResponse({
-    required this.matches,
-    required this.matchPlayers,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory PlayerMatchesResponse.fromJson(Map<String, dynamic> json) =>
@@ -84,12 +89,14 @@ class SaveMatchResponse {
 
 @JsonSerializable()
 class CommonMatchesResponse {
-  final List<Match> matches;
-  final List<MatchPlayer> matchPlayers;
+  final bool success;
+  final String? error;
+  final MatchesData? data;
 
   CommonMatchesResponse({
-    required this.matches,
-    required this.matchPlayers,
+    this.success = false,
+    this.error,
+    this.data,
   });
 
   factory CommonMatchesResponse.fromJson(Map<String, dynamic> json) =>

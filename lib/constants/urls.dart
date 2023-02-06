@@ -14,6 +14,7 @@ abstract class Urls {
   static const bountyStore = "/common/bounty"; // GET
   static const items = "/common/items"; // GET
   static const faq = "/common/faq"; // GET
+  static const feedback = "/common/feedback"; // POST
 
   // champions
   static const champions = "/champions"; // GET
@@ -38,19 +39,16 @@ abstract class Urls {
   static const queueTimeline = "/queue/timeline"; // GET
 
   // matches
-  static const matchDetails = "/match/matchDetails"; // GET
-  static const playerMatches = "/match/playerMatches"; // GET
-  static const commonMatches = "/match/commonMatches"; // POST
+  static const matchDetails = "/matches/:matchId"; // GET
+  static const playerMatches = "/matches/player/:playerId"; // GET
+  static const commonMatches = "/matches/common"; // GET
   static const savedMatches = "/matches/saved"; // GET
   static const saveMatch = "/matches/save/:matchId"; // PUT
   static const topMatches = "/matches/top"; // GET
 
-  // loadout
-  static const playerLoadouts = "/loadout/playerLoadouts"; // GET
-  static const savePlayerLoadout = "/loadout/savePlayerLoadout"; // POST
-  static const updatePlayerLoadout = "/loadout/updatePlayerLoadout"; // PUT
-  static const deletePlayerLoadout = "/loadout/deletePlayerLoadout"; // DELETE
-
-  // feedback
-  static const submitFeedback = "/feedback/submitFeedback"; // POST
+  // loadouts
+  static const playerLoadouts = "/loadouts/player/:playerId"; // GET
+  static const createLoadout = "/loadouts/create"; // POST
+  static const updateLoadout = "/loadouts/update"; // PUT
+  static const deleteLoadout = "/loadouts/:loadoutHash"; // DELETE
 }
