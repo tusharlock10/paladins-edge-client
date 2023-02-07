@@ -86,7 +86,7 @@ abstract class PlayersRequests {
 
   static Future<FavouriteFriendsResponse> favouriteFriends() async {
     final input = ApiRequestInput<FavouriteFriendsResponse>(
-      url: constants.Urls.searchPlayers,
+      url: constants.Urls.favouriteFriends,
       method: HttpMethod.get,
       fromJson: FavouriteFriendsResponse.fromJson,
       defaultValue: FavouriteFriendsResponse(),

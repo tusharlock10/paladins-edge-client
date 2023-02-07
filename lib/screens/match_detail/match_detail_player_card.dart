@@ -99,8 +99,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
             matchPlayer.talentId2 == 0;
     final backgroundColor = Theme.of(context).cardTheme.color;
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
-    final partyColor =
-        partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
+    final partyColor = partyNumber != null
+        ? constants.partyColors.elementAtOrNull(partyNumber - 1)
+        : null;
 
     // Hooks
     final champion = useMemoized(

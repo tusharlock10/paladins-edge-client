@@ -139,7 +139,6 @@ MatchPlayer _$MatchPlayerFromJson(Map<String, dynamic> json) => MatchPlayer(
           .map((e) =>
               MatchPlayerChampionCard.fromJson(e as Map<String, dynamic>))
           .toList(),
-      isInComplete: json['isInComplete'] as bool,
     );
 
 Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
@@ -158,7 +157,6 @@ Map<String, dynamic> _$MatchPlayerToJson(MatchPlayer instance) =>
       'playerStats': instance.playerStats,
       'playerItems': instance.playerItems,
       'playerChampionCards': instance.playerChampionCards,
-      'isInComplete': instance.isInComplete,
     };
 
 Match _$MatchFromJson(Map<String, dynamic> json) => Match(
@@ -172,8 +170,9 @@ Match _$MatchFromJson(Map<String, dynamic> json) => Match(
       map: json['map'] as String,
       region: json['region'] as String,
       isRankedMatch: json['isRankedMatch'] as bool,
-      championBans:
-          (json['championBans'] as List<dynamic>).map((e) => e as int).toList(),
+      championBans: (json['championBans'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
       isInComplete: json['isInComplete'] as bool,
     );
 

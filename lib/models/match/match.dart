@@ -152,14 +152,6 @@ class MatchPlayer {
   /// champion cards used by the player
   final List<MatchPlayerChampionCard> playerChampionCards;
 
-  /// If the matchPlayer data is in complete or not
-  // needs a paladinsAPI call to fetch the complete data
-  // most matchPlayers will be inComplete by default
-  // and matchDetail api needs to be called to complete the data
-  // _matchId will be null for inComplete matchPlayers
-  // partyId will be 0 for inComplete matchPlayers
-  final bool isInComplete;
-
   MatchPlayer({
     required this.playerId,
     required this.playerName,
@@ -170,12 +162,11 @@ class MatchPlayer {
     required this.skinId,
     required this.partyNumber,
     required this.team,
-    this.matchPosition,
-    this.playerRanked,
+    required this.matchPosition,
+    required this.playerRanked,
     required this.playerStats,
     required this.playerItems,
     required this.playerChampionCards,
-    required this.isInComplete,
   });
 
   factory MatchPlayer.fromJson(Map<String, dynamic> json) =>
@@ -216,7 +207,7 @@ class Match {
   final bool isRankedMatch;
 
   /// id champion that were banned in the match
-  final List<int> championBans;
+  final List<int>? championBans;
 
   /// If the match data is in complete or not
   // if the match has inComplete data, and needs a paladinsAPI call to fetch the complete data
