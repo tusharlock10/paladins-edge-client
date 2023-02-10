@@ -133,6 +133,7 @@ class _MatchesNotifier extends ChangeNotifier {
   Future<void> getSavedMatches() async {
     final user = ref.read(auth_provider.auth).user;
     final response = await api.MatchRequests.savedMatches();
+    print("RESPONSE IS ::: ${response.data}");
     if (!response.success) return;
 
     // create list of combinedMatches using a temp. map

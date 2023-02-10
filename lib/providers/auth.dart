@@ -104,6 +104,7 @@ class _AuthNotifier extends ChangeNotifier {
   /// Checks if the user is already logged in
   bool checkLogin() {
     token = utilities.Database.getToken();
+    print("token ::: $token");
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
