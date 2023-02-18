@@ -19,7 +19,7 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
     return SearchHistory(
       playerId: fields[0] as int,
       playerName: fields[1] as String,
-      time: fields[2] as DateTime,
+      timestamp: fields[2] as DateTime,
     );
   }
 
@@ -32,7 +32,7 @@ class SearchHistoryAdapter extends TypeAdapter<SearchHistory> {
       ..writeByte(1)
       ..write(obj.playerName)
       ..writeByte(2)
-      ..write(obj.time);
+      ..write(obj.timestamp);
   }
 
   @override
@@ -54,12 +54,12 @@ SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
     SearchHistory(
       playerId: json['playerId'] as int,
       playerName: json['playerName'] as String,
-      time: DateTime.parse(json['time'] as String),
+      timestamp: DateTime.parse(json['timestamp'] as String),
     );
 
 Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
     <String, dynamic>{
       'playerId': instance.playerId,
       'playerName': instance.playerName,
-      'time': instance.time.toIso8601String(),
+      'timestamp': instance.timestamp.toIso8601String(),
     };

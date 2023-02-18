@@ -94,7 +94,6 @@ class _AuthNotifier extends ChangeNotifier {
     while (true) {
       response = await api.CommonRequests.essentials();
       if (response.success) break;
-      await Future.delayed(const Duration(seconds: 1));
     }
 
     utilities.Database.saveEssentials(response.data!);
@@ -104,7 +103,6 @@ class _AuthNotifier extends ChangeNotifier {
   /// Checks if the user is already logged in
   bool checkLogin() {
     token = utilities.Database.getToken();
-    print("token ::: $token");
     user = utilities.Database.getUser();
     player = utilities.Database.getPlayer();
 
@@ -316,6 +314,7 @@ class _AuthNotifier extends ChangeNotifier {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.unmarkFriend);
     }
 
+    user!.favouriteFriendIds = List<int>.from(user!.favouriteFriendIds);
     notifyListeners();
 
     // after we update the UI
@@ -471,6 +470,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   void _saveResponse(data_classes.LoginData loginData) {
+    print("Login user is ::: ${loginData.user.playerId}");
     utilities.Database.saveUser(loginData.user);
     utilities.Database.saveToken(loginData.token);
     if (loginData.player != null) {

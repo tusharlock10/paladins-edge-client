@@ -73,16 +73,10 @@ abstract class ApiRequest {
         throw UnimplementedError();
     }
 
-    try {
-      final response = await responseFuture;
-      if (response.data != null) {
-        return input.fromJson(response.data as Map<String, dynamic>);
-      }
-    } catch (err) {
-      // TODO: remove print
-      print("ERROR :: $err");
-
-      return input.defaultValue;
+    // TODO: add error handling
+    final response = await responseFuture;
+    if (response.data != null) {
+      return input.fromJson(response.data as Map<String, dynamic>);
     }
 
     return input.defaultValue;

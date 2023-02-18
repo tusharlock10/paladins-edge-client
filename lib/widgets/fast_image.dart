@@ -30,6 +30,9 @@ class FastImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final canShowImageBlurHash =
+        imageBlurHash != null && imageBlurHash!.length > 5;
+
     final image = isAssetImage
         ? Image.asset(
             imageUrl,
@@ -42,7 +45,7 @@ class FastImage extends StatelessWidget {
             fadeInDuration: Duration.zero,
             fadeOutDuration: Duration.zero,
             alignment: alignment ?? Alignment.center,
-            errorWidget: (_, __, ___) => imageBlurHash != null
+            errorWidget: (_, __, ___) => canShowImageBlurHash
                 ? SizedBox(
                     height: height,
                     width: width,
@@ -56,7 +59,7 @@ class FastImage extends StatelessWidget {
                     height: height,
                     width: width,
                   ),
-            placeholder: imageBlurHash != null
+            placeholder: canShowImageBlurHash
                 ? (_, __) => SizedBox(
                       height: height,
                       width: width,

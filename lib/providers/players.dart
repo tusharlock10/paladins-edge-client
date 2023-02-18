@@ -95,13 +95,13 @@ class _PlayersNotifier extends ChangeNotifier {
     searchHistory = searchHistory
         .where(
           (searchItem) =>
-              DateTime.now().difference(searchItem.time) <
+              DateTime.now().difference(searchItem.timestamp) <
               const Duration(days: 7),
         )
         .toList();
 
     // sort search history on basis of time
-    searchHistory.sort((a, b) => b.time.compareTo(a.time));
+    searchHistory.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     utilities.postFrameCallback(notifyListeners);
   }
@@ -117,7 +117,7 @@ class _PlayersNotifier extends ChangeNotifier {
     final searchItem = models.SearchHistory(
       playerName: playerName,
       playerId: playerId,
-      time: DateTime.now(),
+      timestamp: DateTime.now(),
     );
 
     searchHistory.insert(0, searchItem);

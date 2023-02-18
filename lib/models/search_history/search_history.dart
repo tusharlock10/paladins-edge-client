@@ -18,12 +18,12 @@ class SearchHistory extends HiveObject {
 
   /// time at which the search took place
   @HiveField(2)
-  final DateTime time;
+  final DateTime timestamp;
 
   SearchHistory({
     required this.playerId,
     required this.playerName,
-    required this.time,
+    required this.timestamp,
   });
 
   factory SearchHistory.fromJson(Map<String, dynamic> json) =>

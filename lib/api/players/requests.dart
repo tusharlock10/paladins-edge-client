@@ -104,6 +104,7 @@ abstract class PlayersRequests {
       method: HttpMethod.post,
       fromJson: UpdateFavouriteFriendResponse.fromJson,
       defaultValue: UpdateFavouriteFriendResponse(),
+      pathParams: {"playerId": playerId},
     );
     final response = await ApiRequest.apiRequest(input);
 

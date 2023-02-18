@@ -292,6 +292,7 @@ class _ChampionsNotifier extends ChangeNotifier {
   ) async {
     final user = utilities.Database.getUser();
     final playerId = user?.playerId;
+    print("Player ID is :::: $playerId");
     if (playerId == null) return null;
 
     // on forceUpdate, skip getting data from local db
@@ -317,7 +318,11 @@ class _ChampionsNotifier extends ChangeNotifier {
   }
 
   /// Fetch the favourite champions for the user
-  Future<Set<int>?> _loadFavouriteChampions() async {
+  Future<Set<int>> _loadFavouriteChampions() async {
+    if (!utilities.Global.isAuthenticated) {
+      return <int>{};
+    }
+
     final response = await api.ChampionsRequests.favouriteChampions();
     if (!response.success) {
       return <int>{};

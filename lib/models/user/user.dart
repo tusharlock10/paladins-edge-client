@@ -17,7 +17,7 @@ class User {
 
   /// paladins playerId of the connected player
   @HiveField(5)
-  final int? playerId;
+  int? playerId;
 
   /// uid provided by the oauth provider
   @HiveField(6)

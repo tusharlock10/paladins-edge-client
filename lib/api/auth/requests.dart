@@ -60,6 +60,13 @@ abstract class AuthRequests {
     );
     final response = await ApiRequest.apiRequest(input);
 
+    if (response.success) {
+      final loginData = response.data!;
+      final player = loginData.player;
+
+      response.data!.user.playerId = player?.playerId;
+    }
+
     return response;
   }
 
