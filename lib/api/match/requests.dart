@@ -63,12 +63,13 @@ abstract class MatchRequests {
   static Future<CommonMatchesResponse> commonMatches({
     required List<int> playerIds,
   }) async {
+    final newPlayerIds = playerIds.join(",");
     final input = ApiRequestInput<CommonMatchesResponse>(
       url: constants.Urls.commonMatches,
       method: HttpMethod.get,
       fromJson: CommonMatchesResponse.fromJson,
       defaultValue: CommonMatchesResponse(),
-      queryParams: {"playerIds": playerIds},
+      queryParams: {"playerIds": newPlayerIds},
     );
     final response = await ApiRequest.apiRequest(input);
 

@@ -20,7 +20,7 @@ class DraftLoadout with _$DraftLoadout {
     required int playerId,
     required String name,
     required List<LoadoutCard?> loadoutCards,
-    required bool isImported,
+    required bool isPublic,
     int? loadoutHash,
   }) = _DraftLoadout;
 
@@ -30,7 +30,7 @@ class DraftLoadout with _$DraftLoadout {
       playerId: 0,
       name: "New Loadout",
       loadoutCards: List<LoadoutCard?>.filled(5, null),
-      isImported: false,
+      isPublic: false,
     );
   }
 
@@ -40,7 +40,7 @@ class DraftLoadout with _$DraftLoadout {
       playerId: loadout.playerId,
       name: loadout.name,
       loadoutCards: loadout.loadoutCards,
-      isImported: loadout.isImported,
+      isPublic: loadout.isPublic,
       loadoutHash: loadout.loadoutHash,
     );
   }

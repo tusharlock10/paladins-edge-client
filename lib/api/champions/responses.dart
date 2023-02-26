@@ -41,7 +41,7 @@ class PlayerChampionsResponse {
 class FavouriteChampionsResponse {
   final bool success;
   final String? error;
-  final List<int>? data;
+  final List<Champion>? data;
 
   FavouriteChampionsResponse({
     this.success = false,

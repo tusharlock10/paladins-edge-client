@@ -24,7 +24,7 @@ Loadout _$LoadoutFromJson(Map<String, dynamic> json) => Loadout(
       loadoutCards: (json['loadoutCards'] as List<dynamic>)
           .map((e) => LoadoutCard.fromJson(e as Map<String, dynamic>))
           .toList(),
-      isImported: json['isImported'] as bool,
+      isPublic: json['isPublic'] as bool,
       loadoutHash: json['loadoutHash'] as int?,
     );
 
@@ -33,6 +33,6 @@ Map<String, dynamic> _$LoadoutToJson(Loadout instance) => <String, dynamic>{
       'playerId': instance.playerId,
       'name': instance.name,
       'loadoutCards': instance.loadoutCards,
-      'isImported': instance.isImported,
+      'isPublic': instance.isPublic,
       'loadoutHash': instance.loadoutHash,
     };

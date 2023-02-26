@@ -45,7 +45,9 @@ FavouriteChampionsResponse _$FavouriteChampionsResponseFromJson(
     FavouriteChampionsResponse(
       success: json['success'] as bool? ?? false,
       error: json['error'] as String?,
-      data: (json['data'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Champion.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$FavouriteChampionsResponseToJson(

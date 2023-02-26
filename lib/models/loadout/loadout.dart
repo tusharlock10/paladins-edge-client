@@ -33,7 +33,7 @@ class Loadout {
   final List<LoadoutCard> loadoutCards;
 
   /// is the loadout imported from paladins api ro created by user from the app
-  final bool isImported;
+  final bool isPublic;
 
   /// hash of deckId if imported from paladins api
   /// else its a hash using uuid of is created
@@ -44,7 +44,7 @@ class Loadout {
     required this.playerId,
     required this.name,
     required this.loadoutCards,
-    required this.isImported,
+    required this.isPublic,
     this.loadoutHash,
   });
 
@@ -52,7 +52,7 @@ class Loadout {
     return Loadout(
       championId: draftLoadout.championId,
       playerId: draftLoadout.playerId,
-      isImported: draftLoadout.isImported,
+      isPublic: draftLoadout.isPublic,
       loadoutCards: List<LoadoutCard>.from(draftLoadout.loadoutCards),
       name: draftLoadout.name,
       loadoutHash: draftLoadout.loadoutHash,

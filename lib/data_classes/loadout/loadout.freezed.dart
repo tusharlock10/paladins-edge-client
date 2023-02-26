@@ -158,7 +158,7 @@ mixin _$DraftLoadout {
   int get playerId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<LoadoutCard?> get loadoutCards => throw _privateConstructorUsedError;
-  bool get isImported => throw _privateConstructorUsedError;
+  bool get isPublic => throw _privateConstructorUsedError;
   int? get loadoutHash => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -176,7 +176,7 @@ abstract class $DraftLoadoutCopyWith<$Res> {
       int playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
-      bool isImported,
+      bool isPublic,
       int? loadoutHash});
 }
 
@@ -194,7 +194,7 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
     Object? playerId = freezed,
     Object? name = freezed,
     Object? loadoutCards = freezed,
-    Object? isImported = freezed,
+    Object? isPublic = freezed,
     Object? loadoutHash = freezed,
   }) {
     return _then(_value.copyWith(
@@ -214,9 +214,9 @@ class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
           ? _value.loadoutCards
           : loadoutCards // ignore: cast_nullable_to_non_nullable
               as List<LoadoutCard?>,
-      isImported: isImported == freezed
-          ? _value.isImported
-          : isImported // ignore: cast_nullable_to_non_nullable
+      isPublic: isPublic == freezed
+          ? _value.isPublic
+          : isPublic // ignore: cast_nullable_to_non_nullable
               as bool,
       loadoutHash: loadoutHash == freezed
           ? _value.loadoutHash
@@ -238,7 +238,7 @@ abstract class _$$_DraftLoadoutCopyWith<$Res>
       int playerId,
       String name,
       List<LoadoutCard?> loadoutCards,
-      bool isImported,
+      bool isPublic,
       int? loadoutHash});
 }
 
@@ -259,7 +259,7 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
     Object? playerId = freezed,
     Object? name = freezed,
     Object? loadoutCards = freezed,
-    Object? isImported = freezed,
+    Object? isPublic = freezed,
     Object? loadoutHash = freezed,
   }) {
     return _then(_$_DraftLoadout(
@@ -279,9 +279,9 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
           ? _value._loadoutCards
           : loadoutCards // ignore: cast_nullable_to_non_nullable
               as List<LoadoutCard?>,
-      isImported: isImported == freezed
-          ? _value.isImported
-          : isImported // ignore: cast_nullable_to_non_nullable
+      isPublic: isPublic == freezed
+          ? _value.isPublic
+          : isPublic // ignore: cast_nullable_to_non_nullable
               as bool,
       loadoutHash: loadoutHash == freezed
           ? _value.loadoutHash
@@ -299,7 +299,7 @@ class _$_DraftLoadout implements _DraftLoadout {
       required this.playerId,
       required this.name,
       required final List<LoadoutCard?> loadoutCards,
-      required this.isImported,
+      required this.isPublic,
       this.loadoutHash})
       : _loadoutCards = loadoutCards;
 
@@ -317,13 +317,13 @@ class _$_DraftLoadout implements _DraftLoadout {
   }
 
   @override
-  final bool isImported;
+  final bool isPublic;
   @override
   final int? loadoutHash;
 
   @override
   String toString() {
-    return 'DraftLoadout(championId: $championId, playerId: $playerId, name: $name, loadoutCards: $loadoutCards, isImported: $isImported, loadoutHash: $loadoutHash)';
+    return 'DraftLoadout(championId: $championId, playerId: $playerId, name: $name, loadoutCards: $loadoutCards, isPublic: $isPublic, loadoutHash: $loadoutHash)';
   }
 
   @override
@@ -337,8 +337,7 @@ class _$_DraftLoadout implements _DraftLoadout {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other._loadoutCards, _loadoutCards) &&
-            const DeepCollectionEquality()
-                .equals(other.isImported, isImported) &&
+            const DeepCollectionEquality().equals(other.isPublic, isPublic) &&
             const DeepCollectionEquality()
                 .equals(other.loadoutHash, loadoutHash));
   }
@@ -350,7 +349,7 @@ class _$_DraftLoadout implements _DraftLoadout {
       const DeepCollectionEquality().hash(playerId),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(_loadoutCards),
-      const DeepCollectionEquality().hash(isImported),
+      const DeepCollectionEquality().hash(isPublic),
       const DeepCollectionEquality().hash(loadoutHash));
 
   @JsonKey(ignore: true)
@@ -365,7 +364,7 @@ abstract class _DraftLoadout implements DraftLoadout {
       required final int playerId,
       required final String name,
       required final List<LoadoutCard?> loadoutCards,
-      required final bool isImported,
+      required final bool isPublic,
       final int? loadoutHash}) = _$_DraftLoadout;
 
   @override
@@ -377,7 +376,7 @@ abstract class _DraftLoadout implements DraftLoadout {
   @override
   List<LoadoutCard?> get loadoutCards;
   @override
-  bool get isImported;
+  bool get isPublic;
   @override
   int? get loadoutHash;
   @override

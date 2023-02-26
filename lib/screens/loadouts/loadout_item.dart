@@ -58,7 +58,7 @@ class LoadoutItem extends StatelessWidget {
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: loadout.isImported
+                              child: loadout.isPublic
                                   ? const widgets.TextChip(
                                       text: "In Game",
                                       color: Colors.green,

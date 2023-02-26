@@ -292,7 +292,6 @@ class _ChampionsNotifier extends ChangeNotifier {
   ) async {
     final user = utilities.Database.getUser();
     final playerId = user?.playerId;
-    print("Player ID is :::: $playerId");
     if (playerId == null) return null;
 
     // on forceUpdate, skip getting data from local db
@@ -328,7 +327,7 @@ class _ChampionsNotifier extends ChangeNotifier {
       return <int>{};
     }
 
-    return response.data!.toSet();
+    return response.data!.map((_) => _.championId).toSet();
   }
 }
 

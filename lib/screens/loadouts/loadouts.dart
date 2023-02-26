@@ -273,11 +273,11 @@ class Loadouts extends HookConsumerWidget {
                             final loadout = loadouts[index];
 
                             return GestureDetector(
-                              onTap: loadout.isImported
+                              onTap: loadout.isPublic
                                   ? null
                                   : () => onEdit(loadout),
                               child: AbsorbPointer(
-                                absorbing: !loadout.isImported,
+                                absorbing: !loadout.isPublic,
                                 child: LoadoutItem(
                                   loadout: loadout,
                                   champion: champion,
@@ -333,8 +333,8 @@ class Loadouts extends HookConsumerWidget {
 
     return CupertinoPage(
       child: Loadouts(
-        playerId: paramChampionId,
-        championId: paramPlayerId,
+        playerId: paramPlayerId,
+        championId: paramChampionId,
       ),
     );
   }

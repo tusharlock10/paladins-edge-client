@@ -470,7 +470,6 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   void _saveResponse(data_classes.LoginData loginData) {
-    print("Login user is ::: ${loginData.user.playerId}");
     utilities.Database.saveUser(loginData.user);
     utilities.Database.saveToken(loginData.token);
     if (loginData.player != null) {
