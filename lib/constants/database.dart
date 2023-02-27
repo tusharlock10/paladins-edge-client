@@ -7,7 +7,6 @@ abstract class HiveBoxes {
   static const searchHistory = "searchHistory";
   static const champion = "champion";
   static const recordExpiry = "recordExpiry";
-  static const bountyStore = "bountyStore";
   static const playerChampion = "playerChampion";
   static const queueTimeline = "queueTimeline";
   static const item = "item";
@@ -22,7 +21,6 @@ abstract class HiveBoxes {
     searchHistory,
     champion,
     recordExpiry,
-    bountyStore,
     playerChampion,
     queueTimeline,
     item,
@@ -33,7 +31,6 @@ abstract class HiveBoxes {
 enum RecordExpiryName {
   champion,
   searchHistory,
-  bountyStore,
   playerChampion,
   queueTimeline,
   item,
@@ -44,7 +41,6 @@ abstract class RecordExpiryDuration {
   // Time to live duration of these records
   static const championDuration = Duration(days: 1);
   static const searchHistoryDuration = Duration(hours: 1);
-  static const bountyStoreDuration = Duration(days: 1);
   static const playerChampionDuration = Duration(days: 1);
   static const queueTimelineDuration = Duration(minutes: 30);
   static const itemDuration = Duration(days: 1);
@@ -67,7 +63,6 @@ abstract class TypeIds {
   static const essentials = 10;
   static const searchHistory = 11;
   static const recordExpiry = 12;
-  static const bountyStore = 13;
   static const queue = 14;
   static const item = 15;
   static const queueRegion = 16;

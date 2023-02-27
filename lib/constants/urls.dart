@@ -11,7 +11,6 @@ abstract class Urls {
 
   // common
   static const essentials = "/common/essentials"; // GET
-  static const bountyStore = "/common/bounty"; // GET
   static const items = "/common/items"; // GET
   static const faq = "/common/faq"; // GET
   static const feedback = "/common/feedback"; // POST

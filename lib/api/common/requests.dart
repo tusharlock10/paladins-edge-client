@@ -16,18 +16,6 @@ abstract class CommonRequests {
     return response;
   }
 
-  static Future<BountyStoreResponse> bountyStore() async {
-    final input = ApiRequestInput<BountyStoreResponse>(
-      url: constants.Urls.bountyStore,
-      method: HttpMethod.get,
-      fromJson: BountyStoreResponse.fromJson,
-      defaultValue: BountyStoreResponse(),
-    );
-    final response = await ApiRequest.apiRequest(input);
-
-    return response;
-  }
-
   static Future<ItemsResponse> items() async {
     final input = ApiRequestInput<ItemsResponse>(
       url: constants.Urls.items,

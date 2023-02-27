@@ -3,7 +3,6 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
-import "package:paladinsedge/screens/home/home_bounty_store_details.dart";
 import "package:paladinsedge/screens/home/home_favourite_friends.dart";
 import "package:paladinsedge/screens/home/home_queue_chart.dart";
 import "package:paladinsedge/screens/home/home_queue_details.dart";
@@ -20,7 +19,6 @@ class Home extends HookConsumerWidget {
     final queueProvider = ref.read(providers.queue);
     final itemsProvider = ref.read(providers.items);
     final matchesProvider = ref.read(providers.matches);
-    final bountyStoreProvider = ref.read(providers.bountyStore);
     final friendsProvider = ref.read(providers.friends);
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriendIds),
@@ -30,7 +28,6 @@ class Home extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        bountyStoreProvider.loadBountyStore(false);
         queueProvider.getQueueTimeline(false);
         itemsProvider.loadItems(false);
         matchesProvider.loadTopMatches(false);
@@ -44,7 +41,6 @@ class Home extends HookConsumerWidget {
     final onRefresh = useCallback(
       () async {
         return await Future.wait([
-          bountyStoreProvider.loadBountyStore(true),
           queueProvider.getQueueTimeline(true),
           itemsProvider.loadItems(true),
           matchesProvider.loadTopMatches(true),
@@ -92,8 +88,6 @@ class Home extends HookConsumerWidget {
                 const HomeQueueDetails(),
                 const SizedBox(height: 20),
                 const HomeQueueChart(),
-                const SizedBox(height: 20),
-                const HomeBountyStoreDetails(),
                 const SizedBox(height: 20),
               ],
             ),

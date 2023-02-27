@@ -22,23 +22,6 @@ Map<String, dynamic> _$EssentialsResponseToJson(EssentialsResponse instance) =>
       'data': instance.data,
     };
 
-BountyStoreResponse _$BountyStoreResponseFromJson(Map<String, dynamic> json) =>
-    BountyStoreResponse(
-      success: json['success'] as bool? ?? false,
-      error: json['error'] as String?,
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => BountyStore.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$BountyStoreResponseToJson(
-        BountyStoreResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'error': instance.error,
-      'data': instance.data,
-    };
-
 ItemsResponse _$ItemsResponseFromJson(Map<String, dynamic> json) =>
     ItemsResponse(
       success: json['success'] as bool? ?? false,
