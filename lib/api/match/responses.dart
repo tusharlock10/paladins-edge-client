@@ -1,8 +1,7 @@
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/data_classes/index.dart"
     show MatchData, MatchesData;
-import "package:paladinsedge/models/index.dart"
-    show Match, MatchPlayer, TopMatch;
+import "package:paladinsedge/models/index.dart" show TopMatch;
 
 part "responses.g.dart";
 

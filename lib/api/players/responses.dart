@@ -2,7 +2,7 @@ import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/data_classes/index.dart"
     show SearchPlayersData, PlayerStatus;
 import "package:paladinsedge/models/index.dart"
-    show Player, ActiveMatch, SearchHistory, PlayerInferred;
+    show Player, SearchHistory, PlayerInferred;
 
 part "responses.g.dart";
 
