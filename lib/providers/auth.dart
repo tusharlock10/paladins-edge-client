@@ -479,4 +479,6 @@ class _AuthNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle auth and user data
-final auth = ChangeNotifierProvider((ref) => _AuthNotifier(ref: ref));
+final auth = ChangeNotifierProvider<_AuthNotifier>(
+  (ref) => _AuthNotifier(ref: ref),
+);

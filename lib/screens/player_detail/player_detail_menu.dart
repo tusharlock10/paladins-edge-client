@@ -1,4 +1,4 @@
-import "package:badges/badges.dart";
+import "package:badges/badges.dart" as badges;
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -158,12 +158,14 @@ class PlayerDetailMenu extends HookConsumerWidget {
     );
 
     return PopupMenuButton(
-      icon: Badge(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        elevation: 0,
-        badgeColor: badgeColor,
+      icon: badges.Badge(
         showBadge: isValidFilterAndSort,
-        position: BadgePosition.topEnd(top: -4, end: -6),
+        position: badges.BadgePosition.topEnd(top: -4, end: -6),
+        badgeStyle: badges.BadgeStyle(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          elevation: 0,
+          badgeColor: badgeColor,
+        ),
         child: const Icon(
           FeatherIcons.moreVertical,
           color: Colors.white,

@@ -139,4 +139,6 @@ class _FriendsNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle friends
-final friends = ChangeNotifierProvider((ref) => _FriendsNotifier(ref: ref));
+final friends = ChangeNotifierProvider<_FriendsNotifier>(
+  (ref) => _FriendsNotifier(ref: ref),
+);

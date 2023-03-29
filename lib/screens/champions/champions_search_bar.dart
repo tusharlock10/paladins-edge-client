@@ -1,4 +1,4 @@
-import "package:badges/badges.dart";
+import "package:badges/badges.dart" as badges;
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -102,12 +102,14 @@ class ChampionsSearchBar extends HookConsumerWidget {
               ),
             ),
             IconButton(
-              icon: Badge(
-                elevation: 0,
-                position: BadgePosition.topEnd(top: -4, end: -5),
+              icon: badges.Badge(
+                position: badges.BadgePosition.topEnd(top: -4, end: -5),
                 showBadge: selectedFilter.isValid ||
                     selectedSort != data_classes.ChampionsSort.defaultSort,
-                badgeColor: badgeColor,
+                badgeStyle: badges.BadgeStyle(
+                  elevation: 0,
+                  badgeColor: badgeColor,
+                ),
                 child: const Icon(FeatherIcons.sliders),
               ),
               onPressed: onFilter,

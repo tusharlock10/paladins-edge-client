@@ -233,4 +233,6 @@ class _PlayersNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle players
-final players = ChangeNotifierProvider((ref) => _PlayersNotifier(ref: ref));
+final players = ChangeNotifierProvider<_PlayersNotifier>(
+  (ref) => _PlayersNotifier(ref: ref),
+);
