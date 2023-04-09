@@ -49,13 +49,13 @@ class _PlayerStatsCard extends StatelessWidget {
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: textTheme.bodyText2?.copyWith(fontSize: 12),
+              style: textTheme.bodyMedium?.copyWith(fontSize: 12),
             ),
             const SizedBox(height: 2),
             Text(
               formattedStat,
               textAlign: TextAlign.center,
-              style: textTheme.bodyText1?.copyWith(fontSize: 11),
+              style: textTheme.bodyLarge?.copyWith(fontSize: 11),
             ),
           ],
         ),
@@ -281,7 +281,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                   utilities.shortRankName(
                                     playerInfo.ranked!.rankName,
                                   ),
-                                  style: textTheme.bodyText1?.copyWith(
+                                  style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -315,7 +315,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                         ),
                         Text(
                           "Level ${playerInfo.player.level}",
-                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                          style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                         ),
                       ],
                     ),
@@ -347,7 +347,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                   ),
                                   Text(
                                     "${playerInfo.ranked!.wins}W ${playerInfo.ranked!.looses}L",
-                                    style: textTheme.bodyText1
+                                    style: textTheme.bodyLarge
                                         ?.copyWith(fontSize: 12),
                                   ),
                                 ],
@@ -369,12 +369,12 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                         children: [
                                           Text(
                                             "Stats",
-                                            style: textTheme.bodyText1
+                                            style: textTheme.bodyLarge
                                                 ?.copyWith(fontSize: 10),
                                           ),
                                           Text(
                                             champion.name,
-                                            style: textTheme.bodyText1
+                                            style: textTheme.bodyLarge
                                                 ?.copyWith(fontSize: 14),
                                           ),
                                         ],

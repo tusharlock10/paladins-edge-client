@@ -16,8 +16,6 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Loadouts extends HookConsumerWidget {
   static const routeName = "loadouts";
   static const routePath = "loadouts/:playerId";
-  final int championId;
-  final int playerId;
 
   const Loadouts({
     required this.playerId,
@@ -31,6 +29,23 @@ class Loadouts extends HookConsumerWidget {
         pageBuilder: _routeBuilder,
         routes: routes,
       );
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramChampionId == null || paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(
+      child: Loadouts(
+        playerId: paramPlayerId,
+        championId: paramChampionId,
+      ),
+    );
+  }
+
+  final int championId;
+  final int playerId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -218,7 +233,7 @@ class Loadouts extends HookConsumerWidget {
                       const SizedBox(width: 2),
                       Text(
                         "Create",
-                        style: textTheme.bodyText2?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontSize: 14,
                           color: Colors.white,
                         ),
@@ -320,21 +335,6 @@ class Loadouts extends HookConsumerWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramChampionId == null || paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(
-      child: Loadouts(
-        playerId: paramPlayerId,
-        championId: paramChampionId,
       ),
     );
   }

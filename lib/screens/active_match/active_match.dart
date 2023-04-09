@@ -16,13 +16,26 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class ActiveMatch extends HookConsumerWidget {
   static const routeName = "active-match";
   static const routePath = "active-match";
+  static const userRouteName = "user-active-match";
+  static const userRoutePath = "active-match";
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: ActiveMatch(playerId: paramPlayerId));
+  }
+
+  static Page _userRouteBuilder(_, __) =>
+      const CupertinoPage(child: ActiveMatch());
+
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const userRouteName = "user-active-match";
-  static const userRoutePath = "active-match";
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,
@@ -139,16 +152,4 @@ class ActiveMatch extends HookConsumerWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: ActiveMatch(playerId: paramPlayerId));
-  }
-
-  static Page _userRouteBuilder(_, __) =>
-      const CupertinoPage(child: ActiveMatch());
 }

@@ -16,18 +16,29 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class CreateLoadout extends HookConsumerWidget {
   static const routeName = "create-loadout";
   static const routePath = "create-loadout";
+
+  const CreateLoadout({
+    required this.championId,
+    Key? key,
+  }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    if (paramChampionId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: CreateLoadout(championId: paramChampionId));
+  }
+
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
-  final int championId;
 
-  const CreateLoadout({
-    required this.championId,
-    Key? key,
-  }) : super(key: key);
+  final int championId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,6 +73,29 @@ class CreateLoadout extends HookConsumerWidget {
       },
       [],
     );
+
+    final onSaveFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: "An error occurred while saving loadout",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
+    final onCanSaveFail = useCallback(
+      (String error) {
+        widgets.showToast(
+          context: context,
+          text: error,
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
     final onSave = useCallback(
       () async {
         final canSave = loadoutProvider.validateLoadout();
@@ -76,18 +110,10 @@ class CreateLoadout extends HookConsumerWidget {
             );
             goBack();
           } else {
-            widgets.showToast(
-              context: context,
-              text: "An error occurred while saving loadout",
-              type: widgets.ToastType.error,
-            );
+            onSaveFail();
           }
         } else {
-          widgets.showToast(
-            context: context,
-            text: canSave.error,
-            type: widgets.ToastType.error,
-          );
+          onCanSaveFail(canSave.error);
         }
       },
       [champion],
@@ -169,14 +195,5 @@ class CreateLoadout extends HookConsumerWidget {
               ),
             ),
           );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
-    if (paramChampionId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: CreateLoadout(championId: paramChampionId));
   }
 }

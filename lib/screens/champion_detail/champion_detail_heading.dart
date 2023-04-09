@@ -110,13 +110,13 @@ class ChampionDetailHeading extends HookConsumerWidget {
                 children: [
                   SelectableText(
                     champion.name.toUpperCase(),
-                    style: textTheme.headline1?.copyWith(
+                    style: textTheme.displayLarge?.copyWith(
                       fontSize: 24,
                     ),
                   ),
                   SelectableText(
                     champion.title.toUpperCase(),
-                    style: textTheme.headline1?.copyWith(
+                    style: textTheme.displayLarge?.copyWith(
                       color: isLightTheme
                           ? const Color.fromARGB(255, 88, 88, 88)
                           : const Color.fromARGB(210, 145, 203, 28),
@@ -126,11 +126,11 @@ class ChampionDetailHeading extends HookConsumerWidget {
                   const SizedBox(height: 3),
                   Text(
                     "$dps DPS | $health Health | $range",
-                    style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 10),
                   ),
                   Text(
                     "B'day on $birthDay",
-                    style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 10),
                   ),
                 ],
               ),
@@ -144,7 +144,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
                   : champion.unlockCost == 0
                       ? Text(
                           "Free Unlock",
-                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                          style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                         )
                       : Row(
                           children: [
@@ -154,7 +154,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
                               NumberFormat.decimalPattern().format(
                                 champion.unlockCost,
                               ),
-                              style: textTheme.headline1?.copyWith(
+                              style: textTheme.displayLarge?.copyWith(
                                 fontSize: 14,
                               ),
                             ),

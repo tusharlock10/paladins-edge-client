@@ -42,7 +42,7 @@ class ChampionDetailTalents extends StatelessWidget {
                       children: [
                         SelectableText(
                           talent.name.trim().toUpperCase(),
-                          style: textTheme.headline1?.copyWith(fontSize: 18),
+                          style: textTheme.displayLarge?.copyWith(fontSize: 18),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -78,12 +78,14 @@ class ChampionDetailTalents extends StatelessWidget {
                             talent.description.trim(),
                             maxLines: 3,
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.bodyText2?.copyWith(
-                                      fontSize: 14,
-                                      color: textTheme.bodyText2?.color
-                                          ?.withOpacity(0.8),
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontSize: 14,
+                                  color: textTheme.bodyMedium?.color
+                                      ?.withOpacity(0.8),
+                                ),
                           ),
                         ),
                       ],

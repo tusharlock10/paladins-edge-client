@@ -14,12 +14,20 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class CommonMatches extends HookConsumerWidget {
   static const routeName = "common-matches";
   static const routePath = "common-matches";
-  final int playerId;
 
   const CommonMatches({
     required this.playerId,
     Key? key,
   }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: CommonMatches(playerId: paramPlayerId));
+  }
 
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
@@ -28,6 +36,8 @@ class CommonMatches extends HookConsumerWidget {
         routes: routes,
         redirect: utilities.Navigation.protectedRouteRedirect,
       );
+
+  final int playerId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,14 +130,5 @@ class CommonMatches extends HookConsumerWidget {
         ],
       ),
     );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: CommonMatches(playerId: paramPlayerId));
   }
 }

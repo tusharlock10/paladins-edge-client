@@ -12,18 +12,23 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class Main extends HookWidget {
   static const routeName = "main";
   static const routePath = "/";
-  final int startIndex;
+
   const Main({
     this.startIndex = 0,
     Key? key,
   }) : super(key: key);
 
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: Main(startIndex: 0),
+      );
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
         path: routePath,
         pageBuilder: _routeBuilder,
         routes: routes,
       );
+
+  final int startIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,4 @@ class Main extends HookWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, __) =>
-      const CupertinoPage(child: Main(startIndex: 0));
 }

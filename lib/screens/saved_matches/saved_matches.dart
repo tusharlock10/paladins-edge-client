@@ -22,6 +22,9 @@ class SavedMatches extends HookConsumerWidget {
         routes: routes,
         redirect: utilities.Navigation.protectedRouteRedirect,
       );
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: SavedMatches(),
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,7 +114,4 @@ class SavedMatches extends HookConsumerWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, __) =>
-      const CupertinoPage(child: SavedMatches());
 }

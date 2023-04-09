@@ -123,12 +123,12 @@ class _FlashBar extends HookWidget {
                   children: [
                     Text(
                       getToastMessage(),
-                      style: textTheme.bodyText2?.copyWith(fontSize: 18),
+                      style: textTheme.bodyMedium?.copyWith(fontSize: 18),
                     ),
                     Text(
                       text,
                       maxLines: 1,
-                      style: textTheme.bodyText1?.copyWith(
+                      style: textTheme.bodyLarge?.copyWith(
                         fontSize: 14,
                         overflow: TextOverflow.ellipsis,
                       ),

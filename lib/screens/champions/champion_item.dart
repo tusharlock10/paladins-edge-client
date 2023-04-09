@@ -184,10 +184,10 @@ class ChampionItem extends HookConsumerWidget {
                   SubstringHighlight(
                     text: champion.name.toUpperCase(),
                     term: nameSearch.trim(),
-                    textStyle: textTheme.headline1!.copyWith(
+                    textStyle: textTheme.displayLarge!.copyWith(
                       fontSize: 16,
                     ),
-                    textStyleHighlight: textTheme.headline1!.copyWith(
+                    textStyleHighlight: textTheme.displayLarge!.copyWith(
                       fontSize: 16,
                       backgroundColor: highlightColor,
                     ),
@@ -197,10 +197,10 @@ class ChampionItem extends HookConsumerWidget {
                     SubstringHighlight(
                       text: "Champion ID ${champion.championId}",
                       term: championIdSearch.trim(),
-                      textStyle: textTheme.bodyText1!.copyWith(
+                      textStyle: textTheme.bodyLarge!.copyWith(
                         fontSize: 12,
                       ),
-                      textStyleHighlight: textTheme.bodyText1!.copyWith(
+                      textStyleHighlight: textTheme.bodyLarge!.copyWith(
                         fontSize: 12,
                         backgroundColor: highlightColor,
                       ),
@@ -211,10 +211,10 @@ class ChampionItem extends HookConsumerWidget {
                     SubstringHighlight(
                       text: champion.title,
                       term: titleSearch.trim(),
-                      textStyle: textTheme.bodyText1!.copyWith(
+                      textStyle: textTheme.bodyLarge!.copyWith(
                         fontSize: 12,
                       ),
-                      textStyleHighlight: textTheme.bodyText1!.copyWith(
+                      textStyleHighlight: textTheme.bodyLarge!.copyWith(
                         fontSize: 12,
                         backgroundColor: highlightColor,
                       ),

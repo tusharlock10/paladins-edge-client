@@ -14,21 +14,22 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Feedback extends HookConsumerWidget {
   static const routeName = "feedback";
   static const routePath = "feedback";
+  static const connectProfileRouteName = "connect-profile-feedback";
+  static const connectProfileRoutePath = "feedback";
+
+  const Feedback({Key? key}) : super(key: key);
+
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Feedback());
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-
-  static const connectProfileRouteName = "connect-profile-feedback";
-  static const connectProfileRoutePath = "feedback";
   static final connectProfileGoRoute = GoRoute(
     name: connectProfileRouteName,
     path: connectProfileRoutePath,
     pageBuilder: _routeBuilder,
   );
-
-  const Feedback({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -65,23 +66,21 @@ class Feedback extends HookConsumerWidget {
       [],
     );
 
-    final onSubmit = useCallback(
-      () async {
-        final result = await feedbackProvider.submitFeedback();
+    final onSubmitFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: isSupport
+              ? "Unable to submit support ticket"
+              : "Unable to submit feedback",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
 
-        if (!result) {
-          widgets.showToast(
-            context: context,
-            text: isSupport
-                ? "Unable to submit support ticket"
-                : "Unable to submit feedback",
-            type: widgets.ToastType.error,
-          );
-
-          return;
-        }
-
-        goBack();
+    final onSubmitSuccess = useCallback(
+      () {
         widgets.showToast(
           context: context,
           text: isSupport
@@ -89,6 +88,18 @@ class Feedback extends HookConsumerWidget {
               : "Thank you for feedback",
           type: widgets.ToastType.success,
         );
+      },
+      [],
+    );
+
+    final onSubmit = useCallback(
+      () async {
+        final result = await feedbackProvider.submitFeedback();
+
+        if (!result) return onSubmitFail();
+
+        goBack();
+        onSubmitSuccess();
       },
       [isSupport],
     );
@@ -127,6 +138,4 @@ class Feedback extends HookConsumerWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Feedback());
 }

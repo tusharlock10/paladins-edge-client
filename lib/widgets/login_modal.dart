@@ -60,6 +60,18 @@ class _LoginModal extends HookConsumerWidget {
       [],
     );
 
+    final onGoogleSignInFail = useCallback(
+      (String error, int errorCode) {
+        showToast(
+          context: context,
+          text: error,
+          type: ToastType.error,
+          errorCode: errorCode,
+        );
+      },
+      [],
+    );
+
     final onGoogleSignIn = useCallback(
       () async {
         if (isLoggingIn.value) {
@@ -74,12 +86,7 @@ class _LoginModal extends HookConsumerWidget {
         } else {
           isLoggingIn.value = false;
           if (response.errorCode == null && response.errorMessage == null) {
-            showToast(
-              context: context,
-              text: response.errorMessage!,
-              type: ToastType.error,
-              errorCode: response.errorCode,
-            );
+            onGoogleSignInFail(response.errorMessage!, response.errorCode!);
           }
         }
       },
@@ -106,7 +113,7 @@ class _LoginModal extends HookConsumerWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
                       "LOGIN REQUIRED",
-                      style: textTheme.headline1?.copyWith(
+                      style: textTheme.displayLarge?.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
                       ),
@@ -116,12 +123,12 @@ class _LoginModal extends HookConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   options.loginCta,
-                  style: textTheme.bodyText1?.copyWith(fontSize: 16),
+                  style: textTheme.bodyLarge?.copyWith(fontSize: 16),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   "Login to experience all features of Paladins Edge",
-                  style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                  style: textTheme.bodyLarge?.copyWith(fontSize: 14),
                 ),
               ],
             ),

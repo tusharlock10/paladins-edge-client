@@ -16,13 +16,16 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class GlobalChat extends HookConsumerWidget {
   static const routeName = "global-chat";
   static const routePath = "global-chat";
+  const GlobalChat({Key? key}) : super(key: key);
+
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: GlobalChat());
+
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
-  const GlobalChat({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -113,6 +116,4 @@ class GlobalChat extends HookConsumerWidget {
             ),
     );
   }
-
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: GlobalChat());
 }

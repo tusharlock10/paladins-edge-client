@@ -51,6 +51,17 @@ class AppDrawer extends HookConsumerWidget {
       [],
     );
 
+    final onLogoutFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: "Unable to logout, try again later",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
     final onLogout = useCallback(
       () async {
         isLoggingOut.value = true;
@@ -59,11 +70,7 @@ class AppDrawer extends HookConsumerWidget {
         if (isLoggedOut) {
           navigateToLogin();
         } else {
-          widgets.showToast(
-            context: context,
-            text: "Unable to logout, try again later",
-            type: widgets.ToastType.error,
-          );
+          onLogoutFail();
         }
         isLoggingOut.value = false;
       },

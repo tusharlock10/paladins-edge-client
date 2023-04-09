@@ -32,17 +32,17 @@ class HomeQueueCard extends HookWidget {
           Text(
             queue.name.replaceAll(RegExp("_"), " "),
             textAlign: TextAlign.center,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
           ),
           const SizedBox(height: 5),
           Text(
             "${queue.activeMatchCount}",
-            style: textTheme.bodyText2?.copyWith(fontSize: 16),
+            style: textTheme.bodyMedium?.copyWith(fontSize: 16),
           ),
           isSelected
               ? Text(
                   "Selected",
-                  style: textTheme.bodyText1?.copyWith(
+                  style: textTheme.bodyLarge?.copyWith(
                     fontSize: 12,
                     color: brightness == Brightness.light
                         ? theme.themeMaterialColor

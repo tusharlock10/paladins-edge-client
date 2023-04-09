@@ -74,7 +74,7 @@ class PlayerDetailSortTab extends HookConsumerWidget {
                       data_classes.MatchSort.getSortDescription(
                         sort,
                       ),
-                      style: textTheme.bodyText1,
+                      style: textTheme.bodyLarge,
                     ),
                 ],
               ),

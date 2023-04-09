@@ -13,12 +13,6 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 import "package:timer_builder/timer_builder.dart";
 
 class PlayerDetailMatchCard extends HookConsumerWidget {
-  final models.MatchPlayer? matchPlayer;
-  final models.Champion? champion;
-  final models.Match match;
-  final bool isSavedMatch;
-  final bool isCommonMatch;
-
   static const itemExtent = _itemHeight + _itemMargin * 2;
   static const _itemMargin = 7.0;
   static const _itemHeight = 130.0;
@@ -31,6 +25,12 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
     this.isCommonMatch = false,
     Key? key,
   }) : super(key: key);
+
+  final models.MatchPlayer? matchPlayer;
+  final models.Champion? champion;
+  final models.Match match;
+  final bool isSavedMatch;
+  final bool isCommonMatch;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -180,7 +180,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                         children: [
                           RichText(
                             text: TextSpan(
-                              style: textTheme.bodyText1
+                              style: textTheme.bodyLarge
                                   ?.copyWith(fontSize: isMVP ? 16 : 18),
                               children: [
                                 if (isMVP)
@@ -204,7 +204,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                                 .replaceFirst("WIP ", ""),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                            style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -244,14 +244,14 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                   Text(
                     match.queue,
                     textAlign: TextAlign.center,
-                    style: textTheme.headline2?.copyWith(fontSize: 14),
+                    style: textTheme.displayMedium?.copyWith(fontSize: 14),
                   ),
                   TimerBuilder.periodic(
                     const Duration(minutes: 1),
                     builder: (_) {
                       return Text(
                         Jiffy(match.matchStartTime).fromNow(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 13),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 13),
                       );
                     },
                   ),
@@ -279,13 +279,14 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
 }
 
 class _PlayerDetailUnknownMatchCard extends StatelessWidget {
-  final models.Match match;
   static const _itemMargin = 7.0;
 
   const _PlayerDetailUnknownMatchCard({
     required this.match,
     Key? key,
   }) : super(key: key);
+
+  final models.Match match;
 
   @override
   Widget build(BuildContext context) {

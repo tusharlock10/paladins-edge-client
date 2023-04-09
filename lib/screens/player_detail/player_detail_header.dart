@@ -72,12 +72,12 @@ class PlayerDetailHeader extends ConsumerWidget {
                                           children: [
                                             Text(
                                               player.ranked.rankName,
-                                              style: textTheme.bodyText2
+                                              style: textTheme.bodyMedium
                                                   ?.copyWith(fontSize: 14),
                                             ),
                                             Text(
                                               "${player.ranked.points} TP",
-                                              style: textTheme.bodyText1
+                                              style: textTheme.bodyLarge
                                                   ?.copyWith(fontSize: 12),
                                             ),
                                           ],

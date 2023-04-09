@@ -45,7 +45,7 @@ class HomeTopMatches extends HookConsumerWidget {
                 children: [
                   Text(
                     "Today's top matches",
-                    style: textTheme.headline3,
+                    style: textTheme.displaySmall,
                   ),
                   const SizedBox(height: 15),
                   SizedBox(

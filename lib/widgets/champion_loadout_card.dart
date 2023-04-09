@@ -116,7 +116,7 @@ class _LoadoutCard extends StatelessWidget {
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       scrollPhysics: const ClampingScrollPhysics(),
-                      style: textTheme.bodyText2?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontSize: 16,
                       ),
                     ),

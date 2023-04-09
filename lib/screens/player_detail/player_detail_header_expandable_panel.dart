@@ -79,18 +79,18 @@ class _RecentMatchesBar extends HookConsumerWidget {
       children: [
         Text(
           "RECENT WIN RATE",
-          style: textTheme.bodyText1?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             fontSize: 14,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 5),
         Text(
           "Last ${rankedMatches + normalMatches} matches",
-          style: textTheme.bodyText1?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             fontSize: 10,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -221,7 +221,7 @@ class _RecentPartyMemberCard extends HookWidget {
                     widgets.InteractiveText(
                       player.name,
                       onTap: onTap,
-                      style: textTheme.headline1!.copyWith(
+                      style: textTheme.displayLarge!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                       ),
@@ -231,7 +231,7 @@ class _RecentPartyMemberCard extends HookWidget {
                         player.title!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: textTheme.bodyText1?.copyWith(fontSize: 9.5),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 9.5),
                       ),
                   ],
                 ),
@@ -346,7 +346,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                           champion.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: textTheme.headline1?.copyWith(
+                          style: textTheme.displayLarge?.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                           ),
@@ -355,7 +355,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                           champion.title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: textTheme.bodyText1?.copyWith(fontSize: 9.5),
+                          style: textTheme.bodyLarge?.copyWith(fontSize: 9.5),
                         ),
                       ],
                     ),
@@ -369,7 +369,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                     RichText(
                       text: TextSpan(
                         text: "WR ",
-                        style: textTheme.bodyText1?.copyWith(fontSize: 11),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 11),
                         children: [
                           TextSpan(
                             text: "$winRateFormatted %",
@@ -385,7 +385,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                     RichText(
                       text: TextSpan(
                         text: "LVL ",
-                        style: textTheme.bodyText1?.copyWith(fontSize: 11),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 11),
                         children: [
                           TextSpan(
                             text: playerChampion!.level.toString(),
@@ -400,7 +400,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                     RichText(
                       text: TextSpan(
                         text: "KDA ",
-                        style: textTheme.bodyText1?.copyWith(fontSize: 11),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 11),
                         children: [
                           TextSpan(
                             text: kdaFormatted,
@@ -420,7 +420,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                   lastPlayedFormatted,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyText1?.copyWith(fontSize: 10),
+                  style: textTheme.bodyLarge?.copyWith(fontSize: 10),
                 ),
             ],
           ),
@@ -589,13 +589,13 @@ class _PlayerStatsCard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: textTheme.bodyText2,
+              style: textTheme.bodyMedium,
             ),
             const SizedBox(height: 3),
             Text(
               formattedStat,
               textAlign: TextAlign.center,
-              style: textTheme.bodyText1?.copyWith(color: color),
+              style: textTheme.bodyLarge?.copyWith(color: color),
             ),
           ],
         ),
@@ -670,9 +670,9 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
         const SizedBox(height: 20),
         Text(
           "MORE PLAYER INFO",
-          style: textTheme.bodyText1?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             fontSize: 14,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -682,9 +682,9 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
         if (recentPartyMembers.isNotEmpty) ...[
           Text(
             "RECENTLY PLAYED WITH",
-            style: textTheme.bodyText1?.copyWith(
+            style: textTheme.bodyLarge?.copyWith(
               fontSize: 14,
-              color: textTheme.bodyText1?.color,
+              color: textTheme.bodyLarge?.color,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -707,9 +707,9 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
         if (recentlyPlayedChampions.isNotEmpty) ...[
           Text(
             "RECENTLY PLAYED CHAMPION${recentlyPlayedChampions.length != 1 ? 'S' : ''}",
-            style: textTheme.bodyText1?.copyWith(
+            style: textTheme.bodyLarge?.copyWith(
               fontSize: 14,
-              color: textTheme.bodyText1?.color,
+              color: textTheme.bodyLarge?.color,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -743,9 +743,9 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
         const SizedBox(height: 20),
         Text(
           "AVERAGE STATS PER MATCH",
-          style: textTheme.bodyText1?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             fontSize: 14,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -6,8 +6,8 @@ import "package:paladinsedge/constants/index.dart" as constants;
 final api = Dio(
   BaseOptions(
     baseUrl: constants.Env.baseUrl,
-    sendTimeout: constants.apiTimeout,
-    receiveTimeout: constants.apiTimeout,
-    connectTimeout: constants.apiTimeout,
+    sendTimeout: const Duration(milliseconds: constants.apiTimeout),
+    receiveTimeout: const Duration(milliseconds: constants.apiTimeout),
+    connectTimeout: const Duration(milliseconds: constants.apiTimeout),
   ),
 );

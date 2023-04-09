@@ -7,6 +7,8 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class NotFound extends StatelessWidget {
   const NotFound({Key? key}) : super(key: key);
 
+  static NotFound routeBuilder(_, __) => const NotFound();
+
   @override
   Widget build(BuildContext context) {
     // Variables
@@ -36,7 +38,7 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 25),
             Text(
               "Hehe, did I trick you?",
-              style: textTheme.headline1?.copyWith(fontSize: 28),
+              style: textTheme.displayLarge?.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 5),
             widgets.Button(
@@ -54,6 +56,4 @@ class NotFound extends StatelessWidget {
       ),
     );
   }
-
-  static NotFound routeBuilder(_, __) => const NotFound();
 }

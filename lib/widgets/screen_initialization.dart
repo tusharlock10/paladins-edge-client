@@ -136,7 +136,7 @@ class ScreenInitialization extends HookConsumerWidget {
                             children: [
                               Text(
                                 "Pending update",
-                                style: textTheme.headline1?.copyWith(
+                                style: textTheme.displayLarge?.copyWith(
                                   fontSize: 22,
                                   color: Colors.white,
                                 ),
@@ -145,7 +145,7 @@ class ScreenInitialization extends HookConsumerWidget {
                               Text(
                                 "Unfortunately this new update brings some breaking changes due to which you are required to update",
                                 textAlign: TextAlign.center,
-                                style: textTheme.bodyText1?.copyWith(
+                                style: textTheme.bodyLarge?.copyWith(
                                   fontSize: 16,
                                   color: Colors.white.withOpacity(0.85),
                                 ),
@@ -160,7 +160,7 @@ class ScreenInitialization extends HookConsumerWidget {
                         color: Colors.white,
                         label: Text(
                           "Please Wait",
-                          style: textTheme.bodyText1?.copyWith(
+                          style: textTheme.bodyLarge?.copyWith(
                             fontSize: 16,
                             color: Colors.white.withOpacity(0.8),
                           ),

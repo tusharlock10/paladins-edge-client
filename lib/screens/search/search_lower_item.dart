@@ -49,18 +49,18 @@ class SearchLowerItem extends HookWidget {
                     SelectableText(
                       lowerSearch.name,
                       scrollPhysics: const ClampingScrollPhysics(),
-                      style: textTheme.headline6?.copyWith(fontSize: 16),
+                      style: textTheme.titleLarge?.copyWith(fontSize: 16),
                     ),
                     Text(
                       lowerSearch.playerId.toString(),
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                     ),
                   ],
                 ),
               ),
               Text(
                 lowerSearch.platform,
-                style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                style: textTheme.bodyLarge?.copyWith(fontSize: 14),
               ),
             ],
           ),

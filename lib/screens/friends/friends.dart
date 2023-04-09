@@ -13,25 +13,36 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Friends extends HookConsumerWidget {
   static const routeName = "friends";
   static const routePath = "friends";
+  static const userRouteName = "user-friends";
+  static const userRoutePath = "friends";
+
+  const Friends({
+    this.otherPlayerId,
+    Key? key,
+  }) : super(key: key);
+
+  static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: Friends(otherPlayerId: paramPlayerId));
+  }
+
+  final int? otherPlayerId;
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const userRouteName = "user-friends";
-  static const userRoutePath = "friends";
   static final userGoRoute = GoRoute(
     name: userRouteName,
     path: userRoutePath,
     pageBuilder: _userRouteBuilder,
     redirect: utilities.Navigation.protectedRouteRedirect,
   );
-  final int? otherPlayerId;
-
-  const Friends({
-    this.otherPlayerId,
-    Key? key,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,15 +122,4 @@ class Friends extends HookConsumerWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: Friends(otherPlayerId: paramPlayerId));
-  }
-
-  static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());
 }

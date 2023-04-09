@@ -46,6 +46,17 @@ class FriendItem extends HookConsumerWidget {
       [isOtherPlayer, isSelected.value],
     );
 
+    final onFavouriteFriendFail = useCallback(
+      (String error) {
+        widgets.showToast(
+          context: context,
+          text: error,
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onFavouriteFriend = useCallback(
       () async {
         if (isOtherPlayer) return;
@@ -55,13 +66,9 @@ class FriendItem extends HookConsumerWidget {
         if (result == data_classes.FavouriteFriendResult.limitReached) {
           // user already has max number of friends
           // show a toast displaying this info
-
-          widgets.showToast(
-            context: context,
-            text:
-                "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends",
-            type: widgets.ToastType.info,
-          );
+          final error =
+              "You cannot have more than ${utilities.Global.essentials!.maxFavouriteFriends} favourite friends";
+          onFavouriteFriendFail(error);
         }
       },
       [isOtherPlayer, friend],
@@ -104,7 +111,7 @@ class FriendItem extends HookConsumerWidget {
                   SelectableText(
                     friend.name,
                     onTap: onPressFriendName,
-                    style: theme.textTheme.headline3?.copyWith(
+                    style: theme.textTheme.displaySmall?.copyWith(
                       fontSize: 16,
                       decoration: TextDecoration.underline,
                     ),
@@ -112,13 +119,13 @@ class FriendItem extends HookConsumerWidget {
                   friend.title != null
                       ? Text(
                           "${friend.title}",
-                          style:
-                              theme.textTheme.bodyText2?.copyWith(fontSize: 12),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(fontSize: 12),
                         )
                       : const SizedBox(),
                   Text(
                     friend.platform,
-                    style: theme.textTheme.bodyText1?.copyWith(fontSize: 10),
+                    style: theme.textTheme.bodyLarge?.copyWith(fontSize: 10),
                   ),
                 ],
               ),

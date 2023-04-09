@@ -25,7 +25,7 @@ class SearchAppBar extends HookConsumerWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
     final textController = useTextEditingController();
-    final textStyle = textTheme.headline6?.copyWith(
+    final textStyle = textTheme.titleLarge?.copyWith(
       color: Colors.white,
       fontSize: 16,
     );

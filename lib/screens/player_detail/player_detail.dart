@@ -13,12 +13,20 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class PlayerDetail extends HookConsumerWidget {
   static const routeName = "player";
   static const routePath = "player/:playerId";
-  final int playerId;
 
   const PlayerDetail({
     required this.playerId,
     Key? key,
   }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: PlayerDetail(playerId: paramPlayerId));
+  }
 
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
@@ -26,6 +34,8 @@ class PlayerDetail extends HookConsumerWidget {
         pageBuilder: _routeBuilder,
         routes: routes,
       );
+
+  final int playerId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -170,14 +180,5 @@ class PlayerDetail extends HookConsumerWidget {
               ),
             ),
     );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: PlayerDetail(playerId: paramPlayerId));
   }
 }

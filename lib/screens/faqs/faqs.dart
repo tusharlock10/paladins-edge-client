@@ -12,27 +12,30 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Faqs extends HookConsumerWidget {
   static const routeName = "faqs";
   static const routePath = "faqs";
+  static const loginRouteName = "login-faqs";
+  static const loginRoutePath = "faqs";
+  static const connectProfileRouteName = "connect-profile-faqs";
+  static const connectProfileRoutePath = "faqs";
+
+  const Faqs({Key? key}) : super(key: key);
+
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Faqs());
+
   static final goRoute = GoRoute(
     name: routeName,
     path: routePath,
     pageBuilder: _routeBuilder,
   );
-  static const loginRouteName = "login-faqs";
-  static const loginRoutePath = "faqs";
-  static final loginGoRoute = GoRoute(
-    name: loginRouteName,
-    path: loginRoutePath,
-    pageBuilder: _routeBuilder,
-  );
-  static const connectProfileRouteName = "connect-profile-faqs";
-  static const connectProfileRoutePath = "faqs";
   static final connectProfileGoRoute = GoRoute(
     name: connectProfileRouteName,
     path: connectProfileRoutePath,
     pageBuilder: _routeBuilder,
   );
-
-  const Faqs({Key? key}) : super(key: key);
+  static final loginGoRoute = GoRoute(
+    name: loginRouteName,
+    path: loginRoutePath,
+    pageBuilder: _routeBuilder,
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -106,6 +109,4 @@ class Faqs extends HookConsumerWidget {
       ),
     );
   }
-
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Faqs());
 }

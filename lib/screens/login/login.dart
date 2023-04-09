@@ -13,6 +13,7 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class Login extends HookConsumerWidget {
   static const routeName = "login";
   static const routePath = "/login";
+
   const Login({Key? key}) : super(key: key);
 
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
@@ -22,6 +23,15 @@ class Login extends HookConsumerWidget {
         pageBuilder: _routeBuilder,
         redirect: _routeRedirect,
       );
+
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Login());
+  static String? _routeRedirect(GoRouterState _) {
+    // check if user is authenticated
+    // send him to main if authenticated
+    if (utilities.Global.isAuthenticated) return screens.Main.routePath;
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,6 +56,18 @@ class Login extends HookConsumerWidget {
       [],
     );
 
+    final onGoogleSignInFail = useCallback(
+      (String error, int errorCode) {
+        widgets.showToast(
+          context: context,
+          text: error,
+          type: widgets.ToastType.error,
+          errorCode: errorCode,
+        );
+      },
+      [],
+    );
+
     final onGoogleSignIn = useCallback(
       () async {
         if (isLoggingIn.value) {
@@ -60,12 +82,7 @@ class Login extends HookConsumerWidget {
         } else {
           isLoggingIn.value = false;
           if (response.errorCode != null && response.errorMessage != null) {
-            widgets.showToast(
-              context: context,
-              text: response.errorMessage!,
-              type: widgets.ToastType.error,
-              errorCode: response.errorCode,
-            );
+            onGoogleSignInFail(response.errorMessage!, response.errorCode!);
           }
         }
       },
@@ -114,15 +131,5 @@ class Login extends HookConsumerWidget {
               ),
       ),
     );
-  }
-
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Login());
-
-  static String? _routeRedirect(GoRouterState _) {
-    // check if user is authenticated
-    // send him to main if authenticated
-    if (utilities.Global.isAuthenticated) return screens.Main.routePath;
-
-    return null;
   }
 }

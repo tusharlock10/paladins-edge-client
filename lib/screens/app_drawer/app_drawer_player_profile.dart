@@ -54,7 +54,7 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
             children: [
               Text(
                 player.name,
-                style: textTheme.headline1?.copyWith(
+                style: textTheme.displayLarge?.copyWith(
                   fontSize: 18,
                   decoration: TextDecoration.underline,
                 ),
@@ -62,7 +62,7 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
               player.title != null
                   ? Text(
                       player.title!,
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                     )
                   : const SizedBox(),
             ],

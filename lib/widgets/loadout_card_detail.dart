@@ -114,14 +114,14 @@ class _LoadoutCardDetail extends HookWidget {
                     children: [
                       SelectableText(
                         champion.name.toUpperCase(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         card.name.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: textTheme.headline1?.copyWith(fontSize: 18),
+                        style: textTheme.displayLarge?.copyWith(fontSize: 18),
                       ),
                       const SizedBox(height: 2),
                       Wrap(
@@ -156,7 +156,7 @@ class _LoadoutCardDetail extends HookWidget {
               SelectableText(
                 getParsedDescription(),
                 textAlign: TextAlign.center,
-                style: textTheme.bodyText2?.copyWith(fontSize: 16),
+                style: textTheme.bodyMedium?.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 10),
               AbsorbPointer(
@@ -176,7 +176,7 @@ class _LoadoutCardDetail extends HookWidget {
                   : Text(
                       "*Change slider to view the card with different points",
                       textAlign: TextAlign.center,
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                     ),
             ],
           ),

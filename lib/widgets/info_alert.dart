@@ -51,7 +51,7 @@ class _InfoAlert extends HookWidget {
                   children: [
                     Text(
                       "Here is some info for ya",
-                      style: textTheme.headline1?.copyWith(fontSize: 24),
+                      style: textTheme.displayLarge?.copyWith(fontSize: 24),
                     ),
                     const SizedBox(height: 20),
                     Text("App Name : ${packageInfo.value!.appName}"),

@@ -22,12 +22,20 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class ChampionDetail extends HookConsumerWidget {
   static const routeName = "champion";
   static const routePath = "champion/:championId";
-  final int championId;
 
   const ChampionDetail({
     required this.championId,
     Key? key,
   }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    if (paramChampionId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: ChampionDetail(championId: paramChampionId));
+  }
 
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
@@ -35,6 +43,8 @@ class ChampionDetail extends HookConsumerWidget {
         pageBuilder: _routeBuilder,
         routes: routes,
       );
+
+  final int championId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -146,7 +156,7 @@ class ChampionDetail extends HookConsumerWidget {
                   child: Center(
                     child: Text(
                       "Loadouts",
-                      style: textTheme.bodyText2?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontSize: 14,
                         color: Colors.white,
                       ),
@@ -194,14 +204,5 @@ class ChampionDetail extends HookConsumerWidget {
                     ),
                   ),
           );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
-    if (paramChampionId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: ChampionDetail(championId: paramChampionId));
   }
 }

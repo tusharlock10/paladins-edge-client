@@ -53,8 +53,8 @@ class ChampionDetailAbilities extends StatelessWidget {
                             const SizedBox(height: 5),
                             Text(
                               ability.name.toUpperCase(),
-                              style:
-                                  textTheme.headline1?.copyWith(fontSize: 18),
+                              style: textTheme.displayLarge
+                                  ?.copyWith(fontSize: 18),
                             ),
                             const SizedBox(height: 5),
                             Wrap(children: [
@@ -88,13 +88,14 @@ class ChampionDetailAbilities extends StatelessWidget {
                       ),
                       indicatorIconSize: 24,
                       indicatorIconColor:
-                          textTheme.bodyText2?.color?.withOpacity(0.8),
+                          textTheme.bodyMedium?.color?.withOpacity(0.8),
                       maxLines: 3,
                       overflow: TextOverflow.fade,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontSize: 13,
-                            color: textTheme.bodyText2?.color?.withOpacity(0.8),
+                            color:
+                                textTheme.bodyMedium?.color?.withOpacity(0.8),
                           ),
                     ),
                   ),

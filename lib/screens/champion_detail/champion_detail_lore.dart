@@ -27,9 +27,9 @@ class ChampionDetailLore extends StatelessWidget {
           champion.lore,
           maxLines: 8,
           textAlign: TextAlign.justify,
-          style: Theme.of(context).textTheme.bodyText2?.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontSize: 14,
-                color: textTheme.bodyText2?.color?.withOpacity(0.8),
+                color: textTheme.bodyMedium?.color?.withOpacity(0.8),
               ),
         ),
       ),

@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import device_info_plus_macos
+import device_info_plus
 import firebase_analytics
 import firebase_auth
 import firebase_core
@@ -14,7 +14,7 @@ import firebase_messaging
 import firebase_remote_config
 import flutter_local_notifications
 import package_info_plus_macos
-import path_provider_macos
+import path_provider_foundation
 import sqflite
 import url_launcher_macos
 

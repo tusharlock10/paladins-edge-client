@@ -50,12 +50,12 @@ class HomeQueueRegionCard extends HookConsumerWidget {
           Text(
             "Select Region",
             textAlign: TextAlign.center,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
           ),
           const SizedBox(height: 5),
           Text(
             regionFullName,
-            style: textTheme.bodyText2?.copyWith(fontSize: 16),
+            style: textTheme.bodyMedium?.copyWith(fontSize: 16),
           ),
         ],
       ),

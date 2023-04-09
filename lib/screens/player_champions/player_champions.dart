@@ -15,17 +15,27 @@ import "package:syncfusion_flutter_datagrid/datagrid.dart";
 class PlayerChampions extends HookConsumerWidget {
   static const routeName = "player-champions";
   static const routePath = "player-champions";
-  static final goRoute = GoRoute(
-    name: routeName,
-    path: routePath,
-    pageBuilder: _routeBuilder,
-  );
-  final int playerId;
 
   const PlayerChampions({
     required this.playerId,
     Key? key,
   }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    if (paramPlayerId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(child: PlayerChampions(playerId: paramPlayerId));
+  }
+
+  final int playerId;
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    pageBuilder: _routeBuilder,
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +50,7 @@ class PlayerChampions extends HookConsumerWidget {
     // Variables
     final champions = championsProvider.champions;
     final headerTextStyle =
-        Theme.of(context).textTheme.headline1?.copyWith(fontSize: 16);
+        Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 16);
 
     // State
     final playerChampionsDataSource =
@@ -198,14 +208,5 @@ class PlayerChampions extends HookConsumerWidget {
               ],
             ),
     );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
-    if (paramPlayerId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(child: PlayerChampions(playerId: paramPlayerId));
   }
 }

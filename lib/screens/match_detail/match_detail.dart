@@ -13,40 +13,57 @@ import "package:paladinsedge/screens/match_detail/match_detail_list.dart";
 class MatchDetail extends HookConsumerWidget {
   static const routeName = "match";
   static const routePath = "match/:matchId";
-  static final goRoute = GoRoute(
-    name: routeName,
-    path: routePath,
-    pageBuilder: _routeBuilder,
-  );
   static const savedMatchRouteName = "saved-match";
   static const savedMatchRoutePath = "match/:matchId";
-  static final savedMatchGoRoute = GoRoute(
-    name: savedMatchRouteName,
-    path: savedMatchRoutePath,
-    pageBuilder: _routeBuilder,
-  );
   static const commonMatchRouteName = "common-match";
   static const commonMatchRoutePath = "match/:matchId";
-  static final commonMatchGoRoute = GoRoute(
-    name: commonMatchRouteName,
-    path: commonMatchRoutePath,
-    pageBuilder: _routeBuilder,
-  );
   static const topMatchRouteName = "top-match";
   static const topMatchRoutePath = "match/:matchId";
-  static final topMatchGoRoute = GoRoute(
-    name: topMatchRouteName,
-    path: topMatchRoutePath,
-    pageBuilder: _routeBuilder,
-  );
-  final int matchId;
-  final bool isSavedMatch;
 
   const MatchDetail({
     required this.matchId,
     required this.isSavedMatch,
     Key? key,
   }) : super(key: key);
+
+  static Page _routeBuilder(_, GoRouterState state) {
+    final paramMatchId = int.tryParse(state.params["matchId"] ?? "");
+    final isSavedMatch =
+        (state.queryParams["isSavedMatch"] ?? "false") == "true";
+    if (paramMatchId == null) {
+      return const CupertinoPage(child: screens.NotFound());
+    }
+
+    return CupertinoPage(
+      child: MatchDetail(
+        matchId: paramMatchId,
+        isSavedMatch: isSavedMatch,
+      ),
+    );
+  }
+
+  final int matchId;
+  final bool isSavedMatch;
+  static final topMatchGoRoute = GoRoute(
+    name: topMatchRouteName,
+    path: topMatchRoutePath,
+    pageBuilder: _routeBuilder,
+  );
+  static final commonMatchGoRoute = GoRoute(
+    name: commonMatchRouteName,
+    path: commonMatchRoutePath,
+    pageBuilder: _routeBuilder,
+  );
+  static final savedMatchGoRoute = GoRoute(
+    name: savedMatchRouteName,
+    path: savedMatchRoutePath,
+    pageBuilder: _routeBuilder,
+  );
+  static final goRoute = GoRoute(
+    name: routeName,
+    path: routePath,
+    pageBuilder: _routeBuilder,
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,22 +107,6 @@ class MatchDetail extends HookConsumerWidget {
             isSavedMatch: isSavedMatch,
           ),
         ],
-      ),
-    );
-  }
-
-  static Page _routeBuilder(_, GoRouterState state) {
-    final paramMatchId = int.tryParse(state.params["matchId"] ?? "");
-    final isSavedMatch =
-        (state.queryParams["isSavedMatch"] ?? "false") == "true";
-    if (paramMatchId == null) {
-      return const CupertinoPage(child: screens.NotFound());
-    }
-
-    return CupertinoPage(
-      child: MatchDetail(
-        matchId: paramMatchId,
-        isSavedMatch: isSavedMatch,
       ),
     );
   }
