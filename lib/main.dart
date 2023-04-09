@@ -1,6 +1,9 @@
+import "dart:io";
+
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_displaymode/flutter_displaymode.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:overlay_support/overlay_support.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
@@ -29,6 +32,12 @@ void main() async {
   utilities.Messaging.onMessage();
   utilities.Messaging.onBackgroundMessage();
   utilities.Messaging.registerLocalNotification();
+
+  try {
+    if (Platform.isAndroid) {
+      await FlutterDisplayMode.setHighRefreshRate();
+    }
+  } catch (_) {}
 
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
