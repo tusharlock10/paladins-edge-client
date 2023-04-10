@@ -50,8 +50,8 @@ jobs:
       - name: Get release notes
         run: git log -1 --pretty="TEST BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
 
-      - name: Upload apk to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.5.0
         with:
           appId: 1:280154424805:android:06755c7776c617c0aa1b0c
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
