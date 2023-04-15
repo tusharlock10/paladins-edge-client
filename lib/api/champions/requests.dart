@@ -42,7 +42,9 @@ abstract class ChampionsRequests {
       method: HttpMethod.post,
       fromJson: PlayerChampionsResponse.fromJson,
       defaultValue: PlayerChampionsResponse(),
-      payload: {"playerChampionsQuery": playerChampionsQuery},
+      payload: {
+        "playerChampionsQuery": playerChampionsQuery,
+      },
     );
     final response = await ApiRequest.apiRequest(input);
 

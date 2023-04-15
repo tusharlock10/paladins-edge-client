@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class AppDrawerButton extends StatelessWidget {
   final String label;
@@ -14,12 +15,19 @@ class AppDrawerButton extends StatelessWidget {
     this.subTitle,
   }) : super(key: key);
 
+  void onPressedWithHaptic() {
+    if (!disabled) {
+      HapticFeedback.lightImpact();
+      onPressed();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return TextButton(
-      onPressed: disabled ? null : onPressed,
+      onPressed: onPressedWithHaptic,
       child: subTitle == null
           ? Text(
               label,

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 
 class FavouriteStar extends HookWidget {
@@ -22,9 +23,17 @@ class FavouriteStar extends HookWidget {
 
     if (hidden) return const SizedBox();
 
+    final onPressWithHaptic = useCallback(
+      () {
+        HapticFeedback.lightImpact();
+        if (onPress != null) onPress!();
+      },
+      [],
+    );
+
     return InkWell(
       enableFeedback: onPress != null,
-      onTap: onPress,
+      onTap: onPressWithHaptic,
       child: Icon(
         isFavourite ? Icons.star : Icons.star_outline_outlined,
         color: isFavourite ? Colors.yellow : textTheme.bodyLarge?.color,

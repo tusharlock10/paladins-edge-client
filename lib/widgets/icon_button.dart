@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class IconButton extends StatelessWidget {
   final IconData icon;
@@ -14,6 +15,11 @@ class IconButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void onPressedWithHaptic() {
+    HapticFeedback.lightImpact();
+    onPressed();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = iconSize * 1.25;
@@ -22,7 +28,7 @@ class IconButton extends StatelessWidget {
       height: size,
       width: size,
       child: InkWell(
-        onTap: onPressed,
+        onTap: onPressedWithHaptic,
         child: Icon(
           icon,
           size: iconSize,

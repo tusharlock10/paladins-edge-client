@@ -1,5 +1,6 @@
 import "package:dotted_border/dotted_border.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
@@ -85,6 +86,14 @@ class _LoadoutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
+    final onPressWithHaptic = useCallback(
+      () {
+        HapticFeedback.lightImpact();
+        onPress();
+      },
+      [],
+    );
+
     return Card(
       margin: const EdgeInsets.all(5),
       clipBehavior: Clip.hardEdge,
@@ -92,7 +101,7 @@ class _LoadoutCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: InkWell(
-        onTap: onPress,
+        onTap: onPressWithHaptic,
         child: Column(
           children: [
             Align(

@@ -35,7 +35,7 @@ abstract class LoadoutRequests {
       method: HttpMethod.post,
       fromJson: CreateLoadoutResponse.fromJson,
       defaultValue: CreateLoadoutResponse(),
-      payload: loadout,
+      payload: loadout.toJson(),
     );
     final response = await ApiRequest.apiRequest(input);
 
@@ -50,7 +50,7 @@ abstract class LoadoutRequests {
       method: HttpMethod.put,
       fromJson: CreateLoadoutResponse.fromJson,
       defaultValue: CreateLoadoutResponse(),
-      payload: loadout,
+      payload: loadout.toJson(),
     );
     final response = await ApiRequest.apiRequest(input);
 

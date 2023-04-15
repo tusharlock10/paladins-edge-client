@@ -1,5 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -55,6 +56,14 @@ class InteractiveCard extends HookWidget {
       [brightness, hoverBorderColor],
     );
 
+    final onTapWithHaptic = useCallback(
+      () {
+        HapticFeedback.mediumImpact();
+        if (onTap != null) onTap!();
+      },
+      [],
+    );
+
     return MouseRegion(
       onEnter: !isInteractive ? null : (_) => isHovering.value = true,
       onExit: !isInteractive ? null : (_) => isHovering.value = false,
@@ -76,7 +85,7 @@ class InteractiveCard extends HookWidget {
               : BorderSide.none,
         ),
         child: InkWell(
-          onTap: onTap,
+          onTap: onTapWithHaptic,
           child: DecoratedBox(
             decoration: BoxDecoration(
               image: backgroundImage != null && showBackgroundSplash

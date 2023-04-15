@@ -90,7 +90,7 @@ abstract class AuthRequests {
       method: HttpMethod.post,
       fromJson: DeviceDetailResponse.fromJson,
       defaultValue: DeviceDetailResponse(),
-      payload: deviceDetail,
+      payload: deviceDetail.toJson(),
     );
     final response = await ApiRequest.apiRequest(input);
 

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
@@ -18,6 +19,7 @@ void showLoadoutCardDetailSheet(
     mobile: screenWidth,
   );
 
+  HapticFeedback.mediumImpact();
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -72,10 +74,11 @@ class _LoadoutCardDetail extends HookWidget {
       [amount.value],
     );
 
-    final onChanged = useCallback(
+    final onChangedWithHaptic = useCallback(
       (double value) {
         amount.value = value.toInt();
         if (onSliderChange != null) {
+          HapticFeedback.selectionClick();
           onSliderChange!(amount.value);
         }
       },
@@ -167,7 +170,7 @@ class _LoadoutCardDetail extends HookWidget {
                   min: 1,
                   max: 5,
                   label: "${amount.value}",
-                  onChanged: onChanged,
+                  onChanged: onChangedWithHaptic,
                 ),
               ),
               sliderFixed ? const SizedBox() : const SizedBox(height: 10),

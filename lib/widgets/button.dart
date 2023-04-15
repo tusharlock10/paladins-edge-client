@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
 
 enum ButtonStyle {
@@ -31,6 +32,11 @@ class Button extends StatelessWidget {
     this.labelStyle,
     Key? key,
   }) : super(key: key);
+
+  void onPressedWithHaptic() {
+    HapticFeedback.lightImpact();
+    onPressed();
+  }
 
   @override
   Widget build(BuildContext context) {

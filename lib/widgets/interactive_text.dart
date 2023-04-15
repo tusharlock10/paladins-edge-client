@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class InteractiveText extends StatelessWidget {
   final String text;
@@ -14,11 +15,16 @@ class InteractiveText extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void onTapWithHaptic() {
+    HapticFeedback.lightImpact();
+    if (onTap != null) onTap!();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SelectableText(
       text,
-      onTap: onTap,
+      onTap: onTapWithHaptic,
       enableInteractiveSelection: onTap != null,
       maxLines: 1,
       scrollPhysics: const ClampingScrollPhysics(),

@@ -48,7 +48,7 @@ abstract class CommonRequests {
       method: HttpMethod.post,
       fromJson: SubmitFeedbackResponse.fromJson,
       defaultValue: SubmitFeedbackResponse(),
-      payload: feedback,
+      payload: feedback.toJson(),
     );
     final response = await ApiRequest.apiRequest(input);
 
