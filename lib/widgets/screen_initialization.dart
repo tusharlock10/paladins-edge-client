@@ -45,21 +45,6 @@ class ScreenInitialization extends HookConsumerWidget {
     // Methods
     final initApp = useCallback(
       () async {
-        final result = await Future.wait([
-          utilities.RemoteConfig.initialize(),
-          PackageInfo.fromPlatform(),
-        ]);
-        final packageInfo = result.last as PackageInfo;
-
-        final currentVersion = Version.parse(packageInfo.version);
-        if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
-          return authProvider.setForceUpdatePending();
-        }
-
-        await utilities.Database.initialize();
-        authProvider.loadSettings();
-        authProvider.loadPaladinsAssets();
-
         // first initialize all env variables and check
         // if all the env variables are loaded properly
         final missingEnvs = await constants.Env.loadEnv();
@@ -77,6 +62,21 @@ class ScreenInitialization extends HookConsumerWidget {
 
           return;
         }
+
+        final result = await Future.wait([
+          utilities.RemoteConfig.initialize(),
+          utilities.Database.initialize(),
+          PackageInfo.fromPlatform(),
+        ]);
+        final packageInfo = result.last as PackageInfo;
+
+        final currentVersion = Version.parse(packageInfo.version);
+        if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
+          return authProvider.setForceUpdatePending();
+        }
+
+        authProvider.loadSettings();
+        authProvider.loadPaladinsAssets();
 
         utilities.RealtimeGlobalChat.initialize();
         await Future.wait([

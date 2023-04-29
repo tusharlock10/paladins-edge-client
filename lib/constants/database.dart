@@ -1,31 +1,42 @@
-abstract class HiveBoxes {
-  static const token = "token";
-  static const user = "user";
-  static const player = "player";
-  static const settings = "settings";
-  static const essentials = "essentials";
-  static const searchHistory = "searchHistory";
-  static const champion = "champion";
-  static const recordExpiry = "recordExpiry";
-  static const playerChampion = "playerChampion";
-  static const queueTimeline = "queueTimeline";
-  static const item = "item";
-  static const topMatch = "topMatch";
+import "package:paladinsedge/constants/environment.dart";
 
-  static const allBoxes = [
-    token,
-    user,
-    player,
-    settings,
-    essentials,
-    searchHistory,
-    champion,
-    recordExpiry,
-    playerChampion,
-    queueTimeline,
-    item,
-    topMatch,
-  ];
+const databaseVersion = 2;
+
+abstract class HiveBoxes {
+  static String get token => getBoxName("token");
+  static String get user => getBoxName("user");
+  static String get player => getBoxName("player");
+  static String get settings => getBoxName("settings");
+  static String get essentials => getBoxName("essentials");
+  static String get searchHistory => getBoxName("searchHistory");
+  static String get champion => getBoxName("champion");
+  static String get recordExpiry => getBoxName("recordExpiry");
+  static String get playerChampion => getBoxName("playerChampion");
+  static String get queueTimeline => getBoxName("queueTimeline");
+  static String get item => getBoxName("item");
+  static String get topMatch => getBoxName("topMatch");
+
+  static get allBoxes => [
+        token,
+        user,
+        player,
+        settings,
+        essentials,
+        searchHistory,
+        champion,
+        recordExpiry,
+        playerChampion,
+        queueTimeline,
+        item,
+        topMatch,
+      ];
+
+  static String getBoxName(String name) {
+    final env = Env.appType;
+    final boxName = "$name-$env-$databaseVersion";
+
+    return boxName;
+  }
 }
 
 enum RecordExpiryName {
