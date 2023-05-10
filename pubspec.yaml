@@ -38,8 +38,6 @@ dependencies:
   firebase_database: ^10.1.0
   firebase_analytics: ^10.2.0
   firebase_auth: ^4.4.0
-  firebase_messaging: ^14.5.0
-  firebase_performance: ^0.9.1
   flutter_spinkit: ^5.1.0
   jiffy: ^5.0.0
   hive: 2.2.3
@@ -48,7 +46,6 @@ dependencies:
   expand_widget: ^3.1.0
   package_info_plus: ^4.0.0
   flutter_dotenv: ^5.0.2
-  flutter_local_notifications: ^9.6.1
   flutter_riverpod: ^1.0.2
   responsive_framework: ^0.2.0
   dartx: ^1.1.0

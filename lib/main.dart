@@ -30,10 +30,6 @@ void main() async {
     ),
   ]);
 
-  utilities.Messaging.onMessage();
-  utilities.Messaging.onBackgroundMessage();
-  utilities.Messaging.registerLocalNotification();
-
   try {
     if (Platform.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
