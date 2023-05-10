@@ -83,9 +83,9 @@ class SavedMatches extends HookConsumerWidget {
                                     size: 28,
                                     label: Text("Getting Matches"),
                                   )
-                                : Column(
+                                : const Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Text(
                                         "You have not saved any matches",
                                         style: TextStyle(

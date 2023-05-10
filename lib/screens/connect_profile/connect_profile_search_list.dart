@@ -36,11 +36,11 @@ class ConnectProfileSearchList extends ConsumerWidget {
         ),
         const SizedBox(height: 15),
         lowerSearchPlayers.isEmpty
-            ? Card(
+            ? const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
                   child: Column(
-                    children: const [
+                    children: [
                       Text("*Search for your Paladins IGN"),
                       Text("*Select your profile and follow the steps ahead"),
                       SizedBox(height: 10),

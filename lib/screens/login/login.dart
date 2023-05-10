@@ -25,7 +25,7 @@ class Login extends HookConsumerWidget {
       );
 
   static Page _routeBuilder(_, __) => const CupertinoPage(child: Login());
-  static String? _routeRedirect(GoRouterState _) {
+  static String? _routeRedirect(BuildContext _, GoRouterState __) {
     // check if user is authenticated
     // send him to main if authenticated
     if (utilities.Global.isAuthenticated) return screens.Main.routePath;

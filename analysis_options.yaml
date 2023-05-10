@@ -19,7 +19,6 @@ analyzer:
   plugins:
     - dart_code_metrics
   strong-mode:
-    implicit-casts: false
 
 linter:
   # The lint rules applied to this project can be customized in the

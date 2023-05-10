@@ -25,7 +25,7 @@ class ConnectProfile extends HookConsumerWidget {
   static Page _routeBuilder(_, __) =>
       const CupertinoPage(child: ConnectProfile());
 
-  static String? _playerConnectedRedirect(GoRouterState _) {
+  static String? _playerConnectedRedirect(BuildContext _, GoRouterState __) {
     // check if user is authenticated
     if (!utilities.Global.isAuthenticated) return screens.Login.routePath;
     // check if user is not connected to a player

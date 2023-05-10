@@ -172,8 +172,8 @@ class PlayerDetail extends HookConsumerWidget {
             )
           : widgets.Refresh(
               onRefresh: onRefresh,
-              child: Stack(
-                children: const [
+              child: const Stack(
+                children: [
                   PlayerDetailMatches(),
                   PlayerDetailHeader(),
                 ],

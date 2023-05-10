@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_displaymode/flutter_displaymode.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_web_plugins/url_strategy.dart";
 import "package:overlay_support/overlay_support.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/firebase_options.dart" as firebase_options;
@@ -39,6 +40,7 @@ void main() async {
     }
   } catch (_) {}
 
+  usePathUrlStrategy();
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
 
