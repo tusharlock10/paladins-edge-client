@@ -11,10 +11,10 @@ final _connectProfileExcludedRoutes = [
 ];
 
 String? _routeRedirect(BuildContext _, GoRouterState state) {
-  if (state.subloc == screens.ConnectProfile.routePath) return null;
+  if (state.matchedLocation == screens.ConnectProfile.routePath) return null;
   if (utilities.Global.isAuthenticated && !utilities.Global.isPlayerConnected) {
     for (final excludedRoute in _connectProfileExcludedRoutes) {
-      if (state.subloc.contains(excludedRoute)) return null;
+      if (state.matchedLocation.contains(excludedRoute)) return null;
     }
 
     return screens.ConnectProfile.routePath;

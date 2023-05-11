@@ -23,7 +23,7 @@ class Friends extends HookConsumerWidget {
 
   static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    final paramPlayerId = int.tryParse(state.pathParameters["playerId"] ?? "");
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

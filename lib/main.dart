@@ -65,22 +65,24 @@ class PaladinsEdgeApp extends ConsumerWidget {
           title: "Paladins Edge",
           color: Colors.white,
           scrollBehavior: BouncingScrollBehavior(),
-          builder: (context, widget) => ResponsiveWrapper.builder(
-            widgets.ScreenInitialization(
+          builder: (context, widget) => ResponsiveBreakpoints.builder(
+            child: widgets.ScreenInitialization(
               screen: widget,
             ),
-            defaultScale: true,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(
-                constants.ResponsiveBreakpoints.mobile,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.mobile,
+                end: constants.ResponsiveBreakpoints.tablet,
                 name: MOBILE,
               ),
-              const ResponsiveBreakpoint.autoScale(
-                constants.ResponsiveBreakpoints.tablet,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.tablet,
+                end: constants.ResponsiveBreakpoints.desktop,
                 name: TABLET,
               ),
-              const ResponsiveBreakpoint.resize(
-                constants.ResponsiveBreakpoints.desktop,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.desktop,
+                end: double.infinity,
                 name: DESKTOP,
               ),
             ],

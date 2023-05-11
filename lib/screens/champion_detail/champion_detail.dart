@@ -29,7 +29,8 @@ class ChampionDetail extends HookConsumerWidget {
   }) : super(key: key);
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
+    final paramChampionId =
+        int.tryParse(state.pathParameters["championId"] ?? "");
     if (paramChampionId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

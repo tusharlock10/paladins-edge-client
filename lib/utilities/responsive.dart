@@ -7,10 +7,10 @@ T responsiveCondition<T>(
   required T tablet,
   required T mobile,
 }) {
-  if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
+  if (ResponsiveBreakpoints.of(context).largerThan(TABLET)) {
     return desktop;
   }
-  if (ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
+  if (ResponsiveBreakpoints.of(context).largerThan(MOBILE)) {
     return tablet;
   }
 

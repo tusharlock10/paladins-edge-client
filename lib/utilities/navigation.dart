@@ -15,8 +15,8 @@ abstract class Navigation {
     Analytics.logScreenEntry(routeName);
     GoRouter.of(context).goNamed(
       routeName,
-      params: params ?? const {},
-      queryParams: queryParams ?? const {},
+      pathParameters: params ?? const {},
+      queryParameters: queryParams ?? const {},
     );
   }
 

@@ -30,8 +30,9 @@ class Loadouts extends HookConsumerWidget {
         routes: routes,
       );
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = int.tryParse(state.params["championId"] ?? "");
-    final paramPlayerId = int.tryParse(state.params["playerId"] ?? "");
+    final paramChampionId =
+        int.tryParse(state.pathParameters["championId"] ?? "");
+    final paramPlayerId = int.tryParse(state.pathParameters["playerId"] ?? "");
     if (paramChampionId == null || paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
