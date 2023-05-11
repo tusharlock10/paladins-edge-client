@@ -194,6 +194,7 @@ class ConnectProfile extends HookConsumerWidget {
         padding: const EdgeInsets.all(0),
         child: Column(
           children: [
+            const SizedBox(height: 15),
             name != null
                 ? RichText(
                     text: TextSpan(
@@ -217,9 +218,12 @@ class ConnectProfile extends HookConsumerWidget {
                   )
                 : const SizedBox(),
             const SizedBox(height: 15),
-            const Text(
-              "In order to enjoy all the features of Paladins Edge, please connect your profile",
-              textAlign: TextAlign.center,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                "In order to enjoy all the features of Paladins Edge, please connect your Paladins profile",
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 15),
             ConnectProfileStatusIndicator(currentStep: step.value),

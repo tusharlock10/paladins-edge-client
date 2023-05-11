@@ -77,8 +77,8 @@ class _LoadoutCardDetail extends HookWidget {
     final onChangedWithHaptic = useCallback(
       (double value) {
         amount.value = value.toInt();
+        HapticFeedback.lightImpact();
         if (onSliderChange != null) {
-          HapticFeedback.selectionClick();
           onSliderChange!(amount.value);
         }
       },

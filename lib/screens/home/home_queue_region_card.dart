@@ -16,9 +16,6 @@ class HomeQueueRegionCard extends HookConsumerWidget {
     final selectedQueueRegion = ref.watch(
       providers.auth.select((_) => _.settings.selectedQueueRegion),
     );
-    final selectedQueueId = ref.watch(
-      providers.queue.select((_) => _.selectedQueueId),
-    );
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -32,12 +29,21 @@ class HomeQueueRegionCard extends HookConsumerWidget {
     // Methods
     final onTap = useCallback(
       () {
-        final nextRegion =
-            data_classes.Region.cycleRegions(selectedQueueRegion);
+        // reading here in function instead of using the watched value because
+        // of a bug in useCallback due to which its not updating when key changes
+        final selectedQueueRegion = ref.read(
+          providers.auth.select((_) => _.settings.selectedQueueRegion),
+        );
+        final selectedQueueId = ref.read(
+          providers.queue.select((_) => _.selectedQueueId),
+        );
+        final nextRegion = data_classes.Region.cycleRegions(
+          selectedQueueRegion,
+        );
         authProvider.setQueueRegions(nextRegion);
         queueProvider.selectTimelineQueue(selectedQueueId);
       },
-      [selectedQueueRegion, selectedQueueRegion],
+      [],
     );
 
     return widgets.InteractiveCard(

@@ -36,22 +36,7 @@ class ConnectProfileSearchList extends ConsumerWidget {
         ),
         const SizedBox(height: 15),
         lowerSearchPlayers.isEmpty
-            ? const Card(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Text("*Search for your Paladins IGN"),
-                      Text("*Select your profile and follow the steps ahead"),
-                      SizedBox(height: 10),
-                      Text("*If your profile is not being shown after search,"),
-                      Text(
-                        'make sure it is set to "Public" under Settings > Gameplay',
-                      ),
-                    ],
-                  ),
-                ),
-              )
+            ? const SizedBox()
             : Expanded(
                 child: ListView.builder(
                   itemCount: lowerSearchPlayers.length,

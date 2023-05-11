@@ -68,7 +68,7 @@ class ChampionLoadoutCard extends HookWidget {
   }
 }
 
-class _LoadoutCard extends StatelessWidget {
+class _LoadoutCard extends HookWidget {
   final void Function() onPress;
   final models.ChampionCard card;
   final double imageWidth;
