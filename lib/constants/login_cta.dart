@@ -20,11 +20,6 @@ loadouts outside the game
 """
       .replaceAll("\n", " ");
 
-  static final globalChat = """Global Chat allows you to send
-messages to other players, and start discussions.
-"""
-      .replaceAll("\n", " ");
-
   static final savedMatches = """Save Matches feature will allow 
 you to save the matches that you like and also lets you view them later.
 """

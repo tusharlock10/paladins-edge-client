@@ -77,10 +77,8 @@ class ScreenInitialization extends HookConsumerWidget {
         authProvider.loadSettings();
         authProvider.loadPaladinsAssets();
 
-        utilities.RealtimeGlobalChat.initialize();
         await Future.wait([
           utilities.RSACrypto.initialize(),
-          utilities.RealtimeGlobalChat.initialize(),
           FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
             !constants.isDebug,
           ),

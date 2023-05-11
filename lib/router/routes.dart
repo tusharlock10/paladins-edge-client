@@ -26,7 +26,6 @@ final _mainRoutes = [
   screens.Friends.userGoRoute,
   screens.ActiveMatch.userGoRoute,
   screens.Feedback.goRoute,
-  screens.GlobalChat.goRoute,
   screens.Faqs.goRoute,
   screens.SavedMatches.goRouteBuilder(_savedMatchesRoutes),
   screens.MatchDetail.topMatchGoRoute,

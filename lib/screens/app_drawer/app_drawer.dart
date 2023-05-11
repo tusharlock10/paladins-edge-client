@@ -171,31 +171,6 @@ class AppDrawer extends HookConsumerWidget {
       [showPlayerDependentButtons],
     );
 
-    final onGlobalChatHelper = useCallback(
-      () {
-        utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.GlobalChat.routeName);
-      },
-      [],
-    );
-
-    final onGlobalChat = useCallback(
-      () {
-        if (isGuest) {
-          utilities.Navigation.pop(context);
-          widgets.showLoginModal(
-            data_classes.ShowLoginModalOptions(
-              context: context,
-              loginCta: constants.LoginCTA.globalChat,
-            ),
-          );
-        } else {
-          onGlobalChatHelper();
-        }
-      },
-      [isGuest],
-    );
-
     final onSavedMatchesHelper = useCallback(
       () {
         utilities.Navigation.pop(context);
@@ -260,11 +235,6 @@ class AppDrawer extends HookConsumerWidget {
               label: "Feedback",
               onPressed: onFeedback,
             ),
-            if (showPlayerDependentButtons)
-              AppDrawerButton(
-                label: "Global Chat",
-                onPressed: onGlobalChat,
-              ),
             if (showPlayerDependentButtons)
               AppDrawerButton(
                 label: "Saved Matches",

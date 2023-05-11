@@ -2,7 +2,6 @@ export "./auth.dart";
 export "./champions.dart";
 export "./feedback.dart";
 export "./friends.dart";
-export "./global_chat.dart";
 export "./items.dart";
 export "./loadout.dart";
 export "./matches.dart";

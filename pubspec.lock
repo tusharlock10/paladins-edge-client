@@ -321,14 +321,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
-  diffutil_dart:
-    dependency: transitive
-    description:
-      name: diffutil_dart
-      sha256: e0297e4600b9797edff228ed60f4169a778ea357691ec98408fa3b72994c7d06
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   dio:
     dependency: "direct main"
     description:
@@ -489,30 +481,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
-  firebase_database:
-    dependency: "direct main"
-    description:
-      name: firebase_database
-      sha256: "4ba491c109ee645cf7a11277e868b69b29a29e5ceba7002c3e38c26b67d40640"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.1.2"
-  firebase_database_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_database_platform_interface
-      sha256: b5e060530bc8e79a2e7e93e202c014d4c3c8a8ee20929e847d0de54ec298cd79
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.4"
-  firebase_database_web:
-    dependency: transitive
-    description:
-      name: firebase_database_web
-      sha256: "144009e3b8acda6304c85018d4961007b48c7c0cf0fdffc2a0f0c54971a310d7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.2+2"
   firebase_remote_config:
     dependency: "direct main"
     description:
@@ -582,22 +550,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
-  flutter_chat_types:
-    dependency: "direct main"
-    description:
-      name: flutter_chat_types
-      sha256: "34d1d61e46d5ca15f3b46e72d0a9ac98da72edc5eb5bf644a26e27351c9e15ba"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.6.0"
-  flutter_chat_ui:
-    dependency: "direct main"
-    description:
-      name: flutter_chat_ui
-      sha256: f13c48d06dd8be0d2feb0356a22d1cb6a0f83873b923b8d32bb4b55efb07cd39
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.6.6"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -638,22 +590,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.1"
-  flutter_link_previewer:
-    dependency: transitive
-    description:
-      name: flutter_link_previewer
-      sha256: d495edef667d4b5db37fb6f31571406c137161a8399dd44a5de4ce2a7c7ba529
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
-  flutter_linkify:
-    dependency: transitive
-    description:
-      name: flutter_linkify
-      sha256: c89fe74de985ec22f23d3538d2249add085a4f37ac1c29fd79e1a207efb81d63
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -670,14 +606,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.19"
-  flutter_parsed_text:
-    dependency: transitive
-    description:
-      name: flutter_parsed_text
-      sha256: "529cf5793b7acdf16ee0f97b158d0d4ba0bf06e7121ef180abe1a5b59e32c1e2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.1"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -936,14 +864,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.6.2"
-  linkify:
-    dependency: transitive
-    description:
-      name: linkify
-      sha256: bdfbdafec6cdc9cd0ebb333a868cafc046714ad508e48be8095208c54691d959
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   lints:
     dependency: transitive
     description:
@@ -1120,14 +1040,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
-  photo_view:
-    dependency: transitive
-    description:
-      name: photo_view
-      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.14.0"
   platform:
     dependency: transitive
     description:
@@ -1224,14 +1136,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
-  scroll_to_index:
-    dependency: transitive
-    description:
-      name: scroll_to_index
-      sha256: b707546e7500d9f070d63e5acf74fd437ec7eeeb68d3412ef7b0afada0b4f176
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   shelf:
     dependency: transitive
     description:
@@ -1517,14 +1421,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  visibility_detector:
-    dependency: transitive
-    description:
-      name: visibility_detector
-      sha256: "15c54a459ec2c17b4705450483f3d5a2858e733aee893dcee9d75fd04814940d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3"
   watcher:
     dependency: transitive
     description:

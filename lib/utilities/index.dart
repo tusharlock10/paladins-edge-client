@@ -12,7 +12,6 @@ export "./list.dart";
 export "./math.dart";
 export "./navigation.dart";
 export "./player_utils.dart";
-export "./realtime_database.dart";
 export "./remote_config.dart";
 export "./responsive.dart";
 export "./stopwatch.dart";
