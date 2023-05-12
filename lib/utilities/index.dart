@@ -10,7 +10,6 @@ export "./device.dart";
 export "./global.dart";
 export "./list.dart";
 export "./math.dart";
-export "./messaging.dart";
 export "./navigation.dart";
 export "./player_utils.dart";
 export "./realtime_database.dart";

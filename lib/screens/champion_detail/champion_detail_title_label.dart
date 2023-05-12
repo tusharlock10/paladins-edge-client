@@ -27,7 +27,7 @@ class ChampionDetailTitleLabel extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: theme.textTheme.headline2?.copyWith(
+          style: theme.textTheme.displayMedium?.copyWith(
             fontSize: 24,
           ),
         ),

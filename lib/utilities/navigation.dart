@@ -15,8 +15,8 @@ abstract class Navigation {
     Analytics.logScreenEntry(routeName);
     GoRouter.of(context).goNamed(
       routeName,
-      params: params ?? const {},
-      queryParams: queryParams ?? const {},
+      pathParameters: params ?? const {},
+      queryParameters: queryParams ?? const {},
     );
   }
 
@@ -32,6 +32,6 @@ abstract class Navigation {
 
   /// Redirects to login screen if an unauthenticated
   /// user lands on a protected route
-  static String? protectedRouteRedirect(GoRouterState state) =>
+  static String? protectedRouteRedirect(BuildContext _, GoRouterState state) =>
       Global.isAuthenticated ? null : screens.Login.routePath;
 }

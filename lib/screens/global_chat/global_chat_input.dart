@@ -121,7 +121,7 @@ class GlobalChatInput extends HookConsumerWidget {
                           Expanded(
                             child: Text(
                               playersTypingText,
-                              style: textTheme.bodyText1,
+                              style: textTheme.bodyLarge,
                               softWrap: false,
                               overflow: TextOverflow.fade,
                               maxLines: 1,

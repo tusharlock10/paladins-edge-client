@@ -36,7 +36,7 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 25),
             Text(
               "Hehe, did I trick you?",
-              style: textTheme.headline1?.copyWith(fontSize: 28),
+              style: textTheme.displayLarge?.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 5),
             widgets.Button(

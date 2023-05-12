@@ -67,7 +67,7 @@ class ChampionLoadoutCard extends HookWidget {
   }
 }
 
-class _LoadoutCard extends StatelessWidget {
+class _LoadoutCard extends HookWidget {
   final void Function() onPress;
   final models.Card card;
   final double imageWidth;
@@ -116,7 +116,7 @@ class _LoadoutCard extends StatelessWidget {
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       scrollPhysics: const ClampingScrollPhysics(),
-                      style: textTheme.bodyText2?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontSize: 16,
                       ),
                     ),

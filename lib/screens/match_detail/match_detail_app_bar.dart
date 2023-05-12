@@ -40,6 +40,17 @@ class MatchDetailAppBar extends HookConsumerWidget {
       [isGuest],
     );
 
+    final onSaveMatchFail = useCallback(
+      (String error) {
+        widgets.showToast(
+          context: context,
+          text: error,
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onSaveMatch = useCallback(
       () async {
         if (match == null) return;
@@ -50,13 +61,9 @@ class MatchDetailAppBar extends HookConsumerWidget {
         if (result == data_classes.SaveMatchResult.limitReached) {
           // user already has max number of savedMatches
           // show a toast displaying this info
-
-          widgets.showToast(
-            context: context,
-            text:
-                "You cannot have more than ${utilities.Global.essentials!.maxSavedMatches} saved matches",
-            type: widgets.ToastType.info,
-          );
+          final error =
+              "You cannot have more than ${utilities.Global.essentials!.maxSavedMatches} saved matches";
+          onSaveMatchFail(error);
         }
       },
       [match, isGuest],

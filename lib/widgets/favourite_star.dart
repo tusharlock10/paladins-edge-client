@@ -27,7 +27,7 @@ class FavouriteStar extends HookWidget {
       onTap: onPress,
       child: Icon(
         isFavourite ? Icons.star : Icons.star_outline_outlined,
-        color: isFavourite ? Colors.yellow : textTheme.bodyText1?.color,
+        color: isFavourite ? Colors.yellow : textTheme.bodyLarge?.color,
         size: size,
       ),
     );

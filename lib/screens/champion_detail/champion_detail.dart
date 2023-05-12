@@ -146,7 +146,7 @@ class ChampionDetail extends HookConsumerWidget {
                   child: Center(
                     child: Text(
                       "Loadouts",
-                      style: textTheme.bodyText2?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontSize: 14,
                         color: Colors.white,
                       ),
@@ -197,7 +197,7 @@ class ChampionDetail extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final param = state.params["championId"];
+    final param = state.pathParameters["championId"];
     if (param == null) return const CupertinoPage(child: screens.NotFound());
 
     final championId = int.tryParse(param);

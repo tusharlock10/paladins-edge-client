@@ -106,7 +106,7 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
                         data_classes.MatchFilter.getFilterDescription(
                           filterName,
                         ),
-                        style: textTheme.bodyText1,
+                        style: textTheme.bodyLarge,
                       ),
                     if (isFilterOpened) const SizedBox(height: 10),
                     if (isFilterOpened)

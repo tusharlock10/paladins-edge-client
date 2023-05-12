@@ -22,12 +22,12 @@ class StatLabel extends StatelessWidget {
         children: [
           Text(
             label,
-            style: theme.textTheme.headline1
+            style: theme.textTheme.displayLarge
                 ?.copyWith(fontSize: 18, color: Colors.white),
           ),
           Text(
             text,
-            style: theme.textTheme.headline1?.copyWith(
+            style: theme.textTheme.displayLarge?.copyWith(
               fontSize: 14,
               color: Colors.white,
             ),

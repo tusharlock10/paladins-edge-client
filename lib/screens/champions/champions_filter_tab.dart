@@ -101,7 +101,7 @@ class ChampionsFilterTab extends HookConsumerWidget {
                         data_classes.ChampionsFilter.getFilterDescription(
                           filterName,
                         ),
-                        style: textTheme.bodyText1,
+                        style: textTheme.bodyLarge,
                       ),
                     if (isFilterOpened) const SizedBox(height: 10),
                     if (isFilterOpened)

@@ -15,14 +15,14 @@ class AppDrawerGuestProfile extends StatelessWidget {
         Icon(
           FeatherIcons.user,
           size: 24,
-          color: textTheme.bodyText1?.color,
+          color: textTheme.bodyLarge?.color,
         ),
         const SizedBox(width: 10),
         Text(
           "Guest Profile",
-          style: textTheme.headline1?.copyWith(
+          style: textTheme.displayLarge?.copyWith(
             fontSize: 18,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.normal,
           ),

@@ -45,18 +45,18 @@ class FeedbackTypeSelector extends HookConsumerWidget {
       children: [
         Text(
           "Select type of feedback",
-          style: theme.textTheme.headline4?.copyWith(fontSize: 16),
+          style: theme.textTheme.headlineMedium?.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 20),
         DropdownButton<String>(
           items: items,
           onChanged: onChanged,
           value: selectedFeedbackType,
-          iconEnabledColor: theme.textTheme.headline4?.color,
+          iconEnabledColor: theme.textTheme.headlineMedium?.color,
           dropdownColor: theme.appBarTheme.backgroundColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           alignment: Alignment.center,
-          style: theme.textTheme.headline1?.copyWith(
+          style: theme.textTheme.displayLarge?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.normal,
           ),

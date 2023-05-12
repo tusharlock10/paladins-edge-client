@@ -62,6 +62,29 @@ class CreateLoadout extends HookConsumerWidget {
       },
       [],
     );
+
+    final onSaveFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: "An error occurred while saving loadout",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
+    final onCanSaveFail = useCallback(
+      (String error) {
+        widgets.showToast(
+          context: context,
+          text: error,
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
     final onSave = useCallback(
       () async {
         final canSave = loadoutProvider.validateLoadout();
@@ -76,18 +99,10 @@ class CreateLoadout extends HookConsumerWidget {
             );
             goBack();
           } else {
-            widgets.showToast(
-              context: context,
-              text: "An error occurred while saving loadout",
-              type: widgets.ToastType.error,
-            );
+            onSaveFail();
           }
         } else {
-          widgets.showToast(
-            context: context,
-            text: canSave.error,
-            type: widgets.ToastType.error,
-          );
+          onCanSaveFail(canSave.error);
         }
       },
       [champion],
@@ -172,7 +187,7 @@ class CreateLoadout extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params["championId"];
+    final paramChampionId = state.pathParameters["championId"];
     if (paramChampionId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

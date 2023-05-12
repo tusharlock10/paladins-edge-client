@@ -58,7 +58,7 @@ class HomeTopMatchCard extends HookConsumerWidget {
             children: [
               Text(
                 formattedValue,
-                style: textTheme.headline1?.copyWith(fontSize: 32),
+                style: textTheme.displayLarge?.copyWith(fontSize: 32),
               ),
             ],
           ),
@@ -71,13 +71,13 @@ class HomeTopMatchCard extends HookConsumerWidget {
                 topMatch.type == constants.TopMatchTypes.longMatch
                     ? "Minutes"
                     : topMatchName,
-                style: textTheme.bodyText1?.copyWith(fontSize: 12, height: 0.8),
+                style: textTheme.bodyLarge?.copyWith(fontSize: 12, height: 0.8),
               ),
               if (topMatch.type != constants.TopMatchTypes.longMatch)
                 RichText(
                   text: TextSpan(
                     text: "by  ",
-                    style: textTheme.bodyText1?.copyWith(
+                    style: textTheme.bodyLarge?.copyWith(
                       fontSize: 12,
                       fontStyle: FontStyle.italic,
                     ),
@@ -99,7 +99,7 @@ class HomeTopMatchCard extends HookConsumerWidget {
           ),
           Icon(
             FeatherIcons.chevronRight,
-            color: textTheme.bodyText1?.color,
+            color: textTheme.bodyLarge?.color,
           ),
         ],
       ),

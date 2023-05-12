@@ -141,7 +141,7 @@ class ActiveMatch extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = state.pathParameters["playerId"];
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

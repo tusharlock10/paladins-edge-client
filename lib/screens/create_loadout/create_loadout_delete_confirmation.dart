@@ -72,7 +72,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: Text(
                       "DELETE LOADOUT",
-                      style: textTheme.headline1?.copyWith(
+                      style: textTheme.displayLarge?.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                       ),
@@ -82,7 +82,7 @@ class _CreateLoadoutDeleteConfirmation extends HookWidget {
                 const SizedBox(height: 10),
                 Text(
                   "Are you sure, you want to delete this loadout?",
-                  style: textTheme.bodyText1?.copyWith(fontSize: 16),
+                  style: textTheme.bodyLarge?.copyWith(fontSize: 16),
                 ),
               ],
             ),

@@ -191,7 +191,6 @@ class _AuthNotifier extends ChangeNotifier {
     _recordLoginAnalytics();
 
     // upon successful login, send FCM token and deviceDetail to server
-    _sendFCMToken();
     _sendDeviceDetail();
     // save response in local db
     _saveResponse(response);
@@ -557,14 +556,6 @@ class _AuthNotifier extends ChangeNotifier {
     return _GetFirebaseUserResponse(firebaseUser: firebaseUser);
   }
 
-  /// Send the FCM token to server, only works on `Android`
-  /// for sending notification fcm token is used only
-  /// for the server, and not stored on the app/ browser
-  Future<void> _sendFCMToken() async {
-    final fcmToken = await utilities.Messaging.initMessaging();
-    if (fcmToken != null) await api.AuthRequests.fcmToken(fcmToken: fcmToken);
-  }
-
   /// Send device details to server
   Future<void> _sendDeviceDetail() async {
     final deviceDetail = await utilities.getDeviceDetail();
@@ -615,4 +606,6 @@ class _AuthNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle auth and user data
-final auth = ChangeNotifierProvider((ref) => _AuthNotifier(ref: ref));
+final auth = ChangeNotifierProvider<_AuthNotifier>(
+  (ref) => _AuthNotifier(ref: ref),
+);

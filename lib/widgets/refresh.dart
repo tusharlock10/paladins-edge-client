@@ -18,7 +18,7 @@ class Refresh extends StatelessWidget {
       onRefresh: onRefresh,
       edgeOffset: edgeOffset,
       backgroundColor: Theme.of(context).cardTheme.color,
-      color: Theme.of(context).textTheme.headline1?.color,
+      color: Theme.of(context).textTheme.displayLarge?.color,
       child: child,
     );
   }

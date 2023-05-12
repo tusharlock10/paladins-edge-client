@@ -23,7 +23,7 @@ class AppDrawerButton extends StatelessWidget {
       child: subTitle == null
           ? Text(
               label,
-              style: theme.textTheme.headline3?.copyWith(
+              style: theme.textTheme.displaySmall?.copyWith(
                 color: disabled ? Colors.grey : theme.colorScheme.secondary,
               ),
             )
@@ -31,13 +31,13 @@ class AppDrawerButton extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: theme.textTheme.headline3?.copyWith(
+                  style: theme.textTheme.displaySmall?.copyWith(
                     color: disabled ? Colors.grey : theme.colorScheme.secondary,
                   ),
                 ),
                 Text(
                   subTitle!,
-                  style: theme.textTheme.headline3?.copyWith(
+                  style: theme.textTheme.displaySmall?.copyWith(
                     color: disabled ? Colors.grey : theme.colorScheme.secondary,
                     fontSize: 12,
                     fontWeight: FontWeight.normal,

@@ -75,9 +75,9 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
       mobile: screenWidth,
     );
     final theme = Theme.of(context);
-    final textStyle = theme.textTheme.bodyText2;
-    final disabledTextStyle = theme.textTheme.bodyText1;
-    final selectedTextStyle = theme.textTheme.headline1;
+    final textStyle = theme.textTheme.bodyMedium;
+    final disabledTextStyle = theme.textTheme.bodyLarge;
+    final selectedTextStyle = theme.textTheme.displayLarge;
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
@@ -100,9 +100,9 @@ class _PlayerDetailDatePickerModal extends StatelessWidget {
           fontWeight: FontWeight.normal,
         ),
         rangeSelectionColor: theme.bottomSheetTheme.backgroundColor,
-        todayHighlightColor: theme.textTheme.bodyText2?.color,
+        todayHighlightColor: theme.textTheme.bodyMedium?.color,
         headerStyle: DateRangePickerHeaderStyle(
-          textStyle: theme.textTheme.headline1?.copyWith(fontSize: 14),
+          textStyle: theme.textTheme.displayLarge?.copyWith(fontSize: 14),
           backgroundColor: theme.appBarTheme.backgroundColor,
           textAlign: TextAlign.center,
         ),

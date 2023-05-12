@@ -66,23 +66,21 @@ class Feedback extends HookConsumerWidget {
       [],
     );
 
-    final onSubmit = useCallback(
-      () async {
-        final result = await feedbackProvider.submitFeedback();
+    final onSubmitFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: isSupport
+              ? "Unable to submit support ticket"
+              : "Unable to submit feedback",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
 
-        if (!result) {
-          widgets.showToast(
-            context: context,
-            text: isSupport
-                ? "Unable to submit support ticket"
-                : "Unable to submit feedback",
-            type: widgets.ToastType.error,
-          );
-
-          return;
-        }
-
-        goBack();
+    final onSubmitSuccess = useCallback(
+      () {
         widgets.showToast(
           context: context,
           text: isSupport
@@ -90,6 +88,18 @@ class Feedback extends HookConsumerWidget {
               : "Thank you for feedback",
           type: widgets.ToastType.success,
         );
+      },
+      [],
+    );
+
+    final onSubmit = useCallback(
+      () async {
+        final result = await feedbackProvider.submitFeedback();
+
+        if (!result) return onSubmitFail();
+
+        goBack();
+        onSubmitSuccess();
       },
       [isSupport],
     );

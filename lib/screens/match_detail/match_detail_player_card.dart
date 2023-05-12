@@ -51,13 +51,13 @@ class _PlayerStatsCard extends StatelessWidget {
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: textTheme.bodyText2?.copyWith(fontSize: 12),
+              style: textTheme.bodyMedium?.copyWith(fontSize: 12),
             ),
             const SizedBox(height: 2),
             Text(
               formattedStat,
               textAlign: TextAlign.center,
-              style: textTheme.bodyText1?.copyWith(fontSize: 11),
+              style: textTheme.bodyLarge?.copyWith(fontSize: 11),
             ),
           ],
         ),
@@ -366,7 +366,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                   utilities.shortRankName(
                                     matchPlayer.playerRanked!.rankName,
                                   ),
-                                  style: textTheme.bodyText1?.copyWith(
+                                  style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -401,7 +401,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                               const SizedBox(width: 4),
                               Text(
                                 highestStatText,
-                                style: textTheme.bodyText1?.copyWith(
+                                style: textTheme.bodyLarge?.copyWith(
                                   fontSize: 12,
                                 ),
                               ),
@@ -434,7 +434,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                     children: [
                                       Text(
                                         "Credits",
-                                        style: textTheme.bodyText1?.copyWith(
+                                        style: textTheme.bodyLarge?.copyWith(
                                           fontSize: 9,
                                           fontStyle: FontStyle.italic,
                                         ),
@@ -442,7 +442,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                       Text(
                                         matchPlayer.playerStats.creditsEarned
                                             .toString(),
-                                        style: textTheme.bodyText1
+                                        style: textTheme.bodyLarge
                                             ?.copyWith(fontSize: 12),
                                       ),
                                     ],
@@ -459,7 +459,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                               ),
                               RichText(
                                 text: TextSpan(
-                                  style: textTheme.bodyText1?.copyWith(
+                                  style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),

@@ -218,7 +218,7 @@ class Loadouts extends HookConsumerWidget {
                       const SizedBox(width: 2),
                       Text(
                         "Create",
-                        style: textTheme.bodyText2?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontSize: 14,
                           color: Colors.white,
                         ),
@@ -325,8 +325,8 @@ class Loadouts extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramChampionId = state.params["championId"];
-    final paramPlayerId = state.params["playerId"];
+    final paramChampionId = state.pathParameters["championId"];
+    final paramPlayerId = state.pathParameters["playerId"];
     if (paramChampionId == null || paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
