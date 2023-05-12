@@ -34,7 +34,7 @@ class TextChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
-    final textStyle = Theme.of(context).textTheme.headline2;
+    final textStyle = Theme.of(context).textTheme.displayMedium;
     final color1 = isLightTheme ? color.shade50 : color.shade700;
     final color2 = isLightTheme ? color.shade900 : color.shade50;
     final color3 = color2.withOpacity(0.25);

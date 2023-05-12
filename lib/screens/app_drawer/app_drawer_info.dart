@@ -29,7 +29,7 @@ class AppDrawerInfo extends StatelessWidget {
             children: [
               Text(
                 "Paladins Edge",
-                style: textTheme.bodyText1,
+                style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 10),
               Row(

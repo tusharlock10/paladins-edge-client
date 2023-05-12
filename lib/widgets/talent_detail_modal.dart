@@ -82,14 +82,14 @@ class _TalentDetail extends HookWidget {
                     children: [
                       SelectableText(
                         champion.name.toUpperCase(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         talent.name.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: textTheme.headline1?.copyWith(fontSize: 18),
+                        style: textTheme.displayLarge?.copyWith(fontSize: 18),
                       ),
                       const SizedBox(height: 2),
                       Wrap(
@@ -124,7 +124,7 @@ class _TalentDetail extends HookWidget {
               SelectableText(
                 talent.description,
                 textAlign: TextAlign.center,
-                style: textTheme.bodyText2?.copyWith(fontSize: 16),
+                style: textTheme.bodyMedium?.copyWith(fontSize: 16),
               ),
             ],
           ),

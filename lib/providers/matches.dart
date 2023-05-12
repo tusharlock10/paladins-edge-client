@@ -270,4 +270,6 @@ class _MatchesNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle matches
-final matches = ChangeNotifierProvider((ref) => _MatchesNotifier(ref: ref));
+final matches = ChangeNotifierProvider<_MatchesNotifier>(
+  (ref) => _MatchesNotifier(ref: ref),
+);

@@ -41,7 +41,7 @@ class MatchDetailStats extends StatelessWidget {
                   region,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyText2?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -49,7 +49,7 @@ class MatchDetailStats extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   matchDuration,
-                  style: textTheme.bodyText1
+                  style: textTheme.bodyLarge
                       ?.copyWith(fontStyle: FontStyle.italic),
                 ),
               ],
@@ -65,7 +65,7 @@ class MatchDetailStats extends StatelessWidget {
                   textAlign: TextAlign.end,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyText2?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -73,7 +73,7 @@ class MatchDetailStats extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   date.toString(),
-                  style: textTheme.bodyText1
+                  style: textTheme.bodyLarge
                       ?.copyWith(fontStyle: FontStyle.italic),
                 ),
               ],

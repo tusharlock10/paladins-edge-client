@@ -180,7 +180,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                         children: [
                           RichText(
                             text: TextSpan(
-                              style: textTheme.bodyText1
+                              style: textTheme.bodyLarge
                                   ?.copyWith(fontSize: isMVP ? 16 : 18),
                               children: [
                                 if (isMVP)
@@ -204,7 +204,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                                 .replaceFirst("WIP ", ""),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                            style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -244,14 +244,14 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                   Text(
                     match.queue,
                     textAlign: TextAlign.center,
-                    style: textTheme.headline2?.copyWith(fontSize: 14),
+                    style: textTheme.displayMedium?.copyWith(fontSize: 14),
                   ),
                   TimerBuilder.periodic(
                     const Duration(minutes: 1),
                     builder: (_) {
                       return Text(
                         Jiffy(match.matchStartTime).fromNow(),
-                        style: textTheme.bodyText1?.copyWith(fontSize: 13),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 13),
                       );
                     },
                   ),

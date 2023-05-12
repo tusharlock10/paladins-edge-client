@@ -76,14 +76,14 @@ class ActiveMatchList extends HookConsumerWidget {
                         ),
                         Text(
                           "${playerStatus.match?.map}",
-                          style: textTheme.bodyText1?.copyWith(
+                          style: textTheme.bodyLarge?.copyWith(
                             color: Colors.white,
                             fontSize: 14,
                           ),
                         ),
                         Text(
                           "${playerStatus.match?.region}",
-                          style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                          style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                         ),
                       ],
                     ),

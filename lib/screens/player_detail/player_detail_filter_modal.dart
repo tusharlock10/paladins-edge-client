@@ -67,11 +67,11 @@ class _PlayerDetailFilterModal extends HookWidget {
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorWeight: 3,
               labelPadding: const EdgeInsets.all(0),
-              tabs: [
+              tabs: const [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(FeatherIcons.filter, size: 18),
                       SizedBox(width: 10),
                       Text("Filter", style: TextStyle(fontSize: 16)),
@@ -81,7 +81,7 @@ class _PlayerDetailFilterModal extends HookWidget {
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(FeatherIcons.arrowUp, size: 20),
                       SizedBox(width: 10),
                       Text("Sort", style: TextStyle(fontSize: 16)),

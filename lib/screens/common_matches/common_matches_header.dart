@@ -62,15 +62,15 @@ class CommonMatchesHeader extends HookConsumerWidget {
                 children: [
                   Text(
                     "Same teams: ${commonMatchesStats.sameTeam}",
-                    style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                   ),
                   Text(
                     "Opposite team: ${commonMatchesStats.oppositeTeam}",
-                    style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                   ),
                   Text(
                     "WR on same team: ${commonMatchesStats.sameTeamWRFormatted}%",
-                    style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                   ),
                 ],
               ),

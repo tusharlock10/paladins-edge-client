@@ -50,7 +50,7 @@ class FeedbackImage extends HookConsumerWidget {
                     fit: StackFit.expand,
                     children: [
                       Image.memory(
-                        selectedImageBytes!,
+                        selectedImageBytes,
                         fit: BoxFit.cover,
                       ),
                       Column(
@@ -105,9 +105,9 @@ class FeedbackImage extends HookConsumerWidget {
                       ),
                     ],
                   )
-                : Column(
+                : const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         FeatherIcons.image,
                         size: 36,

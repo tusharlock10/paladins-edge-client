@@ -160,4 +160,6 @@ class _QueueNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle queue
-final queue = ChangeNotifierProvider((ref) => _QueueNotifier(ref: ref));
+final queue = ChangeNotifierProvider<_QueueNotifier>(
+  (ref) => _QueueNotifier(ref: ref),
+);

@@ -25,11 +25,11 @@ class HomeBountyStoreCard extends StatelessWidget {
           Text(
             bountyStore.championName,
             textAlign: TextAlign.center,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
           ),
           Text(
             bountyStore.skinName,
-            style: textTheme.bodyText2?.copyWith(fontSize: 16),
+            style: textTheme.bodyMedium?.copyWith(fontSize: 16),
           ),
           TimerBuilder.periodic(
             const Duration(seconds: 1),
@@ -42,13 +42,13 @@ class HomeBountyStoreCard extends StatelessWidget {
               if (timeRemaining == null) {
                 return Text(
                   "Expired",
-                  style: textTheme.bodyText2?.copyWith(fontSize: 12),
+                  style: textTheme.bodyMedium?.copyWith(fontSize: 12),
                 );
               }
 
               return Text(
                 "$timeRemaining remaining",
-                style: textTheme.bodyText2?.copyWith(fontSize: 12),
+                style: textTheme.bodyMedium?.copyWith(fontSize: 12),
               );
             },
           ),

@@ -33,7 +33,7 @@ class FeedbackSupportContact extends HookConsumerWidget {
               ? "NOTE: Please make sure you insert your email in the description so we can contact you"
               : "*We'll contact you on $email",
           textAlign: TextAlign.center,
-          style: textTheme.bodyText1,
+          style: textTheme.bodyLarge,
         ),
       ),
     );

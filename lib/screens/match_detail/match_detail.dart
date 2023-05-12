@@ -95,9 +95,9 @@ class MatchDetail extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramMatchId = state.params["matchId"];
+    final paramMatchId = state.pathParameters["matchId"];
     final isSavedMatch =
-        (state.queryParams["isSavedMatch"] ?? "false") == "true";
+        (state.queryParameters["isSavedMatch"] ?? "false") == "true";
     if (paramMatchId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

@@ -60,16 +60,16 @@ class SearchTopItem extends HookWidget {
                     children: [
                       SelectableText(
                         player.name,
-                        style: textTheme.headline6?.copyWith(fontSize: 16),
+                        style: textTheme.titleLarge?.copyWith(fontSize: 16),
                       ),
                       const SizedBox(height: 3),
                       Text(
                         player.region,
-                        style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 14),
                       ),
                       Text(
                         player.platform,
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                       ),
                     ],
                   ),
@@ -87,7 +87,7 @@ class SearchTopItem extends HookWidget {
                   const SizedBox(height: 3),
                   Text(
                     Jiffy(player.lastLoginDate).fromNow(),
-                    style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                   ),
                 ],
               ),

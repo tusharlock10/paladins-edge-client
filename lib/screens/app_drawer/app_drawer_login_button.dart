@@ -26,7 +26,7 @@ class AppDrawerLoginButton extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             "Back to Login",
-            style: theme.textTheme.headline3?.copyWith(
+            style: theme.textTheme.displaySmall?.copyWith(
               color: theme.colorScheme.secondary,
             ),
           ),

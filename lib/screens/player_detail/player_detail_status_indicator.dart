@@ -53,12 +53,12 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
                     widgets.LoadingIndicator(
                       size: 12,
                       lineWidth: 1.2,
-                      color: textTheme.bodyText1?.color,
+                      color: textTheme.bodyLarge?.color,
                     ),
                     const SizedBox(width: 5),
                     Text(
                       "Status",
-                      style: textTheme.bodyText1?.copyWith(fontSize: 14),
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 14),
                     ),
                   ],
                 )
@@ -98,7 +98,7 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
                     ),
                     Text(
                       isOnline ? status : getLastSeen(),
-                      style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                     ),
                   ],
                 ),

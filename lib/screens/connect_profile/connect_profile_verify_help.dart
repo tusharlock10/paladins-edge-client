@@ -38,7 +38,7 @@ class ConnectProfileVerifyHelp extends HookConsumerWidget {
           children: [
             Text(
               "Having problems verifying?",
-              style: textTheme.headline1?.copyWith(fontSize: 18),
+              style: textTheme.displayLarge?.copyWith(fontSize: 18),
             ),
             const SizedBox(height: 15),
             const Text("Make sure that-"),

@@ -74,7 +74,7 @@ class ChampionsSortTab extends HookConsumerWidget {
                       data_classes.ChampionsSort.getSortDescription(
                         sort,
                       ),
-                      style: textTheme.bodyText1,
+                      style: textTheme.bodyLarge,
                     ),
                 ],
               ),

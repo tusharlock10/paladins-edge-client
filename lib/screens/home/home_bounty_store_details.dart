@@ -64,7 +64,7 @@ class HomeBountyStoreDetails extends HookConsumerWidget {
                   children: [
                     Text(
                       "Bounty Store Updates",
-                      style: textTheme.headline3,
+                      style: textTheme.displaySmall,
                     ),
                     GridView.count(
                       childAspectRatio: childAspectRatio,

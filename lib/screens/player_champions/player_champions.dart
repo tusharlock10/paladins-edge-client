@@ -40,7 +40,7 @@ class PlayerChampions extends HookConsumerWidget {
     // Variables
     final champions = championsProvider.champions;
     final headerTextStyle =
-        Theme.of(context).textTheme.headline1?.copyWith(fontSize: 16);
+        Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 16);
 
     // State
     final playerChampionsDataSource =
@@ -201,7 +201,7 @@ class PlayerChampions extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = state.pathParameters["playerId"];
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

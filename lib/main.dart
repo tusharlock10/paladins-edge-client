@@ -1,7 +1,11 @@
+import "dart:io";
+
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_displaymode/flutter_displaymode.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_web_plugins/url_strategy.dart";
 import "package:overlay_support/overlay_support.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/firebase_options.dart" as firebase_options;
@@ -26,9 +30,13 @@ void main() async {
     ),
   ]);
 
-  utilities.Messaging.onMessage();
-  utilities.Messaging.onBackgroundMessage();
-  utilities.Messaging.registerLocalNotification();
+  try {
+    if (Platform.isAndroid) {
+      await FlutterDisplayMode.setHighRefreshRate();
+    }
+  } catch (_) {}
+
+  usePathUrlStrategy();
 
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
@@ -58,22 +66,24 @@ class PaladinsEdgeApp extends ConsumerWidget {
           title: "Paladins Edge",
           color: Colors.white,
           scrollBehavior: BouncingScrollBehavior(),
-          builder: (context, widget) => ResponsiveWrapper.builder(
-            widgets.ScreenInitialization(
+          builder: (context, widget) => ResponsiveBreakpoints.builder(
+            child: widgets.ScreenInitialization(
               screen: widget,
             ),
-            defaultScale: true,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(
-                constants.ResponsiveBreakpoints.mobile,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.mobile,
+                end: constants.ResponsiveBreakpoints.tablet,
                 name: MOBILE,
               ),
-              const ResponsiveBreakpoint.autoScale(
-                constants.ResponsiveBreakpoints.tablet,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.tablet,
+                end: constants.ResponsiveBreakpoints.desktop,
                 name: TABLET,
               ),
-              const ResponsiveBreakpoint.resize(
-                constants.ResponsiveBreakpoints.desktop,
+              const Breakpoint(
+                start: constants.ResponsiveBreakpoints.desktop,
+                end: double.infinity,
                 name: DESKTOP,
               ),
             ],

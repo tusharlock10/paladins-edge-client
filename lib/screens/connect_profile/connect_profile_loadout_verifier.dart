@@ -24,7 +24,7 @@ class CreateProfileLoadoutVerifier extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final headline6 = theme.textTheme.headline6;
+    final headline6 = theme.textTheme.titleLarge;
     final secondaryColor = theme.colorScheme.secondary;
 
     return Center(

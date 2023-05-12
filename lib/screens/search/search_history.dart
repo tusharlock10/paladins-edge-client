@@ -62,14 +62,14 @@ class SearchHistory extends HookConsumerWidget {
             onTap: () => onTap(search.playerId),
             title: Text(
               search.playerName,
-              style: textTheme.headline6?.copyWith(fontSize: 16),
+              style: textTheme.titleLarge?.copyWith(fontSize: 16),
             ),
             trailing: TimerBuilder.periodic(
               const Duration(minutes: 1),
               builder: (context) {
                 return Text(
                   Jiffy(search.time).fromNow(),
-                  style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                  style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                 );
               },
             ),

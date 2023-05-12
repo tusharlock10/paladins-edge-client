@@ -162,8 +162,8 @@ class PlayerDetail extends HookConsumerWidget {
             )
           : widgets.Refresh(
               onRefresh: onRefresh,
-              child: Stack(
-                children: const [
+              child: const Stack(
+                children: [
                   PlayerDetailMatches(),
                   PlayerDetailHeader(),
                 ],
@@ -173,7 +173,7 @@ class PlayerDetail extends HookConsumerWidget {
   }
 
   static Page _routeBuilder(_, GoRouterState state) {
-    final paramPlayerId = state.params["playerId"];
+    final paramPlayerId = state.pathParameters["playerId"];
     if (paramPlayerId == null) {
       return const CupertinoPage(child: screens.NotFound());
     }

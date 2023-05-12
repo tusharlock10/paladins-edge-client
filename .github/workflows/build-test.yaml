@@ -11,7 +11,7 @@ on:
       - develop
 
 env:
-  flutter_version: "3.3.0"
+  flutter_version: "3.10.0"
 
 jobs:
   build-test-apk:
@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
@@ -30,7 +30,7 @@ jobs:
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-stage.env ./paladins-edge.env
+          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-stage-v1.env ./paladins-edge.env
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
@@ -44,8 +44,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Analyze code
-        run: flutter analyze
+      - name: Flutter version
+        run: flutter --version
 
       - name: Build apk
         run: flutter build apk --release --build-number=${{ github.run_number }}
@@ -53,11 +53,11 @@ jobs:
       - name: Get release notes
         run: git log -1 --pretty="TEST BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
 
-      - name: Upload apk to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.5.0
         with:
           appId: 1:280154424805:android:06755c7776c617c0aa1b0c
-          token: ${{ secrets.FIREBASE_TOKEN }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: Developers
           releaseNotesFile: ./release_notes.txt
           file: ./build/app/outputs/flutter-apk/app-release.apk

@@ -25,7 +25,7 @@ class ConnectProfileStatusIndicatorItem extends StatelessWidget {
         width: radius * 2,
         decoration: BoxDecoration(
           color:
-              isActive ? theme.textTheme.headline1?.color : Colors.transparent,
+              isActive ? theme.textTheme.displayLarge?.color : Colors.transparent,
           borderRadius: BorderRadius.circular(radius),
         ),
         child: Center(
@@ -34,7 +34,7 @@ class ConnectProfileStatusIndicatorItem extends StatelessWidget {
             style: TextStyle(
               color: isActive
                   ? theme.scaffoldBackgroundColor
-                  : theme.textTheme.headline1?.color,
+                  : theme.textTheme.displayLarge?.color,
               fontWeight: FontWeight.bold,
             ),
           ),

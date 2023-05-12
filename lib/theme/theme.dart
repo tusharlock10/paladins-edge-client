@@ -52,31 +52,31 @@ final lightTheme = ThemeData(
   brightness: Brightness.light,
   fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontFamily: Fonts.primary,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
-    headline3: TextStyle(
+    displaySmall: TextStyle(
       fontFamily: Fonts.primary,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: Colors.black54,
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: Colors.black,
     ),
-    subtitle1: TextStyle(
+    titleMedium: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),
@@ -198,31 +198,31 @@ final darkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
-    headline3: TextStyle(
+    displaySmall: TextStyle(
       fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white54,
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
     ),
-    subtitle1: TextStyle(
+    titleMedium: TextStyle(
       fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),

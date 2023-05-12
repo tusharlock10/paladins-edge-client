@@ -55,6 +55,28 @@ class ConnectProfile extends HookConsumerWidget {
         useState<api.LowerSearch?>(null); // the player selected in search step
 
     // Methods
+    final onPlayerCheckFail = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: "Something went wrong",
+          type: widgets.ToastType.error,
+        );
+      },
+      [],
+    );
+
+    final onPlayerCheckSuccess = useCallback(
+      () {
+        widgets.showToast(
+          context: context,
+          text: "Player is already claimed",
+          type: widgets.ToastType.info,
+        );
+      },
+      [],
+    );
+
     final onTapSearchItem = useCallback(
       (api.LowerSearch searchItem) async {
         isCheckingPlayer.value = searchItem.playerId;
@@ -62,17 +84,9 @@ class ConnectProfile extends HookConsumerWidget {
           searchItem.playerId,
         );
         if (exists == null) {
-          widgets.showToast(
-            context: context,
-            text: "Something went wrong",
-            type: widgets.ToastType.error,
-          );
+          onPlayerCheckFail();
         } else if (exists) {
-          widgets.showToast(
-            context: context,
-            text: "Player is already claimed",
-            type: widgets.ToastType.info,
-          );
+          onPlayerCheckSuccess();
         } else {
           step.value++;
           selectedPlayer.value = searchItem;
@@ -173,7 +187,7 @@ class ConnectProfile extends HookConsumerWidget {
             name != null
                 ? RichText(
                     text: TextSpan(
-                      style: textTheme.headline1,
+                      style: textTheme.displayLarge,
                       children: [
                         const TextSpan(
                           text: "Hi, ",
@@ -233,7 +247,7 @@ class ConnectProfile extends HookConsumerWidget {
   static Page _routeBuilder(_, __) =>
       const CupertinoPage(child: ConnectProfile());
 
-  static String? _playerConnectedRedirect(GoRouterState _) {
+  static String? _playerConnectedRedirect(BuildContext _, GoRouterState __) {
     // check if user is authenticated
     if (!utilities.Global.isAuthenticated) return screens.Login.routePath;
     // check if user is not connected to a player

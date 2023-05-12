@@ -61,7 +61,7 @@ class HomeQueueDetails extends HookConsumerWidget {
               children: [
                 Text(
                   "Live Queue Numbers",
-                  style: textTheme.headline3,
+                  style: textTheme.displaySmall,
                 ),
                 queue.isEmpty
                     ? const Card(

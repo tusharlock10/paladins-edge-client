@@ -90,7 +90,7 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
                         friend.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: textTheme.headline1?.copyWith(
+                        style: textTheme.displayLarge?.copyWith(
                           fontSize: 18,
                           decoration: TextDecoration.underline,
                         ),
@@ -101,13 +101,13 @@ class HomeFavouriteFriendItem extends HookConsumerWidget {
                         friend.title!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: textTheme.bodyText1?.copyWith(fontSize: 12),
+                        style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                       ),
                     const SizedBox(height: 5),
                     RichText(
                       text: TextSpan(
                         text: "Last Seen: ",
-                        style: textTheme.bodyText1?.copyWith(
+                        style: textTheme.bodyLarge?.copyWith(
                           fontSize: 12,
                           fontStyle: FontStyle.italic,
                         ),
