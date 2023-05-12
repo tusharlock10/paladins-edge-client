@@ -9,7 +9,7 @@ on:
       - develop
 
 env:
-  flutter_version: "3.7.8"
+  flutter_version: "3.10.0"
 
 jobs:
   build-bundle:
