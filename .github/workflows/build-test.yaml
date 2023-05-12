@@ -44,6 +44,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Flutter version
+        run: flutter --version
+
       - name: Build apk
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
