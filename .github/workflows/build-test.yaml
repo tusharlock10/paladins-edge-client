@@ -10,6 +10,9 @@ on:
       - main
       - develop
 
+env:
+  flutter_version: "3.10.0"
+
 jobs:
   build-test-apk:
     name: "build test apk 🔨"
@@ -36,7 +39,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: ${{ secrets.FLUTTER_VERSION }}
+          flutter-version: ${{ env.flutter_version }}
 
       - name: Get dependencies
         run: flutter pub get
