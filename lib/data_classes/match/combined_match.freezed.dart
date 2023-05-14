@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'combined_match.dart';
 
@@ -29,39 +29,42 @@ mixin _$CombinedMatch {
 abstract class $CombinedMatchCopyWith<$Res> {
   factory $CombinedMatchCopyWith(
           CombinedMatch value, $Res Function(CombinedMatch) then) =
-      _$CombinedMatchCopyWithImpl<$Res>;
+      _$CombinedMatchCopyWithImpl<$Res, CombinedMatch>;
+  @useResult
   $Res call({Match match, List<MatchPlayer> matchPlayers, bool hide});
 }
 
 /// @nodoc
-class _$CombinedMatchCopyWithImpl<$Res>
+class _$CombinedMatchCopyWithImpl<$Res, $Val extends CombinedMatch>
     implements $CombinedMatchCopyWith<$Res> {
   _$CombinedMatchCopyWithImpl(this._value, this._then);
 
-  final CombinedMatch _value;
   // ignore: unused_field
-  final $Res Function(CombinedMatch) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? match = freezed,
-    Object? matchPlayers = freezed,
-    Object? hide = freezed,
+    Object? match = null,
+    Object? matchPlayers = null,
+    Object? hide = null,
   }) {
     return _then(_value.copyWith(
-      match: match == freezed
+      match: null == match
           ? _value.match
           : match // ignore: cast_nullable_to_non_nullable
               as Match,
-      matchPlayers: matchPlayers == freezed
+      matchPlayers: null == matchPlayers
           ? _value.matchPlayers
           : matchPlayers // ignore: cast_nullable_to_non_nullable
               as List<MatchPlayer>,
-      hide: hide == freezed
+      hide: null == hide
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -72,36 +75,35 @@ abstract class _$$_CombinedMatchCopyWith<$Res>
           _$_CombinedMatch value, $Res Function(_$_CombinedMatch) then) =
       __$$_CombinedMatchCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Match match, List<MatchPlayer> matchPlayers, bool hide});
 }
 
 /// @nodoc
 class __$$_CombinedMatchCopyWithImpl<$Res>
-    extends _$CombinedMatchCopyWithImpl<$Res>
+    extends _$CombinedMatchCopyWithImpl<$Res, _$_CombinedMatch>
     implements _$$_CombinedMatchCopyWith<$Res> {
   __$$_CombinedMatchCopyWithImpl(
       _$_CombinedMatch _value, $Res Function(_$_CombinedMatch) _then)
-      : super(_value, (v) => _then(v as _$_CombinedMatch));
+      : super(_value, _then);
 
-  @override
-  _$_CombinedMatch get _value => super._value as _$_CombinedMatch;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? match = freezed,
-    Object? matchPlayers = freezed,
-    Object? hide = freezed,
+    Object? match = null,
+    Object? matchPlayers = null,
+    Object? hide = null,
   }) {
     return _then(_$_CombinedMatch(
-      match: match == freezed
+      match: null == match
           ? _value.match
           : match // ignore: cast_nullable_to_non_nullable
               as Match,
-      matchPlayers: matchPlayers == freezed
+      matchPlayers: null == matchPlayers
           ? _value._matchPlayers
           : matchPlayers // ignore: cast_nullable_to_non_nullable
               as List<MatchPlayer>,
-      hide: hide == freezed
+      hide: null == hide
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -123,6 +125,7 @@ class _$_CombinedMatch implements _CombinedMatch {
   final List<MatchPlayer> _matchPlayers;
   @override
   List<MatchPlayer> get matchPlayers {
+    if (_matchPlayers is EqualUnmodifiableListView) return _matchPlayers;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_matchPlayers);
   }
@@ -141,21 +144,19 @@ class _$_CombinedMatch implements _CombinedMatch {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CombinedMatch &&
-            const DeepCollectionEquality().equals(other.match, match) &&
+            (identical(other.match, match) || other.match == match) &&
             const DeepCollectionEquality()
                 .equals(other._matchPlayers, _matchPlayers) &&
-            const DeepCollectionEquality().equals(other.hide, hide));
+            (identical(other.hide, hide) || other.hide == hide));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(match),
-      const DeepCollectionEquality().hash(_matchPlayers),
-      const DeepCollectionEquality().hash(hide));
+  int get hashCode => Object.hash(runtimeType, match,
+      const DeepCollectionEquality().hash(_matchPlayers), hide);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_CombinedMatchCopyWith<_$_CombinedMatch> get copyWith =>
       __$$_CombinedMatchCopyWithImpl<_$_CombinedMatch>(this, _$identity);
 }
