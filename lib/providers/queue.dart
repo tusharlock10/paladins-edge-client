@@ -21,7 +21,7 @@ class _QueueNotifier extends ChangeNotifier {
 
   /// Charting data
   int smallestUnit =
-      28; // i.e. it provides 28 minutes of granularity in the chart
+      20; // i.e. it provides 20 minutes of granularity in the chart
   List<models.Queue> selectedTimeline = [];
   List<FlSpot> chartTimelineData = [];
   double chartMaxX = 0;

@@ -42,9 +42,9 @@ class HomeQueueChart extends HookConsumerWidget {
     final titleHeightPercent = (chartHeight - 30) / 20;
     final smallestUnit = utilities.responsiveCondition(
       context,
-      desktop: 12,
-      tablet: 16,
-      mobile: 24,
+      desktop: 10,
+      tablet: 15,
+      mobile: 20,
     );
     final intervals = utilities.responsiveCondition(
       context,
