@@ -33,7 +33,7 @@ const getCredentials = async () => {
   });
   const response = await client.getObject({
     Bucket: PE_PRIVATE_AWS_S3_BUCKET_NAME,
-    Key: `credentials/client/${ENV_FILE}`
+    Key: `credentials/client-v2/${ENV_FILE}`
   });
 
   const data = await streamToString(response.Body);
