@@ -70,76 +70,70 @@ class _FlashBar extends HookWidget {
       [],
     );
 
-    return Flash.bar(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 40,
-      ),
-      horizontalDismissDirection: HorizontalDismissDirection.horizontal,
-      boxShadows: [
-        BoxShadow(
-          color: getToastColor().withOpacity(0.2),
-          spreadRadius: 0,
-          blurRadius: 8,
-          offset: const Offset(-1, 5),
-        ),
-      ],
-      enableVerticalDrag: true,
-      useSafeArea: true,
-      position: FlashPosition.top,
+    return FlashBar(
       controller: controller,
-      borderRadius: const BorderRadius.all(Radius.circular(6)),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        margin: const EdgeInsets.all(0),
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            children: [
-              Container(
-                width: 8,
+      // boxShadows: [
+      //   BoxShadow(
+      //     color: getToastColor().withOpacity(0.2),
+      //     spreadRadius: 0,
+      //     blurRadius: 8,
+      //     offset: const Offset(-1, 5),
+      //   ),
+      // ],
+      // margin: const EdgeInsets.symmetric(horizontal: 20),
+      // borderRadius: const BorderRadius.all(Radius.circular(6)),
+      position: FlashPosition.top,
+      // enableDrag: true,
+      // horizontalDismissDirection: HorizontalDismissDirection.horizontal,
+      // backgroundGradient: LinearGradient(colors: [getToastColor()]),
+      content: SizedBox(
+        height: 60,
+        child: Row(
+          children: [
+            Container(
+              width: 8,
+              color: getToastColor(),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                border: type != ToastType.info
+                    ? Border.all(width: 2, color: getToastColor())
+                    : null,
+              ),
+              height: 24,
+              width: 24,
+              child: Icon(
+                getToastIcon(),
+                size: type != ToastType.info ? 18 : 24,
                 color: getToastColor(),
               ),
-              const SizedBox(width: 12),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  border: type != ToastType.info
-                      ? Border.all(width: 2, color: getToastColor())
-                      : null,
-                ),
-                height: 24,
-                width: 24,
-                child: Icon(
-                  getToastIcon(),
-                  size: type != ToastType.info ? 18 : 24,
-                  color: getToastColor(),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      getToastMessage(),
-                      style: textTheme.bodyMedium?.copyWith(fontSize: 18),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    getToastMessage(),
+                    style: textTheme.bodyMedium?.copyWith(fontSize: 18),
+                  ),
+                  Text(
+                    text,
+                    maxLines: 1,
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontSize: 14,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      text,
-                      maxLines: 1,
-                      style: textTheme.bodyLarge?.copyWith(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-            ],
-          ),
+            ),
+            const SizedBox(width: 12),
+          ],
         ),
       ),
     );

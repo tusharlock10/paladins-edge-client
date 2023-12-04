@@ -18,7 +18,6 @@ analyzer:
     - lib/firebase_options.dart
   plugins:
     - dart_code_metrics
-  strong-mode:
 
 linter:
   # The lint rules applied to this project can be customized in the
