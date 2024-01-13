@@ -34,6 +34,7 @@ class MatchDetailList extends HookConsumerWidget {
     // Variables
     final matchPlayers = combinedMatch?.matchPlayers;
     final match = combinedMatch?.match;
+    final championBans = match?.championBans;
     final isLandscape = utilities.responsiveCondition(
       context,
       desktop: true,
@@ -132,23 +133,6 @@ class MatchDetailList extends HookConsumerWidget {
         return teamStats;
       },
       [losingTeamMatchPlayers],
-    );
-
-    final championBans = useMemoized(
-      () {
-        final championBans = match?.championBans;
-        if (championBans != null && championBans.length == 6) {
-          // swap the last 2 champion bans
-          final length = championBans.length;
-          final ban1 = championBans[length - 2];
-          final ban2 = championBans[length - 1];
-          championBans[length - 2] = ban2;
-          championBans[length - 1] = ban1;
-        }
-
-        return championBans;
-      },
-      [match],
     );
 
     final winningTeamBans = useMemoized(
