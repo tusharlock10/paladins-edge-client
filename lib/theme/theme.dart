@@ -10,6 +10,8 @@ final lightTheme = ThemeData(
   primaryColorDark: darkThemeMaterialColor,
   scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
+    surfaceTintColor: Colors.transparent,
+    color: themeMaterialColor,
     elevation: 7,
     shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     centerTitle: true,
@@ -36,6 +38,7 @@ final lightTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     color: Colors.white,
+    surfaceTintColor: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -135,6 +138,7 @@ final lightTheme = ThemeData(
     showValueIndicator: ShowValueIndicator.never,
   ),
   popupMenuTheme: PopupMenuThemeData(
+    surfaceTintColor: Colors.transparent,
     elevation: 25,
     textStyle: TextStyle(
       fontFamily: Fonts.secondaryAccent,
@@ -160,6 +164,7 @@ final darkTheme = ThemeData(
   primaryColorDark: darkThemeMaterialColor,
   scaffoldBackgroundColor: darkThemeMaterialColor,
   appBarTheme: AppBarTheme(
+    surfaceTintColor: Colors.transparent,
     elevation: 7,
     shadowColor: darkThemeMaterialColor.shade50,
     backgroundColor: darkThemeMaterialColor.shade50,
@@ -187,6 +192,7 @@ final darkTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.shade50,
     color: darkThemeMaterialColor.shade300,
+    surfaceTintColor: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -283,6 +289,7 @@ final darkTheme = ThemeData(
     showValueIndicator: ShowValueIndicator.never,
   ),
   popupMenuTheme: PopupMenuThemeData(
+    surfaceTintColor: Colors.transparent,
     elevation: 25,
     textStyle: TextStyle(
       fontFamily: Fonts.secondaryAccent,
