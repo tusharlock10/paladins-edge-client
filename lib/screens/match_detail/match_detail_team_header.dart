@@ -53,10 +53,10 @@ class MatchDetailTeamHeader extends HookWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                isWinningTeam ? "WON" : "LOST",
+                isWinningTeam ? "VICTORY" : "DEFEATED",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                   color: isWinningTeam ? Colors.green : Colors.red,
                 ),
               ),

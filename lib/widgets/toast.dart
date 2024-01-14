@@ -69,10 +69,13 @@ class _FlashBar extends HookWidget {
       [type],
     );
 
-    return Flash(
+    return FlashBar(
       controller: controller,
       position: FlashPosition.top,
-      child: Card(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Card(
         clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.all(0),
         child: SizedBox(

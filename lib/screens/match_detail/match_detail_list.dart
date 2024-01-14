@@ -34,7 +34,7 @@ class MatchDetailList extends HookConsumerWidget {
     // Variables
     final matchPlayers = combinedMatch?.matchPlayers;
     final match = combinedMatch?.match;
-    final championBans = match?.championBans;
+    final championBans = match?.championBans.toList();
     final isLandscape = utilities.responsiveCondition(
       context,
       desktop: true,
@@ -141,14 +141,14 @@ class MatchDetailList extends HookConsumerWidget {
         if (match == null || championBans == null) return winningTeamBans;
 
         final isFirstTeam = match.winningTeam == 1;
-        winningTeamBans = championBans.mapIndexedNotNull((index, championId) {
-          if (index % 2 == (isFirstTeam ? 0 : 1)) {
-            return champions.firstOrNullWhere(
-              (_) => _.championId == championId,
-            );
-          }
+        final middleIndex = championBans.length ~/ 2;
+        List<int> banIds = championBans.sublist(middleIndex);
+        if (isFirstTeam) {
+          banIds = championBans.sublist(0, middleIndex);
+        }
 
-          return null;
+        winningTeamBans = banIds.mapIndexedNotNull((index, championId) {
+          return champions.firstOrNullWhere((_) => _.championId == championId);
         }).toList();
 
         return winningTeamBans;
@@ -162,14 +162,13 @@ class MatchDetailList extends HookConsumerWidget {
         if (match == null || championBans == null) return losingTeamBans;
 
         final isFirstTeam = match.winningTeam == 2;
-        losingTeamBans = championBans.mapIndexedNotNull((index, championId) {
-          if (index % 2 == (isFirstTeam ? 0 : 1)) {
-            return champions.firstOrNullWhere(
-              (_) => _.championId == championId,
-            );
-          }
-
-          return null;
+        final middleIndex = championBans.length ~/ 2;
+        List<int> banIds = championBans.sublist(middleIndex);
+        if (isFirstTeam) {
+          banIds = championBans.sublist(0, middleIndex);
+        }
+        losingTeamBans = banIds.mapIndexedNotNull((index, championId) {
+          return champions.firstOrNullWhere((_) => _.championId == championId);
         }).toList();
 
         return losingTeamBans;

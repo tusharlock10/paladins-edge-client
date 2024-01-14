@@ -147,6 +147,10 @@ final lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
   ),
+  dividerTheme: DividerThemeData(
+    color: Colors.grey.shade300,
+    thickness: 1,
+  ),
 );
 
 /// ThemeData for dark theme
@@ -290,5 +294,9 @@ final darkTheme = ThemeData(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
+  ),
+  dividerTheme: DividerThemeData(
+    color: darkThemeMaterialColor.shade100,
+    thickness: 1,
   ),
 );
