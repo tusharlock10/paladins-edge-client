@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 1.8.1
+version: 1.9.0
 
 homepage: "https://paladinsedge.app"
 
@@ -82,7 +82,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^21.2.3
   device_info_plus: ^9.0.0
   pub_semver: ^2.1.1
-  android_id: ^0.3.2
+  android_id: ^0.3.6
   flutter_displaymode: ^0.6.0
 
 dev_dependencies:

@@ -15,10 +15,6 @@ class RecordExpiry extends HiveObject {
   @HiveField(1)
   DateTime? _searchHistoryExpiry;
 
-  /// date at which the saved bountyStore record will expire
-  @HiveField(2)
-  DateTime? _bountyStoreExpiry;
-
   /// date at which the saved playerChampion record will expire
   @HiveField(3)
   DateTime? _playerChampionExpiry;
@@ -46,11 +42,6 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.searchHistory:
         return _searchHistoryExpiry != null
             ? DateTime.now().isAfter(_searchHistoryExpiry!)
-            : true;
-
-      case RecordExpiryName.bountyStore:
-        return _bountyStoreExpiry != null
-            ? DateTime.now().isAfter(_bountyStoreExpiry!)
             : true;
 
       case RecordExpiryName.playerChampion:
@@ -90,12 +81,6 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.searchHistory:
         _searchHistoryExpiry = DateTime.now().add(
           RecordExpiryDuration.searchHistoryDuration,
-        );
-        return;
-
-      case RecordExpiryName.bountyStore:
-        _bountyStoreExpiry = DateTime.now().add(
-          RecordExpiryDuration.bountyStoreDuration,
         );
         return;
 

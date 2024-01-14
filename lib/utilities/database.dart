@@ -15,7 +15,6 @@ abstract class Database {
   static Box<models.SearchHistory>? _searchHistoryBox;
   static Box<models.Champion>? _championBox;
   static Box<models.RecordExpiry>? _recordExpiryBox;
-  static Box<models.BountyStore>? _bountyStoreBox;
   static Box<models.PlayerChampion>? _playerChampionBox;
   static Box<models.Queue>? _queueTimelineBox;
   static Box<models.Item>? _itemBox;
@@ -30,7 +29,6 @@ abstract class Database {
   static Box<models.SearchHistory>? get searchHistoryBox => _searchHistoryBox;
   static Box<models.Champion>? get championBox => _championBox;
   static Box<models.RecordExpiry>? get recordExpiryBox => _recordExpiryBox;
-  static Box<models.BountyStore>? get bountyStoreBox => _bountyStoreBox;
   static Box<models.PlayerChampion>? get playerChampionBox =>
       _playerChampionBox;
   static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
@@ -59,8 +57,6 @@ abstract class Database {
     _recordExpiryBox = await Hive.openBox<models.RecordExpiry>(
       constants.HiveBoxes.recordExpiry,
     );
-    _bountyStoreBox =
-        await Hive.openBox<models.BountyStore>(constants.HiveBoxes.bountyStore);
     _playerChampionBox = await Hive.openBox<models.PlayerChampion>(
       constants.HiveBoxes.playerChampion,
     );
@@ -107,9 +103,6 @@ abstract class Database {
 
   static void saveChampion(models.Champion champion) =>
       _championBox?.add(champion);
-
-  static void saveBountyStore(models.BountyStore bountyStore) =>
-      _bountyStoreBox?.add(bountyStore);
 
   static void savePlayerChampion(models.PlayerChampion playerChampion) =>
       _playerChampionBox?.add(playerChampion);
@@ -168,21 +161,6 @@ abstract class Database {
     final champions = _championBox?.values.toList();
 
     return champions == null || champions.isEmpty ? null : champions;
-  }
-
-  static List<models.BountyStore>? getBountyStore() {
-    // check if bountyStore records have expired
-    if (_recordExpiry!
-        .isRecordExpired(constants.RecordExpiryName.bountyStore)) {
-      // if the data is expired, then clear bountyStore box
-      // and renew the recordExpiry for bountyStore records
-      _bountyStoreBox?.clear();
-      _renewRecordExpiry(constants.RecordExpiryName.bountyStore);
-    }
-
-    final bountyStore = _bountyStoreBox?.values.toList();
-
-    return bountyStore == null || bountyStore.isEmpty ? null : bountyStore;
   }
 
   static List<models.PlayerChampion>? getPlayerChampions() {
@@ -255,11 +233,14 @@ abstract class Database {
       _playerBox,
       _settingsBox,
       _searchHistoryBox,
-      _recordExpiryBox,
       _playerChampionBox,
     ];
     final futures = boxes.where((_) => _ != null).map((_) => _!.clear());
     await Future.wait(futures);
+
+    _recordExpiryBox!
+        .put(constants.HiveBoxes.recordExpiry, models.RecordExpiry());
+    _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
 
     return;
   }
@@ -277,7 +258,6 @@ abstract class Database {
     Hive.registerAdapter(models.EssentialsAdapter());
     Hive.registerAdapter(models.SearchHistoryAdapter());
     Hive.registerAdapter(models.RecordExpiryAdapter());
-    Hive.registerAdapter(models.BountyStoreAdapter());
     Hive.registerAdapter(models.PlayerChampionAdapter());
     Hive.registerAdapter(models.QueueAdapter());
     Hive.registerAdapter(models.QueueRegionAdapter());

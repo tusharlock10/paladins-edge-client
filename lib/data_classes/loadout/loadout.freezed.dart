@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'loadout.dart';
 
@@ -28,34 +28,38 @@ mixin _$LoadoutValidationResult {
 abstract class $LoadoutValidationResultCopyWith<$Res> {
   factory $LoadoutValidationResultCopyWith(LoadoutValidationResult value,
           $Res Function(LoadoutValidationResult) then) =
-      _$LoadoutValidationResultCopyWithImpl<$Res>;
+      _$LoadoutValidationResultCopyWithImpl<$Res, LoadoutValidationResult>;
+  @useResult
   $Res call({bool result, String error});
 }
 
 /// @nodoc
-class _$LoadoutValidationResultCopyWithImpl<$Res>
+class _$LoadoutValidationResultCopyWithImpl<$Res,
+        $Val extends LoadoutValidationResult>
     implements $LoadoutValidationResultCopyWith<$Res> {
   _$LoadoutValidationResultCopyWithImpl(this._value, this._then);
 
-  final LoadoutValidationResult _value;
   // ignore: unused_field
-  final $Res Function(LoadoutValidationResult) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = freezed,
-    Object? error = freezed,
+    Object? result = null,
+    Object? error = null,
   }) {
     return _then(_value.copyWith(
-      result: result == freezed
+      result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
               as bool,
-      error: error == freezed
+      error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -66,32 +70,31 @@ abstract class _$$_LoadoutValidationResultCopyWith<$Res>
           $Res Function(_$_LoadoutValidationResult) then) =
       __$$_LoadoutValidationResultCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({bool result, String error});
 }
 
 /// @nodoc
 class __$$_LoadoutValidationResultCopyWithImpl<$Res>
-    extends _$LoadoutValidationResultCopyWithImpl<$Res>
+    extends _$LoadoutValidationResultCopyWithImpl<$Res,
+        _$_LoadoutValidationResult>
     implements _$$_LoadoutValidationResultCopyWith<$Res> {
   __$$_LoadoutValidationResultCopyWithImpl(_$_LoadoutValidationResult _value,
       $Res Function(_$_LoadoutValidationResult) _then)
-      : super(_value, (v) => _then(v as _$_LoadoutValidationResult));
+      : super(_value, _then);
 
-  @override
-  _$_LoadoutValidationResult get _value =>
-      super._value as _$_LoadoutValidationResult;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = freezed,
-    Object? error = freezed,
+    Object? result = null,
+    Object? error = null,
   }) {
     return _then(_$_LoadoutValidationResult(
-      result: result == freezed
+      result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
               as bool,
-      error: error == freezed
+      error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
@@ -119,18 +122,16 @@ class _$_LoadoutValidationResult implements _LoadoutValidationResult {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LoadoutValidationResult &&
-            const DeepCollectionEquality().equals(other.result, result) &&
-            const DeepCollectionEquality().equals(other.error, error));
+            (identical(other.result, result) || other.result == result) &&
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(result),
-      const DeepCollectionEquality().hash(error));
+  int get hashCode => Object.hash(runtimeType, result, error);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
       get copyWith =>
           __$$_LoadoutValidationResultCopyWithImpl<_$_LoadoutValidationResult>(
@@ -170,7 +171,8 @@ mixin _$DraftLoadout {
 abstract class $DraftLoadoutCopyWith<$Res> {
   factory $DraftLoadoutCopyWith(
           DraftLoadout value, $Res Function(DraftLoadout) then) =
-      _$DraftLoadoutCopyWithImpl<$Res>;
+      _$DraftLoadoutCopyWithImpl<$Res, DraftLoadout>;
+  @useResult
   $Res call(
       {int championId,
       String playerId,
@@ -181,48 +183,51 @@ abstract class $DraftLoadoutCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DraftLoadoutCopyWithImpl<$Res> implements $DraftLoadoutCopyWith<$Res> {
+class _$DraftLoadoutCopyWithImpl<$Res, $Val extends DraftLoadout>
+    implements $DraftLoadoutCopyWith<$Res> {
   _$DraftLoadoutCopyWithImpl(this._value, this._then);
 
-  final DraftLoadout _value;
   // ignore: unused_field
-  final $Res Function(DraftLoadout) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? championId = freezed,
-    Object? playerId = freezed,
-    Object? name = freezed,
-    Object? loadoutCards = freezed,
-    Object? isImported = freezed,
+    Object? championId = null,
+    Object? playerId = null,
+    Object? name = null,
+    Object? loadoutCards = null,
+    Object? isImported = null,
     Object? loadoutHash = freezed,
   }) {
     return _then(_value.copyWith(
-      championId: championId == freezed
+      championId: null == championId
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
               as int,
-      playerId: playerId == freezed
+      playerId: null == playerId
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      loadoutCards: loadoutCards == freezed
+      loadoutCards: null == loadoutCards
           ? _value.loadoutCards
           : loadoutCards // ignore: cast_nullable_to_non_nullable
               as List<LoadoutCard?>,
-      isImported: isImported == freezed
+      isImported: null == isImported
           ? _value.isImported
           : isImported // ignore: cast_nullable_to_non_nullable
               as bool,
-      loadoutHash: loadoutHash == freezed
+      loadoutHash: freezed == loadoutHash
           ? _value.loadoutHash
           : loadoutHash // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -233,6 +238,7 @@ abstract class _$$_DraftLoadoutCopyWith<$Res>
           _$_DraftLoadout value, $Res Function(_$_DraftLoadout) then) =
       __$$_DraftLoadoutCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {int championId,
       String playerId,
@@ -244,46 +250,44 @@ abstract class _$$_DraftLoadoutCopyWith<$Res>
 
 /// @nodoc
 class __$$_DraftLoadoutCopyWithImpl<$Res>
-    extends _$DraftLoadoutCopyWithImpl<$Res>
+    extends _$DraftLoadoutCopyWithImpl<$Res, _$_DraftLoadout>
     implements _$$_DraftLoadoutCopyWith<$Res> {
   __$$_DraftLoadoutCopyWithImpl(
       _$_DraftLoadout _value, $Res Function(_$_DraftLoadout) _then)
-      : super(_value, (v) => _then(v as _$_DraftLoadout));
+      : super(_value, _then);
 
-  @override
-  _$_DraftLoadout get _value => super._value as _$_DraftLoadout;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? championId = freezed,
-    Object? playerId = freezed,
-    Object? name = freezed,
-    Object? loadoutCards = freezed,
-    Object? isImported = freezed,
+    Object? championId = null,
+    Object? playerId = null,
+    Object? name = null,
+    Object? loadoutCards = null,
+    Object? isImported = null,
     Object? loadoutHash = freezed,
   }) {
     return _then(_$_DraftLoadout(
-      championId: championId == freezed
+      championId: null == championId
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
               as int,
-      playerId: playerId == freezed
+      playerId: null == playerId
           ? _value.playerId
           : playerId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      loadoutCards: loadoutCards == freezed
+      loadoutCards: null == loadoutCards
           ? _value._loadoutCards
           : loadoutCards // ignore: cast_nullable_to_non_nullable
               as List<LoadoutCard?>,
-      isImported: isImported == freezed
+      isImported: null == isImported
           ? _value.isImported
           : isImported // ignore: cast_nullable_to_non_nullable
               as bool,
-      loadoutHash: loadoutHash == freezed
+      loadoutHash: freezed == loadoutHash
           ? _value.loadoutHash
           : loadoutHash // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -312,6 +316,7 @@ class _$_DraftLoadout implements _DraftLoadout {
   final List<LoadoutCard?> _loadoutCards;
   @override
   List<LoadoutCard?> get loadoutCards {
+    if (_loadoutCards is EqualUnmodifiableListView) return _loadoutCards;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_loadoutCards);
   }
@@ -331,30 +336,32 @@ class _$_DraftLoadout implements _DraftLoadout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DraftLoadout &&
-            const DeepCollectionEquality()
-                .equals(other.championId, championId) &&
-            const DeepCollectionEquality().equals(other.playerId, playerId) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            (identical(other.championId, championId) ||
+                other.championId == championId) &&
+            (identical(other.playerId, playerId) ||
+                other.playerId == playerId) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other._loadoutCards, _loadoutCards) &&
-            const DeepCollectionEquality()
-                .equals(other.isImported, isImported) &&
-            const DeepCollectionEquality()
-                .equals(other.loadoutHash, loadoutHash));
+            (identical(other.isImported, isImported) ||
+                other.isImported == isImported) &&
+            (identical(other.loadoutHash, loadoutHash) ||
+                other.loadoutHash == loadoutHash));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(championId),
-      const DeepCollectionEquality().hash(playerId),
-      const DeepCollectionEquality().hash(name),
+      championId,
+      playerId,
+      name,
       const DeepCollectionEquality().hash(_loadoutCards),
-      const DeepCollectionEquality().hash(isImported),
-      const DeepCollectionEquality().hash(loadoutHash));
+      isImported,
+      loadoutHash);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>
       __$$_DraftLoadoutCopyWithImpl<_$_DraftLoadout>(this, _$identity);
 }
