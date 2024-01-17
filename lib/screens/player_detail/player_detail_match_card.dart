@@ -250,7 +250,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                     const Duration(minutes: 1),
                     builder: (_) {
                       return Text(
-                        Jiffy(match.matchStartTime).fromNow(),
+                        Jiffy.parseFromDateTime(match.matchStartTime).fromNow(),
                         style: textTheme.bodyLarge?.copyWith(fontSize: 13),
                       );
                     },

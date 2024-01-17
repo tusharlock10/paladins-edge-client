@@ -64,23 +64,25 @@ class _$LoadoutValidationResultCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_LoadoutValidationResultCopyWith<$Res>
+abstract class _$$LoadoutValidationResultImplCopyWith<$Res>
     implements $LoadoutValidationResultCopyWith<$Res> {
-  factory _$$_LoadoutValidationResultCopyWith(_$_LoadoutValidationResult value,
-          $Res Function(_$_LoadoutValidationResult) then) =
-      __$$_LoadoutValidationResultCopyWithImpl<$Res>;
+  factory _$$LoadoutValidationResultImplCopyWith(
+          _$LoadoutValidationResultImpl value,
+          $Res Function(_$LoadoutValidationResultImpl) then) =
+      __$$LoadoutValidationResultImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool result, String error});
 }
 
 /// @nodoc
-class __$$_LoadoutValidationResultCopyWithImpl<$Res>
+class __$$LoadoutValidationResultImplCopyWithImpl<$Res>
     extends _$LoadoutValidationResultCopyWithImpl<$Res,
-        _$_LoadoutValidationResult>
-    implements _$$_LoadoutValidationResultCopyWith<$Res> {
-  __$$_LoadoutValidationResultCopyWithImpl(_$_LoadoutValidationResult _value,
-      $Res Function(_$_LoadoutValidationResult) _then)
+        _$LoadoutValidationResultImpl>
+    implements _$$LoadoutValidationResultImplCopyWith<$Res> {
+  __$$LoadoutValidationResultImplCopyWithImpl(
+      _$LoadoutValidationResultImpl _value,
+      $Res Function(_$LoadoutValidationResultImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -89,7 +91,7 @@ class __$$_LoadoutValidationResultCopyWithImpl<$Res>
     Object? result = null,
     Object? error = null,
   }) {
-    return _then(_$_LoadoutValidationResult(
+    return _then(_$LoadoutValidationResultImpl(
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
@@ -104,8 +106,8 @@ class __$$_LoadoutValidationResultCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_LoadoutValidationResult implements _LoadoutValidationResult {
-  _$_LoadoutValidationResult({required this.result, required this.error});
+class _$LoadoutValidationResultImpl implements _LoadoutValidationResult {
+  _$LoadoutValidationResultImpl({required this.result, required this.error});
 
   @override
   final bool result;
@@ -118,10 +120,10 @@ class _$_LoadoutValidationResult implements _LoadoutValidationResult {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LoadoutValidationResult &&
+            other is _$LoadoutValidationResultImpl &&
             (identical(other.result, result) || other.result == result) &&
             (identical(other.error, error) || other.error == error));
   }
@@ -132,16 +134,15 @@ class _$_LoadoutValidationResult implements _LoadoutValidationResult {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
-      get copyWith =>
-          __$$_LoadoutValidationResultCopyWithImpl<_$_LoadoutValidationResult>(
-              this, _$identity);
+  _$$LoadoutValidationResultImplCopyWith<_$LoadoutValidationResultImpl>
+      get copyWith => __$$LoadoutValidationResultImplCopyWithImpl<
+          _$LoadoutValidationResultImpl>(this, _$identity);
 }
 
 abstract class _LoadoutValidationResult implements LoadoutValidationResult {
   factory _LoadoutValidationResult(
       {required final bool result,
-      required final String error}) = _$_LoadoutValidationResult;
+      required final String error}) = _$LoadoutValidationResultImpl;
 
   @override
   bool get result;
@@ -149,7 +150,7 @@ abstract class _LoadoutValidationResult implements LoadoutValidationResult {
   String get error;
   @override
   @JsonKey(ignore: true)
-  _$$_LoadoutValidationResultCopyWith<_$_LoadoutValidationResult>
+  _$$LoadoutValidationResultImplCopyWith<_$LoadoutValidationResultImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -232,11 +233,11 @@ class _$DraftLoadoutCopyWithImpl<$Res, $Val extends DraftLoadout>
 }
 
 /// @nodoc
-abstract class _$$_DraftLoadoutCopyWith<$Res>
+abstract class _$$DraftLoadoutImplCopyWith<$Res>
     implements $DraftLoadoutCopyWith<$Res> {
-  factory _$$_DraftLoadoutCopyWith(
-          _$_DraftLoadout value, $Res Function(_$_DraftLoadout) then) =
-      __$$_DraftLoadoutCopyWithImpl<$Res>;
+  factory _$$DraftLoadoutImplCopyWith(
+          _$DraftLoadoutImpl value, $Res Function(_$DraftLoadoutImpl) then) =
+      __$$DraftLoadoutImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -249,11 +250,11 @@ abstract class _$$_DraftLoadoutCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_DraftLoadoutCopyWithImpl<$Res>
-    extends _$DraftLoadoutCopyWithImpl<$Res, _$_DraftLoadout>
-    implements _$$_DraftLoadoutCopyWith<$Res> {
-  __$$_DraftLoadoutCopyWithImpl(
-      _$_DraftLoadout _value, $Res Function(_$_DraftLoadout) _then)
+class __$$DraftLoadoutImplCopyWithImpl<$Res>
+    extends _$DraftLoadoutCopyWithImpl<$Res, _$DraftLoadoutImpl>
+    implements _$$DraftLoadoutImplCopyWith<$Res> {
+  __$$DraftLoadoutImplCopyWithImpl(
+      _$DraftLoadoutImpl _value, $Res Function(_$DraftLoadoutImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -266,7 +267,7 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
     Object? isImported = null,
     Object? loadoutHash = freezed,
   }) {
-    return _then(_$_DraftLoadout(
+    return _then(_$DraftLoadoutImpl(
       championId: null == championId
           ? _value.championId
           : championId // ignore: cast_nullable_to_non_nullable
@@ -297,8 +298,8 @@ class __$$_DraftLoadoutCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DraftLoadout implements _DraftLoadout {
-  _$_DraftLoadout(
+class _$DraftLoadoutImpl implements _DraftLoadout {
+  _$DraftLoadoutImpl(
       {required this.championId,
       required this.playerId,
       required this.name,
@@ -332,10 +333,10 @@ class _$_DraftLoadout implements _DraftLoadout {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DraftLoadout &&
+            other is _$DraftLoadoutImpl &&
             (identical(other.championId, championId) ||
                 other.championId == championId) &&
             (identical(other.playerId, playerId) ||
@@ -362,8 +363,8 @@ class _$_DraftLoadout implements _DraftLoadout {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>
-      __$$_DraftLoadoutCopyWithImpl<_$_DraftLoadout>(this, _$identity);
+  _$$DraftLoadoutImplCopyWith<_$DraftLoadoutImpl> get copyWith =>
+      __$$DraftLoadoutImplCopyWithImpl<_$DraftLoadoutImpl>(this, _$identity);
 }
 
 abstract class _DraftLoadout implements DraftLoadout {
@@ -373,7 +374,7 @@ abstract class _DraftLoadout implements DraftLoadout {
       required final String name,
       required final List<LoadoutCard?> loadoutCards,
       required final bool isImported,
-      final String? loadoutHash}) = _$_DraftLoadout;
+      final String? loadoutHash}) = _$DraftLoadoutImpl;
 
   @override
   int get championId;
@@ -389,6 +390,6 @@ abstract class _DraftLoadout implements DraftLoadout {
   String? get loadoutHash;
   @override
   @JsonKey(ignore: true)
-  _$$_DraftLoadoutCopyWith<_$_DraftLoadout> get copyWith =>
+  _$$DraftLoadoutImplCopyWith<_$DraftLoadoutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

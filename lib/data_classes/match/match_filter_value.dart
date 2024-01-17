@@ -37,10 +37,15 @@ class MatchFilterValue {
     const formatStringLong = "MMM do yyyy";
     const formatStringShort = "MMM d";
 
-    if (endDate == null) return Jiffy(startDate).format(formatStringLong);
-    if (startDate == null) return Jiffy(endDate).format(formatStringLong);
+    if (endDate == null) {
+      return Jiffy.parseFromDateTime(startDate!)
+          .format(pattern: formatStringLong);
+    }
+    if (startDate == null) {
+      return Jiffy.parseFromDateTime(endDate).format(pattern: formatStringLong);
+    }
 
-    return "${Jiffy(startDate).format(formatStringShort)} - ${Jiffy(endDate).format(formatStringShort)}";
+    return "${Jiffy.parseFromDateTime(startDate).format(pattern: formatStringShort)} - ${Jiffy.parseFromDateTime(endDate).format(pattern: formatStringShort)}";
   }
 }
 
@@ -68,10 +73,7 @@ abstract class MatchFilterValues {
     MatchFilterValue(valueName: "ONS: MP", value: "Marauder's Port"),
     MatchFilterValue(valueName: "ONS: FR", value: "Foreman's Rise"),
     MatchFilterValue(valueName: "ONS: PC", value: "Primal Court"),
-    MatchFilterValue(
-      valueName: "ONS: MA",
-      value: "Magistrate's Archives",
-    ),
+    MatchFilterValue(valueName: "ONS: MA", value: "Magistrate's Archives"),
   ];
 
   static const betweenDates = [

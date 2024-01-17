@@ -74,3 +74,4 @@ dart_code_metrics:
     - prefer-single-widget-per-file:
         ignore-private-widgets: true
     - prefer-trailing-comma
+    - member-ordering: false

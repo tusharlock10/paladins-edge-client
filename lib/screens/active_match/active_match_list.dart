@@ -101,7 +101,7 @@ class ActiveMatchList extends HookConsumerWidget {
                         playerInfo: playerInfo,
                       );
                     },
-                  ).toList(),
+                  ),
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
@@ -117,7 +117,7 @@ class ActiveMatchList extends HookConsumerWidget {
                         playerInfo: playerInfo,
                       );
                     },
-                  ).toList(),
+                  ),
                   const SizedBox(height: 30),
                 ],
               ),

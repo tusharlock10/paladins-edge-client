@@ -85,7 +85,8 @@ abstract class ChampionsSort {
         return "Health ${combinedChampion.champion.health.toInt()}";
       case _releasedDate:
         final formattedReleaseDate =
-            Jiffy(combinedChampion.champion.releaseDate).format("MMM do yy");
+            Jiffy.parseFromDateTime(combinedChampion.champion.releaseDate)
+                .format(pattern: "MMM do yy");
         return "Released on $formattedReleaseDate";
       case _dps:
         final dps = combinedChampion.champion.weaponDamage ~/
@@ -101,7 +102,8 @@ abstract class ChampionsSort {
       case _lastPlayed:
         if (combinedChampion.playerChampion == null) return "Not Played";
         final formattedLastPlayed =
-            Jiffy(combinedChampion.playerChampion!.lastPlayed).format("MMM do");
+            Jiffy.parseFromDateTime(combinedChampion.playerChampion!.lastPlayed)
+                .format(pattern: "MMM do");
         return "Played on $formattedLastPlayed";
       default:
         return "";

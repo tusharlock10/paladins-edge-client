@@ -277,10 +277,10 @@ class _RecentlyPlayedChampionCard extends HookWidget {
 
         final duration = DateTime.now().difference(lastPlayed);
         if (duration > const Duration(days: 1)) {
-          return "Last played ${Jiffy(lastPlayed).yMMMd}";
+          return "Last played ${Jiffy.parseFromDateTime(lastPlayed).yMMMd}";
         }
 
-        return "Played ${Jiffy(lastPlayed).fromNow()}";
+        return "Played ${Jiffy.parseFromDateTime(lastPlayed).fromNow()}";
       },
       [lastPlayed],
     );
@@ -440,7 +440,8 @@ class _PlayerInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final playerSince = Jiffy(player.accountCreationDate).yMMMd;
+    final playerSince =
+        Jiffy.parseFromDateTime(player.accountCreationDate).yMMMd;
     final humanizedTime = utilities.getFormattedPlayTime(player.hoursPlayed);
 
     return SizedBox(
