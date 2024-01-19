@@ -17,13 +17,13 @@ String? getTimeRemaining({
     return '${diff.inDays} day${diff.inDays == 1 ? "" : "s"}';
   }
 
-  final endTime = Jiffy(
+  final endTime = Jiffy.parseFromMap(
     {
-      "seconds": diff.inSeconds.remainder(60),
-      "minutes": diff.inMinutes.remainder(60),
-      "hours": diff.inHours,
+      Unit.second: diff.inSeconds.remainder(60),
+      Unit.minute: diff.inMinutes.remainder(60),
+      Unit.hour: diff.inHours,
     },
-  ).format(_getFormat(diff));
+  ).format(pattern: _getFormat(diff));
 
   return endTime;
 }
@@ -46,8 +46,9 @@ String getLastPlayedTime(
   final duration = DateTime.now().difference(lastPlayed);
   lastPlayedTime =
       const Duration(days: 1).compareTo(duration) < 0 || shortFormat
-          ? Jiffy(lastPlayed).fromNow()
-          : Jiffy(lastPlayed).format("do MMM [at] HH:mm");
+          ? Jiffy.parseFromDateTime(lastPlayed).fromNow()
+          : Jiffy.parseFromDateTime(lastPlayed)
+              .format(pattern: "do MMM [at] HH:mm");
 
   return lastPlayedTime;
 }

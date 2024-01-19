@@ -69,22 +69,22 @@ class _$CombinedMatchCopyWithImpl<$Res, $Val extends CombinedMatch>
 }
 
 /// @nodoc
-abstract class _$$_CombinedMatchCopyWith<$Res>
+abstract class _$$CombinedMatchImplCopyWith<$Res>
     implements $CombinedMatchCopyWith<$Res> {
-  factory _$$_CombinedMatchCopyWith(
-          _$_CombinedMatch value, $Res Function(_$_CombinedMatch) then) =
-      __$$_CombinedMatchCopyWithImpl<$Res>;
+  factory _$$CombinedMatchImplCopyWith(
+          _$CombinedMatchImpl value, $Res Function(_$CombinedMatchImpl) then) =
+      __$$CombinedMatchImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Match match, List<MatchPlayer> matchPlayers, bool hide});
 }
 
 /// @nodoc
-class __$$_CombinedMatchCopyWithImpl<$Res>
-    extends _$CombinedMatchCopyWithImpl<$Res, _$_CombinedMatch>
-    implements _$$_CombinedMatchCopyWith<$Res> {
-  __$$_CombinedMatchCopyWithImpl(
-      _$_CombinedMatch _value, $Res Function(_$_CombinedMatch) _then)
+class __$$CombinedMatchImplCopyWithImpl<$Res>
+    extends _$CombinedMatchCopyWithImpl<$Res, _$CombinedMatchImpl>
+    implements _$$CombinedMatchImplCopyWith<$Res> {
+  __$$CombinedMatchImplCopyWithImpl(
+      _$CombinedMatchImpl _value, $Res Function(_$CombinedMatchImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -94,7 +94,7 @@ class __$$_CombinedMatchCopyWithImpl<$Res>
     Object? matchPlayers = null,
     Object? hide = null,
   }) {
-    return _then(_$_CombinedMatch(
+    return _then(_$CombinedMatchImpl(
       match: null == match
           ? _value.match
           : match // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$_CombinedMatchCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CombinedMatch implements _CombinedMatch {
-  _$_CombinedMatch(
+class _$CombinedMatchImpl implements _CombinedMatch {
+  _$CombinedMatchImpl(
       {required this.match,
       required final List<MatchPlayer> matchPlayers,
       this.hide = false})
@@ -140,10 +140,10 @@ class _$_CombinedMatch implements _CombinedMatch {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CombinedMatch &&
+            other is _$CombinedMatchImpl &&
             (identical(other.match, match) || other.match == match) &&
             const DeepCollectionEquality()
                 .equals(other._matchPlayers, _matchPlayers) &&
@@ -157,15 +157,15 @@ class _$_CombinedMatch implements _CombinedMatch {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CombinedMatchCopyWith<_$_CombinedMatch> get copyWith =>
-      __$$_CombinedMatchCopyWithImpl<_$_CombinedMatch>(this, _$identity);
+  _$$CombinedMatchImplCopyWith<_$CombinedMatchImpl> get copyWith =>
+      __$$CombinedMatchImplCopyWithImpl<_$CombinedMatchImpl>(this, _$identity);
 }
 
 abstract class _CombinedMatch implements CombinedMatch {
   factory _CombinedMatch(
       {required final Match match,
       required final List<MatchPlayer> matchPlayers,
-      final bool hide}) = _$_CombinedMatch;
+      final bool hide}) = _$CombinedMatchImpl;
 
   @override
   Match get match;
@@ -175,6 +175,6 @@ abstract class _CombinedMatch implements CombinedMatch {
   bool get hide;
   @override
   @JsonKey(ignore: true)
-  _$$_CombinedMatchCopyWith<_$_CombinedMatch> get copyWith =>
+  _$$CombinedMatchImplCopyWith<_$CombinedMatchImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

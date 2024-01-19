@@ -68,7 +68,7 @@ class SearchHistory extends HookConsumerWidget {
               const Duration(minutes: 1),
               builder: (context) {
                 return Text(
-                  Jiffy(search.time).fromNow(),
+                  Jiffy.parseFromDateTime(search.time).fromNow(),
                   style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                 );
               },

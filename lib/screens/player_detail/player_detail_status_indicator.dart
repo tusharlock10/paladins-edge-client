@@ -33,10 +33,10 @@ class PlayerDetailStatusIndicator extends HookConsumerWidget {
         final lastLoginDate = player.lastLoginDate;
         final duration = DateTime.now().difference(lastLoginDate);
         if (duration > const Duration(days: 1)) {
-          return Jiffy(lastLoginDate).yMMMd;
+          return Jiffy.parseFromDateTime(lastLoginDate).yMMMd;
         }
 
-        return Jiffy(lastLoginDate).fromNow();
+        return Jiffy.parseFromDateTime(lastLoginDate).fromNow();
       },
       [player],
     );

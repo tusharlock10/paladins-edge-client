@@ -24,9 +24,9 @@ class MatchDetailStats extends StatelessWidget {
     ).replaceAll("min", "m");
     final map = match.map.split(" ").sublist(1).join(" ");
     final region = match.region;
-    final date = Jiffy(
+    final date = Jiffy.parseFromDateTime(
       match.matchStartTime.toLocal(),
-    ).format("do MMMM, h:mm a");
+    ).format(pattern: "do MMMM, h:mm a");
 
     return Padding(
       padding: const EdgeInsets.all(10),

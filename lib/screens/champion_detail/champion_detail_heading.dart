@@ -35,7 +35,8 @@ class ChampionDetailHeading extends HookConsumerWidget {
     final fireRate = champion.fireRate != 0 ? champion.fireRate : 1;
     final dps = (champion.weaponDamage ~/ fireRate).toString();
     final health = utilities.humanizeNumber(champion.health);
-    final birthDay = Jiffy(champion.releaseDate).format("MMM do");
+    final birthDay =
+        Jiffy.parseFromDateTime(champion.releaseDate).format(pattern: "MMM do");
 
     // Hooks
     final championIcon = useMemoized(

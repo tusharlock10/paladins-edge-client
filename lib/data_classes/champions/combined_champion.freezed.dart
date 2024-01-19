@@ -80,11 +80,11 @@ class _$CombinedChampionCopyWithImpl<$Res, $Val extends CombinedChampion>
 }
 
 /// @nodoc
-abstract class _$$_CombinedChampionCopyWith<$Res>
+abstract class _$$CombinedChampionImplCopyWith<$Res>
     implements $CombinedChampionCopyWith<$Res> {
-  factory _$$_CombinedChampionCopyWith(
-          _$_CombinedChampion value, $Res Function(_$_CombinedChampion) then) =
-      __$$_CombinedChampionCopyWithImpl<$Res>;
+  factory _$$CombinedChampionImplCopyWith(_$CombinedChampionImpl value,
+          $Res Function(_$CombinedChampionImpl) then) =
+      __$$CombinedChampionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -95,11 +95,11 @@ abstract class _$$_CombinedChampionCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CombinedChampionCopyWithImpl<$Res>
-    extends _$CombinedChampionCopyWithImpl<$Res, _$_CombinedChampion>
-    implements _$$_CombinedChampionCopyWith<$Res> {
-  __$$_CombinedChampionCopyWithImpl(
-      _$_CombinedChampion _value, $Res Function(_$_CombinedChampion) _then)
+class __$$CombinedChampionImplCopyWithImpl<$Res>
+    extends _$CombinedChampionCopyWithImpl<$Res, _$CombinedChampionImpl>
+    implements _$$CombinedChampionImplCopyWith<$Res> {
+  __$$CombinedChampionImplCopyWithImpl(_$CombinedChampionImpl _value,
+      $Res Function(_$CombinedChampionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -110,7 +110,7 @@ class __$$_CombinedChampionCopyWithImpl<$Res>
     Object? hide = null,
     Object? searchCondition = freezed,
   }) {
-    return _then(_$_CombinedChampion(
+    return _then(_$CombinedChampionImpl(
       champion: null == champion
           ? _value.champion
           : champion // ignore: cast_nullable_to_non_nullable
@@ -133,8 +133,8 @@ class __$$_CombinedChampionCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CombinedChampion implements _CombinedChampion {
-  _$_CombinedChampion(
+class _$CombinedChampionImpl implements _CombinedChampion {
+  _$CombinedChampionImpl(
       {required this.champion,
       this.playerChampion,
       this.hide = false,
@@ -158,10 +158,10 @@ class _$_CombinedChampion implements _CombinedChampion {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CombinedChampion &&
+            other is _$CombinedChampionImpl &&
             (identical(other.champion, champion) ||
                 other.champion == champion) &&
             (identical(other.playerChampion, playerChampion) ||
@@ -178,16 +178,18 @@ class _$_CombinedChampion implements _CombinedChampion {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
-      __$$_CombinedChampionCopyWithImpl<_$_CombinedChampion>(this, _$identity);
+  _$$CombinedChampionImplCopyWith<_$CombinedChampionImpl> get copyWith =>
+      __$$CombinedChampionImplCopyWithImpl<_$CombinedChampionImpl>(
+          this, _$identity);
 }
 
 abstract class _CombinedChampion implements CombinedChampion {
   factory _CombinedChampion(
-      {required final Champion champion,
-      final PlayerChampion? playerChampion,
-      final bool hide,
-      final ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
+          {required final Champion champion,
+          final PlayerChampion? playerChampion,
+          final bool hide,
+          final ChampionsSearchCondition? searchCondition}) =
+      _$CombinedChampionImpl;
 
   @override
   Champion get champion;
@@ -199,6 +201,6 @@ abstract class _CombinedChampion implements CombinedChampion {
   ChampionsSearchCondition? get searchCondition;
   @override
   @JsonKey(ignore: true)
-  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
+  _$$CombinedChampionImplCopyWith<_$CombinedChampionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
