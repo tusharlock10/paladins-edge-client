@@ -66,6 +66,7 @@ abstract class MatchFilterValues {
     MatchFilterValue(valueName: "SG: SQ", value: "Splitstone Quarry"),
     MatchFilterValue(valueName: "SG: IM", value: "Ice Mines"),
     MatchFilterValue(valueName: "SG: BZR", value: "Bazaar"),
+    MatchFilterValue(valueName: "SG: DF", value: "Dawnforge"),
     MatchFilterValue(valueName: "TDM: DA", value: "Dragon Arena"),
     MatchFilterValue(valueName: "TDM: TD", value: "Trade District"),
     MatchFilterValue(valueName: "TDM: SJ", value: "Snowfall Junction"),
@@ -85,11 +86,10 @@ abstract class MatchFilterValues {
   ];
 
   static const queue = [
-    MatchFilterValue(value: "Casual Siege", valueName: "SG"),
-    MatchFilterValue(value: "Choose Any", valueName: "CA"),
-    MatchFilterValue(value: "Onslaught", valueName: "ONS"),
-    MatchFilterValue(value: "Ranked Keyboard", valueName: "RNK: KBM"),
-    MatchFilterValue(value: "Ranked Controller ", valueName: "RNK: CON"),
+    MatchFilterValue(value: "Casual Siege", valueName: "Siege"),
+    MatchFilterValue(value: "Choose Any", valueName: "Choose Any"),
+    MatchFilterValue(value: "Onslaught", valueName: "Onslaught"),
+    MatchFilterValue(value: "Ranked", valueName: "Ranked"),
     MatchFilterValue(value: "Other", valueName: "Other"),
   ];
 
