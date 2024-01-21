@@ -68,7 +68,7 @@ dependencies:
   mime: ^1.0.2
   image_picker: ^1.0.7
   community_material_icon: ^5.9.55
-  badges: ^3.1.1
+  badges: ^3.1.2
   flutter_blurhash: ^0.8.2
   go_router: ^13.0.1
   substring_highlight: ^1.0.33
