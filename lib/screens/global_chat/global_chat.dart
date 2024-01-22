@@ -77,7 +77,7 @@ class GlobalChat extends HookConsumerWidget {
                   ? "No one online"
                   : playersOnline.length == 1
                       ? "Only you are online"
-                      : "${playersOnline.length} players online",
+                      : "${playersOnline.length} players are online",
               style: const TextStyle(fontSize: 12),
             ),
           ],

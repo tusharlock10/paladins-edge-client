@@ -1,5 +1,6 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -8,6 +9,7 @@ import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/player_detail/player_detail_header.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_matches.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_menu.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetail extends HookConsumerWidget {
@@ -49,6 +51,9 @@ class PlayerDetail extends HookConsumerWidget {
     final playerInferred = ref.watch(
       providers.players.select((_) => _.playerInferred),
     );
+    final combinedMatches = ref.watch(
+      providers.matches.select((_) => _.combinedMatches),
+    );
 
     // Variables
     final isSamePlayer = player?.playerId == playerId;
@@ -56,6 +61,33 @@ class PlayerDetail extends HookConsumerWidget {
     final isSamePlayerMatches = combinedMatchesPlayerId == playerId;
     final isSamePlayerChampions = playerChampionsPlayerId == playerId;
     final isSamePlayerInferred = playerInferred?.playerId == playerId;
+
+    // Hooks
+    final playerStreak = useMemoized(
+      () {
+        if (combinedMatches == null) return null;
+        if (combinedMatches.length < 5) return null;
+        if (combinedMatchesPlayerId == null) return null;
+
+        final playerId = combinedMatchesPlayerId;
+        final firstCombinedMatch = combinedMatches.first;
+        final isFirstWin = utilities.didPlayerWin(firstCombinedMatch, playerId);
+        int streak = 1;
+
+        for (final combinedMatch in combinedMatches.skip(1)) {
+          final isWin = utilities.didPlayerWin(combinedMatch, playerId);
+          if (isFirstWin == isWin) {
+            streak++;
+          } else {
+            break;
+          }
+        }
+        if (streak < 3) return null;
+
+        return isFirstWin ? streak : -streak;
+      },
+      [combinedMatches, combinedMatchesPlayerId],
+    );
 
     // Methods
     final getPlayerDetails = useCallback(
@@ -136,19 +168,38 @@ class PlayerDetail extends HookConsumerWidget {
         ],
         title: isLoadingPlayerData || player == null
             ? const Text("Player")
-            : Column(
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: playerStreak == null
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
                 children: [
-                  SelectableText(
-                    player.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Column(
+                    children: [
+                      SelectableText(
+                        player.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (player.title != null)
+                        SelectableText(
+                          player.title!,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                    ],
                   ),
-                  if (player.title != null)
-                    SelectableText(
-                      player.title!,
-                      style: const TextStyle(fontSize: 12),
+                  if (playerStreak != null)
+                    widgets.TextChip(
+                      iconSize: 18,
+                      textSize: 14,
+                      icon: playerStreak.isNegative
+                          ? FeatherIcons.arrowDownCircle
+                          : FeatherIcons.arrowUpCircle,
+                      color:
+                          playerStreak.isNegative ? Colors.red : Colors.green,
+                      text: "${playerStreak.abs()} win streak",
                     ),
                 ],
               ),

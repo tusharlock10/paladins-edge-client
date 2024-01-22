@@ -48,17 +48,19 @@ class FeedbackTypeSelector extends HookConsumerWidget {
           style: theme.textTheme.headlineMedium?.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 20),
-        DropdownButton<String>(
-          items: items,
-          onChanged: onChanged,
-          value: selectedFeedbackType,
-          iconEnabledColor: theme.textTheme.headlineMedium?.color,
-          dropdownColor: theme.appBarTheme.backgroundColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          alignment: Alignment.center,
-          style: theme.textTheme.displayLarge?.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.normal,
+        Theme(
+          data: Theme.of(context).copyWith(canvasColor: theme.cardTheme.color),
+          child: DropdownButton<String>(
+            items: items,
+            onChanged: onChanged,
+            value: selectedFeedbackType,
+            iconEnabledColor: theme.textTheme.headlineMedium?.color,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            alignment: Alignment.center,
+            style: theme.textTheme.displayLarge?.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+            ),
           ),
         ),
       ],

@@ -197,26 +197,29 @@ class PlayerChampionsDataSource extends DataGridSource {
 
     return TouchableOpacity(
       onTap: () => onLoadoutPress(champion),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "View loadouts",
-            style: TextStyle(
-              color: theme.themeMaterialColor,
-              fontFamily: fontFamily,
-              decoration: TextDecoration.underline,
-              fontSize: 16,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Check loadouts",
+              style: TextStyle(
+                color: theme.themeMaterialColor,
+                fontFamily: fontFamily,
+                decoration: TextDecoration.underline,
+                fontSize: 16,
+              ),
             ),
-          ),
-          const SizedBox(width: 5),
-          const Icon(
-            FeatherIcons.arrowRight,
-            color: theme.themeMaterialColor,
-            size: 16,
-          ),
-        ],
+            const SizedBox(width: 5),
+            const Icon(
+              FeatherIcons.arrowRight,
+              color: theme.themeMaterialColor,
+              size: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

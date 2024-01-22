@@ -10,6 +10,8 @@ final lightTheme = ThemeData(
   primaryColorDark: darkThemeMaterialColor,
   scaffoldBackgroundColor: const Color(0xfff7f7f7),
   appBarTheme: AppBarTheme(
+    surfaceTintColor: Colors.transparent,
+    color: themeMaterialColor,
     elevation: 7,
     shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     centerTitle: true,
@@ -21,11 +23,13 @@ final lightTheme = ThemeData(
       size: 20,
     ),
     titleTextStyle: TextStyle(
+      letterSpacing: 0,
       color: Colors.white,
       fontSize: 20,
       fontFamily: Fonts.primary,
     ),
     toolbarTextStyle: TextStyle(
+      letterSpacing: 0,
       color: Colors.white,
       fontSize: 20,
       fontFamily: Fonts.secondary,
@@ -36,6 +40,7 @@ final lightTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.withOpacity(0.25),
     color: Colors.white,
+    surfaceTintColor: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -53,30 +58,36 @@ final lightTheme = ThemeData(
   fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
     displayLarge: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
     displayMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.primary,
       color: themeMaterialColor,
       fontWeight: FontWeight.bold,
     ),
     displaySmall: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.primary,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
     bodyLarge: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.black54,
     ),
     bodyMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.black,
     ),
     titleMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),
@@ -95,12 +106,14 @@ final lightTheme = ThemeData(
   ),
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontWeight: FontWeight.bold,
       fontSize: 14,
     ),
     labelColor: themeMaterialColor,
     unselectedLabelStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
@@ -110,10 +123,12 @@ final lightTheme = ThemeData(
     columnSpacing: 32,
     headingRowColor: MaterialStateProperty.all(themeMaterialColor.shade100),
     dataTextStyle: TextStyle(
+      letterSpacing: 0,
       fontSize: 14,
       fontFamily: Fonts.secondaryAccent,
     ),
     headingTextStyle: TextStyle(
+      letterSpacing: 0,
       fontSize: 16,
       fontWeight: FontWeight.bold,
       fontFamily: Fonts.primary,
@@ -135,8 +150,10 @@ final lightTheme = ThemeData(
     showValueIndicator: ShowValueIndicator.never,
   ),
   popupMenuTheme: PopupMenuThemeData(
+    surfaceTintColor: Colors.transparent,
     elevation: 25,
     textStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.black,
       fontStyle: FontStyle.italic,
@@ -147,6 +164,10 @@ final lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
   ),
+  dividerTheme: DividerThemeData(
+    color: Colors.grey.shade300,
+    thickness: 1,
+  ),
 );
 
 /// ThemeData for dark theme
@@ -156,6 +177,7 @@ final darkTheme = ThemeData(
   primaryColorDark: darkThemeMaterialColor,
   scaffoldBackgroundColor: darkThemeMaterialColor,
   appBarTheme: AppBarTheme(
+    surfaceTintColor: Colors.transparent,
     elevation: 7,
     shadowColor: darkThemeMaterialColor.shade50,
     backgroundColor: darkThemeMaterialColor.shade50,
@@ -168,11 +190,13 @@ final darkTheme = ThemeData(
       size: 20,
     ),
     titleTextStyle: TextStyle(
+      letterSpacing: 0,
       color: Colors.white,
       fontSize: 20,
       fontFamily: Fonts.primary,
     ),
     toolbarTextStyle: TextStyle(
+      letterSpacing: 0,
       color: Colors.white,
       fontSize: 20,
       fontFamily: Fonts.secondary,
@@ -183,6 +207,7 @@ final darkTheme = ThemeData(
     elevation: 4,
     shadowColor: darkThemeMaterialColor.shade50,
     color: darkThemeMaterialColor.shade300,
+    surfaceTintColor: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -199,30 +224,36 @@ final darkTheme = ThemeData(
   fontFamily: Fonts.primaryAccent,
   textTheme: TextTheme(
     displayLarge: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
     displayMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
     displaySmall: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.primary,
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
     bodyLarge: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white54,
     ),
     bodyMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
     ),
     titleMedium: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontSize: 12,
     ),
@@ -241,11 +272,13 @@ final darkTheme = ThemeData(
   ),
   tabBarTheme: TabBarTheme(
     labelStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
     labelColor: Colors.white,
     unselectedLabelStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       fontSize: 14,
     ),
@@ -255,10 +288,12 @@ final darkTheme = ThemeData(
     columnSpacing: 32,
     headingRowColor: MaterialStateProperty.all(darkThemeMaterialColor.shade100),
     dataTextStyle: TextStyle(
+      letterSpacing: 0,
       fontSize: 14,
       fontFamily: Fonts.secondaryAccent,
     ),
     headingTextStyle: TextStyle(
+      letterSpacing: 0,
       fontSize: 16,
       fontWeight: FontWeight.bold,
       fontFamily: Fonts.primary,
@@ -279,8 +314,10 @@ final darkTheme = ThemeData(
     showValueIndicator: ShowValueIndicator.never,
   ),
   popupMenuTheme: PopupMenuThemeData(
+    surfaceTintColor: Colors.transparent,
     elevation: 25,
     textStyle: TextStyle(
+      letterSpacing: 0,
       fontFamily: Fonts.secondaryAccent,
       color: Colors.white,
       fontStyle: FontStyle.italic,
@@ -290,5 +327,9 @@ final darkTheme = ThemeData(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
+  ),
+  dividerTheme: DividerThemeData(
+    color: darkThemeMaterialColor.shade100,
+    thickness: 1,
   ),
 );

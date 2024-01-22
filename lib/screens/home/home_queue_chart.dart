@@ -92,7 +92,7 @@ class HomeQueueChart extends HookConsumerWidget {
         if (queue == null) return null;
         final date = queue.createdAt.toLocal();
 
-        return Jiffy(date).format("h:mm a");
+        return Jiffy.parseFromDateTime(date).format(pattern: "h:mm a");
       },
       [selectedTimeline],
     );
@@ -214,11 +214,12 @@ class HomeQueueChart extends HookConsumerWidget {
                 ),
               ],
             ),
-            gridData: FlGridData(show: false),
+            gridData: const FlGridData(show: false),
             titlesData: FlTitlesData(
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               rightTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
@@ -252,7 +253,7 @@ class HomeQueueChart extends HookConsumerWidget {
                         blurRadius: 7,
                         offset: Offset(0, 5),
                       ),
-                dotData: FlDotData(show: false),
+                dotData: const FlDotData(show: false),
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
@@ -265,8 +266,8 @@ class HomeQueueChart extends HookConsumerWidget {
               ),
             ],
           ),
-          swapAnimationCurve: Curves.decelerate,
-          swapAnimationDuration: const Duration(milliseconds: 650),
+          curve: Curves.decelerate,
+          duration: const Duration(milliseconds: 650),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
+import "package:paladinsedge/data_classes/match/index.dart";
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
@@ -25,6 +26,17 @@ class _RecentMatchesBar extends HookConsumerWidget {
     );
 
     // Hooks
+    final filteredCombinedMatches = useMemoized(
+      () {
+        if (combinedMatches == null) {
+          return List<CombinedMatch>.empty();
+        }
+
+        return combinedMatches.where((_) => !_.hide);
+      },
+      [combinedMatches],
+    );
+
     final winStats = useMemoized(
       () {
         int normalMatches = 0;
@@ -32,21 +44,26 @@ class _RecentMatchesBar extends HookConsumerWidget {
         int rankedMatches = 0;
         int rankedWins = 0;
 
-        if (combinedMatches != null) {
-          for (final combinedMatch in combinedMatches) {
-            if (combinedMatch.match.queue.contains("Training")) continue;
-            final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
-              (_) => _.playerId == playerInferred?.playerId,
-            );
-            if (matchPlayer == null) continue;
-            final isWin = matchPlayer.team == combinedMatch.match.winningTeam;
-            if (combinedMatch.match.isRankedMatch) {
-              rankedMatches++;
-              rankedWins += isWin ? 1 : 0;
-            } else {
-              normalMatches++;
-              normalWins += isWin ? 1 : 0;
-            }
+        if (filteredCombinedMatches.isEmpty) {
+          return const data_classes.RecentWinStats();
+        }
+
+        for (final combinedMatch in filteredCombinedMatches) {
+          if (combinedMatch.match.queue.contains("Training")) continue;
+
+          final matchPlayer = utilities.getMatchPlayerFromPlayerId(
+            combinedMatch.matchPlayers,
+            playerInferred?.playerId,
+          );
+          if (matchPlayer == null) continue;
+
+          final isWin = matchPlayer.team == combinedMatch.match.winningTeam;
+          if (combinedMatch.match.isRankedMatch) {
+            rankedMatches++;
+            rankedWins += isWin ? 1 : 0;
+          } else {
+            normalMatches++;
+            normalWins += isWin ? 1 : 0;
           }
         }
 
@@ -57,7 +74,7 @@ class _RecentMatchesBar extends HookConsumerWidget {
           rankedWins: rankedWins,
         );
       },
-      [combinedMatches],
+      [filteredCombinedMatches],
     );
 
     // Variables
@@ -69,10 +86,29 @@ class _RecentMatchesBar extends HookConsumerWidget {
     final rankedWins = winStats.rankedWins;
     final totalWins = normalWins + rankedWins;
     final totalMatches = normalMatches + rankedMatches;
-    final winRate = normalMatches != 0 ? totalWins / totalMatches : 0;
+    final winRate = totalMatches != 0 ? totalWins / totalMatches : 0;
     final winRateFormatted = (winRate * 100).toStringAsPrecision(3);
     final winRateColor = utilities.getWinRateColor(winRate);
     final isLowWinRate = winRate < 0.4;
+    final isFilterApplied =
+        combinedMatches?.length != filteredCombinedMatches.length;
+    final filterAppliedText = isFilterApplied ? "(filters applied)" : "";
+
+    // Hooks
+    final matchesText = useMemoized(
+      () {
+        if (totalMatches == 0) return null;
+        if (totalMatches == rankedMatches) return "ranked matches";
+        if (totalMatches == normalMatches) return "casual matches";
+
+        return "matches";
+      },
+      [normalMatches, rankedMatches],
+    );
+
+    if (matchesText == null) {
+      return const SizedBox();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +123,7 @@ class _RecentMatchesBar extends HookConsumerWidget {
         ),
         const SizedBox(height: 5),
         Text(
-          "Last ${rankedMatches + normalMatches} matches",
+          "Last $totalMatches $matchesText $filterAppliedText",
           style: textTheme.bodyLarge?.copyWith(
             fontSize: 10,
             color: textTheme.bodyLarge?.color,
@@ -277,10 +313,10 @@ class _RecentlyPlayedChampionCard extends HookWidget {
 
         final duration = DateTime.now().difference(lastPlayed);
         if (duration > const Duration(days: 1)) {
-          return "Last played ${Jiffy(lastPlayed).yMMMd}";
+          return "Last played ${Jiffy.parseFromDateTime(lastPlayed).yMMMd}";
         }
 
-        return "Played ${Jiffy(lastPlayed).fromNow()}";
+        return "Played ${Jiffy.parseFromDateTime(lastPlayed).fromNow()}";
       },
       [lastPlayed],
     );
@@ -362,7 +398,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                   ),
                 ],
               ),
-              if (playerChampion != null) const SizedBox(height: 5),
+              if (playerChampion != null) const SizedBox(height: 2),
               if (playerChampion != null)
                 Row(
                   children: [
@@ -414,7 +450,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
                     ),
                   ],
                 ),
-              if (playerChampion != null) const SizedBox(height: 5),
+              if (playerChampion != null) const SizedBox(height: 2),
               if (lastPlayedFormatted != null)
                 Text(
                   lastPlayedFormatted,
@@ -440,7 +476,8 @@ class _PlayerInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final playerSince = Jiffy(player.accountCreationDate).yMMMd;
+    final playerSince =
+        Jiffy.parseFromDateTime(player.accountCreationDate).yMMMd;
     final humanizedTime = utilities.getFormattedPlayTime(player.hoursPlayed);
 
     return SizedBox(
@@ -568,7 +605,7 @@ class _PlayerStatsCard extends StatelessWidget {
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
     String formattedStat = statString ??
-        (stat < 8000
+        (stat < 10000
             ? stat.toStringAsPrecision(stat.toInt().toString().length + 1)
             : utilities.humanizeNumber(stat));
 
@@ -595,7 +632,7 @@ class _PlayerStatsCard extends StatelessWidget {
             Text(
               formattedStat,
               textAlign: TextAlign.center,
-              style: textTheme.bodyLarge?.copyWith(color: color),
+              style: textTheme.bodyLarge?.copyWith(color: color, fontSize: 14),
             ),
           ],
         ),

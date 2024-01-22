@@ -158,17 +158,17 @@ class PlayerDetailMenu extends HookConsumerWidget {
     return PopupMenuButton(
       icon: badges.Badge(
         showBadge: isValidFilterAndSort,
-        position: badges.BadgePosition.topEnd(top: -4, end: -6),
+        position: badges.BadgePosition.topEnd(top: -2, end: -6),
         badgeStyle: badges.BadgeStyle(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
           elevation: 0,
           badgeColor: badgeColor,
         ),
         child: const Icon(
-          FeatherIcons.moreVertical,
+          FeatherIcons.menu,
           color: Colors.white,
         ),
       ),
+      position: PopupMenuPosition.under,
       itemBuilder: (_) => <PopupMenuEntry>[
         const PopupMenuItem(
           enabled: false,
@@ -178,28 +178,34 @@ class PlayerDetailMenu extends HookConsumerWidget {
         const PopupMenuDivider(height: 10),
         PopupMenuItem(
           enabled: false,
-          child: widgets.Button(
-            label: "Active Match",
-            disabled: !(playerStatus?.inMatch ?? false),
-            elevation: 4,
-            onPressed: onPressActiveMatch,
-            color: Colors.green,
+          child: Center(
+            child: widgets.Button(
+              label: "Active Match",
+              disabled: !(playerStatus?.inMatch ?? false),
+              elevation: 4,
+              onPressed: onPressActiveMatch,
+              color: Colors.green,
+            ),
           ),
         ),
         PopupMenuItem(
           enabled: false,
-          child: widgets.Button(
-            label: "Friends",
-            elevation: 4,
-            onPressed: onPressFriends,
+          child: Center(
+            child: widgets.Button(
+              label: "Friends",
+              elevation: 4,
+              onPressed: onPressFriends,
+            ),
           ),
         ),
         PopupMenuItem(
           enabled: false,
-          child: widgets.Button(
-            label: "Champs",
-            elevation: 4,
-            onPressed: onPressChamps,
+          child: Center(
+            child: widgets.Button(
+              label: "Champs",
+              elevation: 4,
+              onPressed: onPressChamps,
+            ),
           ),
         ),
         const PopupMenuItem(
@@ -212,31 +218,37 @@ class PlayerDetailMenu extends HookConsumerWidget {
         if (!isUserPlayer)
           PopupMenuItem(
             enabled: false,
-            child: widgets.Button(
-              label: "Common\nMatches",
-              elevation: 4,
-              onPressed: onCommonMatches,
-              color: Colors.pink,
-              labelStyle: const TextStyle(fontSize: 11),
+            child: Center(
+              child: widgets.Button(
+                label: "Common\nMatches",
+                elevation: 4,
+                onPressed: onCommonMatches,
+                color: Colors.pink,
+                labelStyle: const TextStyle(fontSize: 11),
+              ),
             ),
           ),
         PopupMenuItem(
           enabled: false,
-          child: widgets.Button(
-            label: "Filter / Sort",
-            elevation: 4,
-            onPressed: onFilter,
-            color: Colors.pink,
+          child: Center(
+            child: widgets.Button(
+              label: "Filter / Sort",
+              elevation: 4,
+              onPressed: onFilter,
+              color: Colors.pink,
+            ),
           ),
         ),
         PopupMenuItem(
           enabled: false,
-          child: widgets.Button(
-            disabled: !isValidFilterAndSort,
-            label: "Clear",
-            elevation: 4,
-            onPressed: onClear,
-            color: Colors.pink,
+          child: Center(
+            child: widgets.Button(
+              disabled: !isValidFilterAndSort,
+              label: "Clear",
+              elevation: 4,
+              onPressed: onClear,
+              color: Colors.pink,
+            ),
           ),
         ),
       ],

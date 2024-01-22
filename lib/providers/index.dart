@@ -1,5 +1,4 @@
 export "./auth.dart";
-export "./bounty_store.dart";
 export "./champions.dart";
 export "./feedback.dart";
 export "./friends.dart";

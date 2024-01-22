@@ -29,9 +29,9 @@ class RecentWinStats {
   final int rankedWins;
 
   const RecentWinStats({
-    required this.normalMatches,
-    required this.normalWins,
-    required this.rankedMatches,
-    required this.rankedWins,
+    this.normalMatches = 0,
+    this.normalWins = 0,
+    this.rankedMatches = 0,
+    this.rankedWins = 0,
   });
 }

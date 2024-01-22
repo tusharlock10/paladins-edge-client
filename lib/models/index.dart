@@ -1,5 +1,4 @@
 export "./active_match/active_match.dart";
-export "./bounty_store/bounty_store.dart";
 export "./champion/champion.dart";
 export "./device_detail/device_detail.dart";
 export "./essentials/essentials.dart";

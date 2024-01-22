@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'combined_champion.dart';
 
@@ -31,7 +31,8 @@ mixin _$CombinedChampion {
 abstract class $CombinedChampionCopyWith<$Res> {
   factory $CombinedChampionCopyWith(
           CombinedChampion value, $Res Function(CombinedChampion) then) =
-      _$CombinedChampionCopyWithImpl<$Res>;
+      _$CombinedChampionCopyWithImpl<$Res, CombinedChampion>;
+  @useResult
   $Res call(
       {Champion champion,
       PlayerChampion? playerChampion,
@@ -40,49 +41,52 @@ abstract class $CombinedChampionCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CombinedChampionCopyWithImpl<$Res>
+class _$CombinedChampionCopyWithImpl<$Res, $Val extends CombinedChampion>
     implements $CombinedChampionCopyWith<$Res> {
   _$CombinedChampionCopyWithImpl(this._value, this._then);
 
-  final CombinedChampion _value;
   // ignore: unused_field
-  final $Res Function(CombinedChampion) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? champion = freezed,
+    Object? champion = null,
     Object? playerChampion = freezed,
-    Object? hide = freezed,
+    Object? hide = null,
     Object? searchCondition = freezed,
   }) {
     return _then(_value.copyWith(
-      champion: champion == freezed
+      champion: null == champion
           ? _value.champion
           : champion // ignore: cast_nullable_to_non_nullable
               as Champion,
-      playerChampion: playerChampion == freezed
+      playerChampion: freezed == playerChampion
           ? _value.playerChampion
           : playerChampion // ignore: cast_nullable_to_non_nullable
               as PlayerChampion?,
-      hide: hide == freezed
+      hide: null == hide
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchCondition: searchCondition == freezed
+      searchCondition: freezed == searchCondition
           ? _value.searchCondition
           : searchCondition // ignore: cast_nullable_to_non_nullable
               as ChampionsSearchCondition?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_CombinedChampionCopyWith<$Res>
+abstract class _$$CombinedChampionImplCopyWith<$Res>
     implements $CombinedChampionCopyWith<$Res> {
-  factory _$$_CombinedChampionCopyWith(
-          _$_CombinedChampion value, $Res Function(_$_CombinedChampion) then) =
-      __$$_CombinedChampionCopyWithImpl<$Res>;
+  factory _$$CombinedChampionImplCopyWith(_$CombinedChampionImpl value,
+          $Res Function(_$CombinedChampionImpl) then) =
+      __$$CombinedChampionImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Champion champion,
       PlayerChampion? playerChampion,
@@ -91,37 +95,35 @@ abstract class _$$_CombinedChampionCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CombinedChampionCopyWithImpl<$Res>
-    extends _$CombinedChampionCopyWithImpl<$Res>
-    implements _$$_CombinedChampionCopyWith<$Res> {
-  __$$_CombinedChampionCopyWithImpl(
-      _$_CombinedChampion _value, $Res Function(_$_CombinedChampion) _then)
-      : super(_value, (v) => _then(v as _$_CombinedChampion));
+class __$$CombinedChampionImplCopyWithImpl<$Res>
+    extends _$CombinedChampionCopyWithImpl<$Res, _$CombinedChampionImpl>
+    implements _$$CombinedChampionImplCopyWith<$Res> {
+  __$$CombinedChampionImplCopyWithImpl(_$CombinedChampionImpl _value,
+      $Res Function(_$CombinedChampionImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_CombinedChampion get _value => super._value as _$_CombinedChampion;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? champion = freezed,
+    Object? champion = null,
     Object? playerChampion = freezed,
-    Object? hide = freezed,
+    Object? hide = null,
     Object? searchCondition = freezed,
   }) {
-    return _then(_$_CombinedChampion(
-      champion: champion == freezed
+    return _then(_$CombinedChampionImpl(
+      champion: null == champion
           ? _value.champion
           : champion // ignore: cast_nullable_to_non_nullable
               as Champion,
-      playerChampion: playerChampion == freezed
+      playerChampion: freezed == playerChampion
           ? _value.playerChampion
           : playerChampion // ignore: cast_nullable_to_non_nullable
               as PlayerChampion?,
-      hide: hide == freezed
+      hide: null == hide
           ? _value.hide
           : hide // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchCondition: searchCondition == freezed
+      searchCondition: freezed == searchCondition
           ? _value.searchCondition
           : searchCondition // ignore: cast_nullable_to_non_nullable
               as ChampionsSearchCondition?,
@@ -131,8 +133,8 @@ class __$$_CombinedChampionCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CombinedChampion implements _CombinedChampion {
-  _$_CombinedChampion(
+class _$CombinedChampionImpl implements _CombinedChampion {
+  _$CombinedChampionImpl(
       {required this.champion,
       this.playerChampion,
       this.hide = false,
@@ -156,38 +158,38 @@ class _$_CombinedChampion implements _CombinedChampion {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CombinedChampion &&
-            const DeepCollectionEquality().equals(other.champion, champion) &&
-            const DeepCollectionEquality()
-                .equals(other.playerChampion, playerChampion) &&
-            const DeepCollectionEquality().equals(other.hide, hide) &&
-            const DeepCollectionEquality()
-                .equals(other.searchCondition, searchCondition));
+            other is _$CombinedChampionImpl &&
+            (identical(other.champion, champion) ||
+                other.champion == champion) &&
+            (identical(other.playerChampion, playerChampion) ||
+                other.playerChampion == playerChampion) &&
+            (identical(other.hide, hide) || other.hide == hide) &&
+            (identical(other.searchCondition, searchCondition) ||
+                other.searchCondition == searchCondition));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(champion),
-      const DeepCollectionEquality().hash(playerChampion),
-      const DeepCollectionEquality().hash(hide),
-      const DeepCollectionEquality().hash(searchCondition));
+  int get hashCode =>
+      Object.hash(runtimeType, champion, playerChampion, hide, searchCondition);
 
   @JsonKey(ignore: true)
   @override
-  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
-      __$$_CombinedChampionCopyWithImpl<_$_CombinedChampion>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$CombinedChampionImplCopyWith<_$CombinedChampionImpl> get copyWith =>
+      __$$CombinedChampionImplCopyWithImpl<_$CombinedChampionImpl>(
+          this, _$identity);
 }
 
 abstract class _CombinedChampion implements CombinedChampion {
   factory _CombinedChampion(
-      {required final Champion champion,
-      final PlayerChampion? playerChampion,
-      final bool hide,
-      final ChampionsSearchCondition? searchCondition}) = _$_CombinedChampion;
+          {required final Champion champion,
+          final PlayerChampion? playerChampion,
+          final bool hide,
+          final ChampionsSearchCondition? searchCondition}) =
+      _$CombinedChampionImpl;
 
   @override
   Champion get champion;
@@ -199,6 +201,6 @@ abstract class _CombinedChampion implements CombinedChampion {
   ChampionsSearchCondition? get searchCondition;
   @override
   @JsonKey(ignore: true)
-  _$$_CombinedChampionCopyWith<_$_CombinedChampion> get copyWith =>
+  _$$CombinedChampionImplCopyWith<_$CombinedChampionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

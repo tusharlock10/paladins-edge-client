@@ -63,9 +63,9 @@ class CommonMatchesList extends HookConsumerWidget {
                 (_, index) {
                   final combinedMatch = commonMatches.elementAt(index);
                   final match = combinedMatch.match;
-                  final matchPlayer =
-                      combinedMatch.matchPlayers.firstOrNullWhere(
-                    (_) => _.playerId == matchPlayerId,
+                  final matchPlayer = utilities.getMatchPlayerFromPlayerId(
+                    combinedMatch.matchPlayers,
+                    matchPlayerId,
                   );
                   final champion = champions.firstOrNullWhere(
                     (_) => _.championId == matchPlayer?.championId,

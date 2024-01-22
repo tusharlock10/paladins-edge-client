@@ -34,6 +34,7 @@ class MatchDetailList extends HookConsumerWidget {
     // Variables
     final matchPlayers = combinedMatch?.matchPlayers;
     final match = combinedMatch?.match;
+    final championBans = match?.championBans.toList();
     final isLandscape = utilities.responsiveCondition(
       context,
       desktop: true,
@@ -61,19 +62,6 @@ class MatchDetailList extends HookConsumerWidget {
     );
 
     // Hooks
-    final averageCredits = useMemoized(
-      () {
-        if (combinedMatch == null) return double.maxFinite;
-
-        final totalCredits = combinedMatch!.matchPlayers
-            .map((matchPlayer) => matchPlayer.playerStats.creditsEarned)
-            .reduce((value, creditsEarned) => value + creditsEarned);
-
-        return totalCredits / combinedMatch!.matchPlayers.length;
-      },
-      [combinedMatch],
-    );
-
     final winningTeamMatchPlayers = useMemoized(
       () {
         return matchPlayers
@@ -134,37 +122,20 @@ class MatchDetailList extends HookConsumerWidget {
       [losingTeamMatchPlayers],
     );
 
-    final championBans = useMemoized(
-      () {
-        final championBans = match?.championBans;
-        if (championBans != null && championBans.length == 6) {
-          // swap the last 2 champion bans
-          final length = championBans.length;
-          final ban1 = championBans[length - 2];
-          final ban2 = championBans[length - 1];
-          championBans[length - 2] = ban2;
-          championBans[length - 1] = ban1;
-        }
-
-        return championBans;
-      },
-      [match],
-    );
-
     final winningTeamBans = useMemoized(
       () {
         List<models.Champion> winningTeamBans = [];
         if (match == null || championBans == null) return winningTeamBans;
 
         final isFirstTeam = match.winningTeam == 1;
-        winningTeamBans = championBans.mapIndexedNotNull((index, championId) {
-          if (index % 2 == (isFirstTeam ? 0 : 1)) {
-            return champions.firstOrNullWhere(
-              (_) => _.championId == championId,
-            );
-          }
+        final middleIndex = championBans.length ~/ 2;
+        List<int> banIds = championBans.sublist(middleIndex);
+        if (isFirstTeam) {
+          banIds = championBans.sublist(0, middleIndex);
+        }
 
-          return null;
+        winningTeamBans = banIds.mapIndexedNotNull((index, championId) {
+          return champions.firstOrNullWhere((_) => _.championId == championId);
         }).toList();
 
         return winningTeamBans;
@@ -178,14 +149,13 @@ class MatchDetailList extends HookConsumerWidget {
         if (match == null || championBans == null) return losingTeamBans;
 
         final isFirstTeam = match.winningTeam == 2;
-        losingTeamBans = championBans.mapIndexedNotNull((index, championId) {
-          if (index % 2 == (isFirstTeam ? 0 : 1)) {
-            return champions.firstOrNullWhere(
-              (_) => _.championId == championId,
-            );
-          }
-
-          return null;
+        final middleIndex = championBans.length ~/ 2;
+        List<int> banIds = championBans.sublist(middleIndex);
+        if (isFirstTeam) {
+          banIds = championBans.sublist(0, middleIndex);
+        }
+        losingTeamBans = banIds.mapIndexedNotNull((index, championId) {
+          return champions.firstOrNullWhere((_) => _.championId == championId);
         }).toList();
 
         return losingTeamBans;
@@ -244,7 +214,6 @@ class MatchDetailList extends HookConsumerWidget {
                 MatchDetailPlayerCard(
                   matchPlayer: winningTeamMatchPlayers[playerIndex],
                   match: match,
-                  averageCredits: averageCredits,
                 ),
             ],
           );
@@ -265,7 +234,6 @@ class MatchDetailList extends HookConsumerWidget {
                 MatchDetailPlayerCard(
                   matchPlayer: losingTeamMatchPlayers[playerIndex],
                   match: match,
-                  averageCredits: averageCredits,
                 ),
             ],
           );

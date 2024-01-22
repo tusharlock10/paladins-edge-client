@@ -78,7 +78,7 @@ class FastImage extends StatelessWidget {
       label: semanticText,
       image: true,
       child: ClipRRect(
-        borderRadius: borderRadius,
+        borderRadius: borderRadius ?? BorderRadius.zero,
         child: greyedOut
             ? ColorFiltered(
                 colorFilter: const ColorFilter.mode(

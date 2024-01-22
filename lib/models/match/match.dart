@@ -160,6 +160,9 @@ class MatchPlayer {
   // partyId will be 0 for inComplete matchPlayers
   final bool isInComplete;
 
+  // was the player a bot during this match
+  final bool isBot;
+
   MatchPlayer({
     required this.playerId,
     required this.playerName,
@@ -176,6 +179,7 @@ class MatchPlayer {
     required this.playerItems,
     required this.playerChampionCards,
     required this.isInComplete,
+    required this.isBot,
   });
 
   factory MatchPlayer.fromJson(Map<String, dynamic> json) =>

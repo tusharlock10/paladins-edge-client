@@ -10,7 +10,7 @@ enum ToastType {
 }
 
 class _FlashBar extends HookWidget {
-  final FlashController controller;
+  final FlashController<Object> controller;
   final ToastType type;
   final String text;
   final int? errorCode;
@@ -24,7 +24,7 @@ class _FlashBar extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
@@ -46,7 +46,7 @@ class _FlashBar extends HookWidget {
 
         return Colors.red.shade400;
       },
-      [],
+      [type],
     );
 
     final getToastMessage = useCallback(
@@ -56,7 +56,7 @@ class _FlashBar extends HookWidget {
 
         return errorCode == null ? "Error" : "Error ($errorCode)";
       },
-      [],
+      [type, errorCode],
     );
 
     final getToastIcon = useCallback(
@@ -66,28 +66,16 @@ class _FlashBar extends HookWidget {
 
         return Icons.clear;
       },
-      [],
+      [type],
     );
 
-    return Flash.bar(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 40,
-      ),
-      horizontalDismissDirection: HorizontalDismissDirection.horizontal,
-      boxShadows: [
-        BoxShadow(
-          color: getToastColor().withOpacity(0.2),
-          spreadRadius: 0,
-          blurRadius: 8,
-          offset: const Offset(-1, 5),
-        ),
-      ],
-      enableVerticalDrag: true,
-      useSafeArea: true,
-      position: FlashPosition.top,
+    return FlashBar(
       controller: controller,
-      borderRadius: const BorderRadius.all(Radius.circular(6)),
-      child: Card(
+      position: FlashPosition.top,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Card(
         clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.all(0),
         child: SizedBox(
@@ -152,7 +140,7 @@ void showToast({
   int? errorCode,
 }) {
   if (utilities.Global.isToastShown) return;
-  showFlash(
+  showFlash<Object>(
     context: context,
     duration: const Duration(seconds: 5),
     builder: (context, controller) => _FlashBar(

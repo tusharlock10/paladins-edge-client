@@ -86,7 +86,7 @@ class SearchTopItem extends HookWidget {
                     ),
                   const SizedBox(height: 3),
                   Text(
-                    Jiffy(player.lastLoginDate).fromNow(),
+                    Jiffy.parseFromDateTime(player.lastLoginDate).fromNow(),
                     style: textTheme.bodyLarge?.copyWith(fontSize: 12),
                   ),
                 ],

@@ -37,10 +37,15 @@ class MatchFilterValue {
     const formatStringLong = "MMM do yyyy";
     const formatStringShort = "MMM d";
 
-    if (endDate == null) return Jiffy(startDate).format(formatStringLong);
-    if (startDate == null) return Jiffy(endDate).format(formatStringLong);
+    if (endDate == null) {
+      return Jiffy.parseFromDateTime(startDate!)
+          .format(pattern: formatStringLong);
+    }
+    if (startDate == null) {
+      return Jiffy.parseFromDateTime(endDate).format(pattern: formatStringLong);
+    }
 
-    return "${Jiffy(startDate).format(formatStringShort)} - ${Jiffy(endDate).format(formatStringShort)}";
+    return "${Jiffy.parseFromDateTime(startDate).format(pattern: formatStringShort)} - ${Jiffy.parseFromDateTime(endDate).format(pattern: formatStringShort)}";
   }
 }
 
@@ -61,6 +66,7 @@ abstract class MatchFilterValues {
     MatchFilterValue(valueName: "SG: SQ", value: "Splitstone Quarry"),
     MatchFilterValue(valueName: "SG: IM", value: "Ice Mines"),
     MatchFilterValue(valueName: "SG: BZR", value: "Bazaar"),
+    MatchFilterValue(valueName: "SG: DF", value: "Dawnforge"),
     MatchFilterValue(valueName: "TDM: DA", value: "Dragon Arena"),
     MatchFilterValue(valueName: "TDM: TD", value: "Trade District"),
     MatchFilterValue(valueName: "TDM: SJ", value: "Snowfall Junction"),
@@ -68,10 +74,7 @@ abstract class MatchFilterValues {
     MatchFilterValue(valueName: "ONS: MP", value: "Marauder's Port"),
     MatchFilterValue(valueName: "ONS: FR", value: "Foreman's Rise"),
     MatchFilterValue(valueName: "ONS: PC", value: "Primal Court"),
-    MatchFilterValue(
-      valueName: "ONS: MA",
-      value: "Magistrate's Archives",
-    ),
+    MatchFilterValue(valueName: "ONS: MA", value: "Magistrate's Archives"),
   ];
 
   static const betweenDates = [
@@ -83,11 +86,10 @@ abstract class MatchFilterValues {
   ];
 
   static const queue = [
-    MatchFilterValue(value: "Casual Siege", valueName: "SG"),
-    MatchFilterValue(value: "Choose Any", valueName: "CA"),
-    MatchFilterValue(value: "Onslaught", valueName: "ONS"),
-    MatchFilterValue(value: "Ranked Keyboard", valueName: "RNK: KBM"),
-    MatchFilterValue(value: "Ranked Controller ", valueName: "RNK: CON"),
+    MatchFilterValue(value: "Casual Siege", valueName: "Siege"),
+    MatchFilterValue(value: "Choose Any", valueName: "Choose Any"),
+    MatchFilterValue(value: "Onslaught", valueName: "Onslaught"),
+    MatchFilterValue(value: "Ranked", valueName: "Ranked"),
     MatchFilterValue(value: "Other", valueName: "Other"),
   ];
 
