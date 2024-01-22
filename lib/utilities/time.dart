@@ -78,7 +78,7 @@ String getFormattedPlayTime(int minutes) {
   DurationTersity tersity = DurationTersity.minute;
 
   if (playTime > const Duration(days: 1)) {
-    upperTersity = DurationTersity.day;
+    upperTersity = DurationTersity.hour;
     tersity = DurationTersity.hour;
   }
 
