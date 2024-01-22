@@ -1,7 +1,7 @@
-import "package:dartx/dartx.dart";
 import "package:paladinsedge/data_classes/match/combined_match.dart";
 import "package:paladinsedge/data_classes/match/match_filter_value.dart";
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class SelectedMatchFilter {
   final String? name;
@@ -169,8 +169,9 @@ abstract class MatchFilter {
 
     return combinedMatches.map(
       (combinedMatch) {
-        final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
-          (_) => _.playerId == playerId,
+        final matchPlayer = utilities.getMatchPlayerFromPlayerId(
+          combinedMatch.matchPlayers,
+          playerId,
         );
         if (matchPlayer == null) return combinedMatch;
 

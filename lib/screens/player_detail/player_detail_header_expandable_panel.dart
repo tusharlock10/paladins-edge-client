@@ -51,8 +51,9 @@ class _RecentMatchesBar extends HookConsumerWidget {
         for (final combinedMatch in filteredCombinedMatches) {
           if (combinedMatch.match.queue.contains("Training")) continue;
 
-          final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
-            (_) => _.playerId == playerInferred?.playerId,
+          final matchPlayer = utilities.getMatchPlayerFromPlayerId(
+            combinedMatch.matchPlayers,
+            playerInferred?.playerId,
           );
           if (matchPlayer == null) continue;
 

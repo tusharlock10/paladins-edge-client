@@ -69,12 +69,10 @@ class _PlayerStatsCard extends StatelessWidget {
 class MatchDetailPlayerCard extends HookConsumerWidget {
   final models.MatchPlayer matchPlayer;
   final models.Match match;
-  final double averageCredits;
 
   const MatchDetailPlayerCard({
     required this.matchPlayer,
     required this.match,
-    required this.averageCredits,
     Key? key,
   }) : super(key: key);
 
@@ -94,9 +92,6 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final kdaFormatted = matchPlayer.playerStats.kdaFormatted;
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
-    final isBot =
-        matchPlayer.playerStats.creditsEarned < averageCredits * 0.6 ||
-            matchPlayer.talentId2 == 0;
     final backgroundColor = Theme.of(context).cardTheme.color;
     final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
@@ -333,10 +328,10 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 isAssetImage: championIcon.isAssetImage,
                                 size: 30,
                                 borderRadius: 12.5,
-                                greyedOut: isBot,
+                                greyedOut: matchPlayer.isBot,
                                 margin: const EdgeInsets.all(2.5),
                               ),
-                              if (isBot)
+                              if (matchPlayer.isBot)
                                 const Positioned.fill(
                                   bottom: -34,
                                   right: -34,

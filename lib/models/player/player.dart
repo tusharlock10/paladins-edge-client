@@ -158,13 +158,14 @@ class Player {
     required this.lastLoginDate,
     required this.ranked,
     this.userId,
-    this.title,
+    String? title,
     this.lastUpdatedFriends,
     this.lastUpdatedPlayer,
     this.lastUpdatedMatches,
     this.lastUpdatedChampions,
     this.lastUpdatedLoadouts,
-  }) : avatarUrl = utilities.getUrlFromKey(avatarUrl);
+  })  : title = (title == null || title.isEmpty) ? null : title,
+        avatarUrl = utilities.getUrlFromKey(avatarUrl);
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
   Map<String, dynamic> toJson() => _$PlayerToJson(this);

@@ -62,19 +62,6 @@ class MatchDetailList extends HookConsumerWidget {
     );
 
     // Hooks
-    final averageCredits = useMemoized(
-      () {
-        if (combinedMatch == null) return double.maxFinite;
-
-        final totalCredits = combinedMatch!.matchPlayers
-            .map((matchPlayer) => matchPlayer.playerStats.creditsEarned)
-            .reduce((value, creditsEarned) => value + creditsEarned);
-
-        return totalCredits / combinedMatch!.matchPlayers.length;
-      },
-      [combinedMatch],
-    );
-
     final winningTeamMatchPlayers = useMemoized(
       () {
         return matchPlayers
@@ -227,7 +214,6 @@ class MatchDetailList extends HookConsumerWidget {
                 MatchDetailPlayerCard(
                   matchPlayer: winningTeamMatchPlayers[playerIndex],
                   match: match,
-                  averageCredits: averageCredits,
                 ),
             ],
           );
@@ -248,7 +234,6 @@ class MatchDetailList extends HookConsumerWidget {
                 MatchDetailPlayerCard(
                   matchPlayer: losingTeamMatchPlayers[playerIndex],
                   match: match,
-                  averageCredits: averageCredits,
                 ),
             ],
           );
