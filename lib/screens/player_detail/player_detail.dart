@@ -63,31 +63,31 @@ class PlayerDetail extends HookConsumerWidget {
     final isSamePlayerInferred = playerInferred?.playerId == playerId;
 
     // Hooks
-    final playerStreak = useMemoized(() {
-      if (combinedMatches == null) return null;
-      if (combinedMatches.length < 5) return null;
-      if (combinedMatchesPlayerId == null) return null;
+    final playerStreak = useMemoized(
+      () {
+        if (combinedMatches == null) return null;
+        if (combinedMatches.length < 5) return null;
+        if (combinedMatchesPlayerId == null) return null;
 
-      final playerId = combinedMatchesPlayerId;
-      final firstCombinedMatch = combinedMatches.first;
-      final isFirstWin = utilities.didPlayerWin(firstCombinedMatch, playerId);
-      int streak = 1;
+        final playerId = combinedMatchesPlayerId;
+        final firstCombinedMatch = combinedMatches.first;
+        final isFirstWin = utilities.didPlayerWin(firstCombinedMatch, playerId);
+        int streak = 1;
 
-      for (final combinedMatch in combinedMatches.skip(1)) {
-        final isWin = utilities.didPlayerWin(combinedMatch, playerId);
-        if (isFirstWin == isWin) {
-          streak++;
-        } else {
-          break;
+        for (final combinedMatch in combinedMatches.skip(1)) {
+          final isWin = utilities.didPlayerWin(combinedMatch, playerId);
+          if (isFirstWin == isWin) {
+            streak++;
+          } else {
+            break;
+          }
         }
-      }
-      if (streak < 3) return null;
+        if (streak < 3) return null;
 
-      return isFirstWin ? streak : -streak;
-    }, [
-      combinedMatches,
-      combinedMatchesPlayerId,
-    ]);
+        return isFirstWin ? streak : -streak;
+      },
+      [combinedMatches, combinedMatchesPlayerId],
+    );
 
     // Methods
     final getPlayerDetails = useCallback(
