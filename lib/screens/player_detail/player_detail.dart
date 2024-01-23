@@ -159,12 +159,18 @@ class PlayerDetail extends HookConsumerWidget {
       appBar: AppBar(
         actions: [
           Center(
-            child: widgets.RefreshButton(
-              onRefresh: onRefresh,
-              color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: widgets.RefreshButton(
+                onRefresh: onRefresh,
+                color: Colors.white,
+              ),
             ),
           ),
-          const PlayerDetailMenu(),
+          const Padding(
+            padding: EdgeInsets.only(right: 5),
+            child: PlayerDetailMenu(),
+          ),
         ],
         title: isLoadingPlayerData || player == null
             ? const Text("Player")
@@ -199,7 +205,8 @@ class PlayerDetail extends HookConsumerWidget {
                           : FeatherIcons.arrowUpCircle,
                       color:
                           playerStreak.isNegative ? Colors.red : Colors.green,
-                      text: "${playerStreak.abs()} win streak",
+                      text:
+                          "${playerStreak.abs()} ${playerStreak.isNegative ? 'loose' : 'win'} streak",
                     ),
                 ],
               ),
