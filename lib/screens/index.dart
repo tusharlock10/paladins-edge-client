@@ -9,6 +9,7 @@ export "./feedback/index.dart";
 export "./friends/index.dart";
 export "./global_chat/index.dart";
 export "./home/index.dart";
+export "./leaderboard/index.dart";
 export "./loadouts/index.dart";
 export "./login/login.dart";
 export "./main/index.dart";
