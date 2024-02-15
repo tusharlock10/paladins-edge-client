@@ -4,6 +4,7 @@ export "./feedback.dart";
 export "./friends.dart";
 export "./global_chat.dart";
 export "./items.dart";
+export "./leaderboard.dart";
 export "./loadout.dart";
 export "./matches.dart";
 export "./players.dart";

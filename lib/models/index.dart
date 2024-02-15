@@ -15,3 +15,4 @@ export "./record_expiry/record_expiry.dart";
 export "./search_history/search_history.dart";
 export "./settings/settings.dart";
 export "./user/user.dart";
+export "leaderboard_player/leaderboard_player.dart";

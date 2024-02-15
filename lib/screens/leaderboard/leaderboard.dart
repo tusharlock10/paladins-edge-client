@@ -5,6 +5,8 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Leaderboard extends HookConsumerWidget {
   static const routeName = "leaderboard";
@@ -20,8 +22,10 @@ class Leaderboard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
-    final faqs = ref.watch(providers.auth.select((_) => _.faqs));
+    final leaderboardProvider = ref.read(providers.leaderboard);
+    final leaderboardPlayers = ref.watch(
+      providers.leaderboard.select((_) => _.leaderboardPlayers),
+    );
 
     // Variables
     double horizontalPadding = 0;
@@ -36,23 +40,52 @@ class Leaderboard extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (faqs == null) authProvider.getFAQs();
+        if (leaderboardPlayers == null) {
+          leaderboardProvider.getLeaderboardPlayers();
+        }
 
         return;
       },
       [],
     );
 
-    return const Scaffold(
+    return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             forceElevated: true,
             floating: true,
             snap: true,
             pinned: constants.isWeb,
             title: Text("Leaderboard"),
           ),
+          leaderboardPlayers == null
+              ? SliverList(
+                  delegate: SliverChildListDelegate.fixed(
+                    [
+                      SizedBox(
+                        height: utilities.getBodyHeight(context),
+                        child: const Center(
+                          child: widgets.LoadingIndicator(
+                            lineWidth: 2,
+                            size: 28,
+                            label: Text("Getting Players"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (_, index) =>
+                          Text(leaderboardPlayers[index].basicPlayer.name),
+                      childCount: leaderboardPlayers.length,
+                    ),
+                  ),
+                ),
         ],
       ),
     );

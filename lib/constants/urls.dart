@@ -55,4 +55,7 @@ abstract class Urls {
   // feedback
   static const submitFeedback = "/feedback/submitFeedback"; // POST
   static const uploadImageUrl = "/feedback/uploadImageUrl"; // GET
+
+  // leaderboard
+  static const leaderboardPlayers = "/leaderboard/leaderboardPlayers"; // GET
 }
