@@ -20,14 +20,6 @@ class Ranked {
   @HiveField(2)
   final int rank;
 
-  /// the rank of the player in string eg. Master
-  @HiveField(3)
-  final String rankName;
-
-  /// image url of the rank icon
-  @HiveField(4)
-  final String rankIconUrl;
-
   /// the tp of the player at the current ranks
   @HiveField(5)
   final int? points;
@@ -46,10 +38,8 @@ class Ranked {
     required this.wins,
     required this.looses,
     required this.rank,
-    required this.rankName,
-    required String rankIconUrl,
     this.points,
-  }) : rankIconUrl = utilities.getUrlFromKey(rankIconUrl);
+  });
 
   factory Ranked.fromJson(Map<String, dynamic> json) => _$RankedFromJson(json);
   Map<String, dynamic> toJson() => _$RankedToJson(this);

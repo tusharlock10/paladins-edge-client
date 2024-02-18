@@ -1,4 +1,5 @@
 export "./auth.dart";
+export "./base_ranks.dart";
 export "./champions.dart";
 export "./feedback.dart";
 export "./friends.dart";

@@ -10,6 +10,7 @@ abstract class Urls {
   static const fcmToken = "/auth/fcmToken"; // POST
   static const essentials = "/auth/essentials"; // GET
   static const faqs = "/auth/faqs"; // GET
+  static const baseRanks = "/auth/baseRanks"; // GET
   static const savedMatches = "/auth/savedMatches"; // GET
   static const updateSavedMatches = "/auth/updateSavedMatches"; // PUT
   static const deviceDetail = "/auth/deviceDetail"; // PUT

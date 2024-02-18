@@ -22,6 +22,7 @@ class FriendItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
@@ -35,6 +36,12 @@ class FriendItem extends HookConsumerWidget {
 
     // State
     final isSelected = useState(false);
+
+    // Hooks
+    final friendBaseRank = useMemoized(
+      () => baseRanks[friend.ranked.rank],
+      [friend, baseRanks],
+    );
 
     // Methods
     final onTapFriend = useCallback(
@@ -133,10 +140,10 @@ class FriendItem extends HookConsumerWidget {
             const Expanded(
               child: SizedBox(),
             ),
-            friend.ranked.rank != 0
+            friendBaseRank != null
                 ? widgets.FastImage(
                     imageUrl: utilities.getSmallAsset(
-                      friend.ranked.rankIconUrl,
+                      friendBaseRank.rankIconUrl,
                     ),
                     height: 36,
                     width: 36,

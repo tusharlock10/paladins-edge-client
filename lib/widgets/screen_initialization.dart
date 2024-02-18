@@ -31,6 +31,8 @@ class ScreenInitialization extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final itemsProvider = ref.read(providers.items);
+    final baseRanksProvider = ref.read(providers.baseRanks);
     final isInitialized = ref.watch(
       providers.auth.select((_) => _.isInitialized),
     );
@@ -85,6 +87,8 @@ class ScreenInitialization extends HookConsumerWidget {
             !constants.isDebug,
           ),
           authProvider.loadEssentials(),
+          itemsProvider.loadItems(),
+          baseRanksProvider.loadBaseRanks(),
         ]);
 
         // load the essentials from hive

@@ -79,8 +79,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final champions = ref.watch(providers.champions.select((_) => _.champions));
-    final items = ref.watch(providers.items.select((_) => _.items));
+    final champions = ref.read(providers.champions).champions;
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
+    final items = ref.read(providers.items).items;
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -106,6 +107,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer, champions],
     );
+
     final damagePerMinute = useMemoized(
       () {
         // matchDuration is in seconds
@@ -119,14 +121,14 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [match, matchPlayer],
     );
+
     final playerItemsUsed = useMemoized(
       () {
         final List<data_classes.MatchPlayerItemUsed> playerItemsUsed = [];
-        if (items == null) return playerItemsUsed;
+        if (items.isEmpty) return playerItemsUsed;
 
         for (final playerItem in matchPlayer.playerItems) {
-          final item = items
-              .firstOrNullWhere((item) => item.itemId == playerItem.itemId);
+          final item = items[playerItem.itemId];
           if (item != null) {
             playerItemsUsed.add(
               data_classes.MatchPlayerItemUsed(
@@ -141,6 +143,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer, items],
     );
+
     final talentUsed = useMemoized(
       () {
         return champion?.talents.firstOrNullWhere(
@@ -149,6 +152,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [champion, matchPlayer],
     );
+
     final playerPosition = useMemoized(
       () {
         final matchPosition = matchPlayer.matchPosition;
@@ -245,12 +249,24 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       [champion],
     );
 
-    final matchPlayerHighestStat = utilities.matchPlayerHighestStat(
-      matchPlayer.playerStats,
-      champion?.role,
+    final matchPlayerHighestStat = useMemoized(
+      () => utilities.matchPlayerHighestStat(
+        matchPlayer.playerStats,
+        champion?.role,
+      ),
+      [matchPlayer, champion],
     );
-    final highestStatText =
-        "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}";
+
+    final highestStatText = useMemoized(
+      () =>
+          "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}",
+      [matchPlayerHighestStat],
+    );
+
+    final matchPlayerBaseRank = useMemoized(
+      () => baseRanks[matchPlayer.playerRanked?.rank],
+      [matchPlayer, baseRanks],
+    );
 
     // Methods
     final onPressPlayer = useCallback(
@@ -343,7 +359,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 ),
                             ],
                           ),
-                    matchPlayer.playerRanked == null
+                    matchPlayerBaseRank == null
                         ? const SizedBox(width: 5)
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -351,7 +367,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                               children: [
                                 widgets.FastImage(
                                   imageUrl: utilities.getSmallAsset(
-                                    matchPlayer.playerRanked!.rankIconUrl,
+                                    matchPlayerBaseRank.rankIconUrl,
                                   ),
                                   height: 20,
                                   width: 20,
@@ -359,7 +375,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 const SizedBox(height: 5),
                                 Text(
                                   utilities.shortRankName(
-                                    matchPlayer.playerRanked!.rankName,
+                                    matchPlayerBaseRank.rankName,
                                   ),
                                   style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,

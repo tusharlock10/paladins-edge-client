@@ -16,8 +16,9 @@ class FriendsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final otherPlayerFriends =
-        ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
+    final otherPlayerFriends = ref.watch(
+      providers.friends.select((_) => _.otherPlayerFriends),
+    );
 
     // Variables
     int crossAxisCount;

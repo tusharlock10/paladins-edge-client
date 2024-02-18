@@ -1,12 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:jiffy/jiffy.dart";
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class SearchTopItem extends HookWidget {
+class SearchTopItem extends HookConsumerWidget {
   final models.Player player;
 
   const SearchTopItem({
@@ -15,7 +17,10 @@ class SearchTopItem extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
+
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
@@ -32,6 +37,11 @@ class SearchTopItem extends HookWidget {
         );
       },
       [player],
+    );
+
+    final playerBaseRank = useMemoized(
+      () => baseRanks[player.ranked.rank],
+      [],
     );
 
     return Card(
@@ -78,9 +88,9 @@ class SearchTopItem extends HookWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (player.ranked.rank != 0)
+                  if (playerBaseRank != null)
                     widgets.FastImage(
-                      imageUrl: player.ranked.rankIconUrl,
+                      imageUrl: playerBaseRank.rankIconUrl,
                       height: 32,
                       width: 32,
                     ),
