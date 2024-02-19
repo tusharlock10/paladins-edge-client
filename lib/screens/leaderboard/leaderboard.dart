@@ -37,14 +37,23 @@ class Leaderboard extends HookConsumerWidget {
 
     // Variables
     final theme = Theme.of(context);
-    double horizontalPadding = 0;
-    double? width;
+    int crossAxisCount;
+    double horizontalPadding;
+    double width;
     final size = MediaQuery.of(context).size;
     if (size.height < size.width) {
       // for landscape mode
-      width = size.width * 0.65;
+      crossAxisCount = 2;
+      width = size.width * 0.9;
       horizontalPadding = (size.width - width) / 2;
+    } else {
+      // for portrait mode
+      crossAxisCount = 1;
+      width = size.width;
+      horizontalPadding = 15;
     }
+    final itemWidth = width / crossAxisCount;
+    double childAspectRatio = itemWidth / LeaderboardPlayer.itemHeight;
 
     // Effects
     useEffect(
@@ -139,11 +148,15 @@ class Leaderboard extends HookConsumerWidget {
                     [
                       SizedBox(
                         height: utilities.getBodyHeight(context),
-                        child: const Center(
+                        child: Center(
                           child: widgets.LoadingIndicator(
                             lineWidth: 2,
                             size: 28,
-                            label: Text("Getting Players"),
+                            label: Text(
+                              leaderboardPlayers == null
+                                  ? "Unable to fetch leaderboard data"
+                                  : "Getting Players",
+                            ),
                           ),
                         ),
                       ),
@@ -155,7 +168,11 @@ class Leaderboard extends HookConsumerWidget {
                     horizontal: horizontalPadding,
                     vertical: 5,
                   ),
-                  sliver: SliverList(
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      childAspectRatio: childAspectRatio,
+                    ),
                     delegate: SliverChildBuilderDelegate(
                       (_, index) => LeaderboardPlayer(
                         leaderboardPlayer: leaderboardPlayers[index],
