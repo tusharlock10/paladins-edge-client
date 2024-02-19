@@ -5,6 +5,7 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/leaderboard/leaderboard_dropdown_item.dart";
 import "package:paladinsedge/screens/leaderboard/leaderboard_player.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
@@ -106,25 +107,7 @@ class Leaderboard extends HookConsumerWidget {
                         .map(
                           (baseRank) => DropdownMenuItem(
                             value: baseRank.rank,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  widgets.FastImage(
-                                    imageUrl: utilities.getSmallAsset(
-                                      baseRank.rankIconUrl,
-                                    ),
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  const SizedBox(width: 7),
-                                  Text(baseRank.rankName),
-                                ],
-                              ),
-                            ),
+                            child: LeaderboardDropdownItem(baseRank: baseRank),
                           ),
                         )
                         .toList(),
