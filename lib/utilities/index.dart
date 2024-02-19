@@ -9,7 +9,7 @@ export "./database.dart";
 export "./device.dart";
 export "./global.dart";
 export "./list.dart";
-export "./match_utils.dart";
+export "./match.dart";
 export "./math.dart";
 export "./navigation.dart";
 export "./player_utils.dart";

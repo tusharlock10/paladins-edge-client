@@ -18,16 +18,18 @@ class FriendItem extends HookConsumerWidget {
     Key? key,
   }) : super(key: key);
 
+  static const itemHeight = 96.0;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
 
     // Variables
-    const double itemHeight = 85;
     final theme = Theme.of(context);
     final bool isFavourite = isOtherPlayer
         ? false
@@ -35,6 +37,12 @@ class FriendItem extends HookConsumerWidget {
 
     // State
     final isSelected = useState(false);
+
+    // Hooks
+    final friendBaseRank = useMemoized(
+      () => baseRanks[friend.ranked.rank],
+      [friend, baseRanks],
+    );
 
     // Methods
     final onTapFriend = useCallback(
@@ -87,56 +95,55 @@ class FriendItem extends HookConsumerWidget {
       [friend],
     );
 
-    return widgets.InteractiveCard(
-      elevation: 7,
-      borderRadius: 10,
-      onTap: onTapFriend,
-      padding: const EdgeInsets.only(left: 10),
-      child: SizedBox(
-        height: itemHeight,
+    return SizedBox(
+      height: FriendItem.itemHeight,
+      child: widgets.InteractiveCard(
+        elevation: 7,
+        borderRadius: 10,
+        onTap: onTapFriend,
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         child: Row(
           children: [
             widgets.ElevatedAvatar(
               imageUrl: friend.avatarUrl,
               imageBlurHash: friend.avatarBlurHash,
-              size: 32,
+              size: 34,
               borderRadius: 5,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SelectableText(
-                    friend.name,
-                    onTap: onPressFriendName,
-                    style: theme.textTheme.displaySmall?.copyWith(
-                      fontSize: 16,
-                      decoration: TextDecoration.underline,
-                    ),
+            const SizedBox(width: 5),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SelectableText(
+                  friend.name,
+                  onTap: onPressFriendName,
+                  style: theme.textTheme.displayLarge?.copyWith(
+                    fontSize: 16,
+                    decoration: TextDecoration.underline,
                   ),
-                  friend.title != null
-                      ? Text(
-                          "${friend.title}",
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(fontSize: 12),
-                        )
-                      : const SizedBox(),
-                  Text(
-                    friend.platform,
-                    style: theme.textTheme.bodyLarge?.copyWith(fontSize: 10),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 5),
+                friend.title != null
+                    ? Text(
+                        "${friend.title}",
+                        style:
+                            theme.textTheme.bodyMedium?.copyWith(fontSize: 12),
+                      )
+                    : const SizedBox(),
+                Text(
+                  "${friend.platform} | ${friend.region}",
+                  style: theme.textTheme.bodyLarge?.copyWith(fontSize: 10),
+                ),
+              ],
             ),
             const Expanded(
               child: SizedBox(),
             ),
-            friend.ranked.rank != 0
+            friendBaseRank != null
                 ? widgets.FastImage(
                     imageUrl: utilities.getSmallAsset(
-                      friend.ranked.rankIconUrl,
+                      friendBaseRank.rankIconUrl,
                     ),
                     height: 36,
                     width: 36,

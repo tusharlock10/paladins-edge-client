@@ -2,6 +2,7 @@ import "dart:ui";
 
 import "package:expandable/expandable.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/player_detail/player_detail_header_expandable_panel.dart";
@@ -9,12 +10,13 @@ import "package:paladinsedge/screens/player_detail/player_detail_status_indicato
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class PlayerDetailHeader extends ConsumerWidget {
+class PlayerDetailHeader extends HookConsumerWidget {
   const PlayerDetailHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final baseRanks = ref.watch(providers.baseRanks).baseRanks;
     final player = ref.watch(providers.players.select((_) => _.playerData));
     final playerInferred = ref.watch(
       providers.players.select((_) => _.playerInferred),
@@ -27,6 +29,12 @@ class PlayerDetailHeader extends ConsumerWidget {
     final isSamePlayerInferred = playerId == playerInferred?.playerId;
     final textTheme = Theme.of(context).textTheme;
     final expandedController = ExpandableController(initialExpanded: false);
+
+    // Hooks
+    final playerBaseRank = useMemoized(
+      () => baseRanks[player?.ranked.rank],
+      [player, baseRanks],
+    );
 
     return player == null
         ? const SizedBox()
@@ -62,7 +70,7 @@ class PlayerDetailHeader extends ConsumerWidget {
                                     return Row(
                                       children: [
                                         widgets.FastImage(
-                                          imageUrl: player.ranked.rankIconUrl,
+                                          imageUrl: playerBaseRank!.rankIconUrl,
                                           height: 40,
                                           width: 40,
                                         ),
@@ -71,7 +79,7 @@ class PlayerDetailHeader extends ConsumerWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              player.ranked.rankName,
+                                              playerBaseRank.rankName,
                                               style: textTheme.bodyMedium
                                                   ?.copyWith(fontSize: 14),
                                             ),

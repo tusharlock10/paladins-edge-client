@@ -16,15 +16,15 @@ class FriendsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final otherPlayerFriends =
-        ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
+    final otherPlayerFriends = ref.watch(
+      providers.friends.select((_) => _.otherPlayerFriends),
+    );
 
     // Variables
     int crossAxisCount;
     double horizontalPadding;
     double width;
     final size = MediaQuery.of(context).size;
-    const itemHeight = 90.0;
     final data = isOtherPlayer ? otherPlayerFriends : friends;
     if (size.height < size.width) {
       // for landscape mode
@@ -38,7 +38,7 @@ class FriendsList extends ConsumerWidget {
       horizontalPadding = 15;
     }
     final itemWidth = width / crossAxisCount;
-    double childAspectRatio = itemWidth / itemHeight;
+    double childAspectRatio = itemWidth / FriendItem.itemHeight;
 
     return data == null
         ? SliverList(
@@ -68,17 +68,12 @@ class FriendsList extends ConsumerWidget {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 childAspectRatio: childAspectRatio,
-                // mainAxisSpacing: 5,
               ),
               delegate: SliverChildBuilderDelegate(
-                (_, index) {
-                  final friend = data[index];
-
-                  return FriendItem(
-                    isOtherPlayer: isOtherPlayer,
-                    friend: friend,
-                  );
-                },
+                (_, index) => FriendItem(
+                  isOtherPlayer: isOtherPlayer,
+                  friend: data[index],
+                ),
                 childCount: data.length,
               ),
             ),

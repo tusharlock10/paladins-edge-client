@@ -1,4 +1,5 @@
 export "./active_match/active_match.dart";
+export "./base_rank/base_rank.dart";
 export "./champion/champion.dart";
 export "./device_detail/device_detail.dart";
 export "./essentials/essentials.dart";
@@ -15,3 +16,4 @@ export "./record_expiry/record_expiry.dart";
 export "./search_history/search_history.dart";
 export "./settings/settings.dart";
 export "./user/user.dart";
+export "leaderboard_player/leaderboard_player.dart";

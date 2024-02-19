@@ -76,6 +76,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.read(providers.champions).champions;
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final playerChampions = ref.watch(
       providers.champions.select((_) => _.playerChampions),
     );
@@ -198,6 +199,11 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [champion, showBackgroundSplash],
     );
 
+    final playerInfoBaseRank = useMemoized(
+      () => baseRanks[playerInfo.ranked?.rank],
+      [playerInfo, baseRanks],
+    );
+
     // Methods
     final onTapPlayer = useCallback(
       () {
@@ -265,21 +271,21 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                             borderRadius: 12.5,
                             size: 30,
                           ),
-                    playerInfo.ranked == null
+                    playerInfoBaseRank == null
                         ? const SizedBox(width: 20)
                         : Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Column(
                               children: [
                                 widgets.FastImage(
-                                  imageUrl: playerInfo.ranked!.rankIconUrl,
+                                  imageUrl: playerInfoBaseRank.rankIconUrl,
                                   height: 22,
                                   width: 22,
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   utilities.shortRankName(
-                                    playerInfo.ranked!.rankName,
+                                    playerInfoBaseRank.rankName,
                                   ),
                                   style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,

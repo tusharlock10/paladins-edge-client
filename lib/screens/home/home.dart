@@ -17,7 +17,6 @@ class Home extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
     final queueProvider = ref.read(providers.queue);
-    final itemsProvider = ref.read(providers.items);
     final matchesProvider = ref.read(providers.matches);
     final friendsProvider = ref.read(providers.friends);
     final favouriteFriends = ref.watch(
@@ -29,7 +28,6 @@ class Home extends HookConsumerWidget {
     useEffect(
       () {
         queueProvider.getQueueTimeline(false);
-        itemsProvider.loadItems(false);
         matchesProvider.loadTopMatches(false);
 
         return;
@@ -42,7 +40,6 @@ class Home extends HookConsumerWidget {
       () async {
         return await Future.wait([
           queueProvider.getQueueTimeline(true),
-          itemsProvider.loadItems(true),
           matchesProvider.loadTopMatches(true),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),

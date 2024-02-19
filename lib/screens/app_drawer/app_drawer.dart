@@ -221,6 +221,14 @@ class AppDrawer extends HookConsumerWidget {
       [isGuest],
     );
 
+    final onLeaderboard = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Leaderboard.routeName);
+      },
+      [],
+    );
+
     final onFAQ = useCallback(
       () {
         final routeName = showPlayerDependentButtons
@@ -270,6 +278,10 @@ class AppDrawer extends HookConsumerWidget {
                 label: "Saved Matches",
                 onPressed: onSavedMatches,
               ),
+            AppDrawerButton(
+              label: "Leaderboard",
+              onPressed: onLeaderboard,
+            ),
             AppDrawerButton(
               label: "FAQs",
               onPressed: onFAQ,
