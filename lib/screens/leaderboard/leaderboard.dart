@@ -149,15 +149,13 @@ class Leaderboard extends HookConsumerWidget {
                       SizedBox(
                         height: utilities.getBodyHeight(context),
                         child: Center(
-                          child: widgets.LoadingIndicator(
-                            lineWidth: 2,
-                            size: 28,
-                            label: Text(
-                              leaderboardPlayers == null
-                                  ? "Unable to fetch leaderboard data"
-                                  : "Getting Players",
-                            ),
-                          ),
+                          child: isLoading
+                              ? const widgets.LoadingIndicator(
+                                  lineWidth: 2,
+                                  size: 28,
+                                  label: Text("Getting Players"),
+                                )
+                              : const Text("Unable to load leaderboard data"),
                         ),
                       ),
                     ],
