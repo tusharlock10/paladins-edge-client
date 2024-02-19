@@ -19,3 +19,4 @@ export "./player_champions/index.dart";
 export "./player_detail/index.dart";
 export "./saved_matches/saved_matches.dart";
 export "./search/index.dart";
+export "./sponsor/index.dart";

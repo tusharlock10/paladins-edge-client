@@ -44,6 +44,7 @@ class _AuthNotifier extends ChangeNotifier {
   models.Player? player;
   models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
+  List<models.Sponsor>? sponsors;
   List<data_classes.CombinedMatch>? savedMatches;
   bool? apiAvailable = true;
 
@@ -455,6 +456,14 @@ class _AuthNotifier extends ChangeNotifier {
     final response = await api.AuthRequests.faqs();
     if (response != null) {
       faqs = response.faqs;
+      notifyListeners();
+    }
+  }
+
+  void getSponsors() async {
+    final response = await api.AuthRequests.getSponsors();
+    if (response != null) {
+      sponsors = response.sponsors;
       notifyListeners();
     }
   }

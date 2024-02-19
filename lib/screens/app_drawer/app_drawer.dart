@@ -229,6 +229,14 @@ class AppDrawer extends HookConsumerWidget {
       [],
     );
 
+    final onSponsor = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Sponsor.routeName);
+      },
+      [],
+    );
+
     final onFAQ = useCallback(
       () {
         final routeName = showPlayerDependentButtons
@@ -281,6 +289,10 @@ class AppDrawer extends HookConsumerWidget {
             AppDrawerButton(
               label: "Leaderboard",
               onPressed: onLeaderboard,
+            ),
+            AppDrawerButton(
+              label: "Sponsor",
+              onPressed: onSponsor,
             ),
             AppDrawerButton(
               label: "FAQs",

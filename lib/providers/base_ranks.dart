@@ -30,7 +30,7 @@ class _BaseRanksNotifier extends ChangeNotifier {
     var ranksList = utilities.Database.getBaseRanks();
 
     if (ranksList == null) {
-      final response = await api.BaseRankRequests.baseRanks();
+      final response = await api.AuthRequests.getBaseRanks();
       if (response == null) return;
       ranksList = response.ranks;
 

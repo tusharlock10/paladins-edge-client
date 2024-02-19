@@ -1,5 +1,4 @@
 export "./auth/index.dart";
-export "./base_ranks/index.dart";
 export "./champions/index.dart";
 export "./feedback/index.dart";
 export "./items/index.dart";

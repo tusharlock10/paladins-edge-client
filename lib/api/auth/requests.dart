@@ -184,4 +184,32 @@ abstract class AuthRequests {
       return null;
     }
   }
+
+  static Future<responses.BaseRankResponse?> getBaseRanks() async {
+    try {
+      final response = await utilities.api
+          .get<Map<String, dynamic>>(constants.Urls.baseRanks);
+      if (response.data != null) {
+        return responses.BaseRankResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<responses.SponsorResponse?> getSponsors() async {
+    try {
+      final response = await utilities.api
+          .get<Map<String, dynamic>>(constants.Urls.sponsors);
+      if (response.data != null) {
+        return responses.SponsorResponse.fromJson(response.data!);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }
