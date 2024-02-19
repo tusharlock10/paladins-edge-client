@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
@@ -6,7 +7,23 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _BaseRanksNotifier extends ChangeNotifier {
   bool isLoading = true;
+  List<models.BaseRank> validRanks = [];
   Map<int, models.BaseRank> baseRanks = {};
+
+  static List<models.BaseRank> getValidRanks(
+    Map<int, models.BaseRank> baseRanks,
+  ) {
+    final invalidRanks = [0, 27];
+    final List<models.BaseRank> validRanks = [];
+    final ranks = baseRanks.keys.sorted().reversed;
+
+    for (var rank in ranks) {
+      if (invalidRanks.contains(rank)) continue;
+      validRanks.add(baseRanks[rank]!);
+    }
+
+    return validRanks;
+  }
 
   /// Loads the `baseRank` data from local db and syncs it with server
   Future<void> loadBaseRanks() async {
@@ -24,6 +41,7 @@ class _BaseRanksNotifier extends ChangeNotifier {
     for (var baseRank in ranksList) {
       baseRanks[baseRank.rank] = baseRank;
     }
+    validRanks = getValidRanks(baseRanks);
   }
 }
 

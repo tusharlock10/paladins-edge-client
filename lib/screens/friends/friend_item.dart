@@ -118,7 +118,7 @@ class FriendItem extends HookConsumerWidget {
                   SelectableText(
                     friend.name,
                     onTap: onPressFriendName,
-                    style: theme.textTheme.displaySmall?.copyWith(
+                    style: theme.textTheme.displayLarge?.copyWith(
                       fontSize: 16,
                       decoration: TextDecoration.underline,
                     ),
