@@ -65,34 +65,6 @@ class Leaderboard extends HookConsumerWidget {
       [selectedRank],
     );
 
-    // Hooks
-    final rankItems = useMemoized(
-      () => validRanks
-          .map(
-            (baseRank) => DropdownMenuItem(
-              value: baseRank.rank,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  children: [
-                    widgets.FastImage(
-                      imageUrl: utilities.getSmallAsset(
-                        baseRank.rankIconUrl,
-                      ),
-                      height: 22,
-                      width: 22,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(baseRank.rankName),
-                  ],
-                ),
-              ),
-            ),
-          )
-          .toList(),
-      [validRanks],
-    );
-
     // Methods
     final onSelectRank = useCallback(
       (int? rank) {
@@ -106,32 +78,60 @@ class Leaderboard extends HookConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             forceElevated: true,
             floating: true,
             snap: true,
             pinned: constants.isWeb,
-            title: Text("Leaderboard"),
-          ),
-          SliverToBoxAdapter(
-            child: Center(
-              child: Theme(
-                data: theme.copyWith(canvasColor: theme.cardTheme.color),
-                child: DropdownButton<int>(
-                  menuMaxHeight: 420,
-                  items: rankItems,
-                  onChanged: onSelectRank,
-                  value: selectedRank,
-                  iconEnabledColor: theme.textTheme.headlineMedium?.color,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  alignment: Alignment.center,
-                  style: theme.textTheme.displayLarge?.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
+            title: const Text("Leaderboard"),
+            centerTitle: false,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: Theme(
+                  data: theme.copyWith(canvasColor: theme.cardTheme.color),
+                  child: DropdownButton<int>(
+                    underline: const SizedBox(),
+                    menuMaxHeight: 420,
+                    items: validRanks
+                        .map(
+                          (baseRank) => DropdownMenuItem(
+                            value: baseRank.rank,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  widgets.FastImage(
+                                    imageUrl: utilities.getSmallAsset(
+                                      baseRank.rankIconUrl,
+                                    ),
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Text(baseRank.rankName),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: onSelectRank,
+                    value: selectedRank,
+                    iconEnabledColor: theme.textTheme.headlineMedium?.color,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    alignment: Alignment.center,
+                    style: theme.textTheme.displayLarge?.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
           isLoading || leaderboardPlayers == null
               ? SliverList(
