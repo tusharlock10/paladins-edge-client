@@ -5,4 +5,6 @@ export "./database.dart";
 export "./environment.dart";
 export "./login_cta.dart";
 export "./match.dart";
+export "./platforms.dart";
+export "./remote_config.dart";
 export "./urls.dart";

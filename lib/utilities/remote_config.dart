@@ -3,41 +3,64 @@ import "package:paladinsedge/constants/index.dart" as constants;
 import "package:pub_semver/pub_semver.dart";
 
 abstract class RemoteConfig {
-  static final _firebaseRemoteConfig = FirebaseRemoteConfig.instance
-    ..setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(minutes: 5),
-      ),
-    );
-  static final _remoteConfigDefaults = {
-    constants.RemoteConfigParams.enableGuestLogin: true,
-    constants.RemoteConfigParams.paladinsApiUnavailable: false,
-    constants.RemoteConfigParams.serverMaintenance: false,
-    constants.RemoteConfigParams.lowestSupportedVersion: "1.0.0",
-  };
+  static FirebaseRemoteConfig? _firebaseRemoteConfig;
 
   /// Getters
-  static bool get enableGuestLogin => _firebaseRemoteConfig
-      .getBool(constants.RemoteConfigParams.enableGuestLogin);
-  static bool get showBackgroundSplash => _firebaseRemoteConfig
-      .getBool(constants.RemoteConfigParams.showBackgroundSplash);
-  static bool get paladinsApiUnavailable => _firebaseRemoteConfig
-      .getBool(constants.RemoteConfigParams.paladinsApiUnavailable);
-  static bool get serverMaintenance => _firebaseRemoteConfig
-      .getBool(constants.RemoteConfigParams.serverMaintenance);
+  static bool get enableGuestLogin {
+    const key = constants.RemoteConfigParams.enableGuestLogin;
+    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
+
+    return _firebaseRemoteConfig!.getBool(key);
+  }
+
+  static bool get showBackgroundSplash {
+    const key = constants.RemoteConfigParams.showBackgroundSplash;
+    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
+
+    return _firebaseRemoteConfig!.getBool(key);
+  }
+
+  static bool get paladinsApiUnavailable {
+    const key = constants.RemoteConfigParams.paladinsApiUnavailable;
+    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
+
+    return _firebaseRemoteConfig!.getBool(key);
+  }
+
+  static bool get serverMaintenance {
+    const key = constants.RemoteConfigParams.serverMaintenance;
+    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
+
+    return _firebaseRemoteConfig!.getBool(key);
+  }
+
   static Version get lowestSupportedVersion {
-    final version = _firebaseRemoteConfig
-        .getString(constants.RemoteConfigParams.lowestSupportedVersion);
+    const key = constants.RemoteConfigParams.lowestSupportedVersion;
+    var version = RemoteConfig.getDefaultValue(key);
+
+    if (_firebaseRemoteConfig != null) {
+      version = _firebaseRemoteConfig!.getString(key);
+    }
 
     return Version.parse(version);
   }
 
   /// Setup for Remote Config
+  /// Initialization is disabled on windows
+  static Future<void> initialize() async {
+    if (constants.isWindows) return;
 
-  static Future<bool> initialize() {
-    _firebaseRemoteConfig.setDefaults(_remoteConfigDefaults);
-
-    return _firebaseRemoteConfig.fetchAndActivate();
+    final remoteConfigInstance = FirebaseRemoteConfig.instance
+      ..setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(minutes: 1),
+          minimumFetchInterval: const Duration(minutes: 5),
+        ),
+      );
+    remoteConfigInstance.setDefaults(constants.remoteConfigDefaults);
+    await remoteConfigInstance.fetchAndActivate();
+    _firebaseRemoteConfig = remoteConfigInstance;
   }
+
+  static getDefaultValue(String key) => constants.remoteConfigDefaults[key];
 }

@@ -1,5 +1,3 @@
-import "dart:io";
-
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -18,6 +16,7 @@ import "package:responsive_framework/responsive_framework.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await utilities.initializeDesktop();
   await Future.wait([
     if (!constants.isDebug)
       SystemChrome.setPreferredOrientations([
@@ -25,13 +24,13 @@ void main() async {
         DeviceOrientation.portraitDown,
       ]),
     Firebase.initializeApp(
-      name: constants.isWeb ? null : "root",
+      name: constants.isMobile ? "root" : null,
       options: firebase_options.DefaultFirebaseOptions.currentPlatform,
     ),
   ]);
 
   try {
-    if (Platform.isAndroid) {
+    if (constants.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
     }
   } catch (_) {}

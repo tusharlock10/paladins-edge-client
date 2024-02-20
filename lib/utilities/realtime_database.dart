@@ -8,7 +8,7 @@ import "package:paladinsedge/constants/index.dart" as constants;
 enum ChatConnectionState { connected, disconnected, unknown }
 
 class RealtimeGlobalChat {
-  static final _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
+  static DatabaseReference? _connectedRef;
   static DatabaseReference? _globalChatRef;
   static DatabaseReference? _messagesRef;
   static DatabaseReference? _playersOnlineRef;
@@ -17,6 +17,9 @@ class RealtimeGlobalChat {
   /// Used to initialize ref object
   /// should be called Env after is setup
   static Future<void> initialize() async {
+    if (constants.isWindows) return;
+
+    _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
     _globalChatRef = FirebaseDatabase.instance.ref(
       "${constants.Env.appType}-global-chat",
     );
@@ -29,12 +32,14 @@ class RealtimeGlobalChat {
   /// user would be connected to RTDB, so [_setPlayerOnline] is called
   /// when user disconnects unintentionally, [_registerDisconnect] is called from db
   /// and player online data is removed from RTDB.
-  static StreamSubscription<DatabaseEvent> connectionListener({
+  static StreamSubscription<DatabaseEvent>? connectionListener({
     required types.User user,
     required void Function()? onConnected,
     required void Function()? onDisconnected,
   }) {
-    return _connectedRef.onValue.listen((event) {
+    if (_connectedRef == null) return null;
+
+    return _connectedRef!.onValue.listen((event) {
       final connected = event.snapshot.value as bool? ?? false;
       if (connected) {
         _setPlayerOnline(user);

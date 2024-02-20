@@ -34,9 +34,11 @@ dependencies:
   google_fonts: ^4.0.4
   bottom_navy_bar: ^6.0.0
   google_sign_in: ^6.1.0
-  firebase_core: ^2.12.0
-  firebase_analytics: ^10.4.0
-  firebase_auth: ^4.6.0
+  firebase_core: ^2.25.4
+  firebase_analytics: ^10.8.6
+  firebase_auth: ^4.17.5
+  firebase_remote_config: ^4.3.14
+  firebase_database: ^10.4.6
   flutter_spinkit: ^5.1.0
   jiffy: ^6.2.2
   hive: 2.2.3
@@ -64,7 +66,6 @@ dependencies:
   touchable_opacity: ^1.2.0
   syncfusion_flutter_datagrid: ^24.1.46
   duration: ^3.0.10
-  firebase_remote_config: ^4.2.0
   mime: ^1.0.2
   image_picker: ^1.0.7
   community_material_icon: ^5.9.55
@@ -73,7 +74,6 @@ dependencies:
   go_router: ^13.0.1
   substring_highlight: ^1.0.33
   path_provider: ^2.0.11
-  firebase_database: ^10.2.0
   flutter_chat_ui: ^1.6.3
   uuid: ^3.0.6
   flutter_chat_types: ^3.4.3

@@ -1,5 +1,3 @@
-import "dart:io";
-
 import "package:android_id/android_id.dart";
 import "package:dartx/dartx.dart";
 import "package:device_info_plus/device_info_plus.dart";
@@ -19,7 +17,7 @@ Future<models.DeviceDetail?> getDeviceDetail() async {
       webDeviceInfo: result,
     );
   }
-  if (Platform.isAndroid) {
+  if (constants.isAndroid) {
     const androidIdPlugin = AndroidId();
     final androidId = await androidIdPlugin.getId();
     result["androidId"] = androidId ?? "Unknown";

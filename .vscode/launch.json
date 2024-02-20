@@ -5,6 +5,27 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "windows",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "windows",
+      ],
+    },
+    {
+      "name": "windows release",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "windows",
+        "--release",
+      ],
+    },
+    {
       "name": "web",
       "type": "dart",
       "request": "launch",

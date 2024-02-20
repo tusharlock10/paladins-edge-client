@@ -19,6 +19,7 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final isPlatformSupported = !constants.isWindows;
     final authProvider = ref.read(providers.auth);
     final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
@@ -65,7 +66,7 @@ class AppDrawer extends HookConsumerWidget {
     final onLogout = useCallback(
       () async {
         isLoggingOut.value = true;
-        final isLoggedOut = await ref.read(providers.auth).logout();
+        final isLoggedOut = await authProvider.logout();
 
         if (isLoggedOut) {
           navigateToLogin();
@@ -276,7 +277,7 @@ class AppDrawer extends HookConsumerWidget {
               label: "Feedback",
               onPressed: onFeedback,
             ),
-            if (showPlayerDependentButtons)
+            if (showPlayerDependentButtons & isPlatformSupported)
               AppDrawerButton(
                 label: "Global Chat",
                 onPressed: onGlobalChat,
