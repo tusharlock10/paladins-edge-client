@@ -52,7 +52,8 @@ class Main extends HookWidget {
 
     return Scaffold(
       drawer: const AppDrawer(),
-      drawerEnableOpenDragGesture: false,
+      drawerEnableOpenDragGesture: constants.isMobile,
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
       onDrawerChanged: onDrawerChanged,
       body: MainPagesStack(selectedIndex: selectedIndex.value),
       bottomNavigationBar: MainBottomTabs(
