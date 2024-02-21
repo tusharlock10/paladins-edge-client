@@ -21,11 +21,12 @@ class AppDrawer extends HookConsumerWidget {
     // Providers
     final isPlatformSupported = !constants.isWindows;
     final authProvider = ref.read(providers.auth);
+    final appStateProvider = ref.read(providers.appState);
     final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final themeMode = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode),
+      providers.appState.select((_) => _.settings.themeMode),
     );
 
     // State
@@ -81,11 +82,11 @@ class AppDrawer extends HookConsumerWidget {
     final onChangeTheme = useCallback(
       () {
         if (themeMode == ThemeMode.dark) {
-          authProvider.toggleTheme(ThemeMode.light);
+          appStateProvider.toggleTheme(ThemeMode.light);
         } else if (themeMode == ThemeMode.light) {
-          authProvider.toggleTheme(ThemeMode.system);
+          appStateProvider.toggleTheme(ThemeMode.system);
         } else {
-          authProvider.toggleTheme(ThemeMode.dark);
+          appStateProvider.toggleTheme(ThemeMode.dark);
         }
       },
       [themeMode],
@@ -103,7 +104,7 @@ class AppDrawer extends HookConsumerWidget {
           return null;
         }
       },
-      [authProvider.settings.themeMode],
+      [appStateProvider.settings.themeMode],
     );
 
     final onFriendsHelper = useCallback(

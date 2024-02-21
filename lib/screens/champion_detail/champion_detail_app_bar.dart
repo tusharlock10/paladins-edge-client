@@ -34,22 +34,11 @@ class ChampionDetailAppBar extends HookWidget {
     // Hooks
     final splashBackground = useMemoized(
       () {
-        var splashBackground = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.splashUrl,
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.splash,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.splash,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            splashBackground.imageUrl = assetUrl;
-            splashBackground.isAssetImage = true;
-          }
-        }
-
-        return splashBackground;
       },
       [champion],
     );

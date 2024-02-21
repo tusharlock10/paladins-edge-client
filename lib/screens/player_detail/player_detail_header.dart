@@ -42,22 +42,11 @@ class PlayerDetailHeader extends HookConsumerWidget {
       () {
         if (playerBaseRank == null) return null;
 
-        var rankIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(playerBaseRank.rankIconUrl),
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: playerBaseRank.rank,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.ranks,
-            playerBaseRank.rank,
-          );
-          if (assetUrl != null) {
-            rankIcon.imageUrl = assetUrl;
-            rankIcon.isAssetImage = true;
-          }
-        }
-
-        return rankIcon;
       },
       [playerBaseRank],
     );

@@ -2,21 +2,20 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/app_drawer/index.dart";
 import "package:paladinsedge/screens/main/main_bottom_tabs.dart";
 import "package:paladinsedge/screens/main/main_pages.dart";
 import "package:paladinsedge/screens/main/main_pages_stack.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
-class Main extends HookWidget {
+class Main extends HookConsumerWidget {
   static const routeName = "main";
   static const routePath = "/";
-  final int startIndex;
-  const Main({
-    this.startIndex = 0,
-    Key? key,
-  }) : super(key: key);
+
+  const Main({Key? key}) : super(key: key);
 
   static GoRoute goRouteBuilder(List<GoRoute> routes) => GoRoute(
         name: routeName,
@@ -26,9 +25,12 @@ class Main extends HookWidget {
       );
 
   @override
-  Widget build(BuildContext context) {
-    // State
-    final selectedIndex = useState(startIndex);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final appStateProvider = ref.read(providers.appState);
+    final bottomTabIndex = ref.watch(
+      providers.appState.select((_) => _.bottomTabIndex),
+    );
 
     // Methods
     final onDrawerChanged = useCallback(
@@ -45,7 +47,7 @@ class Main extends HookWidget {
           constants.AnalyticsEvent.tabChange,
           {"tab": tab.title},
         );
-        selectedIndex.value = index;
+        appStateProvider.setBottomTabIndex(index);
       },
       [],
     );
@@ -53,16 +55,15 @@ class Main extends HookWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       drawerEnableOpenDragGesture: constants.isMobile,
-      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 2,
       onDrawerChanged: onDrawerChanged,
-      body: MainPagesStack(selectedIndex: selectedIndex.value),
+      body: MainPagesStack(selectedIndex: bottomTabIndex),
       bottomNavigationBar: MainBottomTabs(
-        selectedIndex: selectedIndex.value,
+        selectedIndex: bottomTabIndex,
         onItemSelected: onItemSelected,
       ),
     );
   }
 
-  static Page _routeBuilder(_, __) =>
-      const CupertinoPage(child: Main(startIndex: 0));
+  static Page _routeBuilder(_, __) => const CupertinoPage(child: Main());
 }

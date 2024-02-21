@@ -18,7 +18,7 @@ class HomeQueueChart extends HookConsumerWidget {
     // Providers
     final queueProvider = ref.read(providers.queue);
     final isLightTheme = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
+      providers.appState.select((_) => _.settings.themeMode == ThemeMode.light),
     );
     final selectedTimeline = ref.watch(
       providers.queue.select((_) => _.selectedTimeline),

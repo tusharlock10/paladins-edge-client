@@ -204,22 +204,11 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
         if (!showBackgroundSplash) return null;
         if (champion == null) return null;
 
-        var splashBackground = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.splashUrl,
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.splash,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.splash,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            splashBackground.imageUrl = assetUrl;
-            splashBackground.isAssetImage = true;
-          }
-        }
-
-        return splashBackground;
       },
       [champion, showBackgroundSplash],
     );
@@ -228,23 +217,12 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       () {
         if (champion == null) return null;
 
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(champion.iconUrl),
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [champion],
     );
@@ -272,22 +250,11 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       () {
         if (matchPlayerBaseRank == null) return null;
 
-        var rankIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(matchPlayerBaseRank.rankIconUrl),
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: matchPlayerBaseRank.rank,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.ranks,
-            matchPlayerBaseRank.rank,
-          );
-          if (assetUrl != null) {
-            rankIcon.imageUrl = assetUrl;
-            rankIcon.isAssetImage = true;
-          }
-        }
-
-        return rankIcon;
       },
       [matchPlayerBaseRank],
     );

@@ -24,7 +24,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
     final championsProvider = ref.read(providers.champions);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final isLightTheme = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
+      providers.appState.select((_) => _.settings.themeMode == ThemeMode.light),
     );
     final favouriteChampions = ref.watch(
       providers.champions.select((_) => _.favouriteChampions),
@@ -41,23 +41,12 @@ class ChampionDetailHeading extends HookConsumerWidget {
     // Hooks
     final championIcon = useMemoized(
       () {
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.iconUrl,
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [champion],
     );

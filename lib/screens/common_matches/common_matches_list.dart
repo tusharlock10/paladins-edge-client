@@ -18,7 +18,7 @@ class CommonMatchesList extends HookConsumerWidget {
     // Providers
     final champions = ref.watch(providers.champions.select((_) => _.champions));
     final showUserPlayerMatches = ref.watch(
-      providers.auth.select((_) => _.settings.showUserPlayerMatches),
+      providers.appState.select((_) => _.settings.showUserPlayerMatches),
     );
     final userPlayerId = ref.watch(
       providers.auth.select((_) => _.player?.playerId),

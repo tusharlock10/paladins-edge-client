@@ -11,10 +11,7 @@ import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/dev/index.dart" as dev;
 import "package:paladinsedge/models/index.dart" as models;
-import "package:paladinsedge/providers/champions.dart" as champions_provider;
-import "package:paladinsedge/providers/loadout.dart" as loadout_provider;
-import "package:paladinsedge/providers/matches.dart" as matches_provider;
-import "package:paladinsedge/providers/players.dart" as players_provider;
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _GetFirebaseUserResponse {
@@ -42,7 +39,6 @@ class _AuthNotifier extends ChangeNotifier {
   String? token;
   models.User? user;
   models.Player? player;
-  models.Settings settings = models.Settings();
   List<models.FAQ>? faqs;
   List<models.Sponsor>? sponsors;
   List<data_classes.CombinedMatch>? savedMatches;
@@ -78,12 +74,6 @@ class _AuthNotifier extends ChangeNotifier {
         }
       }
     }
-  }
-
-  /// Loads the `settings` from local db
-  void loadSettings() {
-    settings = utilities.Database.getSettings();
-    notifyListeners();
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
@@ -239,10 +229,11 @@ class _AuthNotifier extends ChangeNotifier {
 
     // clear data from all providers
     clearData();
-    ref.read(champions_provider.champions).clearData();
-    ref.read(loadout_provider.loadout).clearData();
-    ref.read(matches_provider.matches).clearData();
-    ref.read(players_provider.players).clearData();
+    ref.read(providers.champions).clearData();
+    ref.read(providers.loadout).clearData();
+    ref.read(providers.matches).clearData();
+    ref.read(providers.players).clearData();
+    ref.read(providers.appState).clearData();
 
     // clear values from the database and utilities
     utilities.Database.clear();
@@ -360,7 +351,7 @@ class _AuthNotifier extends ChangeNotifier {
       (_) => _.match.matchId == matchId,
     );
     if (combinedMatch == null) {
-      final matchDetails = ref.read(matches_provider.matches).matchDetails;
+      final matchDetails = ref.read(providers.matches).matchDetails;
       if (matchDetails != null && matchDetails.match.matchId == matchId) {
         combinedMatch = data_classes.CombinedMatch(
           match: matchDetails.match,
@@ -470,46 +461,11 @@ class _AuthNotifier extends ChangeNotifier {
     }
   }
 
-  /// Toggle the theme from `light` to `dark` and vice versa
-  void toggleTheme(ThemeMode themeMode) {
-    settings.themeMode = themeMode;
-
-    String? themeName;
-    if (themeMode == ThemeMode.dark) {
-      themeName = "dark";
-    } else if (themeMode == ThemeMode.light) {
-      themeName = "light";
-    } else if (themeMode == ThemeMode.system) {
-      themeName = "system";
-    }
-    notifyListeners();
-    utilities.Analytics.logEvent(
-      constants.AnalyticsEvent.changeTheme,
-      {"theme": themeName},
-    );
-    utilities.Database.saveSettings(settings);
-  }
-
-  /// Toggle showUserPlayerMatches for commonMatches
-  void toggleShowUserPlayerMatches(bool? value) {
-    settings.showUserPlayerMatches = value ?? false;
-    notifyListeners();
-    utilities.Database.saveSettings(settings);
-  }
-
-  /// Set queue region in settings
-  void setQueueRegions(String region) {
-    settings.selectedQueueRegion = region;
-    notifyListeners();
-    utilities.Database.saveSettings(settings);
-  }
-
   void clearData() {
     player = null;
     token = null;
     isGuest = false;
     user = null;
-    settings = models.Settings();
   }
 
   Future<_GetFirebaseUserResponse> _getFirebaseUser() async {

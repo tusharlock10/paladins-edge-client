@@ -47,7 +47,7 @@ class PaladinsEdgeApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final themeMode = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode),
+      providers.appState.select((_) => _.settings.themeMode),
     );
 
     return OverlaySupport.global(
