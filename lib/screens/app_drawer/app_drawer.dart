@@ -249,8 +249,8 @@ class AppDrawer extends HookConsumerWidget {
       [showPlayerDependentButtons],
     );
 
-    return Drawer(
-      child: SafeArea(
+    return SafeArea(
+      child: Drawer(
         child: Column(
           children: [
             const SizedBox(height: 20),

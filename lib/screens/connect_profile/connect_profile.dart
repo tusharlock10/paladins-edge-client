@@ -170,6 +170,8 @@ class ConnectProfile extends HookConsumerWidget {
     // Build Widgets
     return Scaffold(
       drawer: const AppDrawer(),
+      drawerEnableOpenDragGesture: constants.isMobile,
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
       appBar: AppBar(
         title: const Text("Connect Profile"),
       ),
