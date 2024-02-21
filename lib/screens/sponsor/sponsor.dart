@@ -7,6 +7,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/sponsor/sponsor_card.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Sponsor extends HookConsumerWidget {
   static const routeName = "sponsor";
@@ -39,11 +40,19 @@ class Sponsor extends HookConsumerWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            sponsors == null
-                ? const SizedBox()
-                : SponsorCard(
-                    hasSponsors: sponsors.isEmpty,
-                  ),
+            Center(
+              child: sponsors == null
+                  ? const Center(
+                      child: widgets.LoadingIndicator(
+                        lineWidth: 2,
+                        size: 28,
+                        label: Text("Loading Sponsors"),
+                      ),
+                    )
+                  : SponsorCard(
+                      hasSponsors: sponsors.isNotEmpty,
+                    ),
+            ),
             if (utilities.Navigation.canPop(context))
               Padding(
                 padding: const EdgeInsets.all(4),

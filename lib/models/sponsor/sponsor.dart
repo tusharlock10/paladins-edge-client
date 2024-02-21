@@ -10,16 +10,12 @@ class Sponsor {
   /// name of the sponsor
   final String name;
 
-  /// email of the sponsor
-  final String email;
-
   /// mode of the sponsorship
   final String mode;
 
   Sponsor({
     required this.paladinsName,
     required this.name,
-    required this.email,
     required this.mode,
   });
 

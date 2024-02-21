@@ -31,10 +31,7 @@ class SponsorButton extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
               ),
               elevation: 5,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.all(20),
             ),
           ),
         ),
