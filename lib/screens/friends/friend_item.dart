@@ -49,22 +49,11 @@ class FriendItem extends HookConsumerWidget {
       () {
         if (friendBaseRank == null) return null;
 
-        var rankIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(friendBaseRank.rankIconUrl),
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: friendBaseRank.rank,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.ranks,
-            friendBaseRank.rank,
-          );
-          if (assetUrl != null) {
-            rankIcon.imageUrl = assetUrl;
-            rankIcon.isAssetImage = true;
-          }
-        }
-
-        return rankIcon;
       },
       [friendBaseRank],
     );

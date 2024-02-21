@@ -12,7 +12,7 @@ class _AppStateNotifier extends ChangeNotifier {
   /// Change index to the current bottom tab
   void setBottomTabIndex(int index) {
     bottomTabIndex = index;
-    utilities.postFrameCallback(notifyListeners);
+    notifyListeners();
   }
 
   /// Set wether the search tab is visited or not

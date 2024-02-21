@@ -3,7 +3,6 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
-import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetailTeamHeader extends HookWidget {
@@ -23,23 +22,12 @@ class MatchDetailTeamHeader extends HookWidget {
     // Methods
     final getChampionIcon = useCallback(
       (models.Champion champion) {
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.iconUrl,
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [],
     );

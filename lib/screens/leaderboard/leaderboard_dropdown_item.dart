@@ -19,22 +19,11 @@ class LeaderboardDropdownItem extends HookWidget {
     // Hooks
     final rankIcon = useMemoized(
       () {
-        var rankIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(baseRank.rankIconUrl),
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: baseRank.rank,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.ranks,
-            baseRank.rank,
-          );
-          if (assetUrl != null) {
-            rankIcon.imageUrl = assetUrl;
-            rankIcon.isAssetImage = true;
-          }
-        }
-
-        return rankIcon;
       },
       [baseRank],
     );

@@ -82,19 +82,10 @@ class PlayerChampionsDataSource extends DataGridSource {
 
     var championIcon = data_classes.PlatformOptimizedImage(
       imageUrl: utilities.getSmallAsset(sortedData.iconUrl),
-      isAssetImage: false,
       blurHash: sortedData.iconBlurHash,
+      assetType: constants.ChampionAssetType.icons,
+      assetId: sortedData.championId,
     );
-    if (!constants.isWeb) {
-      final assetUrl = utilities.getAssetImageUrl(
-        constants.ChampionAssetType.icons,
-        sortedData.championId,
-      );
-      if (assetUrl != null) {
-        championIcon.imageUrl = assetUrl;
-        championIcon.isAssetImage = true;
-      }
-    }
 
     return Center(
       child: widgets.ElevatedAvatar(

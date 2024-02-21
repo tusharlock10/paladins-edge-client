@@ -111,23 +111,12 @@ class ChampionItem extends HookConsumerWidget {
 
     final championIcon = useMemoized(
       () {
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.iconUrl,
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [champion],
     );
