@@ -95,11 +95,13 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                   builder: (context, isExpanded, _) {
                                     return Row(
                                       children: [
-                                        widgets.FastImage(
-                                          imageUrl: rankIcon!.imageUrl,
-                                          height: 40,
-                                          width: 40,
-                                        ),
+                                        if (rankIcon != null)
+                                          widgets.FastImage(
+                                            imageUrl: rankIcon.imageUrl,
+                                            isAssetImage: rankIcon.isAssetImage,
+                                            height: 40,
+                                            width: 40,
+                                          ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

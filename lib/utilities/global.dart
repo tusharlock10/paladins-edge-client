@@ -22,13 +22,13 @@ abstract class Global {
   static bool isInitialRoute = true;
 
   /// a list of all paladins asset keys
-  static Map<String, List<String>> paladinsAssets = {
-    constants.ChampionAssetType.abilities: [],
-    constants.ChampionAssetType.cards: [],
-    constants.ChampionAssetType.header: [],
-    constants.ChampionAssetType.icons: [],
-    constants.ChampionAssetType.splash: [],
-    constants.ChampionAssetType.talents: [],
-    constants.ChampionAssetType.ranks: [],
+  static Map<String, Set<String>> paladinsAssets = {
+    constants.ChampionAssetType.abilities: <String>{},
+    constants.ChampionAssetType.cards: <String>{},
+    constants.ChampionAssetType.header: <String>{},
+    constants.ChampionAssetType.icons: <String>{},
+    constants.ChampionAssetType.splash: <String>{},
+    constants.ChampionAssetType.talents: <String>{},
+    constants.ChampionAssetType.ranks: <String>{},
   };
 }

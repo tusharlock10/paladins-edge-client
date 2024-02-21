@@ -71,6 +71,9 @@ abstract class Database {
     _topMatchBox = await Hive.openBox<models.TopMatch>(
       constants.HiveBoxes.topMatch,
     );
+    _baseRankBox = await Hive.openBox<models.BaseRank>(
+      constants.HiveBoxes.baseRank,
+    );
 
     // check if recordExpiry contains any data
     _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
@@ -116,8 +119,8 @@ abstract class Database {
   static void saveTopMatch(models.TopMatch topMatch) =>
       _topMatchBox?.add(topMatch);
 
-  static void saveBaseRank(models.BaseRank baseRank) =>
-      _baseRankBox?.add(baseRank);
+  static void saveBaseRanks(List<models.BaseRank> baseRanks) =>
+      _baseRankBox?.addAll(baseRanks);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);

@@ -11,6 +11,7 @@ abstract class HiveBoxes {
   static const queueTimeline = "queueTimeline";
   static const item = "item";
   static const topMatch = "topMatch";
+  static const baseRank = "baseRank";
 
   static const allBoxes = [
     token,
@@ -25,6 +26,7 @@ abstract class HiveBoxes {
     queueTimeline,
     item,
     topMatch,
+    baseRank,
   ];
 }
 

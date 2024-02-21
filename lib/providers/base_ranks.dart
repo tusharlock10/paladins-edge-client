@@ -35,7 +35,7 @@ class _BaseRanksNotifier extends ChangeNotifier {
       ranksList = response.ranks;
 
       // save baseRanks locally for future use
-      ranksList.forEach(utilities.Database.saveBaseRank);
+      utilities.Database.saveBaseRanks(ranksList);
     }
 
     for (var baseRank in ranksList) {

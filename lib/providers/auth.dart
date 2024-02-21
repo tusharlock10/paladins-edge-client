@@ -62,6 +62,8 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// gets the list of locally available paladinsAssets
   Future<void> loadPaladinsAssets() async {
+    if (constants.isWeb) return;
+
     final manifestContent = await rootBundle.loadString("AssetManifest.json");
     final manifestMap = jsonDecode(manifestContent) as Map<String, dynamic>;
     final allPaladinsAssets = manifestMap.keys.where(
