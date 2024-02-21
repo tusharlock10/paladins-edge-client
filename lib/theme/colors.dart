@@ -28,3 +28,6 @@ const Map<int, Color> _darkColorValues = {
 
 const themeMaterialColor = MaterialColor(0xFF19a5cf, _colorValues);
 const darkThemeMaterialColor = MaterialColor(0xFF04161c, _darkColorValues);
+
+const subtleLightThemeColor = Color.fromRGBO(65, 189, 232, 1);
+const subtleDarkThemeColor = Color.fromRGBO(100, 120, 130, 1);

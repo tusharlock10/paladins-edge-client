@@ -4,6 +4,7 @@ import "package:flutter_spinkit/flutter_spinkit.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
 
 class SearchAppBar extends HookConsumerWidget {
   final bool isLoading;
@@ -30,11 +31,9 @@ class SearchAppBar extends HookConsumerWidget {
     );
 
     // Variables
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.titleLarge?.copyWith(
-      color: Colors.white,
-      fontSize: 16,
-    );
+    final textStyle = textTheme.bodyLarge?.copyWith(fontSize: 16);
 
     // Hooks
     final focusNode = useFocusNode();
@@ -45,7 +44,8 @@ class SearchAppBar extends HookConsumerWidget {
       () {
         if (bottomTabIndex == 1 && !searchTabVisited) {
           focusNode.requestFocus();
-          appStateProvider.setSearchTabVisited(true);
+
+          if (constants.isMobile) appStateProvider.setSearchTabVisited(true);
         }
 
         return null;
@@ -71,15 +71,27 @@ class SearchAppBar extends HookConsumerWidget {
       title: TextField(
         focusNode: focusNode,
         controller: textController,
-        maxLength: 30,
-        style: textStyle,
+        maxLength: 42,
+        style: textStyle?.copyWith(color: Colors.white),
         onChanged: onChangeText,
         onSubmitted: isLoading ? null : onSearch,
         decoration: InputDecoration(
+          filled: true,
+          isDense: true,
           hintText: "Search player",
           counterText: "",
-          hintStyle: textStyle,
-          border: InputBorder.none,
+          hintStyle: textStyle?.copyWith(color: Colors.white70),
+          fillColor: isLightTheme
+              ? theme.subtleLightThemeColor
+              : theme.subtleDarkThemeColor,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 15,
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
         ),
       ),
       actions: [
