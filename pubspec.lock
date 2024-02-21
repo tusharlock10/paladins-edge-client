@@ -844,10 +844,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_web
-      sha256: a278ea2d01013faf341cbb093da880d0f2a552bbd1cb6ee90b5bebac9ba69d77
+      sha256: f2b3af0ba52ff59439f18962fca71db860f09507a81da929fc0e719270b35db2
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.3+2"
+    version: "0.12.3+3"
   graphs:
     dependency: transitive
     description:
@@ -1473,26 +1473,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "4eed0d3ae50c16b5e8e4957f3c1917e9bd0315a08dfb49a104ca8fc10244bef3"
+      sha256: "9f98e2726af42967497eaef68f3373261700bbfcd33bd97da4ec85cb56fcdaf7"
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.6"
+    version: "24.2.7"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
-      sha256: aba9182c62b46cd320ea6f9152af20b45fd6324547fb2298d63bf311f6a03ff1
+      sha256: f5b806f59426ffe3fffc8969bce969351082461b6b53e16ddbf0db2759f147df
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.6"
+    version: "24.2.7"
   syncfusion_flutter_datepicker:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datepicker
-      sha256: "0c2314958bdc98c6a693aebee9617406df3a93776519e877f58f77829f918848"
+      sha256: "0568420166624e85bd5e42c730e972451bca1838d85024e1ecb4583b520175f2"
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.6"
+    version: "24.2.7"
   synchronized:
     dependency: transitive
     description:
@@ -1735,4 +1735,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.16.6"
+  flutter: ">=3.19.0"
