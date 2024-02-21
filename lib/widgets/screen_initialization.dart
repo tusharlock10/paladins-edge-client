@@ -30,6 +30,7 @@ class ScreenInitialization extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final appStateProvider = ref.read(providers.appState);
     final itemsProvider = ref.read(providers.items);
     final baseRanksProvider = ref.read(providers.baseRanks);
     final isInitialized = ref.watch(
@@ -57,7 +58,7 @@ class ScreenInitialization extends HookConsumerWidget {
         }
 
         await utilities.Database.initialize();
-        authProvider.loadSettings();
+        appStateProvider.loadSettings();
         authProvider.loadPaladinsAssets();
 
         // first initialize all env variables and check

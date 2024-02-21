@@ -11,10 +11,10 @@ class HomeQueueRegionCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
+    final appStateProvider = ref.read(providers.appState);
     final queueProvider = ref.read(providers.queue);
     final selectedQueueRegion = ref.watch(
-      providers.auth.select((_) => _.settings.selectedQueueRegion),
+      providers.appState.select((_) => _.settings.selectedQueueRegion),
     );
     final selectedQueueId = ref.watch(
       providers.queue.select((_) => _.selectedQueueId),
@@ -34,7 +34,7 @@ class HomeQueueRegionCard extends HookConsumerWidget {
       () {
         final nextRegion =
             data_classes.Region.cycleRegions(selectedQueueRegion);
-        authProvider.setQueueRegions(nextRegion);
+        appStateProvider.setQueueRegions(nextRegion);
         queueProvider.selectTimelineQueue(selectedQueueId);
       },
       [selectedQueueRegion, selectedQueueRegion],

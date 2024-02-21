@@ -78,7 +78,7 @@ class _QueueNotifier extends ChangeNotifier {
     // y axis -> activeMatchCount
     final selectedQueueRegion = ref
         .read(
-          providers.auth,
+          providers.appState,
         )
         .settings
         .selectedQueueRegion;
@@ -129,7 +129,7 @@ class _QueueNotifier extends ChangeNotifier {
   void _getQueue() {
     final selectedQueueRegion = ref
         .read(
-          providers.auth,
+          providers.appState,
         )
         .settings
         .selectedQueueRegion;

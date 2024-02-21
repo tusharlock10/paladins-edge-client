@@ -20,24 +20,42 @@ class SearchAppBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final searchProvider = ref.read(providers.players);
+    final playersProvider = ref.read(providers.players);
+    final bottomTabIndex = ref.watch(
+      providers.appState.select((_) => _.bottomTabIndex),
+    );
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
-    final textController = useTextEditingController();
     final textStyle = textTheme.titleLarge?.copyWith(
       color: Colors.white,
       fontSize: 16,
     );
 
+    // Hooks
+    final focusNode = useFocusNode();
+    final textController = useTextEditingController();
+
+    // Effects
+    useEffect(
+      () {
+        if (bottomTabIndex == 1) {
+          focusNode.requestFocus();
+        }
+
+        return null;
+      },
+      [bottomTabIndex],
+    );
+
     // Methods
     final onClear = useCallback(
       () {
-        searchProvider.clearSearchList();
+        playersProvider.clearSearchList();
         textController.clear();
         onChangeText("");
       },
-      [],
+      [textController, onChangeText],
     );
 
     return SliverAppBar(
@@ -46,6 +64,7 @@ class SearchAppBar extends HookConsumerWidget {
       forceElevated: true,
       pinned: constants.isWeb,
       title: TextField(
+        focusNode: focusNode,
         controller: textController,
         maxLength: 30,
         style: textStyle,

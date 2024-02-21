@@ -11,9 +11,9 @@ class CommonMatchesHeader extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
+    final appStateProvider = ref.read(providers.appState);
     final showUserPlayerMatches = ref.watch(
-      providers.auth.select((_) => _.settings.showUserPlayerMatches),
+      providers.appState.select((_) => _.settings.showUserPlayerMatches),
     );
     final commonMatches = ref.watch(
       providers.matches.select((_) => _.commonMatches),
@@ -82,7 +82,7 @@ class CommonMatchesHeader extends HookConsumerWidget {
                   ),
                   Checkbox(
                     value: showUserPlayerMatches,
-                    onChanged: authProvider.toggleShowUserPlayerMatches,
+                    onChanged: appStateProvider.toggleShowUserPlayerMatches,
                     activeColor: theme.themeMaterialColor,
                     hoverColor: theme.themeMaterialColor.shade300,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

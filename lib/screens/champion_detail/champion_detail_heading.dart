@@ -24,7 +24,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
     final championsProvider = ref.read(providers.champions);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final isLightTheme = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode == ThemeMode.light),
+      providers.appState.select((_) => _.settings.themeMode == ThemeMode.light),
     );
     final favouriteChampions = ref.watch(
       providers.champions.select((_) => _.favouriteChampions),
