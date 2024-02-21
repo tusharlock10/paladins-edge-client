@@ -4,6 +4,8 @@ import "package:expandable/expandable.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/player_detail/player_detail_header_expandable_panel.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart";
@@ -34,6 +36,30 @@ class PlayerDetailHeader extends HookConsumerWidget {
     final playerBaseRank = useMemoized(
       () => baseRanks[player?.ranked.rank],
       [player, baseRanks],
+    );
+
+    final rankIcon = useMemoized(
+      () {
+        if (playerBaseRank == null) return null;
+
+        var rankIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(playerBaseRank.rankIconUrl),
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.ranks,
+            playerBaseRank.rank,
+          );
+          if (assetUrl != null) {
+            rankIcon.imageUrl = assetUrl;
+            rankIcon.isAssetImage = true;
+          }
+        }
+
+        return rankIcon;
+      },
+      [playerBaseRank],
     );
 
     return player == null
@@ -70,7 +96,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                     return Row(
                                       children: [
                                         widgets.FastImage(
-                                          imageUrl: playerBaseRank!.rankIconUrl,
+                                          imageUrl: rankIcon!.imageUrl,
                                           height: 40,
                                           width: 40,
                                         ),
@@ -79,7 +105,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              playerBaseRank.rankName,
+                                              playerBaseRank!.rankName,
                                               style: textTheme.bodyMedium
                                                   ?.copyWith(fontSize: 14),
                                             ),

@@ -29,5 +29,6 @@ abstract class Global {
     constants.ChampionAssetType.icons: [],
     constants.ChampionAssetType.splash: [],
     constants.ChampionAssetType.talents: [],
+    constants.ChampionAssetType.ranks: [],
   };
 }

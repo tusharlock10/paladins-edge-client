@@ -84,6 +84,7 @@ dependencies:
   pub_semver: ^2.1.1
   android_id: ^0.3.6
   flutter_displaymode: ^0.6.0
+  window_manager: ^0.3.8
 
 dev_dependencies:
   flutter_test:
@@ -117,6 +118,7 @@ flutter:
     - assets/images/
     - paladins_assets/icons/
     - paladins_assets/splash/
+    - paladins_assets/ranks/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

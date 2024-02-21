@@ -268,6 +268,30 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       [matchPlayer, baseRanks],
     );
 
+    final rankIcon = useMemoized(
+      () {
+        if (matchPlayerBaseRank == null) return null;
+
+        var rankIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(matchPlayerBaseRank.rankIconUrl),
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.ranks,
+            matchPlayerBaseRank.rank,
+          );
+          if (assetUrl != null) {
+            rankIcon.imageUrl = assetUrl;
+            rankIcon.isAssetImage = true;
+          }
+        }
+
+        return rankIcon;
+      },
+      [matchPlayerBaseRank],
+    );
+
     // Methods
     final onPressPlayer = useCallback(
       () {
@@ -359,16 +383,15 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 ),
                             ],
                           ),
-                    matchPlayerBaseRank == null
+                    matchPlayerBaseRank == null || rankIcon == null
                         ? const SizedBox(width: 5)
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Column(
                               children: [
                                 widgets.FastImage(
-                                  imageUrl: utilities.getSmallAsset(
-                                    matchPlayerBaseRank.rankIconUrl,
-                                  ),
+                                  imageUrl: rankIcon.imageUrl,
+                                  isAssetImage: rankIcon.isAssetImage,
                                   height: 20,
                                   width: 20,
                                 ),

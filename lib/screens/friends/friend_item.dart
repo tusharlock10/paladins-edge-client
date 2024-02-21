@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
@@ -42,6 +43,30 @@ class FriendItem extends HookConsumerWidget {
     final friendBaseRank = useMemoized(
       () => baseRanks[friend.ranked.rank],
       [friend, baseRanks],
+    );
+
+    final rankIcon = useMemoized(
+      () {
+        if (friendBaseRank == null) return null;
+
+        var rankIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(friendBaseRank.rankIconUrl),
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.ranks,
+            friendBaseRank.rank,
+          );
+          if (assetUrl != null) {
+            rankIcon.imageUrl = assetUrl;
+            rankIcon.isAssetImage = true;
+          }
+        }
+
+        return rankIcon;
+      },
+      [friendBaseRank],
     );
 
     // Methods
@@ -140,11 +165,10 @@ class FriendItem extends HookConsumerWidget {
             const Expanded(
               child: SizedBox(),
             ),
-            friendBaseRank != null
+            rankIcon != null
                 ? widgets.FastImage(
-                    imageUrl: utilities.getSmallAsset(
-                      friendBaseRank.rankIconUrl,
-                    ),
+                    imageUrl: rankIcon.imageUrl,
+                    isAssetImage: rankIcon.isAssetImage,
                     height: 36,
                     width: 36,
                   )

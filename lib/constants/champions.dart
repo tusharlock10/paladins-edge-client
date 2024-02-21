@@ -38,7 +38,8 @@ abstract class ChampionAssetType {
   static const icons = "icons";
   static const splash = "splash";
   static const talents = "talents";
+  static const ranks = "ranks";
 
   static String getExtension(String assetType) =>
-      assetType == splash ? "jpg" : "png";
+      [icons, ranks].contains(assetType) ? "png" : "jpg";
 }

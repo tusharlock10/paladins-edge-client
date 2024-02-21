@@ -204,6 +204,30 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       [playerInfo, baseRanks],
     );
 
+    final rankIcon = useMemoized(
+      () {
+        if (playerInfoBaseRank == null) return null;
+
+        var rankIcon = data_classes.PlatformOptimizedImage(
+          imageUrl: playerInfoBaseRank.rankIconUrl,
+          isAssetImage: false,
+        );
+        if (!constants.isWeb) {
+          final assetUrl = utilities.getAssetImageUrl(
+            constants.ChampionAssetType.ranks,
+            playerInfoBaseRank.rank,
+          );
+          if (assetUrl != null) {
+            rankIcon.imageUrl = assetUrl;
+            rankIcon.isAssetImage = true;
+          }
+        }
+
+        return rankIcon;
+      },
+      [playerInfoBaseRank],
+    );
+
     // Methods
     final onTapPlayer = useCallback(
       () {
@@ -277,11 +301,13 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                             padding: const EdgeInsets.only(left: 10),
                             child: Column(
                               children: [
-                                widgets.FastImage(
-                                  imageUrl: playerInfoBaseRank.rankIconUrl,
-                                  height: 22,
-                                  width: 22,
-                                ),
+                                if (rankIcon != null)
+                                  widgets.FastImage(
+                                    isAssetImage: rankIcon.isAssetImage,
+                                    imageUrl: rankIcon.imageUrl,
+                                    height: 22,
+                                    width: 22,
+                                  ),
                                 const SizedBox(height: 5),
                                 Text(
                                   utilities.shortRankName(
