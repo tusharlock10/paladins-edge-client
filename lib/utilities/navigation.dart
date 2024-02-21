@@ -23,6 +23,9 @@ abstract class Navigation {
   /// Pop using the Flutter navigator
   static void pop(BuildContext context) => Navigator.of(context).pop();
 
+  /// Checks if can we pop
+  static bool canPop(BuildContext context) => Navigator.of(context).canPop();
+
   /// Sanitized routePath by adding / in front
   /// eg. `connectProfile => /connectProfile`
   /// eg. `/ => /`

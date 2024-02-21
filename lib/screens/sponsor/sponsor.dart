@@ -1,7 +1,12 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/screens/sponsor/sponsor_card.dart";
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class Sponsor extends HookConsumerWidget {
   static const routeName = "sponsor";
@@ -16,11 +21,40 @@ class Sponsor extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final authProvider = ref.read(providers.auth);
+    final sponsors = ref.watch(providers.auth.select((_) => _.sponsors));
+
+    // Effects
+    useEffect(
+      () {
+        if (sponsors == null) authProvider.getSponsors();
+
+        return null;
+      },
+      [sponsors],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Our Supporters"),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            sponsors == null
+                ? const SizedBox()
+                : SponsorCard(
+                    hasSponsors: sponsors.isEmpty,
+                  ),
+            if (utilities.Navigation.canPop(context))
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: IconButton(
+                  onPressed: () => utilities.Navigation.pop(context),
+                  icon: const Icon(FeatherIcons.arrowLeft),
+                ),
+              ),
+          ],
+        ),
       ),
-      body: const Text(""),
     );
   }
 
