@@ -21,8 +21,12 @@ class SearchAppBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final playersProvider = ref.read(providers.players);
+    final appStateProvider = ref.read(providers.appState);
     final bottomTabIndex = ref.watch(
       providers.appState.select((_) => _.bottomTabIndex),
+    );
+    final searchTabVisited = ref.watch(
+      providers.appState.select((_) => _.searchTabVisited),
     );
 
     // Variables
@@ -39,8 +43,9 @@ class SearchAppBar extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (bottomTabIndex == 1) {
+        if (bottomTabIndex == 1 && !searchTabVisited) {
           focusNode.requestFocus();
+          appStateProvider.setSearchTabVisited(true);
         }
 
         return null;
