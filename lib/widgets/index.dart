@@ -16,6 +16,7 @@ export "./loadout_card_detail.dart";
 export "./loadout_deck_card.dart";
 export "./login_modal.dart";
 export "./match_player_loadout.dart";
+export "./pop_shortcut.dart";
 export "./refresh.dart";
 export "./refresh_button.dart";
 export "./reversible_column.dart";

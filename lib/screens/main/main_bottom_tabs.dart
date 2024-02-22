@@ -5,6 +5,7 @@ import "package:paladinsedge/screens/main/main_pages.dart";
 class MainBottomTabs extends StatelessWidget {
   final int selectedIndex;
   final void Function(int) onItemSelected;
+
   const MainBottomTabs({
     required this.selectedIndex,
     required this.onItemSelected,
