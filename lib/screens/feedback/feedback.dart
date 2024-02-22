@@ -104,7 +104,8 @@ class Feedback extends HookConsumerWidget {
       [isSupport],
     );
 
-    return widgets.PopShortcut(
+    return Focus(
+      autofocus: true,
       child: Scaffold(
         appBar: AppBar(
           title: Text(isSupport ? "Support Ticket" : "Provide Feedback"),
@@ -146,5 +147,7 @@ class Feedback extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Feedback());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Feedback()),
+      );
 }

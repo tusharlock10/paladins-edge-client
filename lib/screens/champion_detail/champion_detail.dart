@@ -120,87 +120,83 @@ class ChampionDetail extends HookConsumerWidget {
 
     return champion == null
         ? isLoadingCombinedChampions
-            ? const widgets.PopShortcut(
-                child: Scaffold(
-                  body: widgets.LoadingIndicator(
-                    lineWidth: 2,
-                    size: 28,
-                    label: Text("Getting champion"),
-                  ),
+            ? const Scaffold(
+                body: widgets.LoadingIndicator(
+                  lineWidth: 2,
+                  size: 28,
+                  label: Text("Getting champion"),
                 ),
               )
             : const screens.NotFound()
-        : widgets.PopShortcut(
-            child: Scaffold(
-              floatingActionButton: SizedBox(
-                height: 50,
-                width: 108,
-                child: AnimatedSlide(
-                  offset: hideLoadoutFab.value
-                      ? const Offset(0, 2)
-                      : const Offset(0, 0),
-                  duration: const Duration(milliseconds: 300),
-                  child: widgets.InteractiveCard(
-                    onTap: onLoadoutPress,
-                    elevation: 4,
-                    hoverElevation: 6,
-                    color: theme.themeMaterialColor,
-                    borderRadius: 25,
-                    child: Center(
-                      child: Text(
-                        "Loadouts",
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
+        : Scaffold(
+            floatingActionButton: SizedBox(
+              height: 50,
+              width: 108,
+              child: AnimatedSlide(
+                offset: hideLoadoutFab.value
+                    ? const Offset(0, 2)
+                    : const Offset(0, 0),
+                duration: const Duration(milliseconds: 300),
+                child: widgets.InteractiveCard(
+                  onTap: onLoadoutPress,
+                  elevation: 4,
+                  hoverElevation: 6,
+                  color: theme.themeMaterialColor,
+                  borderRadius: 25,
+                  child: Center(
+                    child: Text(
+                      "Loadouts",
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontSize: 14,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
               ),
-              body: isLoadingCombinedChampions
-                  ? const widgets.LoadingIndicator(
-                      lineWidth: 2,
-                      size: 28,
-                      label: Text("Getting champion"),
-                    )
-                  : NotificationListener<ScrollNotification>(
-                      onNotification: onScrollNotification,
-                      child: CustomScrollView(
-                        slivers: [
-                          ChampionDetailAppBar(champion: champion),
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [
-                                ChampionDetailHeading(champion: champion),
-                                const ChampionDetailTitleLabel(label: "Lore"),
-                                ChampionDetailLore(champion: champion),
-                                const ChampionDetailTitleLabel(
-                                  label: "Talents",
-                                ),
-                                ChampionDetailTalents(champion: champion),
-                                const ChampionDetailTitleLabel(
-                                  label: "Abilities",
-                                ),
-                                ChampionDetailAbilities(champion: champion),
-                                const ChampionDetailTitleLabel(
-                                  label: "Loadout Cards",
-                                ),
-                                ChampionDetailLoadoutCards(
-                                  champion: champion,
-                                ),
-                                const ChampionDetailTitleLabel(
-                                  label: "Your Stats",
-                                ),
-                                ChampionDetailPlayerStats(champion: champion),
-                                const SizedBox(height: 50),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
             ),
+            body: isLoadingCombinedChampions
+                ? const widgets.LoadingIndicator(
+                    lineWidth: 2,
+                    size: 28,
+                    label: Text("Getting champion"),
+                  )
+                : NotificationListener<ScrollNotification>(
+                    onNotification: onScrollNotification,
+                    child: CustomScrollView(
+                      slivers: [
+                        ChampionDetailAppBar(champion: champion),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              ChampionDetailHeading(champion: champion),
+                              const ChampionDetailTitleLabel(label: "Lore"),
+                              ChampionDetailLore(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: "Talents",
+                              ),
+                              ChampionDetailTalents(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: "Abilities",
+                              ),
+                              ChampionDetailAbilities(champion: champion),
+                              const ChampionDetailTitleLabel(
+                                label: "Loadout Cards",
+                              ),
+                              ChampionDetailLoadoutCards(
+                                champion: champion,
+                              ),
+                              const ChampionDetailTitleLabel(
+                                label: "Your Stats",
+                              ),
+                              ChampionDetailPlayerStats(champion: champion),
+                              const SizedBox(height: 50),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
           );
   }
 
@@ -213,6 +209,8 @@ class ChampionDetail extends HookConsumerWidget {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    return CupertinoPage(child: ChampionDetail(championId: championId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: ChampionDetail(championId: championId)),
+    );
   }
 }

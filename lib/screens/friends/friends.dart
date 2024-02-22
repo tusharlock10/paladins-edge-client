@@ -126,5 +126,7 @@ class Friends extends HookConsumerWidget {
     return CupertinoPage(child: Friends(otherPlayerId: otherPlayerId));
   }
 
-  static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());
+  static Page _userRouteBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Friends()),
+      );
 }

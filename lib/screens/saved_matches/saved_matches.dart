@@ -112,6 +112,7 @@ class SavedMatches extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) =>
-      const CupertinoPage(child: SavedMatches());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: SavedMatches()),
+      );
 }

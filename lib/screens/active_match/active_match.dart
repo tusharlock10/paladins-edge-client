@@ -99,44 +99,42 @@ class ActiveMatch extends HookConsumerWidget {
       [],
     );
 
-    return widgets.PopShortcut(
-      child: Scaffold(
-        body: widgets.Refresh(
-          edgeOffset: utilities.getTopEdgeOffset(context),
-          onRefresh: onRefresh,
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                forceElevated: true,
-                floating: true,
-                snap: true,
-                pinned: constants.isWeb,
-                title: const Text("Active Match"),
-                actions: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: widgets.RefreshButton(
-                        color: Colors.white,
-                        onRefresh: onRefresh,
-                      ),
+    return Scaffold(
+      body: widgets.Refresh(
+        edgeOffset: utilities.getTopEdgeOffset(context),
+        onRefresh: onRefresh,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              forceElevated: true,
+              floating: true,
+              snap: true,
+              pinned: constants.isWeb,
+              title: const Text("Active Match"),
+              actions: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: widgets.RefreshButton(
+                      color: Colors.white,
+                      onRefresh: onRefresh,
                     ),
                   ),
-                ],
-              ),
-              playerStatus == null
-                  ? ActiveMatchLoading(
-                      isLoadingPlayerStatus: isLoadingPlayerStatus,
-                      isUserPlayer: isUserPlayer,
-                    )
-                  : playerStatus.match == null
-                      ? ActiveMatchNotInMatch(
-                          status: playerStatus.status,
-                          isUserPlayer: isUserPlayer,
-                        )
-                      : const ActiveMatchList(),
-            ],
-          ),
+                ),
+              ],
+            ),
+            playerStatus == null
+                ? ActiveMatchLoading(
+                    isLoadingPlayerStatus: isLoadingPlayerStatus,
+                    isUserPlayer: isUserPlayer,
+                  )
+                : playerStatus.match == null
+                    ? ActiveMatchNotInMatch(
+                        status: playerStatus.status,
+                        isUserPlayer: isUserPlayer,
+                      )
+                    : const ActiveMatchList(),
+          ],
         ),
       ),
     );
@@ -156,6 +154,7 @@ class ActiveMatch extends HookConsumerWidget {
     return CupertinoPage(child: ActiveMatch(playerId: playerId));
   }
 
-  static Page _userRouteBuilder(_, __) =>
-      const CupertinoPage(child: ActiveMatch());
+  static Page _userRouteBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: ActiveMatch()),
+      );
 }

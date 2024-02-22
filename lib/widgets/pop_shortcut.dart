@@ -16,7 +16,6 @@ class PopShortcut extends HookWidget {
     // Methods
     final popChild = useCallback(
       () {
-        print("Popping child");
         if (utilities.Navigation.canPop(context)) {
           utilities.Navigation.pop(context);
         }
@@ -26,7 +25,10 @@ class PopShortcut extends HookWidget {
 
     return CallbackShortcuts(
       bindings: {constants.ShortcutCombos.esc: popChild},
-      child: child,
+      child: Focus(
+        autofocus: true,
+        child: child,
+      ),
     );
   }
 }

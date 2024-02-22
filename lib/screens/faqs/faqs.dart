@@ -60,55 +60,54 @@ class Faqs extends HookConsumerWidget {
       [],
     );
 
-    return widgets.PopShortcut(
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            const SliverAppBar(
-              forceElevated: true,
-              floating: true,
-              snap: true,
-              pinned: constants.isWeb,
-              title: Text("FAQs"),
-            ),
-            faqs == null
-                ? SliverList(
-                    delegate: SliverChildListDelegate.fixed(
-                      [
-                        SizedBox(
-                          height: utilities.getBodyHeight(context),
-                          child: const Center(
-                            child: widgets.LoadingIndicator(
-                              lineWidth: 2,
-                              size: 28,
-                              label: Text("Getting FAQs"),
-                            ),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            forceElevated: true,
+            floating: true,
+            snap: true,
+            pinned: constants.isWeb,
+            title: Text("FAQs"),
+          ),
+          faqs == null
+              ? SliverList(
+                  delegate: SliverChildListDelegate.fixed(
+                    [
+                      SizedBox(
+                        height: utilities.getBodyHeight(context),
+                        child: const Center(
+                          child: widgets.LoadingIndicator(
+                            lineWidth: 2,
+                            size: 28,
+                            label: Text("Getting FAQs"),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                : SliverPadding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, index) => Padding(
-                          padding: EdgeInsets.only(
-                            top: index == 0 ? 7.5 : 0,
-                            bottom: index == faqs.length - 1 ? 7.5 : 0,
-                          ),
-                          child: FaqItem(faq: faqs[index]),
-                        ),
-                        childCount: faqs.length,
                       ),
+                    ],
+                  ),
+                )
+              : SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (_, index) => Padding(
+                        padding: EdgeInsets.only(
+                          top: index == 0 ? 7.5 : 0,
+                          bottom: index == faqs.length - 1 ? 7.5 : 0,
+                        ),
+                        child: FaqItem(faq: faqs[index]),
+                      ),
+                      childCount: faqs.length,
                     ),
                   ),
-          ],
-        ),
+                ),
+        ],
       ),
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Faqs());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Faqs()),
+      );
 }

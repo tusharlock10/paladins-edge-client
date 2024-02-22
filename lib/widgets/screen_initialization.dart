@@ -125,7 +125,6 @@ class ScreenInitialization extends HookConsumerWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 isForceUpdatePending
                     ? Center(

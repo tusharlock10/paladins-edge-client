@@ -342,9 +342,11 @@ class Loadouts extends HookConsumerWidget {
     final playerId = paramPlayerId;
 
     return CupertinoPage(
-      child: Loadouts(
-        playerId: playerId,
-        championId: championId,
+      child: widgets.PopShortcut(
+        child: Loadouts(
+          playerId: playerId,
+          championId: championId,
+        ),
       ),
     );
   }

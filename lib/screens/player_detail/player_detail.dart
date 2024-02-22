@@ -241,6 +241,8 @@ class PlayerDetail extends HookConsumerWidget {
     }
     final playerId = paramPlayerId;
 
-    return CupertinoPage(child: PlayerDetail(playerId: playerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: PlayerDetail(playerId: playerId)),
+    );
   }
 }

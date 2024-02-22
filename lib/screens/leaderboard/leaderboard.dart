@@ -167,5 +167,7 @@ class Leaderboard extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Leaderboard());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Leaderboard()),
+      );
 }

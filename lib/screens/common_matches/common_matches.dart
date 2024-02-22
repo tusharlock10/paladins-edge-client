@@ -133,6 +133,8 @@ class CommonMatches extends HookConsumerWidget {
     }
     final playerId = paramPlayerId;
 
-    return CupertinoPage(child: CommonMatches(playerId: playerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: CommonMatches(playerId: playerId)),
+    );
   }
 }

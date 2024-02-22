@@ -67,5 +67,7 @@ class Sponsor extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Sponsor());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Sponsor()),
+      );
 }
