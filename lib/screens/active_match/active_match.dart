@@ -53,6 +53,9 @@ class ActiveMatch extends HookConsumerWidget {
     final playerStatusPlayerId = playerId ?? player?.playerId;
     final isUserPlayer = player?.playerId == playerStatusPlayerId;
 
+    // State
+    final isRefreshing = useState(false);
+
     // Effects
     useEffect(
       () {
@@ -90,51 +93,60 @@ class ActiveMatch extends HookConsumerWidget {
     final onRefresh = useCallback(
       () async {
         if (playerStatusPlayerId != null) {
-          return playersProvider.getPlayerStatus(
+          isRefreshing.value = true;
+          await playersProvider.getPlayerStatus(
             playerId: playerStatusPlayerId,
             forceUpdate: true,
           );
+          isRefreshing.value = false;
         }
       },
       [],
     );
 
-    return Scaffold(
-      body: widgets.Refresh(
-        edgeOffset: utilities.getTopEdgeOffset(context),
-        onRefresh: onRefresh,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              forceElevated: true,
-              floating: true,
-              snap: true,
-              pinned: constants.isWeb,
-              title: const Text("Active Match"),
-              actions: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: widgets.RefreshButton(
-                      color: Colors.white,
-                      onRefresh: onRefresh,
+    return widgets.Shortcuts(
+      bindings: {
+        constants.ShortcutCombos.ctrlR: onRefresh,
+        constants.ShortcutCombos.esc: () => utilities.Navigation.pop(context),
+      },
+      child: Scaffold(
+        body: widgets.Refresh(
+          edgeOffset: utilities.getTopEdgeOffset(context),
+          onRefresh: onRefresh,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                forceElevated: true,
+                floating: true,
+                snap: true,
+                pinned: !constants.isMobile,
+                title: const Text("Active Match"),
+                actions: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: widgets.RefreshButton(
+                        color: Colors.white,
+                        onRefresh: onRefresh,
+                        isRefreshing: isRefreshing.value,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            playerStatus == null
-                ? ActiveMatchLoading(
-                    isLoadingPlayerStatus: isLoadingPlayerStatus,
-                    isUserPlayer: isUserPlayer,
-                  )
-                : playerStatus.match == null
-                    ? ActiveMatchNotInMatch(
-                        status: playerStatus.status,
-                        isUserPlayer: isUserPlayer,
-                      )
-                    : const ActiveMatchList(),
-          ],
+                ],
+              ),
+              playerStatus == null
+                  ? ActiveMatchLoading(
+                      isLoadingPlayerStatus: isLoadingPlayerStatus,
+                      isUserPlayer: isUserPlayer,
+                    )
+                  : playerStatus.match == null
+                      ? ActiveMatchNotInMatch(
+                          status: playerStatus.status,
+                          isUserPlayer: isUserPlayer,
+                        )
+                      : const ActiveMatchList(),
+            ],
+          ),
         ),
       ),
     );
@@ -155,6 +167,6 @@ class ActiveMatch extends HookConsumerWidget {
   }
 
   static Page _userRouteBuilder(_, __) => const CupertinoPage(
-        child: widgets.PopShortcut(child: ActiveMatch()),
+        child: ActiveMatch(),
       );
 }

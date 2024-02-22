@@ -73,7 +73,7 @@ class MatchDetailAppBar extends HookConsumerWidget {
       snap: true,
       floating: true,
       forceElevated: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       actions: [
         if (!(match?.isInComplete ?? true))
           IconButton(

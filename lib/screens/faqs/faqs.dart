@@ -63,12 +63,12 @@ class Faqs extends HookConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
-            title: Text("FAQs"),
+            pinned: !constants.isMobile,
+            title: const Text("FAQs"),
           ),
           faqs == null
               ? SliverList(

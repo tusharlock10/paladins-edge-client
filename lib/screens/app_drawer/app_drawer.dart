@@ -250,80 +250,82 @@ class AppDrawer extends HookConsumerWidget {
       [showPlayerDependentButtons],
     );
 
-    return SafeArea(
-      child: Drawer(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            isGuest
-                ? const AppDrawerGuestProfile()
-                : const AppDrawerPlayerProfile(),
-            const SizedBox(height: 20),
-            AppDrawerButton(
-              label: "Change Theme",
-              subTitle: getThemeName(),
-              onPressed: onChangeTheme,
-            ),
-            if (showPlayerDependentButtons)
+    return widgets.PopShortcut(
+      child: SafeArea(
+        child: Drawer(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              isGuest
+                  ? const AppDrawerGuestProfile()
+                  : const AppDrawerPlayerProfile(),
+              const SizedBox(height: 20),
               AppDrawerButton(
-                label: "Friends",
-                onPressed: onFriends,
+                label: "Change Theme",
+                subTitle: getThemeName(),
+                onPressed: onChangeTheme,
               ),
-            if (showPlayerDependentButtons)
+              if (showPlayerDependentButtons)
+                AppDrawerButton(
+                  label: "Friends",
+                  onPressed: onFriends,
+                ),
+              if (showPlayerDependentButtons)
+                AppDrawerButton(
+                  label: "Active Match",
+                  onPressed: onActiveMatch,
+                ),
               AppDrawerButton(
-                label: "Active Match",
-                onPressed: onActiveMatch,
+                label: "Feedback",
+                onPressed: onFeedback,
               ),
-            AppDrawerButton(
-              label: "Feedback",
-              onPressed: onFeedback,
-            ),
-            if (showPlayerDependentButtons & isPlatformSupported)
+              if (showPlayerDependentButtons & isPlatformSupported)
+                AppDrawerButton(
+                  label: "Global Chat",
+                  onPressed: onGlobalChat,
+                ),
+              if (showPlayerDependentButtons)
+                AppDrawerButton(
+                  label: "Saved Matches",
+                  onPressed: onSavedMatches,
+                ),
               AppDrawerButton(
-                label: "Global Chat",
-                onPressed: onGlobalChat,
+                label: "Leaderboard",
+                onPressed: onLeaderboard,
               ),
-            if (showPlayerDependentButtons)
               AppDrawerButton(
-                label: "Saved Matches",
-                onPressed: onSavedMatches,
+                label: "Sponsor",
+                onPressed: onSponsor,
               ),
-            AppDrawerButton(
-              label: "Leaderboard",
-              onPressed: onLeaderboard,
-            ),
-            AppDrawerButton(
-              label: "Sponsor",
-              onPressed: onSponsor,
-            ),
-            AppDrawerButton(
-              label: "FAQs",
-              onPressed: onFAQ,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                isLoggingOut.value
-                    ? const widgets.LoadingIndicator(
-                        size: 16,
-                        lineWidth: 2,
-                      )
-                    : const SizedBox(),
-                isGuest
-                    ? AppDrawerLoginButton(
-                        context: context,
-                        onPressed: onLogout,
-                      )
-                    : AppDrawerButton(
-                        label: "Logout",
-                        disabled: isLoggingOut.value,
-                        onPressed: onLogout,
-                      ),
-              ],
-            ),
-            const AppDrawerInfo(),
-            const SizedBox(height: 15),
-          ],
+              AppDrawerButton(
+                label: "FAQs",
+                onPressed: onFAQ,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  isLoggingOut.value
+                      ? const widgets.LoadingIndicator(
+                          size: 16,
+                          lineWidth: 2,
+                        )
+                      : const SizedBox(),
+                  isGuest
+                      ? AppDrawerLoginButton(
+                          context: context,
+                          onPressed: onLogout,
+                        )
+                      : AppDrawerButton(
+                          label: "Logout",
+                          disabled: isLoggingOut.value,
+                          onPressed: onLogout,
+                        ),
+                ],
+              ),
+              const AppDrawerInfo(),
+              const SizedBox(height: 15),
+            ],
+          ),
         ),
       ),
     );

@@ -62,6 +62,9 @@ class PlayerDetail extends HookConsumerWidget {
     final isSamePlayerChampions = playerChampionsPlayerId == playerId;
     final isSamePlayerInferred = playerInferred?.playerId == playerId;
 
+    // State
+    final isRefreshing = useState(false);
+
     // Hooks
     final playerStreak = useMemoized(
       () {
@@ -137,14 +140,15 @@ class PlayerDetail extends HookConsumerWidget {
     );
 
     final onRefresh = useCallback(
-      () {
-        return getPlayerDetails(forceUpdate: true);
+      () async {
+        isRefreshing.value = true;
+        await getPlayerDetails(forceUpdate: true);
+        isRefreshing.value = false;
       },
       [playerId],
     );
 
     // Effects
-
     useEffect(
       () {
         getPlayerDetails();
@@ -164,6 +168,7 @@ class PlayerDetail extends HookConsumerWidget {
               child: widgets.RefreshButton(
                 onRefresh: onRefresh,
                 color: Colors.white,
+                isRefreshing: isRefreshing.value,
               ),
             ),
           ),

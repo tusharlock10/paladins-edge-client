@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
@@ -163,11 +165,12 @@ class _LoadoutCardDetail extends HookWidget {
                 absorbing: sliderFixed,
                 child: Slider(
                   value: amount.value.toDouble(),
-                  divisions: 4,
+                  divisions: sliderFixed ? max(amount.value - 1, 4) : 4,
                   min: 1,
-                  max: 5,
+                  max: sliderFixed ? max(amount.value.toDouble(), 5.0) : 5.0,
                   label: "${amount.value}",
                   onChanged: onChanged,
+                  inactiveColor: theme.subtleDarkThemeColor,
                 ),
               ),
               sliderFixed ? const SizedBox() : const SizedBox(height: 10),

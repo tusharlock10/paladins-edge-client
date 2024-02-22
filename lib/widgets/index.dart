@@ -22,6 +22,7 @@ export "./refresh_button.dart";
 export "./reversible_column.dart";
 export "./reversible_row.dart";
 export "./screen_initialization.dart";
+export "./shortcuts.dart";
 export "./talent_detail_modal.dart";
 export "./text_chip.dart";
 export "./toast.dart";

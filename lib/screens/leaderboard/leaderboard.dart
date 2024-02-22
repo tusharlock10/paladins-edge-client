@@ -92,7 +92,7 @@ class Leaderboard extends HookConsumerWidget {
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
+            pinned: !constants.isMobile,
             title: const Text("Leaderboard"),
             centerTitle: false,
             actions: [

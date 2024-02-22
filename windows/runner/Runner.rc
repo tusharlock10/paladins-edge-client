@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "ml" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "FileDescription", "Paladins Edge" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "paladinsedge" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2021 ml. All rights reserved." "\0"
-            VALUE "OriginalFilename", "paladinsedge.exe" "\0"
-            VALUE "ProductName", "paladinsedge" "\0"
+            VALUE "OriginalFilename", "PaladinsEdge.exe" "\0"
+            VALUE "ProductName", "Paladins Edge" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

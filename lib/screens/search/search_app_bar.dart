@@ -38,6 +38,12 @@ class SearchAppBar extends HookConsumerWidget {
     // Hooks
     final focusNode = useFocusNode();
     final textController = useTextEditingController();
+    final searchBarColor = useMemoized(
+      () => isLightTheme
+          ? theme.subtleLightThemeColor
+          : theme.subtleDarkThemeColor,
+      [isLightTheme],
+    );
 
     // Effects
     useEffect(
@@ -67,7 +73,7 @@ class SearchAppBar extends HookConsumerWidget {
       snap: true,
       floating: true,
       forceElevated: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       title: TextField(
         focusNode: focusNode,
         controller: textController,
@@ -81,9 +87,7 @@ class SearchAppBar extends HookConsumerWidget {
           hintText: "Search player",
           counterText: "",
           hintStyle: textStyle?.copyWith(color: Colors.white70),
-          fillColor: isLightTheme
-              ? theme.subtleLightThemeColor
-              : theme.subtleDarkThemeColor,
+          fillColor: searchBarColor,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 15,

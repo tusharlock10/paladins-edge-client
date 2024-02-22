@@ -13,20 +13,36 @@ class PopShortcut extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Hooks
+    final focusNode = useFocusNode();
+
     // Methods
     final popChild = useCallback(
       () {
-        if (utilities.Navigation.canPop(context)) {
-          utilities.Navigation.pop(context);
+        utilities.Navigation.pop(context);
+      },
+      [focusNode],
+    );
+
+    final regainFocus = useCallback(
+      (bool hasFocus) {
+        if (!hasFocus) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (focusNode.canRequestFocus) {
+              focusNode.requestFocus();
+            }
+          });
         }
       },
-      [],
+      [focusNode],
     );
 
     return CallbackShortcuts(
       bindings: {constants.ShortcutCombos.esc: popChild},
       child: Focus(
         autofocus: true,
+        focusNode: focusNode,
+        onFocusChange: regainFocus,
         child: child,
       ),
     );

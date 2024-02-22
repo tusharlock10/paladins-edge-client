@@ -31,6 +31,9 @@ class SavedMatches extends HookConsumerWidget {
       providers.auth.select((_) => _.savedMatches),
     );
 
+    // State
+    final isRefreshing = useState(false);
+
     // Effects
     useEffect(
       () {
@@ -39,6 +42,16 @@ class SavedMatches extends HookConsumerWidget {
         }
 
         return;
+      },
+      [],
+    );
+
+    // Methods
+    final onRefresh = useCallback(
+      () async {
+        isRefreshing.value = true;
+        await authProvider.getSavedMatches();
+        isRefreshing.value = false;
       },
       [],
     );
@@ -53,7 +66,7 @@ class SavedMatches extends HookConsumerWidget {
               forceElevated: true,
               floating: true,
               snap: true,
-              pinned: constants.isWeb,
+              pinned: !constants.isMobile,
               title: const Text("Saved Matches"),
               actions: [
                 Center(
@@ -61,7 +74,8 @@ class SavedMatches extends HookConsumerWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: widgets.RefreshButton(
                       color: Colors.white,
-                      onRefresh: authProvider.getSavedMatches,
+                      onRefresh: onRefresh,
+                      isRefreshing: isRefreshing.value,
                     ),
                   ),
                 ),

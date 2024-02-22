@@ -17,4 +17,8 @@ abstract class ShortcutCombos {
   static const esc = SingleActivator(
     LogicalKeyboardKey.escape,
   );
+  static const ctrlR = SingleActivator(
+    LogicalKeyboardKey.keyR,
+    control: true,
+  );
 }

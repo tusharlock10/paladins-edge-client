@@ -73,7 +73,7 @@ class CommonMatches extends HookConsumerWidget {
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
+            pinned: !constants.isMobile,
             title: commonMatches != null && commonMatches.isNotEmpty
                 ? Column(
                     children: [

@@ -240,7 +240,7 @@ class Loadouts extends HookConsumerWidget {
                 forceElevated: true,
                 floating: true,
                 snap: true,
-                pinned: constants.isWeb,
+                pinned: !constants.isMobile,
                 title: Column(
                   children: [
                     Text(isOtherPlayer ? "Loadouts" : "Your Loadouts"),
@@ -343,10 +343,7 @@ class Loadouts extends HookConsumerWidget {
 
     return CupertinoPage(
       child: widgets.PopShortcut(
-        child: Loadouts(
-          playerId: playerId,
-          championId: championId,
-        ),
+        child: Loadouts(playerId: playerId, championId: championId),
       ),
     );
   }

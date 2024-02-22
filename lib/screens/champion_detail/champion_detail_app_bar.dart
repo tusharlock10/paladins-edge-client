@@ -49,7 +49,7 @@ class ChampionDetailAppBar extends HookWidget {
       forceElevated: true,
       floating: true,
       snap: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       backgroundColor: theme.darkThemeMaterialColor,
       leading: constants.isWeb
           ? null
