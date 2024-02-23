@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class PopShortcut extends HookWidget {
@@ -38,7 +38,7 @@ class PopShortcut extends HookWidget {
     );
 
     return CallbackShortcuts(
-      bindings: {constants.ShortcutCombos.esc: popChild},
+      bindings: {const SingleActivator(LogicalKeyboardKey.escape): popChild},
       child: Focus(
         autofocus: true,
         focusNode: focusNode,

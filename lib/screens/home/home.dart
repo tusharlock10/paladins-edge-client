@@ -23,10 +23,6 @@ class Home extends HookConsumerWidget {
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final bottomTabIndex = ref.watch(
-      providers.appState.select((_) => _.bottomTabIndex),
-    );
-
     // State
     final isRefreshing = useState(false);
 
@@ -56,60 +52,55 @@ class Home extends HookConsumerWidget {
       [favouriteFriends],
     );
 
-    return widgets.Shortcuts(
-      bindings: {constants.ShortcutCombos.ctrlR: onRefresh},
-      shouldRequestFocus: bottomTabIndex == 0,
-      debugLabel: "home",
-      child: widgets.Refresh(
-        onRefresh: onRefresh,
-        edgeOffset: utilities.getTopEdgeOffset(context),
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              snap: true,
-              floating: true,
-              forceElevated: true,
-              pinned: !constants.isMobile,
-              title: const Text(
-                "Paladins Edge",
-                style: TextStyle(fontSize: 20),
-              ),
-              actions: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: widgets.RefreshButton(
-                      color: Colors.white,
-                      onRefresh: onRefresh,
-                      isRefreshing: isRefreshing.value,
-                    ),
+    return widgets.Refresh(
+      onRefresh: onRefresh,
+      edgeOffset: utilities.getTopEdgeOffset(context),
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            snap: true,
+            floating: true,
+            forceElevated: true,
+            pinned: !constants.isMobile,
+            title: const Text(
+              "Paladins Edge",
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: widgets.RefreshButton(
+                    color: Colors.white,
+                    onRefresh: onRefresh,
+                    isRefreshing: isRefreshing.value,
                   ),
                 ),
+              ),
+            ],
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                const widgets.ApiStatusMessage(
+                  paladinsApiUnavailableMessage:
+                      "You won't be able to view updated data as Paladins services are down. Please try again later",
+                  serverMaintenanceMessage:
+                      "Our servers will be up soon. Please try again later",
+                ),
+                if (!isGuest) const SizedBox(height: 20),
+                if (!isGuest) const HomeFavouriteFriends(),
+                const SizedBox(height: 20),
+                const HomeTopMatches(),
+                const SizedBox(height: 20),
+                const HomeQueueDetails(),
+                const SizedBox(height: 20),
+                const HomeQueueChart(),
+                const SizedBox(height: 20),
               ],
             ),
-            SliverList(
-              delegate: SliverChildListDelegate.fixed(
-                [
-                  const widgets.ApiStatusMessage(
-                    paladinsApiUnavailableMessage:
-                        "You won't be able to view updated data as Paladins services are down. Please try again later",
-                    serverMaintenanceMessage:
-                        "Our servers will be up soon. Please try again later",
-                  ),
-                  if (!isGuest) const SizedBox(height: 20),
-                  if (!isGuest) const HomeFavouriteFriends(),
-                  const SizedBox(height: 20),
-                  const HomeTopMatches(),
-                  const SizedBox(height: 20),
-                  const HomeQueueDetails(),
-                  const SizedBox(height: 20),
-                  const HomeQueueChart(),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
