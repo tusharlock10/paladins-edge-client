@@ -104,45 +104,50 @@ class Feedback extends HookConsumerWidget {
       [isSupport],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isSupport ? "Support Ticket" : "Provide Feedback"),
-      ),
-      body: ListView(
-        physics: const ClampingScrollPhysics(),
-        children: [
-          const SizedBox(height: 20),
-          const FeedbackTypeSelector(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: utilities.responsiveCondition(
-              context,
-              desktop: const FeedbackInputLandscape(),
-              tablet: const FeedbackInputLandscape(),
-              mobile: const FeedbackInputPortrait(),
+    return Focus(
+      autofocus: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(isSupport ? "Support Ticket" : "Provide Feedback"),
+        ),
+        body: ListView(
+          physics: const ClampingScrollPhysics(),
+          children: [
+            const SizedBox(height: 20),
+            const FeedbackTypeSelector(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: utilities.responsiveCondition(
+                context,
+                desktop: const FeedbackInputLandscape(),
+                tablet: const FeedbackInputLandscape(),
+                mobile: const FeedbackInputPortrait(),
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          const FeedbackSupportContact(),
-          const SizedBox(height: 30),
-          Center(
-            child: isSubmitting
-                ? const widgets.LoadingIndicator(
-                    lineWidth: 2,
-                    size: 28,
-                    label: Text("Submitting"),
-                  )
-                : widgets.Button(
-                    label: "Submit",
-                    onPressed: onSubmit,
-                    disabled: description.length < 10,
-                  ),
-          ),
-          const SizedBox(height: 30),
-        ],
+            const SizedBox(height: 15),
+            const FeedbackSupportContact(),
+            const SizedBox(height: 30),
+            Center(
+              child: isSubmitting
+                  ? const widgets.LoadingIndicator(
+                      lineWidth: 2,
+                      size: 28,
+                      label: Text("Submitting"),
+                    )
+                  : widgets.Button(
+                      label: "Submit",
+                      onPressed: onSubmit,
+                      disabled: description.length < 10,
+                    ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Feedback());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Feedback()),
+      );
 }

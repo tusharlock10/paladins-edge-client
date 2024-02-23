@@ -13,12 +13,20 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class ChampionsSearchBar extends HookConsumerWidget {
-  const ChampionsSearchBar({Key? key}) : super(key: key);
+  final bool isRefreshing;
+  final Future<void> Function() onRefresh;
+
+  const ChampionsSearchBar({
+    required this.isRefreshing,
+    required this.onRefresh,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final championsProvider = ref.read(providers.champions);
+    final appStateProvider = ref.read(providers.appState);
     final selectedFilter = ref.watch(
       providers.champions.select((_) => _.selectedFilter),
     );
@@ -28,23 +36,47 @@ class ChampionsSearchBar extends HookConsumerWidget {
     final combinedChampions = ref.watch(
       providers.champions.select((_) => _.combinedChampions),
     );
+    final bottomTabIndex = ref.watch(
+      providers.appState.select((_) => _.bottomTabIndex),
+    );
+    final championsTabVisited = ref.watch(
+      providers.appState.select((_) => _.championsTabVisited),
+    );
 
     // Variables
-    final brightness = Theme.of(context).brightness;
-    final textController = useTextEditingController();
-    final textStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: Colors.white,
-          fontSize: 16,
-        );
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    final textTheme = Theme.of(context).textTheme;
+    final textStyle = textTheme.bodyLarge?.copyWith(fontSize: 16);
 
     // Hooks
+    final focusNode = useFocusNode();
+    final textController = useTextEditingController();
     final badgeColor = useMemoized(
       () {
-        return brightness == Brightness.light
+        return isLightTheme
             ? theme.themeMaterialColor.shade50
             : theme.themeMaterialColor;
       },
-      [brightness],
+      [isLightTheme],
+    );
+    final searchBarColor = useMemoized(
+      () => isLightTheme
+          ? theme.subtleLightThemeColor
+          : theme.subtleDarkThemeColor,
+      [isLightTheme],
+    );
+
+    useEffect(
+      () {
+        if (bottomTabIndex == 2 && !championsTabVisited) {
+          focusNode.requestFocus();
+
+          if (constants.isMobile) appStateProvider.setChampionsTabVisited(true);
+        }
+
+        return null;
+      },
+      [bottomTabIndex],
     );
 
     // Methods
@@ -90,16 +122,15 @@ class ChampionsSearchBar extends HookConsumerWidget {
       snap: true,
       floating: true,
       forceElevated: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       actions: [
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: widgets.RefreshButton(
-                color: Colors.white,
-                onRefresh: () => championsProvider.loadCombinedChampions(true),
-              ),
+            widgets.RefreshButton(
+              margin: const EdgeInsets.only(right: 10),
+              color: Colors.white,
+              onRefresh: onRefresh,
+              isRefreshing: isRefreshing,
             ),
             IconButton(
               icon: badges.Badge(
@@ -124,17 +155,28 @@ class ChampionsSearchBar extends HookConsumerWidget {
         ),
       ],
       title: TextField(
+        focusNode: focusNode,
         controller: textController,
         maxLength: 16,
         enableInteractiveSelection: true,
-        style: textStyle,
+        style: textStyle?.copyWith(color: Colors.white),
         onChanged: championsProvider.filterChampionsBySearch,
         onSubmitted: onSubmit,
         decoration: InputDecoration(
+          filled: true,
+          isDense: true,
           hintText: "Search champion",
           counterText: "",
-          hintStyle: textStyle,
-          border: InputBorder.none,
+          hintStyle: textStyle?.copyWith(color: Colors.white70),
+          fillColor: searchBarColor,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 15,
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
         ),
       ),
     );

@@ -49,6 +49,9 @@ class Friends extends HookConsumerWidget {
         otherPlayerId != userPlayerId && otherPlayerId != null;
     final playerId = otherPlayerId ?? userPlayerId;
 
+    // State
+    final isRefreshing = useState(false);
+
     // Effects
     useEffect(
       () {
@@ -64,14 +67,14 @@ class Friends extends HookConsumerWidget {
     );
 
     final onRefresh = useCallback(
-      () {
+      () async {
+        isRefreshing.value = true;
         if (playerId != null && isOtherPlayer) {
-          return friendsProvider.getOtherFriends(playerId, true);
+          await friendsProvider.getOtherFriends(playerId, true);
         } else if (playerId != null) {
-          return friendsProvider.getUserFriends(true);
+          await friendsProvider.getUserFriends(true);
         }
-
-        return Future.value(null);
+        isRefreshing.value = false;
       },
       [],
     );
@@ -85,6 +88,7 @@ class Friends extends HookConsumerWidget {
             FriendsAppBar(
               isOtherPlayer: isOtherPlayer,
               onRefresh: onRefresh,
+              isRefreshing: isRefreshing.value,
             ),
             isLoadingFriends
                 ? SliverList(
@@ -123,8 +127,12 @@ class Friends extends HookConsumerWidget {
     }
     final otherPlayerId = paramPlayerId;
 
-    return CupertinoPage(child: Friends(otherPlayerId: otherPlayerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: Friends(otherPlayerId: otherPlayerId)),
+    );
   }
 
-  static Page _userRouteBuilder(_, __) => const CupertinoPage(child: Friends());
+  static Page _userRouteBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Friends()),
+      );
 }

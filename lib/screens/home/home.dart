@@ -23,6 +23,8 @@ class Home extends HookConsumerWidget {
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+    // State
+    final isRefreshing = useState(false);
 
     // Effects
     useEffect(
@@ -38,12 +40,14 @@ class Home extends HookConsumerWidget {
     // Methods
     final onRefresh = useCallback(
       () async {
-        return await Future.wait([
+        isRefreshing.value = true;
+        await Future.wait([
           queueProvider.getQueueTimeline(true),
           matchesProvider.loadTopMatches(true),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),
         ]);
+        isRefreshing.value = false;
       },
       [favouriteFriends],
     );
@@ -57,7 +61,7 @@ class Home extends HookConsumerWidget {
             snap: true,
             floating: true,
             forceElevated: true,
-            pinned: constants.isWeb,
+            pinned: !constants.isMobile,
             title: const Text(
               "Paladins Edge",
               style: TextStyle(fontSize: 20),
@@ -69,6 +73,7 @@ class Home extends HookConsumerWidget {
                   child: widgets.RefreshButton(
                     color: Colors.white,
                     onRefresh: onRefresh,
+                    isRefreshing: isRefreshing.value,
                   ),
                 ),
               ),

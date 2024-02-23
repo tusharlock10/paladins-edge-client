@@ -7,6 +7,7 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class _AppStateNotifier extends ChangeNotifier {
   int bottomTabIndex = 0;
   bool searchTabVisited = false;
+  bool championsTabVisited = false;
   models.Settings settings = models.Settings();
 
   /// Change index to the current bottom tab
@@ -15,9 +16,15 @@ class _AppStateNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Set wether the search tab is visited or not
+  /// Set whether the search tab is visited or not
   void setSearchTabVisited(bool isVisited) {
     searchTabVisited = isVisited;
+    utilities.postFrameCallback(notifyListeners);
+  }
+
+  /// Set whether the champions tab is visited or not
+  void setChampionsTabVisited(bool isVisited) {
+    championsTabVisited = isVisited;
     utilities.postFrameCallback(notifyListeners);
   }
 

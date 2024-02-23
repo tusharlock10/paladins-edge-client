@@ -92,7 +92,7 @@ class Leaderboard extends HookConsumerWidget {
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
+            pinned: !constants.isMobile,
             title: const Text("Leaderboard"),
             centerTitle: false,
             actions: [
@@ -167,5 +167,7 @@ class Leaderboard extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Leaderboard());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Leaderboard()),
+      );
 }

@@ -110,8 +110,8 @@ class ScreenInitialization extends HookConsumerWidget {
       [isInitialized],
     );
 
-    return isInitialized
-        ? screen ?? const SizedBox()
+    return isInitialized && screen != null
+        ? screen!
         : DecoratedBox(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -125,7 +125,6 @@ class ScreenInitialization extends HookConsumerWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 isForceUpdatePending
                     ? Center(

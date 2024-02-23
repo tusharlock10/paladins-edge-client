@@ -9,6 +9,7 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/match_detail/match_detail_app_bar.dart";
 import "package:paladinsedge/screens/match_detail/match_detail_list.dart";
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class MatchDetail extends HookConsumerWidget {
   static const routeName = "match";
@@ -108,9 +109,11 @@ class MatchDetail extends HookConsumerWidget {
     final matchId = paramMatchId;
 
     return CupertinoPage(
-      child: MatchDetail(
-        matchId: matchId,
-        isSavedMatch: isSavedMatch,
+      child: widgets.PopShortcut(
+        child: MatchDetail(
+          matchId: matchId,
+          isSavedMatch: isSavedMatch,
+        ),
       ),
     );
   }

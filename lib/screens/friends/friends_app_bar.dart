@@ -7,10 +7,12 @@ import "package:paladinsedge/widgets/index.dart" as widgets;
 class FriendsAppBar extends ConsumerWidget {
   final bool isOtherPlayer;
   final RefreshCallback onRefresh;
+  final bool isRefreshing;
 
   const FriendsAppBar({
     required this.isOtherPlayer,
     required this.onRefresh,
+    required this.isRefreshing,
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +34,7 @@ class FriendsAppBar extends ConsumerWidget {
       snap: true,
       floating: true,
       forceElevated: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       actions: [
         Center(
           child: Padding(
@@ -40,6 +42,7 @@ class FriendsAppBar extends ConsumerWidget {
             child: widgets.RefreshButton(
               color: Colors.white,
               onRefresh: onRefresh,
+              isRefreshing: isRefreshing,
             ),
           ),
         ),

@@ -172,7 +172,9 @@ class ChampionDetail extends HookConsumerWidget {
                               ChampionDetailHeading(champion: champion),
                               const ChampionDetailTitleLabel(label: "Lore"),
                               ChampionDetailLore(champion: champion),
-                              const ChampionDetailTitleLabel(label: "Talents"),
+                              const ChampionDetailTitleLabel(
+                                label: "Talents",
+                              ),
                               ChampionDetailTalents(champion: champion),
                               const ChampionDetailTitleLabel(
                                 label: "Abilities",
@@ -181,7 +183,9 @@ class ChampionDetail extends HookConsumerWidget {
                               const ChampionDetailTitleLabel(
                                 label: "Loadout Cards",
                               ),
-                              ChampionDetailLoadoutCards(champion: champion),
+                              ChampionDetailLoadoutCards(
+                                champion: champion,
+                              ),
                               const ChampionDetailTitleLabel(
                                 label: "Your Stats",
                               ),
@@ -205,6 +209,8 @@ class ChampionDetail extends HookConsumerWidget {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    return CupertinoPage(child: ChampionDetail(championId: championId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: ChampionDetail(championId: championId)),
+    );
   }
 }

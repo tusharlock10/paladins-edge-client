@@ -164,7 +164,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           badgeColor: badgeColor,
         ),
         child: const Icon(
-          FeatherIcons.menu,
+          FeatherIcons.moreHorizontal,
           color: Colors.white,
         ),
       ),
