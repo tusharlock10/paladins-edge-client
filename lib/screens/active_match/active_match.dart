@@ -157,10 +157,12 @@ class ActiveMatch extends HookConsumerWidget {
     }
     final playerId = paramPlayerId;
 
-    return CupertinoPage(child: ActiveMatch(playerId: playerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: ActiveMatch(playerId: playerId)),
+    );
   }
 
   static Page _userRouteBuilder(_, __) => const CupertinoPage(
-        child: ActiveMatch(),
+        child: widgets.PopShortcut(child: ActiveMatch()),
       );
 }

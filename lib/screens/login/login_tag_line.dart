@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:paladinsedge/gen/assets.gen.dart";
-import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class LoginTagLine extends StatelessWidget {
   const LoginTagLine({Key? key}) : super(key: key);
@@ -29,12 +28,9 @@ class LoginTagLine extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () => widgets.showInfoAlert(context),
-            child: Container(
-              transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
-              child: Assets.icons.paladins.image(width: 140),
-            ),
+          Container(
+            transform: Matrix4.translationValues(25, 0, 0)..rotateZ(-0.12),
+            child: Assets.icons.paladins.image(width: 140),
           ),
         ],
       ),

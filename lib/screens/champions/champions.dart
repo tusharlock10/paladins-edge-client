@@ -15,9 +15,6 @@ class Champions extends HookConsumerWidget {
     // Providers
     final championsProvider = ref.read(providers.champions);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final bottomTabIndex = ref.watch(
-      providers.appState.select((_) => _.bottomTabIndex),
-    );
 
     // State
     final isRefreshing = useState(false);
