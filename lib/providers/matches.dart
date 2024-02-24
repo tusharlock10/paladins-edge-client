@@ -17,6 +17,7 @@ class _MatchesNotifier extends ChangeNotifier {
   bool isPlayerMatchesLoading = false;
   String? combinedMatchesPlayerId;
   List<data_classes.CombinedMatch>? combinedMatches;
+  int? playerStreak;
 
   /// Common matches
   bool isCommonMatchesLoading = false;
@@ -40,6 +41,7 @@ class _MatchesNotifier extends ChangeNotifier {
     isPlayerMatchesLoading = true;
     combinedMatches = null;
     combinedMatchesPlayerId = null;
+    playerStreak = null;
     utilities.postFrameCallback(notifyListeners);
   }
 
@@ -83,6 +85,12 @@ class _MatchesNotifier extends ChangeNotifier {
         sort: selectedSort,
       );
     }
+
+    // get the playerStreak
+    playerStreak = utilities.getPlayerStreak(
+      combinedMatches,
+      combinedMatchesPlayerId,
+    );
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
 
