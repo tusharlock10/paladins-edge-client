@@ -55,7 +55,7 @@ class Main extends HookConsumerWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       drawerEnableOpenDragGesture: constants.isMobile,
-      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 2,
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 3,
       onDrawerChanged: onDrawerChanged,
       body: MainPagesStack(selectedIndex: bottomTabIndex),
       bottomNavigationBar: MainBottomTabs(

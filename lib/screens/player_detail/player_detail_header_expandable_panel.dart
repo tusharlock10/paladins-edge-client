@@ -49,7 +49,7 @@ class _RecentMatchesBar extends HookConsumerWidget {
         }
 
         for (final combinedMatch in filteredCombinedMatches) {
-          if (combinedMatch.match.queue.contains("Training")) continue;
+          if (utilities.isTrainingMatch(combinedMatch.match)) continue;
 
           final matchPlayer = utilities.getMatchPlayerFromPlayerId(
             combinedMatch.matchPlayers,

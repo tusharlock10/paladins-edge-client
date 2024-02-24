@@ -9,7 +9,6 @@ import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/screens/player_detail/player_detail_header.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_matches.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_menu.dart";
-import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetail extends HookConsumerWidget {
@@ -51,8 +50,8 @@ class PlayerDetail extends HookConsumerWidget {
     final playerInferred = ref.watch(
       providers.players.select((_) => _.playerInferred),
     );
-    final combinedMatches = ref.watch(
-      providers.matches.select((_) => _.combinedMatches),
+    final playerStreak = ref.watch(
+      providers.matches.select((_) => _.playerStreak),
     );
 
     // Variables
@@ -64,33 +63,6 @@ class PlayerDetail extends HookConsumerWidget {
 
     // State
     final isRefreshing = useState(false);
-
-    // Hooks
-    final playerStreak = useMemoized(
-      () {
-        if (combinedMatches == null) return null;
-        if (combinedMatches.length < 5) return null;
-        if (combinedMatchesPlayerId == null) return null;
-
-        final playerId = combinedMatchesPlayerId;
-        final firstCombinedMatch = combinedMatches.first;
-        final isFirstWin = utilities.didPlayerWin(firstCombinedMatch, playerId);
-        int streak = 1;
-
-        for (final combinedMatch in combinedMatches.skip(1)) {
-          final isWin = utilities.didPlayerWin(combinedMatch, playerId);
-          if (isFirstWin == isWin) {
-            streak++;
-          } else {
-            break;
-          }
-        }
-        if (streak < 3) return null;
-
-        return isFirstWin ? streak : -streak;
-      },
-      [combinedMatches, combinedMatchesPlayerId],
-    );
 
     // Methods
     final getPlayerDetails = useCallback(

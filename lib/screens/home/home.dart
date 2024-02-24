@@ -23,6 +23,7 @@ class Home extends HookConsumerWidget {
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+
     // State
     final isRefreshing = useState(false);
 
