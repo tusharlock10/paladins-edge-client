@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:badges/badges.dart" as badges;
 import "package:flutter/material.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
@@ -48,6 +50,11 @@ class ChampionsSearchBar extends HookConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final textStyle = textTheme.bodyLarge?.copyWith(fontSize: 16);
 
+    // State
+    final searchPlaceholder = useState(
+      utilities.selectRandom(constants.searchChampionPlaceholders),
+    );
+
     // Hooks
     final focusNode = useFocusNode();
     final textController = useTextEditingController();
@@ -66,19 +73,6 @@ class ChampionsSearchBar extends HookConsumerWidget {
       [isLightTheme],
     );
 
-    useEffect(
-      () {
-        if (bottomTabIndex == 2 && !championsTabVisited) {
-          focusNode.requestFocus();
-
-          if (constants.isMobile) appStateProvider.setChampionsTabVisited(true);
-        }
-
-        return null;
-      },
-      [bottomTabIndex],
-    );
-
     // Methods
     final onClear = useCallback(
       () {
@@ -86,6 +80,14 @@ class ChampionsSearchBar extends HookConsumerWidget {
         championsProvider.clearAppliedFiltersAndSort();
       },
       [],
+    );
+
+    final onRefreshWithClear = useCallback(
+      () async {
+        onClear();
+        await onRefresh();
+      },
+      [onClear, onRefresh],
     );
 
     final onFilter = useCallback(
@@ -118,6 +120,42 @@ class ChampionsSearchBar extends HookConsumerWidget {
       [combinedChampions],
     );
 
+    final changePlaceholder = useCallback(
+      (Timer _) {
+        searchPlaceholder.value = utilities.selectRandom(
+          constants.searchChampionPlaceholders,
+          skipElement: searchPlaceholder.value,
+        );
+      },
+      [searchPlaceholder],
+    );
+
+    // Effects
+    useEffect(
+      () {
+        if (bottomTabIndex == 2 && !championsTabVisited) {
+          focusNode.requestFocus();
+
+          if (constants.isMobile) appStateProvider.setChampionsTabVisited(true);
+        }
+
+        return null;
+      },
+      [bottomTabIndex],
+    );
+
+    useEffect(
+      () {
+        final timer = Timer.periodic(
+          const Duration(seconds: 5),
+          changePlaceholder,
+        );
+
+        return timer.cancel;
+      },
+      [changePlaceholder],
+    );
+
     return SliverAppBar(
       snap: true,
       floating: true,
@@ -129,7 +167,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
             widgets.RefreshButton(
               margin: const EdgeInsets.only(right: 10),
               color: Colors.white,
-              onRefresh: onRefresh,
+              onRefresh: onRefreshWithClear,
               isRefreshing: isRefreshing,
             ),
             IconButton(
@@ -154,28 +192,39 @@ class ChampionsSearchBar extends HookConsumerWidget {
           ],
         ),
       ],
-      title: TextField(
-        focusNode: focusNode,
-        controller: textController,
-        maxLength: 16,
-        enableInteractiveSelection: true,
-        style: textStyle?.copyWith(color: Colors.white),
-        onChanged: championsProvider.filterChampionsBySearch,
-        onSubmitted: onSubmit,
-        decoration: InputDecoration(
-          filled: true,
-          isDense: true,
-          hintText: "Search champion",
-          counterText: "",
-          hintStyle: textStyle?.copyWith(color: Colors.white70),
-          fillColor: searchBarColor,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 15,
+      title: Theme(
+        data: ThemeData(
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.white24,
+            selectionHandleColor: Colors.white24,
           ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
+        child: TextField(
+          focusNode: focusNode,
+          controller: textController,
+          maxLength: 16,
+          enableInteractiveSelection: true,
+          style: textStyle?.copyWith(color: Colors.white),
+          onChanged: championsProvider.filterChampionsBySearch,
+          onSubmitted: onSubmit,
+          decoration: InputDecoration(
+            filled: true,
+            isDense: true,
+            hintText: searchPlaceholder.value != null
+                ? "${searchPlaceholder.value} ..."
+                : "Search champion",
+            counterText: "",
+            hintStyle: textStyle?.copyWith(color: Colors.white70),
+            fillColor: searchBarColor,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 15,
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
           ),
         ),
       ),

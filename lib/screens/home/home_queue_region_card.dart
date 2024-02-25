@@ -13,8 +13,8 @@ class HomeQueueRegionCard extends HookConsumerWidget {
     // Providers
     final appStateProvider = ref.read(providers.appState);
     final queueProvider = ref.read(providers.queue);
-    final selectedQueueRegion = ref.watch(
-      providers.appState.select((_) => _.settings.selectedQueueRegion),
+    final settings = ref.watch(
+      providers.appState.select((_) => _.settings),
     );
     final selectedQueueId = ref.watch(
       providers.queue.select((_) => _.selectedQueueId),
@@ -22,28 +22,31 @@ class HomeQueueRegionCard extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
+    final selectedQueueRegion = settings.selectedQueueRegion;
 
     // Hooks
     final regionFullName = useMemoized(
-      () => data_classes.Region.getFullName(selectedQueueRegion),
+      () => data_classes.Region.getFullName(settings.selectedQueueRegion),
       [selectedQueueRegion],
     );
 
     // Methods
-    final onTap = useCallback(
+    final setSelectedQueueRegion = useCallback(
       () {
-        final nextRegion =
-            data_classes.Region.cycleRegions(selectedQueueRegion);
-        appStateProvider.setQueueRegions(nextRegion);
+        final nextRegion = data_classes.Region.cycleRegions(
+          selectedQueueRegion,
+        );
+        final newSettings = settings.copyWith(selectedQueueRegion: nextRegion);
+        appStateProvider.setSettings(newSettings);
         queueProvider.selectTimelineQueue(selectedQueueId);
       },
-      [selectedQueueRegion, selectedQueueRegion],
+      [selectedQueueRegion],
     );
 
     return widgets.InteractiveCard(
       elevation: 2,
       borderRadius: 10,
-      onTap: onTap,
+      onTap: setSelectedQueueRegion,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -50,6 +50,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
   /// 2) gets all online players from RTDB
   /// 3) initializes listeners
   void initialize() async {
+    utilities.Stopwatch.startStopTimer("initGlobalChat");
     if (constants.isWindows) return;
 
     isInit = false;
@@ -68,6 +69,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
 
     _initializeListeners();
     utilities.postFrameCallback(notifyListeners);
+    utilities.Stopwatch.startStopTimer("initGlobalChat");
   }
 
   /// send typing metadata of the player to RTDB

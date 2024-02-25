@@ -535,14 +535,12 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   Future<void> _recordLoginAnalytics() async {
-    if (isGuest = true) {
+    if (isGuest) {
       utilities.Analytics.logEvent(
         constants.AnalyticsEvent.guestToUserConversion,
       );
     }
-    if (user != null) {
-      utilities.Analytics.setUserId(user!.uid);
-    }
+    if (user != null) utilities.Analytics.setUserId(user!.uid);
     if (player != null) {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.existingUserLogin);
     } else {

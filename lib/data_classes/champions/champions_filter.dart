@@ -1,4 +1,5 @@
 import "package:paladinsedge/data_classes/champions/combined_champion.dart";
+import "package:paladinsedge/models/index.dart" as models;
 
 class SelectedChampionsFilter {
   final String? name;
@@ -132,6 +133,17 @@ abstract class ChampionsFilter {
     return result.toList();
   }
 
+  static bool _talentsContainSearchValue(
+    List<models.Talent> talents,
+    String search,
+  ) {
+    for (final talent in talents) {
+      if (talent.name.toLowerCase().contains(search)) return true;
+    }
+
+    return false;
+  }
+
   static bool _filterBySearchCondition(
     String search,
     CombinedChampion combinedChampion,
@@ -150,6 +162,8 @@ abstract class ChampionsFilter {
         champion.role.toLowerCase().contains(search)) return true;
     if (searchCondition == ChampionsSearchCondition.level &&
         "level ${playerChampion?.level}".contains(search)) return true;
+    if (searchCondition == ChampionsSearchCondition.talent &&
+        _talentsContainSearchValue(champion.talents, search)) return true;
 
     return false;
   }

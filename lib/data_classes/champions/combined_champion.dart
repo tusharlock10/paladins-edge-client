@@ -9,8 +9,8 @@ enum ChampionsSearchCondition {
   title,
   role,
   level,
+  talent,
 }
-
 
 @freezed
 class CombinedChampion with _$CombinedChampion {
@@ -19,6 +19,6 @@ class CombinedChampion with _$CombinedChampion {
     PlayerChampion? playerChampion,
     @Default(false) bool hide, // used for filtering
     @Default(null)
-        ChampionsSearchCondition? searchCondition, // used for searching
+    ChampionsSearchCondition? searchCondition, // used for searching
   }) = _CombinedChampion;
 }

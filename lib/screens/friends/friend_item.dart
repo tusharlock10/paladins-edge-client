@@ -156,7 +156,7 @@ class FriendItem extends HookConsumerWidget {
             ),
             rankIcon != null
                 ? widgets.FastImage(
-                    imageUrl: rankIcon.imageUrl,
+                    imageUrl: rankIcon.optimizedUrl,
                     isAssetImage: rankIcon.isAssetImage,
                     height: 36,
                     width: 36,

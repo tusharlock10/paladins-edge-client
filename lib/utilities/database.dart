@@ -1,6 +1,7 @@
 import "package:hive_flutter/hive_flutter.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class Database {
   static bool _init = false;
@@ -39,6 +40,8 @@ abstract class Database {
 
   static Future<void> initialize() async {
     if (_init) return;
+
+    utilities.Stopwatch.startStopTimer("initializeDatabase");
     await Hive.initFlutter();
     _registerAdapters();
 
@@ -82,6 +85,7 @@ abstract class Database {
           .put(constants.HiveBoxes.recordExpiry, models.RecordExpiry());
       _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
     }
+    utilities.Stopwatch.startStopTimer("initializeDatabase");
   }
 
   // save methods

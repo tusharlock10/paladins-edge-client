@@ -70,7 +70,7 @@ class PlayerDetailHeader extends HookConsumerWidget {
                           widgets.ElevatedAvatar(
                             imageUrl: utilities.getSmallAsset(player.avatarUrl),
                             imageBlurHash: player.avatarBlurHash,
-                            size: 30,
+                            size: 32,
                             borderRadius: 10,
                           ),
                           const SizedBox(width: 10),
@@ -86,10 +86,10 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                       children: [
                                         if (rankIcon != null)
                                           widgets.FastImage(
-                                            imageUrl: rankIcon.imageUrl,
+                                            imageUrl: rankIcon.optimizedUrl,
                                             isAssetImage: rankIcon.isAssetImage,
-                                            height: 40,
-                                            width: 40,
+                                            height: 38,
+                                            width: 38,
                                           ),
                                         Column(
                                           crossAxisAlignment:

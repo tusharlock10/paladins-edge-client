@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -12,10 +14,26 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final baseRanks = ref.watch(providers.baseRanks).baseRanks;
     final player = ref.watch(providers.auth.select((_) => _.player));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
+
+    // Hooks
+    final rankIcon = useMemoized(
+      () {
+        final playerBaseRank = baseRanks[player?.ranked.rank];
+        if (playerBaseRank == null) return null;
+
+        return data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(playerBaseRank.rankIconUrl),
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: playerBaseRank.rank,
+        );
+      },
+      [player, baseRanks],
+    );
 
     // Methods
     final onTapPlayer = useCallback(
@@ -45,9 +63,9 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
           widgets.ElevatedAvatar(
             imageUrl: player.avatarUrl,
             imageBlurHash: player.avatarBlurHash,
-            size: 18,
-            borderRadius: 0,
-            elevation: 5,
+            size: 20,
+            borderRadius: 5,
+            elevation: 7,
           ),
           const SizedBox(width: 7),
           Column(
@@ -56,7 +74,6 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
                 player.name,
                 style: textTheme.displayLarge?.copyWith(
                   fontSize: 18,
-                  decoration: TextDecoration.underline,
                 ),
               ),
               player.title != null
@@ -67,6 +84,15 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
                   : const SizedBox(),
             ],
           ),
+          const SizedBox(width: 7),
+          rankIcon != null
+              ? widgets.FastImage(
+                  imageUrl: rankIcon.optimizedUrl,
+                  isAssetImage: rankIcon.isAssetImage,
+                  height: 30,
+                  width: 30,
+                )
+              : const SizedBox(width: 20),
         ],
       ),
     );

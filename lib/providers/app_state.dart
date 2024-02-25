@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
@@ -31,41 +30,21 @@ class _AppStateNotifier extends ChangeNotifier {
   /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
+    bottomTabIndex = settings.selectedBottomTabIndex;
+    searchTabVisited = !settings.autoOpenKeyboardOnSearch;
+    championsTabVisited = !settings.autoOpenKeyboardOnChampions;
+
     notifyListeners();
   }
 
-  /// Toggle the theme from `light` to `dark` and vice versa
-  void toggleTheme(ThemeMode themeMode) {
-    settings.themeMode = themeMode;
+  /// Set new settings and save them in db
+  void setSettings(models.Settings newSettings) {
+    settings = newSettings;
+    searchTabVisited = !newSettings.autoOpenKeyboardOnSearch;
+    championsTabVisited = !newSettings.autoOpenKeyboardOnChampions;
 
-    String? themeName;
-    if (themeMode == ThemeMode.dark) {
-      themeName = "dark";
-    } else if (themeMode == ThemeMode.light) {
-      themeName = "light";
-    } else if (themeMode == ThemeMode.system) {
-      themeName = "system";
-    }
-    notifyListeners();
-    utilities.Analytics.logEvent(
-      constants.AnalyticsEvent.changeTheme,
-      {"theme": themeName},
-    );
     utilities.Database.saveSettings(settings);
-  }
-
-  /// Toggle showUserPlayerMatches for commonMatches
-  void toggleShowUserPlayerMatches(bool? value) {
-    settings.showUserPlayerMatches = value ?? false;
     notifyListeners();
-    utilities.Database.saveSettings(settings);
-  }
-
-  /// Set queue region in settings
-  void setQueueRegions(String region) {
-    settings.selectedQueueRegion = region;
-    notifyListeners();
-    utilities.Database.saveSettings(settings);
   }
 
   void clearData() {

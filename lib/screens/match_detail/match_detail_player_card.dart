@@ -82,6 +82,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final champions = ref.read(providers.champions).champions;
     final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final items = ref.read(providers.items).items;
+    final showChampionSplashImage = ref.read(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
+    );
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -94,7 +97,6 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
     final backgroundColor = Theme.of(context).cardTheme.color;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
 
@@ -201,7 +203,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
 
     final splashBackground = useMemoized(
       () {
-        if (!showBackgroundSplash) return null;
+        if (!showChampionSplashImage) return null;
         if (champion == null) return null;
 
         return data_classes.PlatformOptimizedImage(
@@ -210,7 +212,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
           assetId: champion.championId,
         );
       },
-      [champion, showBackgroundSplash],
+      [champion, showChampionSplashImage],
     );
 
     final championIcon = useMemoized(
@@ -299,9 +301,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
             image: champion != null && splashBackground != null
                 ? DecorationImage(
                     image: (splashBackground.isAssetImage
-                        ? AssetImage(splashBackground.imageUrl)
+                        ? AssetImage(splashBackground.optimizedUrl)
                         : CachedNetworkImageProvider(
-                            splashBackground.imageUrl,
+                            splashBackground.optimizedUrl,
                           )) as ImageProvider,
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
@@ -330,7 +332,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             clipBehavior: Clip.none,
                             children: [
                               widgets.ElevatedAvatar(
-                                imageUrl: championIcon.imageUrl,
+                                imageUrl: championIcon.optimizedUrl,
                                 imageBlurHash: championIcon.blurHash,
                                 isAssetImage: championIcon.isAssetImage,
                                 size: 30,
@@ -357,7 +359,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             child: Column(
                               children: [
                                 widgets.FastImage(
-                                  imageUrl: rankIcon.imageUrl,
+                                  imageUrl: rankIcon.optimizedUrl,
                                   isAssetImage: rankIcon.isAssetImage,
                                   height: 20,
                                   width: 20,

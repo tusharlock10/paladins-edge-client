@@ -35,7 +35,7 @@ class LeaderboardDropdownItem extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widgets.FastImage(
-            imageUrl: rankIcon.imageUrl,
+            imageUrl: rankIcon.optimizedUrl,
             isAssetImage: rankIcon.isAssetImage,
             height: 20,
             width: 20,

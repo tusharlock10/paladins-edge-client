@@ -46,6 +46,7 @@ class ScreenInitialization extends HookConsumerWidget {
     // Methods
     final initApp = useCallback(
       () async {
+        utilities.Stopwatch.startStopTimer("screenInitialization");
         final result = await Future.wait([
           utilities.RemoteConfig.initialize(),
           PackageInfo.fromPlatform(),
@@ -78,7 +79,7 @@ class ScreenInitialization extends HookConsumerWidget {
 
           return;
         }
-
+        utilities.initializeApi();
         await Future.wait([
           utilities.RSACrypto.initialize(),
           utilities.RealtimeGlobalChat.initialize(),
@@ -96,6 +97,7 @@ class ScreenInitialization extends HookConsumerWidget {
         authProvider.setAppInitialized();
 
         utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);
+        utilities.Stopwatch.startStopTimer("screenInitialization");
       },
       [],
     );

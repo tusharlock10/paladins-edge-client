@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_feather_icons/flutter_feather_icons.dart";
 
 class AppDrawerGuestProfile extends StatelessWidget {
   const AppDrawerGuestProfile({Key? key}) : super(key: key);
@@ -9,23 +8,18 @@ class AppDrawerGuestProfile extends StatelessWidget {
     // Variables
     final textTheme = Theme.of(context).textTheme;
 
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          FeatherIcons.user,
-          size: 24,
-          color: textTheme.bodyLarge?.color,
+        Text(
+          "Guest Profile",
+          style: textTheme.bodyLarge?.copyWith(fontSize: 18),
         ),
         const SizedBox(width: 10),
         Text(
-          "Guest Profile",
-          style: textTheme.displayLarge?.copyWith(
-            fontSize: 18,
-            color: textTheme.bodyLarge?.color,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.normal,
-          ),
+          "Login to use all features",
+          style: textTheme.bodyLarge
+              ?.copyWith(fontSize: 14, fontStyle: FontStyle.italic),
         ),
       ],
     );

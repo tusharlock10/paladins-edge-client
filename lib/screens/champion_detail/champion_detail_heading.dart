@@ -86,7 +86,7 @@ class ChampionDetailHeading extends HookConsumerWidget {
           Hero(
             tag: "${champion.championId}Icon",
             child: widgets.ElevatedAvatar(
-              imageUrl: championIcon.imageUrl,
+              imageUrl: championIcon.optimizedUrl,
               imageBlurHash: championIcon.blurHash,
               isAssetImage: championIcon.isAssetImage,
               size: 42,

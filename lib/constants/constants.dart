@@ -76,3 +76,9 @@ const partyColors = [
   Colors.red,
   Colors.pink,
 ];
+
+const themeNames = {
+  ThemeMode.dark: "dark",
+  ThemeMode.light: "light",
+  ThemeMode.system: "system",
+};

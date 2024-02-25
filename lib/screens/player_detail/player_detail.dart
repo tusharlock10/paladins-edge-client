@@ -175,8 +175,8 @@ class PlayerDetail extends HookConsumerWidget {
                   ),
                   if (playerStreak != null)
                     widgets.TextChip(
-                      iconSize: 18,
-                      textSize: 14,
+                      iconSize: 16,
+                      textSize: 12,
                       icon: playerStreak.isNegative
                           ? FeatherIcons.arrowDownCircle
                           : FeatherIcons.arrowUpCircle,

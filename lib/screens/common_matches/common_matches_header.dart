@@ -12,11 +12,11 @@ class CommonMatchesHeader extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final appStateProvider = ref.read(providers.appState);
-    final showUserPlayerMatches = ref.watch(
-      providers.appState.select((_) => _.settings.showUserPlayerMatches),
-    );
     final commonMatches = ref.watch(
       providers.matches.select((_) => _.commonMatches),
+    );
+    final settings = ref.watch(
+      providers.appState.select((_) => _.settings),
     );
 
     // Variables
@@ -47,6 +47,15 @@ class CommonMatchesHeader extends HookConsumerWidget {
         return commonMatchesStats;
       },
       [commonMatches],
+    );
+
+    // Methods
+    final setShowUserPlayerMatches = useCallback(
+      (bool? value) {
+        final newSettings = settings.copyWith(showUserPlayerMatches: value);
+        appStateProvider.setSettings(newSettings);
+      },
+      [settings],
     );
 
     return SliverPadding(
@@ -81,8 +90,8 @@ class CommonMatchesHeader extends HookConsumerWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                   Checkbox(
-                    value: showUserPlayerMatches,
-                    onChanged: appStateProvider.toggleShowUserPlayerMatches,
+                    value: settings.showUserPlayerMatches,
+                    onChanged: setShowUserPlayerMatches,
                     activeColor: theme.themeMaterialColor,
                     hoverColor: theme.themeMaterialColor.shade300,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -119,7 +119,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
       elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: _itemMargin),
       borderRadius: 10,
-      backgroundImage: splashBackground.imageUrl,
+      backgroundImage: splashBackground.optimizedUrl,
       isAssetImage: splashBackground.isAssetImage,
       child: Row(
         children: [
@@ -139,7 +139,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
                 Row(
                   children: [
                     widgets.ElevatedAvatar(
-                      imageUrl: championIcon.imageUrl,
+                      imageUrl: championIcon.optimizedUrl,
                       imageBlurHash: championIcon.blurHash,
                       isAssetImage: championIcon.isAssetImage,
                       size: 28,
