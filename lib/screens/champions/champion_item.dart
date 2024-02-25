@@ -109,12 +109,46 @@ class ChampionItem extends HookConsumerWidget {
       [search, searchCondition],
     );
 
+    final talentSearch = useMemoized(
+      () {
+        return searchCondition == data_classes.ChampionsSearchCondition.talent
+            ? search
+            : "";
+      },
+      [search, searchCondition],
+    );
+
+    final searchedTalentName = useMemoized(
+      () {
+        if (talentSearch.isEmpty) return "";
+
+        for (final talent in champion.talents) {
+          if (talent.name.toLowerCase().contains(search)) return talent.name;
+        }
+
+        return "";
+      },
+      [talentSearch, champion],
+    );
+
     final championIcon = useMemoized(
       () {
         return data_classes.PlatformOptimizedImage(
           imageUrl: champion.iconUrl,
           blurHash: champion.iconBlurHash,
           assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
+        );
+      },
+      [champion],
+    );
+
+    final championSplash = useMemoized(
+      () {
+        return data_classes.PlatformOptimizedImage(
+          imageUrl: champion.splashUrl,
+          blurHash: champion.splashBlurHash,
+          assetType: constants.ChampionAssetType.splash,
           assetId: champion.championId,
         );
       },
@@ -145,7 +179,9 @@ class ChampionItem extends HookConsumerWidget {
       width: width,
       height: height,
       child: widgets.InteractiveCard(
-        borderRadius: 22.5,
+        backgroundImage: championSplash.optimizedUrl,
+        isAssetImage: championSplash.isAssetImage,
+        borderRadius: 25,
         padding: const EdgeInsets.all(5),
         onTap: onTapChampion,
         child: Row(
@@ -156,7 +192,7 @@ class ChampionItem extends HookConsumerWidget {
                 tag: "${champion.championId}Icon",
                 child: LayoutBuilder(
                   builder: (context, constraints) => widgets.ElevatedAvatar(
-                    imageUrl: championIcon.imageUrl,
+                    imageUrl: championIcon.optimizedUrl,
                     imageBlurHash: championIcon.blurHash,
                     isAssetImage: championIcon.isAssetImage,
                     size: (constraints.maxHeight - 10) / 2,
@@ -181,34 +217,51 @@ class ChampionItem extends HookConsumerWidget {
                       backgroundColor: highlightColor,
                     ),
                   ),
-                  if (championIdSearch.isNotEmpty) ...[
-                    const SizedBox(height: 2),
-                    SubstringHighlight(
-                      text: "Champion ID ${champion.championId}",
-                      term: championIdSearch.trim(),
-                      textStyle: textTheme.bodyLarge!.copyWith(
-                        fontSize: 12,
-                      ),
-                      textStyleHighlight: textTheme.bodyLarge!.copyWith(
-                        fontSize: 12,
-                        backgroundColor: highlightColor,
-                      ),
-                    ),
-                  ],
-                  if (titleSearch.isNotEmpty) ...[
-                    const SizedBox(height: 2),
-                    SubstringHighlight(
-                      text: champion.title,
-                      term: titleSearch.trim(),
-                      textStyle: textTheme.bodyLarge!.copyWith(
-                        fontSize: 12,
-                      ),
-                      textStyleHighlight: textTheme.bodyLarge!.copyWith(
-                        fontSize: 12,
-                        backgroundColor: highlightColor,
+                  if (championIdSearch.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: SubstringHighlight(
+                        text: "Champ ID - ${champion.championId}",
+                        term: championIdSearch.trim(),
+                        textStyle: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                        ),
+                        textStyleHighlight: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                          backgroundColor: highlightColor,
+                        ),
                       ),
                     ),
-                  ],
+                  if (titleSearch.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: SubstringHighlight(
+                        text: champion.title,
+                        term: titleSearch.trim(),
+                        textStyle: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                        ),
+                        textStyleHighlight: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                          backgroundColor: highlightColor,
+                        ),
+                      ),
+                    ),
+                  if (talentSearch.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: SubstringHighlight(
+                        text: "Talent - $searchedTalentName",
+                        term: talentSearch.trim(),
+                        textStyle: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                        ),
+                        textStyleHighlight: textTheme.bodyLarge!.copyWith(
+                          fontSize: 12,
+                          backgroundColor: highlightColor,
+                        ),
+                      ),
+                    ),
                   const SizedBox(height: 2),
                   Wrap(
                     children: [

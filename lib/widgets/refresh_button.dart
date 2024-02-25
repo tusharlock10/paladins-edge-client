@@ -26,10 +26,10 @@ class RefreshButton extends StatelessWidget {
       mobile: false,
     );
 
-    return Padding(
-      padding: margin,
-      child: enabled
-          ? SizedBox(
+    return enabled
+        ? Padding(
+            padding: margin,
+            child: SizedBox(
               width: 38,
               height: 38,
               child: InkWell(
@@ -52,8 +52,8 @@ class RefreshButton extends StatelessWidget {
                         ),
                 ),
               ),
-            )
-          : const SizedBox(),
-    );
+            ),
+          )
+        : const SizedBox();
   }
 }

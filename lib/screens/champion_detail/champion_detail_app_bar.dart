@@ -74,7 +74,7 @@ class ChampionDetailAppBar extends HookWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: showSplash
             ? widgets.FastImage(
-                imageUrl: splashBackground.imageUrl,
+                imageUrl: splashBackground.optimizedUrl,
                 imageBlurHash: champion.splashBlurHash,
                 fit: BoxFit.cover,
                 isAssetImage: splashBackground.isAssetImage,

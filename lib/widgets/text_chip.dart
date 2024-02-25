@@ -21,7 +21,7 @@ class TextChip extends StatelessWidget {
     this.width,
     this.height,
     this.onTap,
-    this.textSize = 8,
+    this.textSize = 9,
     this.color = Colors.grey,
     this.spacing = 0,
     this.trailingIcon,

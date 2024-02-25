@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -7,9 +8,9 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/app_drawer/app_drawer_button.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_info.dart";
-import "package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
+import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -81,30 +82,26 @@ class AppDrawer extends HookConsumerWidget {
 
     final onChangeTheme = useCallback(
       () {
-        if (themeMode == ThemeMode.dark) {
-          appStateProvider.toggleTheme(ThemeMode.light);
-        } else if (themeMode == ThemeMode.light) {
-          appStateProvider.toggleTheme(ThemeMode.system);
-        } else {
-          appStateProvider.toggleTheme(ThemeMode.dark);
-        }
+        final nextThemeMode = theme.ThemeUtil.cycleThemeMode(themeMode);
+        appStateProvider.toggleTheme(nextThemeMode);
       },
       [themeMode],
     );
 
-    final getThemeName = useCallback(
+    final themeName = useMemoized(
       () {
-        if (themeMode == ThemeMode.dark) {
-          return "dark";
-        } else if (themeMode == ThemeMode.light) {
-          return "light";
-        } else if (themeMode == ThemeMode.system) {
-          return "system";
-        } else {
-          return null;
-        }
+        return theme.ThemeUtil.getThemeName(themeMode);
       },
-      [appStateProvider.settings.themeMode],
+      [themeMode],
+    );
+
+    final nextThemeName = useMemoized(
+      () {
+        final nextThemeMode = theme.ThemeUtil.cycleThemeMode(themeMode);
+
+        return theme.ThemeUtil.getThemeName(nextThemeMode);
+      },
+      [themeMode],
     );
 
     final onFriendsHelper = useCallback(
@@ -250,80 +247,104 @@ class AppDrawer extends HookConsumerWidget {
       [showPlayerDependentButtons],
     );
 
+    final onSettings = useCallback(
+      () {
+        Scaffold.of(context).closeDrawer();
+        widgets.showSettingsModal(context);
+      },
+      [],
+    );
+
     return widgets.PopShortcut(
       child: SafeArea(
         child: Drawer(
+          shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+          ),
           child: Column(
             children: [
-              const SizedBox(height: 20),
-              isGuest
-                  ? const AppDrawerGuestProfile()
-                  : const AppDrawerPlayerProfile(),
-              const SizedBox(height: 20),
-              AppDrawerButton(
-                label: "Change Theme",
-                subTitle: getThemeName(),
-                onPressed: onChangeTheme,
-              ),
-              if (showPlayerDependentButtons)
-                AppDrawerButton(
-                  label: "Friends",
-                  onPressed: onFriends,
-                ),
-              if (showPlayerDependentButtons)
-                AppDrawerButton(
-                  label: "Active Match",
-                  onPressed: onActiveMatch,
-                ),
-              AppDrawerButton(
-                label: "Feedback",
-                onPressed: onFeedback,
-              ),
-              if (showPlayerDependentButtons & isPlatformSupported)
-                AppDrawerButton(
-                  label: "Global Chat",
-                  onPressed: onGlobalChat,
-                ),
-              if (showPlayerDependentButtons)
-                AppDrawerButton(
-                  label: "Saved Matches",
-                  onPressed: onSavedMatches,
-                ),
-              AppDrawerButton(
-                label: "Leaderboard",
-                onPressed: onLeaderboard,
-              ),
-              AppDrawerButton(
-                label: "Sponsor",
-                onPressed: onSponsor,
-              ),
-              AppDrawerButton(
-                label: "FAQs",
-                onPressed: onFAQ,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isLoggingOut.value
-                      ? const widgets.LoadingIndicator(
-                          size: 16,
-                          lineWidth: 2,
-                        )
-                      : const SizedBox(),
-                  isGuest
-                      ? AppDrawerLoginButton(
-                          context: context,
-                          onPressed: onLogout,
-                        )
-                      : AppDrawerButton(
-                          label: "Logout",
-                          disabled: isLoggingOut.value,
-                          onPressed: onLogout,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 20),
+                      !isGuest
+                          ? const AppDrawerGuestProfile()
+                          : const AppDrawerPlayerProfile(),
+                      const SizedBox(height: 10),
+                      Divider(color: Colors.grey.shade600, thickness: 0.15),
+                      const SizedBox(height: 10),
+                      AppDrawerButton(
+                        label: "$themeName Theme".capitalize(),
+                        subTitle: "Switch to $nextThemeName theme",
+                        isSubTitleFixed: utilities.responsiveCondition(
+                          context,
+                          desktop: false,
+                          tablet: false,
+                          mobile: true,
                         ),
-                ],
+                        onPressed: onChangeTheme,
+                      ),
+                      AppDrawerButton(
+                        label: "Friends",
+                        subTitle: "View your friend list",
+                        onPressed: onFriends,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Active Match",
+                        subTitle: "View live match details",
+                        onPressed: onActiveMatch,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Feedback",
+                        subTitle: "Tell us something",
+                        onPressed: onFeedback,
+                      ),
+                      AppDrawerButton(
+                        label: "Global Chat",
+                        subTitle: "Chat with everyone",
+                        onPressed: onGlobalChat,
+                        hide: !(showPlayerDependentButtons &&
+                            isPlatformSupported),
+                      ),
+                      AppDrawerButton(
+                        label: "Saved Matches",
+                        subTitle: "View your saved matches",
+                        onPressed: onSavedMatches,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Leaderboard",
+                        subTitle: "View player rankings",
+                        onPressed: onLeaderboard,
+                      ),
+                      AppDrawerButton(
+                        label: "Sponsor",
+                        subTitle: "Support us",
+                        onPressed: onSponsor,
+                      ),
+                      AppDrawerButton(
+                        label: "FAQs",
+                        subTitle: "Answers to common questions",
+                        onPressed: onFAQ,
+                      ),
+                      AppDrawerButton(
+                        label: "Settings",
+                        subTitle: "Set your preferences",
+                        onPressed: onSettings,
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const AppDrawerInfo(),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
             ],
           ),
         ),

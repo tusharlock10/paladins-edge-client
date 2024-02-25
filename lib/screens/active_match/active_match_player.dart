@@ -221,9 +221,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           image: champion != null && splashBackground != null
               ? DecorationImage(
                   image: (splashBackground.isAssetImage
-                      ? AssetImage(splashBackground.imageUrl)
+                      ? AssetImage(splashBackground.optimizedUrl)
                       : CachedNetworkImageProvider(
-                          splashBackground.imageUrl,
+                          splashBackground.optimizedUrl,
                         )) as ImageProvider,
                   fit: BoxFit.cover,
                   alignment: Alignment.topCenter,
@@ -257,7 +257,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                     championIcon == null
                         ? const SizedBox(height: 24 * 2, width: 24 * 2)
                         : widgets.ElevatedAvatar(
-                            imageUrl: championIcon.imageUrl,
+                            imageUrl: championIcon.optimizedUrl,
                             imageBlurHash: championIcon.blurHash,
                             isAssetImage: championIcon.isAssetImage,
                             borderRadius: 12.5,
@@ -272,7 +272,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                                 if (rankIcon != null)
                                   widgets.FastImage(
                                     isAssetImage: rankIcon.isAssetImage,
-                                    imageUrl: rankIcon.imageUrl,
+                                    imageUrl: rankIcon.optimizedUrl,
                                     height: 22,
                                     width: 22,
                                   ),

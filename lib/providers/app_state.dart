@@ -46,26 +46,26 @@ class _AppStateNotifier extends ChangeNotifier {
     } else if (themeMode == ThemeMode.system) {
       themeName = "system";
     }
-    notifyListeners();
     utilities.Analytics.logEvent(
       constants.AnalyticsEvent.changeTheme,
       {"theme": themeName},
     );
     utilities.Database.saveSettings(settings);
+    notifyListeners();
   }
 
   /// Toggle showUserPlayerMatches for commonMatches
   void toggleShowUserPlayerMatches(bool? value) {
     settings.showUserPlayerMatches = value ?? false;
-    notifyListeners();
     utilities.Database.saveSettings(settings);
+    notifyListeners();
   }
 
   /// Set queue region in settings
   void setQueueRegions(String region) {
     settings.selectedQueueRegion = region;
-    notifyListeners();
     utilities.Database.saveSettings(settings);
+    notifyListeners();
   }
 
   void clearData() {

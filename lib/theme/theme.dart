@@ -259,7 +259,7 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: darkThemeMaterialColor.shade100,
+    backgroundColor: darkThemeMaterialColor.shade50,
     selectedItemColor: const Color(0xff81b2c7),
     unselectedItemColor: const Color(0xff658999),
   ),

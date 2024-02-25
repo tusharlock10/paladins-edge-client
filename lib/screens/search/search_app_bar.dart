@@ -74,27 +74,36 @@ class SearchAppBar extends HookConsumerWidget {
       floating: true,
       forceElevated: true,
       pinned: !constants.isMobile,
-      title: TextField(
-        focusNode: focusNode,
-        controller: textController,
-        maxLength: 42,
-        style: textStyle?.copyWith(color: Colors.white),
-        onChanged: onChangeText,
-        onSubmitted: isLoading ? null : onSearch,
-        decoration: InputDecoration(
-          filled: true,
-          isDense: true,
-          hintText: "Search player",
-          counterText: "",
-          hintStyle: textStyle?.copyWith(color: Colors.white70),
-          fillColor: searchBarColor,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 15,
+      title: Theme(
+        data: ThemeData(
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.white24,
+            selectionHandleColor: Colors.white24,
           ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
+        child: TextField(
+          focusNode: focusNode,
+          controller: textController,
+          maxLength: 42,
+          style: textStyle?.copyWith(color: Colors.white),
+          onChanged: onChangeText,
+          onSubmitted: isLoading ? null : onSearch,
+          decoration: InputDecoration(
+            filled: true,
+            isDense: true,
+            hintText: "Search player",
+            counterText: "",
+            hintStyle: textStyle?.copyWith(color: Colors.white70),
+            fillColor: searchBarColor,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 15,
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
           ),
         ),
       ),

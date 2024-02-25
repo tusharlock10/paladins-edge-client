@@ -299,9 +299,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
             image: champion != null && splashBackground != null
                 ? DecorationImage(
                     image: (splashBackground.isAssetImage
-                        ? AssetImage(splashBackground.imageUrl)
+                        ? AssetImage(splashBackground.optimizedUrl)
                         : CachedNetworkImageProvider(
-                            splashBackground.imageUrl,
+                            splashBackground.optimizedUrl,
                           )) as ImageProvider,
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
@@ -330,7 +330,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             clipBehavior: Clip.none,
                             children: [
                               widgets.ElevatedAvatar(
-                                imageUrl: championIcon.imageUrl,
+                                imageUrl: championIcon.optimizedUrl,
                                 imageBlurHash: championIcon.blurHash,
                                 isAssetImage: championIcon.isAssetImage,
                                 size: 30,
@@ -357,7 +357,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             child: Column(
                               children: [
                                 widgets.FastImage(
-                                  imageUrl: rankIcon.imageUrl,
+                                  imageUrl: rankIcon.optimizedUrl,
                                   isAssetImage: rankIcon.isAssetImage,
                                   height: 20,
                                   width: 20,

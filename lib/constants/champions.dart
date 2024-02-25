@@ -43,3 +43,25 @@ abstract class ChampionAssetType {
   static String getExtension(String assetType) =>
       [icons, ranks].contains(assetType) ? "png" : "jpg";
 }
+
+const searchChampionPlaceholders = [
+  // Titles
+  "Rage of the abyss",
+  "The Godslayer",
+  "The winter witch ",
+
+  // Roles
+  "Flank",
+  "Support",
+
+  // Champion Ids
+  "2512",
+  "2533",
+
+  // Talents
+  "Big game",
+  "Dark stalker",
+  "Pluck",
+  "Cardio",
+  "Chain reaction",
+];

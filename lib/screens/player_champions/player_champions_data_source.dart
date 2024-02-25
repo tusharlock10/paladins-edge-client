@@ -89,7 +89,7 @@ class PlayerChampionsDataSource extends DataGridSource {
 
     return Center(
       child: widgets.ElevatedAvatar(
-        imageUrl: championIcon.imageUrl,
+        imageUrl: championIcon.optimizedUrl,
         imageBlurHash: championIcon.blurHash,
         isAssetImage: championIcon.isAssetImage,
         size: 22,

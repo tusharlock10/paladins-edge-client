@@ -354,7 +354,7 @@ class _RecentlyPlayedChampionCard extends HookWidget {
               Row(
                 children: [
                   widgets.ElevatedAvatar(
-                    imageUrl: championIcon.imageUrl,
+                    imageUrl: championIcon.optimizedUrl,
                     imageBlurHash: championIcon.blurHash,
                     isAssetImage: championIcon.isAssetImage,
                     size: 18,

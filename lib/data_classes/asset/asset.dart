@@ -3,15 +3,12 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 class PlatformOptimizedImage {
   String optimizedUrl;
   bool isAssetImage;
-  String imageUrl;
-  String assetType;
-  int assetId;
-  String? blurHash;
+  final String? blurHash;
 
   PlatformOptimizedImage({
-    required this.imageUrl,
-    required this.assetType,
-    required this.assetId,
+    required String imageUrl,
+    required String assetType,
+    required int assetId,
     this.blurHash,
   })  : optimizedUrl =
             utilities.getAssetImageUrl(assetType, assetId) ?? imageUrl,
