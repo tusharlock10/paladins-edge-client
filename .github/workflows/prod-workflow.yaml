@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  flutter_version: "3.19.0"
+  flutter_version: "3.19.1"
 
 jobs:
   build-apk:

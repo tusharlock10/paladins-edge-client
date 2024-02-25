@@ -10,7 +10,7 @@ echo "Cloning flutter";
 git clone https://github.com/flutter/flutter.git
 export PATH="$PATH:`pwd`/flutter/bin";
 cd flutter
-git checkout tags/3.19.0
+git checkout tags/3.19.1
 cd ..
 flutter precache
 
