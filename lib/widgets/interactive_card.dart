@@ -44,7 +44,7 @@ class InteractiveCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final showChampionSplashImage = ref.read(
+    final showChampionSplashImage = ref.watch(
       providers.appState.select((_) => _.settings.showChampionSplashImage),
     );
 
