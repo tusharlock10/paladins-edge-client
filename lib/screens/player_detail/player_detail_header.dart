@@ -2,19 +2,23 @@ import "dart:ui";
 
 import "package:expandable/expandable.dart";
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/player_detail/player_detail_header_expandable_panel.dart";
 import "package:paladinsedge/screens/player_detail/player_detail_status_indicator.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
-class PlayerDetailHeader extends ConsumerWidget {
+class PlayerDetailHeader extends HookConsumerWidget {
   const PlayerDetailHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final baseRanks = ref.watch(providers.baseRanks).baseRanks;
     final player = ref.watch(providers.players.select((_) => _.playerData));
     final playerInferred = ref.watch(
       providers.players.select((_) => _.playerInferred),
@@ -27,6 +31,25 @@ class PlayerDetailHeader extends ConsumerWidget {
     final isSamePlayerInferred = playerId == playerInferred?.playerId;
     final textTheme = Theme.of(context).textTheme;
     final expandedController = ExpandableController(initialExpanded: false);
+
+    // Hooks
+    final playerBaseRank = useMemoized(
+      () => baseRanks[player?.ranked.rank],
+      [player, baseRanks],
+    );
+
+    final rankIcon = useMemoized(
+      () {
+        if (playerBaseRank == null) return null;
+
+        return data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(playerBaseRank.rankIconUrl),
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: playerBaseRank.rank,
+        );
+      },
+      [playerBaseRank],
+    );
 
     return player == null
         ? const SizedBox()
@@ -47,7 +70,7 @@ class PlayerDetailHeader extends ConsumerWidget {
                           widgets.ElevatedAvatar(
                             imageUrl: utilities.getSmallAsset(player.avatarUrl),
                             imageBlurHash: player.avatarBlurHash,
-                            size: 30,
+                            size: 32,
                             borderRadius: 10,
                           ),
                           const SizedBox(width: 10),
@@ -61,17 +84,19 @@ class PlayerDetailHeader extends ConsumerWidget {
                                   builder: (context, isExpanded, _) {
                                     return Row(
                                       children: [
-                                        widgets.FastImage(
-                                          imageUrl: player.ranked.rankIconUrl,
-                                          height: 40,
-                                          width: 40,
-                                        ),
+                                        if (rankIcon != null)
+                                          widgets.FastImage(
+                                            imageUrl: rankIcon.optimizedUrl,
+                                            isAssetImage: rankIcon.isAssetImage,
+                                            height: 38,
+                                            width: 38,
+                                          ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              player.ranked.rankName,
+                                              playerBaseRank!.rankName,
                                               style: textTheme.bodyMedium
                                                   ?.copyWith(fontSize: 14),
                                             ),

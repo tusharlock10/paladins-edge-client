@@ -73,7 +73,7 @@ class CommonMatches extends HookConsumerWidget {
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
+            pinned: !constants.isMobile,
             title: commonMatches != null && commonMatches.isNotEmpty
                 ? Column(
                     children: [
@@ -133,6 +133,8 @@ class CommonMatches extends HookConsumerWidget {
     }
     final playerId = paramPlayerId;
 
-    return CupertinoPage(child: CommonMatches(playerId: playerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: CommonMatches(playerId: playerId)),
+    );
   }
 }

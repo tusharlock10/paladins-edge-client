@@ -1,5 +1,3 @@
-import "dart:io";
-
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -18,6 +16,9 @@ import "package:responsive_framework/responsive_framework.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await utilities.initializeDesktop();
+
+  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
   await Future.wait([
     if (!constants.isDebug)
       SystemChrome.setPreferredOrientations([
@@ -25,14 +26,17 @@ void main() async {
         DeviceOrientation.portraitDown,
       ]),
     Firebase.initializeApp(
-      name: constants.isWeb ? null : "root",
+      name: constants.isMobile ? "root" : null,
       options: firebase_options.DefaultFirebaseOptions.currentPlatform,
     ),
   ]);
+  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
 
   try {
-    if (Platform.isAndroid) {
+    if (constants.isAndroid) {
+      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
       await FlutterDisplayMode.setHighRefreshRate();
+      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
     }
   } catch (_) {}
 
@@ -48,7 +52,7 @@ class PaladinsEdgeApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final themeMode = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode),
+      providers.appState.select((_) => _.settings.themeMode),
     );
 
     return OverlaySupport.global(

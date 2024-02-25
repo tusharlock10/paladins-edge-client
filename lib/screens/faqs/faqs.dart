@@ -63,12 +63,12 @@ class Faqs extends HookConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             forceElevated: true,
             floating: true,
             snap: true,
-            pinned: constants.isWeb,
-            title: Text("FAQs"),
+            pinned: !constants.isMobile,
+            title: const Text("FAQs"),
           ),
           faqs == null
               ? SliverList(
@@ -107,5 +107,7 @@ class Faqs extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: Faqs());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: Faqs()),
+      );
 }

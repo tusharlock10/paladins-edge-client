@@ -31,6 +31,10 @@ class RecordExpiry extends HiveObject {
   @HiveField(6)
   DateTime? _topMatchExpiry;
 
+  /// date at which the saved baseRank record will expire
+  @HiveField(7)
+  DateTime? _baseRankExpiry;
+
   bool isRecordExpired(RecordExpiryName recordName) {
     // checks if the provided record is expired
     switch (recordName) {
@@ -62,6 +66,11 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.topMatch:
         return _topMatchExpiry != null
             ? DateTime.now().isAfter(_topMatchExpiry!)
+            : true;
+
+      case RecordExpiryName.baseRank:
+        return _baseRankExpiry != null
+            ? DateTime.now().isAfter(_baseRankExpiry!)
             : true;
 
       default:
@@ -103,6 +112,12 @@ class RecordExpiry extends HiveObject {
       case RecordExpiryName.topMatch:
         _topMatchExpiry = DateTime.now().add(
           RecordExpiryDuration.topMatchDuration,
+        );
+        return;
+
+      case RecordExpiryName.baseRank:
+        _baseRankExpiry = DateTime.now().add(
+          RecordExpiryDuration.baseRankDuration,
         );
         return;
     }

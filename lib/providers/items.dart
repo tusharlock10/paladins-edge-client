@@ -6,30 +6,24 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _ItemsNotifier extends ChangeNotifier {
   bool isLoading = true;
-  List<models.Item>? items;
+  Map<int, models.Item> items = {};
 
   /// Loads the `item` data from local db and syncs it with server
-  Future<void> loadItems(bool forceUpdate) async {
-    final savedItems = forceUpdate ? null : utilities.Database.getItems();
+  Future<void> loadItems() async {
+    var itemsList = utilities.Database.getItems();
 
-    if (savedItems != null) {
-      isLoading = false;
-      items = savedItems;
+    if (itemsList == null) {
+      final response = await api.ItemRequests.itemDetails();
+      if (response == null) return;
+      itemsList = response.items;
 
-      return utilities.postFrameCallback(notifyListeners);
+      // save items locally for future use
+      itemsList.forEach(utilities.Database.saveItem);
     }
 
-    final response = await api.ItemRequests.itemDetails();
-    if (response == null) return;
-
-    if (!forceUpdate) isLoading = false;
-    items = response.items;
-    notifyListeners();
-
-    // save items locally for future use
-    // clear items first if forceUpdate
-    if (forceUpdate) await utilities.Database.itemBox?.clear();
-    items?.forEach(utilities.Database.saveItem);
+    for (var item in itemsList) {
+      items[item.itemId] = item;
+    }
   }
 }
 

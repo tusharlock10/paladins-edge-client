@@ -196,6 +196,8 @@ class CreateLoadout extends HookConsumerWidget {
       return const CupertinoPage(child: screens.NotFound());
     }
 
-    return CupertinoPage(child: CreateLoadout(championId: championId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: CreateLoadout(championId: championId)),
+    );
   }
 }

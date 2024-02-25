@@ -53,6 +53,9 @@ class ActiveMatch extends HookConsumerWidget {
     final playerStatusPlayerId = playerId ?? player?.playerId;
     final isUserPlayer = player?.playerId == playerStatusPlayerId;
 
+    // State
+    final isRefreshing = useState(false);
+
     // Effects
     useEffect(
       () {
@@ -90,10 +93,12 @@ class ActiveMatch extends HookConsumerWidget {
     final onRefresh = useCallback(
       () async {
         if (playerStatusPlayerId != null) {
-          return playersProvider.getPlayerStatus(
+          isRefreshing.value = true;
+          await playersProvider.getPlayerStatus(
             playerId: playerStatusPlayerId,
             forceUpdate: true,
           );
+          isRefreshing.value = false;
         }
       },
       [],
@@ -109,7 +114,7 @@ class ActiveMatch extends HookConsumerWidget {
               forceElevated: true,
               floating: true,
               snap: true,
-              pinned: constants.isWeb,
+              pinned: !constants.isMobile,
               title: const Text("Active Match"),
               actions: [
                 Center(
@@ -118,6 +123,7 @@ class ActiveMatch extends HookConsumerWidget {
                     child: widgets.RefreshButton(
                       color: Colors.white,
                       onRefresh: onRefresh,
+                      isRefreshing: isRefreshing.value,
                     ),
                   ),
                 ),
@@ -151,9 +157,12 @@ class ActiveMatch extends HookConsumerWidget {
     }
     final playerId = paramPlayerId;
 
-    return CupertinoPage(child: ActiveMatch(playerId: playerId));
+    return CupertinoPage(
+      child: widgets.PopShortcut(child: ActiveMatch(playerId: playerId)),
+    );
   }
 
-  static Page _userRouteBuilder(_, __) =>
-      const CupertinoPage(child: ActiveMatch());
+  static Page _userRouteBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: ActiveMatch()),
+      );
 }

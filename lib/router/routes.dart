@@ -30,6 +30,8 @@ final _mainRoutes = [
   screens.Faqs.goRoute,
   screens.SavedMatches.goRouteBuilder(_savedMatchesRoutes),
   screens.MatchDetail.topMatchGoRoute,
+  screens.Leaderboard.goRoute,
+  screens.Sponsor.goRoute,
 ];
 
 final _loginRoutes = [

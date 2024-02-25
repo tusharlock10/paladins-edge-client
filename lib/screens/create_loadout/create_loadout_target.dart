@@ -142,9 +142,9 @@ class CreateLoadoutTarget extends HookConsumerWidget {
                     children: draftLoadout.loadoutCards.mapIndexed(
                       (index, loadoutCard) {
                         return DragTarget<models.Card>(
-                          onWillAccept: (_) => true,
-                          onAccept: (card) =>
-                              loadoutProvider.onAcceptDragCard(card, index),
+                          onWillAcceptWithDetails: (_) => true,
+                          onAcceptWithDetails: (details) => loadoutProvider
+                              .onAcceptDragCard(details.data, index),
                           builder: (_, candidateData, __) {
                             final card = candidateData.isNotEmpty
                                 ? candidateData.first

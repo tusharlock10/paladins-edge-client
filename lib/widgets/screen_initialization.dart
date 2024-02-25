@@ -1,4 +1,3 @@
-import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -31,6 +30,9 @@ class ScreenInitialization extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final authProvider = ref.read(providers.auth);
+    final appStateProvider = ref.read(providers.appState);
+    final itemsProvider = ref.read(providers.items);
+    final baseRanksProvider = ref.read(providers.baseRanks);
     final isInitialized = ref.watch(
       providers.auth.select((_) => _.isInitialized),
     );
@@ -44,6 +46,7 @@ class ScreenInitialization extends HookConsumerWidget {
     // Methods
     final initApp = useCallback(
       () async {
+        utilities.Stopwatch.startStopTimer("screenInitialization");
         final result = await Future.wait([
           utilities.RemoteConfig.initialize(),
           PackageInfo.fromPlatform(),
@@ -56,7 +59,7 @@ class ScreenInitialization extends HookConsumerWidget {
         }
 
         await utilities.Database.initialize();
-        authProvider.loadSettings();
+        appStateProvider.loadSettings();
         authProvider.loadPaladinsAssets();
 
         // first initialize all env variables and check
@@ -76,15 +79,15 @@ class ScreenInitialization extends HookConsumerWidget {
 
           return;
         }
-
-        utilities.RealtimeGlobalChat.initialize();
+        utilities.initializeApi();
         await Future.wait([
           utilities.RSACrypto.initialize(),
           utilities.RealtimeGlobalChat.initialize(),
-          FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
-            !constants.isDebug,
-          ),
+          utilities.Analytics.initialize(),
+          utilities.RealtimeGlobalChat.initialize(),
           authProvider.loadEssentials(),
+          itemsProvider.loadItems(),
+          baseRanksProvider.loadBaseRanks(),
         ]);
 
         // load the essentials from hive
@@ -94,6 +97,7 @@ class ScreenInitialization extends HookConsumerWidget {
         authProvider.setAppInitialized();
 
         utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);
+        utilities.Stopwatch.startStopTimer("screenInitialization");
       },
       [],
     );
@@ -108,8 +112,8 @@ class ScreenInitialization extends HookConsumerWidget {
       [isInitialized],
     );
 
-    return isInitialized
-        ? screen ?? const SizedBox()
+    return isInitialized && screen != null
+        ? screen!
         : DecoratedBox(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -123,7 +127,6 @@ class ScreenInitialization extends HookConsumerWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 isForceUpdatePending
                     ? Center(

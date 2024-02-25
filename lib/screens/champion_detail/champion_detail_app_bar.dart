@@ -34,22 +34,11 @@ class ChampionDetailAppBar extends HookWidget {
     // Hooks
     final splashBackground = useMemoized(
       () {
-        var splashBackground = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.splashUrl,
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.splash,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.splash,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            splashBackground.imageUrl = assetUrl;
-            splashBackground.isAssetImage = true;
-          }
-        }
-
-        return splashBackground;
       },
       [champion],
     );
@@ -60,7 +49,7 @@ class ChampionDetailAppBar extends HookWidget {
       forceElevated: true,
       floating: true,
       snap: true,
-      pinned: constants.isWeb,
+      pinned: !constants.isMobile,
       backgroundColor: theme.darkThemeMaterialColor,
       leading: constants.isWeb
           ? null
@@ -85,7 +74,7 @@ class ChampionDetailAppBar extends HookWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: showSplash
             ? widgets.FastImage(
-                imageUrl: splashBackground.imageUrl,
+                imageUrl: splashBackground.optimizedUrl,
                 imageBlurHash: champion.splashBlurHash,
                 fit: BoxFit.cover,
                 isAssetImage: splashBackground.isAssetImage,

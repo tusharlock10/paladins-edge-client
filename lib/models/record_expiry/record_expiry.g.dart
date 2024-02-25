@@ -22,13 +22,14 @@ class RecordExpiryAdapter extends TypeAdapter<RecordExpiry> {
       .._playerChampionExpiry = fields[3] as DateTime?
       .._queueTimelineExpiry = fields[4] as DateTime?
       .._itemExpiry = fields[5] as DateTime?
-      .._topMatchExpiry = fields[6] as DateTime?;
+      .._topMatchExpiry = fields[6] as DateTime?
+      .._baseRankExpiry = fields[7] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, RecordExpiry obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj._championsExpiry)
       ..writeByte(1)
@@ -40,7 +41,9 @@ class RecordExpiryAdapter extends TypeAdapter<RecordExpiry> {
       ..writeByte(5)
       ..write(obj._itemExpiry)
       ..writeByte(6)
-      ..write(obj._topMatchExpiry);
+      ..write(obj._topMatchExpiry)
+      ..writeByte(7)
+      ..write(obj._baseRankExpiry);
   }
 
   @override

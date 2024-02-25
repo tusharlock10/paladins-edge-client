@@ -131,3 +131,27 @@ Map<String, dynamic> _$ApiStatusResponseToJson(ApiStatusResponse instance) =>
     <String, dynamic>{
       'apiAvailable': instance.apiAvailable,
     };
+
+BaseRankResponse _$BaseRankResponseFromJson(Map<String, dynamic> json) =>
+    BaseRankResponse(
+      ranks: (json['ranks'] as List<dynamic>)
+          .map((e) => BaseRank.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$BaseRankResponseToJson(BaseRankResponse instance) =>
+    <String, dynamic>{
+      'ranks': instance.ranks,
+    };
+
+SponsorResponse _$SponsorResponseFromJson(Map<String, dynamic> json) =>
+    SponsorResponse(
+      sponsors: (json['sponsors'] as List<dynamic>)
+          .map((e) => Sponsor.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SponsorResponseToJson(SponsorResponse instance) =>
+    <String, dynamic>{
+      'sponsors': instance.sponsors,
+    };

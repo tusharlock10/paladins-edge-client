@@ -19,6 +19,8 @@ String getSmallAsset(String? key) {
 
 /// get the assetImage using the assetType and assetId
 String? getAssetImageUrl(String assetType, int assetId) {
+  if (constants.isWeb) return null;
+
   final assetUrl =
       "paladins_assets/$assetType/$assetId.${constants.ChampionAssetType.getExtension(assetType)}";
   final availableAssets = utilities.Global.paladinsAssets[assetType];

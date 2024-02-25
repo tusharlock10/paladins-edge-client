@@ -16,6 +16,9 @@ class Champions extends HookConsumerWidget {
     final championsProvider = ref.read(providers.champions);
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
+    // State
+    final isRefreshing = useState(false);
+
     // Effects
     useEffect(
       () {
@@ -26,13 +29,26 @@ class Champions extends HookConsumerWidget {
       [isGuest],
     );
 
+    // Methods
+    final onRefresh = useCallback(
+      () async {
+        isRefreshing.value = true;
+        await championsProvider.loadCombinedChampions(true);
+        isRefreshing.value = false;
+      },
+      [],
+    );
+
     return widgets.Refresh(
       edgeOffset: utilities.getTopEdgeOffset(context),
-      onRefresh: () => championsProvider.loadCombinedChampions(true),
-      child: const CustomScrollView(
+      onRefresh: onRefresh,
+      child: CustomScrollView(
         slivers: [
-          ChampionsSearchBar(),
-          ChampionsList(),
+          ChampionsSearchBar(
+            onRefresh: onRefresh,
+            isRefreshing: isRefreshing.value,
+          ),
+          const ChampionsList(),
         ],
       ),
     );

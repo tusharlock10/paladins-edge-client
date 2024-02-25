@@ -5,6 +5,7 @@ import "package:firebase_database/firebase_database.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_chat_types/flutter_chat_types.dart" as types;
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/auth.dart" as auth_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -49,6 +50,9 @@ class _GlobalChatNotifier extends ChangeNotifier {
   /// 2) gets all online players from RTDB
   /// 3) initializes listeners
   void initialize() async {
+    utilities.Stopwatch.startStopTimer("initGlobalChat");
+    if (constants.isWindows) return;
+
     isInit = false;
     utilities.postFrameCallback(notifyListeners);
 
@@ -65,6 +69,7 @@ class _GlobalChatNotifier extends ChangeNotifier {
 
     _initializeListeners();
     utilities.postFrameCallback(notifyListeners);
+    utilities.Stopwatch.startStopTimer("initGlobalChat");
   }
 
   /// send typing metadata of the player to RTDB

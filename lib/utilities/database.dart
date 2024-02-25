@@ -1,6 +1,7 @@
 import "package:hive_flutter/hive_flutter.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class Database {
   static bool _init = false;
@@ -19,6 +20,7 @@ abstract class Database {
   static Box<models.Queue>? _queueTimelineBox;
   static Box<models.Item>? _itemBox;
   static Box<models.TopMatch>? _topMatchBox;
+  static Box<models.BaseRank>? _baseRankBox;
 
   // getters
   static Box<String>? get tokenBox => _tokenBox;
@@ -34,9 +36,12 @@ abstract class Database {
   static Box<models.Queue>? get queueTimelineBox => _queueTimelineBox;
   static Box<models.Item>? get itemBox => _itemBox;
   static Box<models.TopMatch>? get topMatchBox => _topMatchBox;
+  static Box<models.BaseRank>? get baseRankBox => _baseRankBox;
 
   static Future<void> initialize() async {
     if (_init) return;
+
+    utilities.Stopwatch.startStopTimer("initializeDatabase");
     await Hive.initFlutter();
     _registerAdapters();
 
@@ -69,6 +74,9 @@ abstract class Database {
     _topMatchBox = await Hive.openBox<models.TopMatch>(
       constants.HiveBoxes.topMatch,
     );
+    _baseRankBox = await Hive.openBox<models.BaseRank>(
+      constants.HiveBoxes.baseRank,
+    );
 
     // check if recordExpiry contains any data
     _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
@@ -77,6 +85,7 @@ abstract class Database {
           .put(constants.HiveBoxes.recordExpiry, models.RecordExpiry());
       _recordExpiry = _recordExpiryBox!.get(constants.HiveBoxes.recordExpiry);
     }
+    utilities.Stopwatch.startStopTimer("initializeDatabase");
   }
 
   // save methods
@@ -113,6 +122,9 @@ abstract class Database {
 
   static void saveTopMatch(models.TopMatch topMatch) =>
       _topMatchBox?.add(topMatch);
+
+  static void saveBaseRanks(List<models.BaseRank> baseRanks) =>
+      _baseRankBox?.addAll(baseRanks);
 
   // get methods
   static String? getToken() => _tokenBox?.get(constants.HiveBoxes.token);
@@ -225,6 +237,20 @@ abstract class Database {
     return topMatches == null || topMatches.isEmpty ? null : topMatches;
   }
 
+  static List<models.BaseRank>? getBaseRanks() {
+    // check if baseRank records have expired
+    if (_recordExpiry!.isRecordExpired(constants.RecordExpiryName.baseRank)) {
+      // if the data is expired, then clear baseRank box
+      // and renew the recordExpiry for baseRank records
+      _baseRankBox?.clear();
+      _renewRecordExpiry(constants.RecordExpiryName.baseRank);
+    }
+
+    final ranks = _baseRankBox?.values.toList();
+
+    return ranks == null || ranks.isEmpty ? null : ranks;
+  }
+
   // clear all the boxes
   static Future<void> clear() async {
     final boxes = [
@@ -263,6 +289,7 @@ abstract class Database {
     Hive.registerAdapter(models.QueueRegionAdapter());
     Hive.registerAdapter(models.ItemAdapter());
     Hive.registerAdapter(models.TopMatchAdapter());
+    Hive.registerAdapter(models.BaseRankAdapter());
   }
 
   /// renews the expiry date on saved records.

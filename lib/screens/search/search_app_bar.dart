@@ -4,6 +4,7 @@ import "package:flutter_spinkit/flutter_spinkit.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
 
 class SearchAppBar extends HookConsumerWidget {
   final bool isLoading;
@@ -20,42 +21,90 @@ class SearchAppBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final searchProvider = ref.read(providers.players);
+    final playersProvider = ref.read(providers.players);
+    final appStateProvider = ref.read(providers.appState);
+    final bottomTabIndex = ref.watch(
+      providers.appState.select((_) => _.bottomTabIndex),
+    );
+    final searchTabVisited = ref.watch(
+      providers.appState.select((_) => _.searchTabVisited),
+    );
 
     // Variables
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     final textTheme = Theme.of(context).textTheme;
+    final textStyle = textTheme.bodyLarge?.copyWith(fontSize: 16);
+
+    // Hooks
+    final focusNode = useFocusNode();
     final textController = useTextEditingController();
-    final textStyle = textTheme.titleLarge?.copyWith(
-      color: Colors.white,
-      fontSize: 16,
+    final searchBarColor = useMemoized(
+      () => isLightTheme
+          ? theme.subtleLightThemeColor
+          : theme.subtleDarkThemeColor,
+      [isLightTheme],
+    );
+
+    // Effects
+    useEffect(
+      () {
+        if (bottomTabIndex == 1 && !searchTabVisited) {
+          focusNode.requestFocus();
+
+          if (constants.isMobile) appStateProvider.setSearchTabVisited(true);
+        }
+
+        return null;
+      },
+      [bottomTabIndex],
     );
 
     // Methods
     final onClear = useCallback(
       () {
-        searchProvider.clearSearchList();
+        playersProvider.clearSearchList();
         textController.clear();
         onChangeText("");
       },
-      [],
+      [textController, onChangeText],
     );
 
     return SliverAppBar(
       snap: true,
       floating: true,
       forceElevated: true,
-      pinned: constants.isWeb,
-      title: TextField(
-        controller: textController,
-        maxLength: 30,
-        style: textStyle,
-        onChanged: onChangeText,
-        onSubmitted: isLoading ? null : onSearch,
-        decoration: InputDecoration(
-          hintText: "Search player",
-          counterText: "",
-          hintStyle: textStyle,
-          border: InputBorder.none,
+      pinned: !constants.isMobile,
+      title: Theme(
+        data: ThemeData(
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.white24,
+            selectionHandleColor: Colors.white24,
+          ),
+        ),
+        child: TextField(
+          focusNode: focusNode,
+          controller: textController,
+          maxLength: 42,
+          style: textStyle?.copyWith(color: Colors.white),
+          onChanged: onChangeText,
+          onSubmitted: isLoading ? null : onSearch,
+          decoration: InputDecoration(
+            filled: true,
+            isDense: true,
+            hintText: "Search player",
+            counterText: "",
+            hintStyle: textStyle?.copyWith(color: Colors.white70),
+            fillColor: searchBarColor,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 15,
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
+          ),
         ),
       ),
       actions: [

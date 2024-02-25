@@ -114,5 +114,7 @@ class GlobalChat extends HookConsumerWidget {
     );
   }
 
-  static Page _routeBuilder(_, __) => const CupertinoPage(child: GlobalChat());
+  static Page _routeBuilder(_, __) => const CupertinoPage(
+        child: widgets.PopShortcut(child: GlobalChat()),
+      );
 }

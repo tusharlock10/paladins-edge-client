@@ -20,8 +20,6 @@ class RankedAdapter extends TypeAdapter<Ranked> {
       wins: fields[0] as int,
       looses: fields[1] as int,
       rank: fields[2] as int,
-      rankName: fields[3] as String,
-      rankIconUrl: fields[4] as String,
       points: fields[5] as int?,
     );
   }
@@ -29,17 +27,13 @@ class RankedAdapter extends TypeAdapter<Ranked> {
   @override
   void write(BinaryWriter writer, Ranked obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.wins)
       ..writeByte(1)
       ..write(obj.looses)
       ..writeByte(2)
       ..write(obj.rank)
-      ..writeByte(3)
-      ..write(obj.rankName)
-      ..writeByte(4)
-      ..write(obj.rankIconUrl)
       ..writeByte(5)
       ..write(obj.points);
   }
@@ -157,8 +151,6 @@ Ranked _$RankedFromJson(Map<String, dynamic> json) => Ranked(
       wins: json['wins'] as int,
       looses: json['looses'] as int,
       rank: json['rank'] as int,
-      rankName: json['rankName'] as String,
-      rankIconUrl: json['rankIconUrl'] as String,
       points: json['points'] as int?,
     );
 
@@ -166,8 +158,6 @@ Map<String, dynamic> _$RankedToJson(Ranked instance) => <String, dynamic>{
       'wins': instance.wins,
       'looses': instance.looses,
       'rank': instance.rank,
-      'rankName': instance.rankName,
-      'rankIconUrl': instance.rankIconUrl,
       'points': instance.points,
     };
 

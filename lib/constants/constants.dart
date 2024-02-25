@@ -2,7 +2,6 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 const isDebug = kDebugMode;
-const isWeb = kIsWeb;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
 const releaseTag = "stable";
 
@@ -78,10 +77,8 @@ const partyColors = [
   Colors.pink,
 ];
 
-abstract class RemoteConfigParams {
-  static const enableGuestLogin = "enableGuestLogin";
-  static const showBackgroundSplash = "showBackgroundSplash";
-  static const paladinsApiUnavailable = "paladinsApiUnavailable";
-  static const serverMaintenance = "serverMaintenance";
-  static const lowestSupportedVersion = "lowestSupportedVersion";
-}
+const themeNames = {
+  ThemeMode.dark: "dark",
+  ThemeMode.light: "light",
+  ThemeMode.system: "system",
+};

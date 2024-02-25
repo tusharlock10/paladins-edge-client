@@ -79,8 +79,12 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final champions = ref.watch(providers.champions.select((_) => _.champions));
-    final items = ref.watch(providers.items.select((_) => _.items));
+    final champions = ref.read(providers.champions).champions;
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
+    final items = ref.read(providers.items).items;
+    final showChampionSplashImage = ref.read(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
+    );
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -93,7 +97,6 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
     final backgroundColor = Theme.of(context).cardTheme.color;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
 
@@ -106,6 +109,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer, champions],
     );
+
     final damagePerMinute = useMemoized(
       () {
         // matchDuration is in seconds
@@ -119,14 +123,14 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [match, matchPlayer],
     );
+
     final playerItemsUsed = useMemoized(
       () {
         final List<data_classes.MatchPlayerItemUsed> playerItemsUsed = [];
-        if (items == null) return playerItemsUsed;
+        if (items.isEmpty) return playerItemsUsed;
 
         for (final playerItem in matchPlayer.playerItems) {
-          final item = items
-              .firstOrNullWhere((item) => item.itemId == playerItem.itemId);
+          final item = items[playerItem.itemId];
           if (item != null) {
             playerItemsUsed.add(
               data_classes.MatchPlayerItemUsed(
@@ -141,6 +145,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [matchPlayer, items],
     );
+
     final talentUsed = useMemoized(
       () {
         return champion?.talents.firstOrNullWhere(
@@ -149,6 +154,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
       },
       [champion, matchPlayer],
     );
+
     final playerPosition = useMemoized(
       () {
         final matchPosition = matchPlayer.matchPosition;
@@ -197,60 +203,63 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
 
     final splashBackground = useMemoized(
       () {
-        if (!showBackgroundSplash) return null;
+        if (!showChampionSplashImage) return null;
         if (champion == null) return null;
 
-        var splashBackground = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.splashUrl,
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.splash,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.splash,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            splashBackground.imageUrl = assetUrl;
-            splashBackground.isAssetImage = true;
-          }
-        }
-
-        return splashBackground;
       },
-      [champion, showBackgroundSplash],
+      [champion, showChampionSplashImage],
     );
 
     final championIcon = useMemoized(
       () {
         if (champion == null) return null;
 
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: utilities.getSmallAsset(champion.iconUrl),
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetType: constants.ChampionAssetType.icons,
+          assetId: champion.championId,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [champion],
     );
 
-    final matchPlayerHighestStat = utilities.matchPlayerHighestStat(
-      matchPlayer.playerStats,
-      champion?.role,
+    final matchPlayerHighestStat = useMemoized(
+      () => utilities.matchPlayerHighestStat(
+        matchPlayer.playerStats,
+        champion?.role,
+      ),
+      [matchPlayer, champion],
     );
-    final highestStatText =
-        "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}";
+
+    final highestStatText = useMemoized(
+      () =>
+          "${matchPlayerHighestStat.type} ${utilities.humanizeNumber(matchPlayerHighestStat.stat)}",
+      [matchPlayerHighestStat],
+    );
+
+    final matchPlayerBaseRank = useMemoized(
+      () => baseRanks[matchPlayer.playerRanked?.rank],
+      [matchPlayer, baseRanks],
+    );
+
+    final rankIcon = useMemoized(
+      () {
+        if (matchPlayerBaseRank == null) return null;
+
+        return data_classes.PlatformOptimizedImage(
+          imageUrl: utilities.getSmallAsset(matchPlayerBaseRank.rankIconUrl),
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: matchPlayerBaseRank.rank,
+        );
+      },
+      [matchPlayerBaseRank],
+    );
 
     // Methods
     final onPressPlayer = useCallback(
@@ -292,9 +301,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
             image: champion != null && splashBackground != null
                 ? DecorationImage(
                     image: (splashBackground.isAssetImage
-                        ? AssetImage(splashBackground.imageUrl)
+                        ? AssetImage(splashBackground.optimizedUrl)
                         : CachedNetworkImageProvider(
-                            splashBackground.imageUrl,
+                            splashBackground.optimizedUrl,
                           )) as ImageProvider,
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
@@ -323,7 +332,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                             clipBehavior: Clip.none,
                             children: [
                               widgets.ElevatedAvatar(
-                                imageUrl: championIcon.imageUrl,
+                                imageUrl: championIcon.optimizedUrl,
                                 imageBlurHash: championIcon.blurHash,
                                 isAssetImage: championIcon.isAssetImage,
                                 size: 30,
@@ -343,23 +352,22 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
                                 ),
                             ],
                           ),
-                    matchPlayer.playerRanked == null
+                    matchPlayerBaseRank == null || rankIcon == null
                         ? const SizedBox(width: 5)
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Column(
                               children: [
                                 widgets.FastImage(
-                                  imageUrl: utilities.getSmallAsset(
-                                    matchPlayer.playerRanked!.rankIconUrl,
-                                  ),
+                                  imageUrl: rankIcon.optimizedUrl,
+                                  isAssetImage: rankIcon.isAssetImage,
                                   height: 20,
                                   width: 20,
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   utilities.shortRankName(
-                                    matchPlayer.playerRanked!.rankName,
+                                    matchPlayerBaseRank.rankName,
                                   ),
                                   style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,

@@ -76,8 +76,12 @@ class ActiveMatchPlayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final champions = ref.read(providers.champions).champions;
+    final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final playerChampions = ref.watch(
       providers.champions.select((_) => _.playerChampions),
+    );
+    final showChampionSplashImage = ref.watch(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
     );
 
     // Variables
@@ -86,7 +90,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final isPrivatePlayer = playerInfo.player.playerId == "0";
     final winRate = playerInfo.ranked?.winRate;
     final winRateFormatted = playerInfo.ranked?.winRateFormatted;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final brightness = Theme.of(context).brightness;
     final backgroundColor = Theme.of(context).cardTheme.color;
 
@@ -152,50 +155,47 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       () {
         if (champion == null) return null;
 
-        var championIcon = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.iconUrl,
-          isAssetImage: false,
           blurHash: champion.iconBlurHash,
+          assetId: champion.championId,
+          assetType: constants.ChampionAssetType.icons,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.icons,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            championIcon.imageUrl = assetUrl;
-            championIcon.isAssetImage = true;
-          }
-        }
-
-        return championIcon;
       },
       [champion],
     );
 
     final splashBackground = useMemoized(
       () {
-        if (!showBackgroundSplash) return null;
+        if (!showChampionSplashImage) return null;
         if (champion == null) return null;
 
-        var splashBackground = data_classes.PlatformOptimizedImage(
+        return data_classes.PlatformOptimizedImage(
           imageUrl: champion.splashUrl,
-          isAssetImage: false,
+          assetType: constants.ChampionAssetType.splash,
+          assetId: champion.championId,
+          blurHash: champion.splashBlurHash,
         );
-        if (!constants.isWeb) {
-          final assetUrl = utilities.getAssetImageUrl(
-            constants.ChampionAssetType.splash,
-            champion.championId,
-          );
-          if (assetUrl != null) {
-            splashBackground.imageUrl = assetUrl;
-            splashBackground.isAssetImage = true;
-          }
-        }
-
-        return splashBackground;
       },
-      [champion, showBackgroundSplash],
+      [champion, showChampionSplashImage],
+    );
+
+    final playerInfoBaseRank = useMemoized(
+      () => baseRanks[playerInfo.ranked?.rank],
+      [playerInfo, baseRanks],
+    );
+
+    final rankIcon = useMemoized(
+      () {
+        if (playerInfoBaseRank == null) return null;
+
+        return data_classes.PlatformOptimizedImage(
+          imageUrl: playerInfoBaseRank.rankIconUrl,
+          assetType: constants.ChampionAssetType.ranks,
+          assetId: playerInfoBaseRank.rank,
+        );
+      },
+      [playerInfoBaseRank],
     );
 
     // Methods
@@ -223,9 +223,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           image: champion != null && splashBackground != null
               ? DecorationImage(
                   image: (splashBackground.isAssetImage
-                      ? AssetImage(splashBackground.imageUrl)
+                      ? AssetImage(splashBackground.optimizedUrl)
                       : CachedNetworkImageProvider(
-                          splashBackground.imageUrl,
+                          splashBackground.optimizedUrl,
                         )) as ImageProvider,
                   fit: BoxFit.cover,
                   alignment: Alignment.topCenter,
@@ -259,27 +259,29 @@ class ActiveMatchPlayer extends HookConsumerWidget {
                     championIcon == null
                         ? const SizedBox(height: 24 * 2, width: 24 * 2)
                         : widgets.ElevatedAvatar(
-                            imageUrl: championIcon.imageUrl,
+                            imageUrl: championIcon.optimizedUrl,
                             imageBlurHash: championIcon.blurHash,
                             isAssetImage: championIcon.isAssetImage,
                             borderRadius: 12.5,
                             size: 30,
                           ),
-                    playerInfo.ranked == null
+                    playerInfoBaseRank == null
                         ? const SizedBox(width: 20)
                         : Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Column(
                               children: [
-                                widgets.FastImage(
-                                  imageUrl: playerInfo.ranked!.rankIconUrl,
-                                  height: 22,
-                                  width: 22,
-                                ),
+                                if (rankIcon != null)
+                                  widgets.FastImage(
+                                    isAssetImage: rankIcon.isAssetImage,
+                                    imageUrl: rankIcon.optimizedUrl,
+                                    height: 22,
+                                    width: 22,
+                                  ),
                                 const SizedBox(height: 5),
                                 Text(
                                   utilities.shortRankName(
-                                    playerInfo.ranked!.rankName,
+                                    playerInfoBaseRank.rankName,
                                   ),
                                   style: textTheme.bodyLarge?.copyWith(
                                     fontSize: 14,

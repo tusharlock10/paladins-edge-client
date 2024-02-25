@@ -1,10 +1,12 @@
 export "./active_match/active_match.dart";
+export "./base_rank/base_rank.dart";
 export "./champion/champion.dart";
 export "./device_detail/device_detail.dart";
 export "./essentials/essentials.dart";
 export "./faq/faq.dart";
 export "./feedback/feedback.dart";
 export "./item/item.dart";
+export "./leaderboard_player/leaderboard_player.dart";
 export "./loadout/loadout.dart";
 export "./match/match.dart";
 export "./player/player.dart";
@@ -14,4 +16,5 @@ export "./queue/queue.dart";
 export "./record_expiry/record_expiry.dart";
 export "./search_history/search_history.dart";
 export "./settings/settings.dart";
+export "./sponsor/sponsor.dart";
 export "./user/user.dart";

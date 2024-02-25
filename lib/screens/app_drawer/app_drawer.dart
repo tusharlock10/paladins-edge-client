@@ -1,3 +1,4 @@
+import "package:dartx/dartx.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -7,7 +8,6 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/app_drawer/app_drawer_button.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_info.dart";
-import "package:paladinsedge/screens/app_drawer/app_drawer_login_button.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
@@ -19,16 +19,20 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final authProvider = ref.read(providers.auth);
+    final isPlatformSupported = !constants.isWindows;
+    final appStateProvider = ref.read(providers.appState);
     final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final themeMode = ref.watch(
-      providers.auth.select((_) => _.settings.themeMode),
+    final settings = ref.watch(
+      providers.appState.select((_) => _.settings),
     );
 
-    // State
-    final isLoggingOut = useState(false);
+    // Variables
+    final themeMode = settings.themeMode;
+    final nextThemeMode = settings.cycleThemeMode();
+    final themeModeName = constants.themeNames[themeMode];
+    final nextThemeModeName = constants.themeNames[nextThemeMode];
 
     // Hooks
     final showPlayerDependentButtons = useMemoized(
@@ -43,66 +47,14 @@ class AppDrawer extends HookConsumerWidget {
     );
 
     // Methods
-    final navigateToLogin = useCallback(
+    final setThemeMode = useCallback(
       () {
-        utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Login.routeName);
-      },
-      [],
-    );
-
-    final onLogoutFail = useCallback(
-      () {
-        widgets.showToast(
-          context: context,
-          text: "Unable to logout, try again later",
-          type: widgets.ToastType.error,
+        final newSettings = settings.copyWith(
+          themeMode: nextThemeMode,
         );
+        appStateProvider.setSettings(newSettings);
       },
-      [],
-    );
-
-    final onLogout = useCallback(
-      () async {
-        isLoggingOut.value = true;
-        final isLoggedOut = await ref.read(providers.auth).logout();
-
-        if (isLoggedOut) {
-          navigateToLogin();
-        } else {
-          onLogoutFail();
-        }
-        isLoggingOut.value = false;
-      },
-      [],
-    );
-
-    final onChangeTheme = useCallback(
-      () {
-        if (themeMode == ThemeMode.dark) {
-          authProvider.toggleTheme(ThemeMode.light);
-        } else if (themeMode == ThemeMode.light) {
-          authProvider.toggleTheme(ThemeMode.system);
-        } else {
-          authProvider.toggleTheme(ThemeMode.dark);
-        }
-      },
-      [themeMode],
-    );
-
-    final getThemeName = useCallback(
-      () {
-        if (themeMode == ThemeMode.dark) {
-          return "dark";
-        } else if (themeMode == ThemeMode.light) {
-          return "light";
-        } else if (themeMode == ThemeMode.system) {
-          return "system";
-        } else {
-          return null;
-        }
-      },
-      [authProvider.settings.themeMode],
+      [settings],
     );
 
     final onFriendsHelper = useCallback(
@@ -221,6 +173,22 @@ class AppDrawer extends HookConsumerWidget {
       [isGuest],
     );
 
+    final onLeaderboard = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Leaderboard.routeName);
+      },
+      [],
+    );
+
+    final onSponsor = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+        utilities.Navigation.navigate(context, screens.Sponsor.routeName);
+      },
+      [],
+    );
+
     final onFAQ = useCallback(
       () {
         final routeName = showPlayerDependentButtons
@@ -232,72 +200,106 @@ class AppDrawer extends HookConsumerWidget {
       [showPlayerDependentButtons],
     );
 
-    return Drawer(
+    final onSettings = useCallback(
+      () {
+        Scaffold.of(context).closeDrawer();
+        widgets.showSettingsModal(context);
+      },
+      [],
+    );
+
+    return widgets.PopShortcut(
       child: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            isGuest
-                ? const AppDrawerGuestProfile()
-                : const AppDrawerPlayerProfile(),
-            const SizedBox(height: 20),
-            AppDrawerButton(
-              label: "Change Theme",
-              subTitle: getThemeName(),
-              onPressed: onChangeTheme,
+        child: Drawer(
+          shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(40),
+              topRight: Radius.circular(40),
             ),
-            if (showPlayerDependentButtons)
-              AppDrawerButton(
-                label: "Friends",
-                onPressed: onFriends,
-              ),
-            if (showPlayerDependentButtons)
-              AppDrawerButton(
-                label: "Active Match",
-                onPressed: onActiveMatch,
-              ),
-            AppDrawerButton(
-              label: "Feedback",
-              onPressed: onFeedback,
-            ),
-            if (showPlayerDependentButtons)
-              AppDrawerButton(
-                label: "Global Chat",
-                onPressed: onGlobalChat,
-              ),
-            if (showPlayerDependentButtons)
-              AppDrawerButton(
-                label: "Saved Matches",
-                onPressed: onSavedMatches,
-              ),
-            AppDrawerButton(
-              label: "FAQs",
-              onPressed: onFAQ,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                isLoggingOut.value
-                    ? const widgets.LoadingIndicator(
-                        size: 16,
-                        lineWidth: 2,
-                      )
-                    : const SizedBox(),
-                isGuest
-                    ? AppDrawerLoginButton(
-                        context: context,
-                        onPressed: onLogout,
-                      )
-                    : AppDrawerButton(
-                        label: "Logout",
-                        disabled: isLoggingOut.value,
-                        onPressed: onLogout,
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 20),
+                      isGuest
+                          ? const AppDrawerGuestProfile()
+                          : const AppDrawerPlayerProfile(),
+                      const SizedBox(height: 10),
+                      Divider(color: Colors.grey.shade600, thickness: 0.15),
+                      const SizedBox(height: 10),
+                      AppDrawerButton(
+                        label: "$themeModeName Theme".capitalize(),
+                        subTitle: "Switch to $nextThemeModeName theme",
+                        isSubTitleFixed: utilities.responsiveCondition(
+                          context,
+                          desktop: false,
+                          tablet: false,
+                          mobile: true,
+                        ),
+                        onPressed: setThemeMode,
                       ),
-              ],
-            ),
-            const AppDrawerInfo(),
-            const SizedBox(height: 15),
-          ],
+                      AppDrawerButton(
+                        label: "Friends",
+                        subTitle: "View your friend list",
+                        onPressed: onFriends,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Active Match",
+                        subTitle: "View live match details",
+                        onPressed: onActiveMatch,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Feedback",
+                        subTitle: "Tell us something",
+                        onPressed: onFeedback,
+                      ),
+                      AppDrawerButton(
+                        label: "Global Chat",
+                        subTitle: "Chat with everyone",
+                        onPressed: onGlobalChat,
+                        hide: !(showPlayerDependentButtons &&
+                            isPlatformSupported),
+                      ),
+                      AppDrawerButton(
+                        label: "Saved Matches",
+                        subTitle: "View your saved matches",
+                        onPressed: onSavedMatches,
+                        hide: !showPlayerDependentButtons,
+                      ),
+                      AppDrawerButton(
+                        label: "Leaderboard",
+                        subTitle: "View player rankings",
+                        onPressed: onLeaderboard,
+                      ),
+                      AppDrawerButton(
+                        label: "Sponsor",
+                        subTitle: "Support us",
+                        onPressed: onSponsor,
+                      ),
+                      AppDrawerButton(
+                        label: "FAQs",
+                        subTitle: "Answers to common questions",
+                        onPressed: onFAQ,
+                      ),
+                      AppDrawerButton(
+                        label: "Settings",
+                        subTitle: "Set your preferences",
+                        onPressed: onSettings,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const AppDrawerInfo(),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
