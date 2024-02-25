@@ -123,7 +123,9 @@ class ChampionItem extends HookConsumerWidget {
         if (talentSearch.isEmpty) return "";
 
         for (final talent in champion.talents) {
-          if (talent.name.toLowerCase().contains(search)) return talent.name;
+          if (talent.name.toLowerCase().contains(talentSearch.toLowerCase())) {
+            return talent.name;
+          }
         }
 
         return "";
