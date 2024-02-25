@@ -82,6 +82,9 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final champions = ref.read(providers.champions).champions;
     final baseRanks = ref.read(providers.baseRanks).baseRanks;
     final items = ref.read(providers.items).items;
+    final showChampionSplashImage = ref.read(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
+    );
 
     // Variables
     final brightness = Theme.of(context).brightness;
@@ -94,7 +97,6 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final isPrivatePlayer = matchPlayer.playerId == "0";
     final partyNumber = matchPlayer.partyNumber;
     final backgroundColor = Theme.of(context).cardTheme.color;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final partyColor =
         partyNumber != null ? constants.partyColors[partyNumber - 1] : null;
 
@@ -201,7 +203,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
 
     final splashBackground = useMemoized(
       () {
-        if (!showBackgroundSplash) return null;
+        if (!showChampionSplashImage) return null;
         if (champion == null) return null;
 
         return data_classes.PlatformOptimizedImage(
@@ -210,7 +212,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
           assetId: champion.championId,
         );
       },
-      [champion, showBackgroundSplash],
+      [champion, showChampionSplashImage],
     );
 
     final championIcon = useMemoized(

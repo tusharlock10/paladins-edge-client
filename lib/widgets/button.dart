@@ -80,7 +80,7 @@ class Button extends StatelessWidget {
                       child: Icon(
                         trailing,
                         size: 14,
-                        color: outlinedColor,
+                        color: disabled ? null : outlinedColor,
                       ),
                     ),
                 ],
@@ -122,7 +122,7 @@ class Button extends StatelessWidget {
                       child: Icon(
                         trailing,
                         size: 14,
-                        color: color2,
+                        color: disabled ? null : color2,
                       ),
                     ),
                 ],

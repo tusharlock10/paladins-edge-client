@@ -80,6 +80,9 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final playerChampions = ref.watch(
       providers.champions.select((_) => _.playerChampions),
     );
+    final showChampionSplashImage = ref.watch(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
+    );
 
     // Variables
     final expandedController = ExpandableController(initialExpanded: false);
@@ -87,7 +90,6 @@ class ActiveMatchPlayer extends HookConsumerWidget {
     final isPrivatePlayer = playerInfo.player.playerId == "0";
     final winRate = playerInfo.ranked?.winRate;
     final winRateFormatted = playerInfo.ranked?.winRateFormatted;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     final brightness = Theme.of(context).brightness;
     final backgroundColor = Theme.of(context).cardTheme.color;
 
@@ -165,7 +167,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
 
     final splashBackground = useMemoized(
       () {
-        if (!showBackgroundSplash) return null;
+        if (!showChampionSplashImage) return null;
         if (champion == null) return null;
 
         return data_classes.PlatformOptimizedImage(
@@ -175,7 +177,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
           blurHash: champion.splashBlurHash,
         );
       },
-      [champion, showBackgroundSplash],
+      [champion, showChampionSplashImage],
     );
 
     final playerInfoBaseRank = useMemoized(

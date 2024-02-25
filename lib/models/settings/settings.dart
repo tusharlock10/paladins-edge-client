@@ -49,14 +49,14 @@ class Settings extends HiveObject {
   bool autoOpenKeyboardOnChampions;
 
   Settings({
-    int themeMode = 0,
+    ThemeMode themeMode = ThemeMode.system,
     this.showUserPlayerMatches = false,
     this.selectedQueueRegion = Region.all,
     this.selectedBottomTabIndex = 0,
     this.showChampionSplashImage = true,
     this.autoOpenKeyboardOnSearch = true,
     this.autoOpenKeyboardOnChampions = true,
-  }) : _themeMode = themeMode;
+  }) : _themeMode = _reverseThemeModeMapping[themeMode]!;
 
   // Getters
   ThemeMode get themeMode => _themeModeMapping[_themeMode]!;
@@ -65,9 +65,10 @@ class Settings extends HiveObject {
   // Setters
   set themeMode(ThemeMode themeMode) => _reverseThemeModeMapping[themeMode];
 
-  // Static methods
+  // Methods
+  /// Create a new copy of settings with changed params
   Settings copyWith({
-    int? themeMode,
+    ThemeMode? themeMode,
     bool? showUserPlayerMatches,
     String? selectedQueueRegion,
     int? selectedBottomTabIndex,
@@ -76,7 +77,7 @@ class Settings extends HiveObject {
     bool? autoOpenKeyboardOnChampions,
   }) {
     return Settings(
-      themeMode: themeMode ?? _themeMode,
+      themeMode: themeMode ?? _themeModeMapping[_themeMode]!,
       showUserPlayerMatches:
           showUserPlayerMatches ?? this.showUserPlayerMatches,
       selectedQueueRegion: selectedQueueRegion ?? this.selectedQueueRegion,
@@ -91,12 +92,19 @@ class Settings extends HiveObject {
     );
   }
 
-  // Methods
+  /// Gives the next themeMode in rotation
+  ThemeMode cycleThemeMode() {
+    int nextThemeMode = _themeMode + 1;
+    if (nextThemeMode >= _themeModeMapping.length) nextThemeMode = 0;
+
+    return _themeModeMapping[nextThemeMode]!;
+  }
+
   /// Gives the next bottomTabIndex in rotation
   int cycleBottomTabIndex() {
     int nextIndex = selectedBottomTabIndex + 1;
-    if (nextIndex < pages.length) return nextIndex;
+    if (nextIndex >= pages.length) nextIndex = 0;
 
-    return 0;
+    return nextIndex;
   }
 }

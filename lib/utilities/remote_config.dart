@@ -13,13 +13,6 @@ abstract class RemoteConfig {
     return _firebaseRemoteConfig!.getBool(key);
   }
 
-  static bool get showBackgroundSplash {
-    const key = constants.RemoteConfigParams.showBackgroundSplash;
-    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
-
-    return _firebaseRemoteConfig!.getBool(key);
-  }
-
   static bool get paladinsApiUnavailable {
     const key = constants.RemoteConfigParams.paladinsApiUnavailable;
     if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);

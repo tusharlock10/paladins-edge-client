@@ -1,10 +1,11 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
-import "package:paladinsedge/utilities/index.dart" as utilities;
 
-class InteractiveCard extends HookWidget {
+class InteractiveCard extends HookConsumerWidget {
   final Widget child;
   final void Function()? onTap;
   final EdgeInsets? margin;
@@ -41,11 +42,15 @@ class InteractiveCard extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Providers
+    final showChampionSplashImage = ref.read(
+      providers.appState.select((_) => _.settings.showChampionSplashImage),
+    );
+
     // Variables
     final brightness = Theme.of(context).brightness;
     final isInteractive = onTap != null && !disableHover;
-    final showBackgroundSplash = utilities.RemoteConfig.showBackgroundSplash;
     Color? internalColor = color;
     double? internalElevation = elevation;
     double? internalHoverElevation = hoverElevation;
@@ -117,7 +122,7 @@ class InteractiveCard extends HookWidget {
         onTap: onTap,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            image: backgroundImage != null && showBackgroundSplash
+            image: backgroundImage != null && showChampionSplashImage
                 ? DecorationImage(
                     image: (isAssetImage
                             ? AssetImage(backgroundImage!)

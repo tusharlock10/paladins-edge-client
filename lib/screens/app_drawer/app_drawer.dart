@@ -10,7 +10,6 @@ import "package:paladinsedge/screens/app_drawer/app_drawer_guest_profile.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_info.dart";
 import "package:paladinsedge/screens/app_drawer/app_drawer_player_profile.dart";
 import "package:paladinsedge/screens/index.dart" as screens;
-import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
@@ -21,17 +20,19 @@ class AppDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final isPlatformSupported = !constants.isWindows;
-    final authProvider = ref.read(providers.auth);
     final appStateProvider = ref.read(providers.appState);
     final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final themeMode = ref.watch(
-      providers.appState.select((_) => _.settings.themeMode),
+    final settings = ref.watch(
+      providers.appState.select((_) => _.settings),
     );
 
-    // State
-    final isLoggingOut = useState(false);
+    // Variables
+    final themeMode = settings.themeMode;
+    final nextThemeMode = settings.cycleThemeMode();
+    final themeModeName = constants.themeNames[themeMode];
+    final nextThemeModeName = constants.themeNames[nextThemeMode];
 
     // Hooks
     final showPlayerDependentButtons = useMemoized(
@@ -46,62 +47,14 @@ class AppDrawer extends HookConsumerWidget {
     );
 
     // Methods
-    final navigateToLogin = useCallback(
+    final setThemeMode = useCallback(
       () {
-        utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Login.routeName);
-      },
-      [],
-    );
-
-    final onLogoutFail = useCallback(
-      () {
-        widgets.showToast(
-          context: context,
-          text: "Unable to logout, try again later",
-          type: widgets.ToastType.error,
+        final newSettings = settings.copyWith(
+          themeMode: nextThemeMode,
         );
+        appStateProvider.setSettings(newSettings);
       },
-      [],
-    );
-
-    final onLogout = useCallback(
-      () async {
-        isLoggingOut.value = true;
-        final isLoggedOut = await authProvider.logout();
-
-        if (isLoggedOut) {
-          navigateToLogin();
-        } else {
-          onLogoutFail();
-        }
-        isLoggingOut.value = false;
-      },
-      [],
-    );
-
-    final onChangeTheme = useCallback(
-      () {
-        final nextThemeMode = theme.ThemeUtil.cycleThemeMode(themeMode);
-        appStateProvider.toggleTheme(nextThemeMode);
-      },
-      [themeMode],
-    );
-
-    final themeName = useMemoized(
-      () {
-        return theme.ThemeUtil.getThemeName(themeMode);
-      },
-      [themeMode],
-    );
-
-    final nextThemeName = useMemoized(
-      () {
-        final nextThemeMode = theme.ThemeUtil.cycleThemeMode(themeMode);
-
-        return theme.ThemeUtil.getThemeName(nextThemeMode);
-      },
-      [themeMode],
+      [settings],
     );
 
     final onFriendsHelper = useCallback(
@@ -272,22 +225,22 @@ class AppDrawer extends HookConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 20),
-                      !isGuest
+                      isGuest
                           ? const AppDrawerGuestProfile()
                           : const AppDrawerPlayerProfile(),
                       const SizedBox(height: 10),
                       Divider(color: Colors.grey.shade600, thickness: 0.15),
                       const SizedBox(height: 10),
                       AppDrawerButton(
-                        label: "$themeName Theme".capitalize(),
-                        subTitle: "Switch to $nextThemeName theme",
+                        label: "$themeModeName Theme".capitalize(),
+                        subTitle: "Switch to $nextThemeModeName theme",
                         isSubTitleFixed: utilities.responsiveCondition(
                           context,
                           desktop: false,
                           tablet: false,
                           mobile: true,
                         ),
-                        onPressed: onChangeTheme,
+                        onPressed: setThemeMode,
                       ),
                       AppDrawerButton(
                         label: "Friends",
