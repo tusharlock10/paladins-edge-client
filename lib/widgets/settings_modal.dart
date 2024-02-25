@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/pop_shortcut.dart";
 
@@ -21,35 +23,72 @@ void showSettingsModal(BuildContext context) {
       ),
     ),
     context: context,
-    builder: (_) => _SettingsModal(width: width),
-    constraints: BoxConstraints(maxWidth: width),
+    builder: (_) => _SettingsModal(),
+    constraints: BoxConstraints(minWidth: width, maxWidth: width),
   );
 }
 
 class _SettingsModal extends HookConsumerWidget {
-  final double width;
-
-  const _SettingsModal({
-    required this.width,
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const PopShortcut(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Card(
-            elevation: 0,
-            clipBehavior: Clip.hardEdge,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+    // Providers
+    final appStateProvider = ref.read(providers.appState);
+    final settings = ref.watch(
+      providers.appState.select((_) => _.settings),
+    );
+
+    // Variables
+    final textTheme = Theme.of(context).textTheme;
+
+    // Methods
+    final setSelectedBottomTabIndex = useCallback(
+      () {
+        final nextIndex = settings.cycleBottomTabIndex();
+        final newSettings = settings.copyWith(
+          selectedBottomTabIndex: nextIndex,
+        );
+        appStateProvider.setSettings(newSettings);
+      },
+      [settings],
+    );
+
+    return PopShortcut(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 15,
+              ),
+              child: Text(
+                "Settings",
+                style: textTheme.titleLarge,
+              ),
             ),
-            margin: EdgeInsets.all(15),
-            child: Text("Hello world"),
-          ),
-        ],
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                clipBehavior: Clip.hardEdge,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      onTap: setSelectedBottomTabIndex,
+                      title: const Text("Change default entry tab"),
+                      trailing: Text(settings.selectedBottomTabData.title),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }

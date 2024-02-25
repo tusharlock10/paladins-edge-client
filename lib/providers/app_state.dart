@@ -31,10 +31,22 @@ class _AppStateNotifier extends ChangeNotifier {
   /// Loads the `settings` from local db
   void loadSettings() {
     settings = utilities.Database.getSettings();
+    bottomTabIndex = settings.selectedBottomTabIndex;
+    searchTabVisited = !settings.autoOpenKeyboardOnSearch;
+    championsTabVisited = !settings.autoOpenKeyboardOnChampions;
+
+    notifyListeners();
+  }
+
+  /// Set new settings and save them in db
+  void setSettings(models.Settings newSettings) {
+    settings = newSettings;
+    utilities.Database.saveSettings(settings);
     notifyListeners();
   }
 
   /// Toggle the theme from `light` to `dark` and vice versa
+  /// TODO: remove this and use `setSettings`
   void toggleTheme(ThemeMode themeMode) {
     settings.themeMode = themeMode;
 
@@ -55,6 +67,7 @@ class _AppStateNotifier extends ChangeNotifier {
   }
 
   /// Toggle showUserPlayerMatches for commonMatches
+  /// TODO: remove this and use `setSettings`
   void toggleShowUserPlayerMatches(bool? value) {
     settings.showUserPlayerMatches = value ?? false;
     utilities.Database.saveSettings(settings);
@@ -62,6 +75,7 @@ class _AppStateNotifier extends ChangeNotifier {
   }
 
   /// Set queue region in settings
+  /// TODO: remove this and use `setSettings`
   void setQueueRegions(String region) {
     settings.selectedQueueRegion = region;
     utilities.Database.saveSettings(settings);
