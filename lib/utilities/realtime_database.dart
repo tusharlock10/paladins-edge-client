@@ -4,6 +4,7 @@ import "package:dartx/dartx.dart";
 import "package:firebase_database/firebase_database.dart";
 import "package:flutter_chat_types/flutter_chat_types.dart" as types;
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 enum ChatConnectionState { connected, disconnected, unknown }
 
@@ -19,6 +20,7 @@ class RealtimeGlobalChat {
   static Future<void> initialize() async {
     if (constants.isWindows) return;
 
+    utilities.Stopwatch.startStopTimer("initializeGlobalChat");
     _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
     _globalChatRef = FirebaseDatabase.instance.ref(
       "${constants.Env.appType}-global-chat",
@@ -26,6 +28,7 @@ class RealtimeGlobalChat {
     _messagesRef = _globalChatRef!.child("messages");
     _playersOnlineRef = _globalChatRef!.child("players-online");
     await _keepChatMessagesSynced();
+    utilities.Stopwatch.startStopTimer("initializeGlobalChat");
   }
 
   /// Listens for connection events, initially when GlobalChat screen mounts

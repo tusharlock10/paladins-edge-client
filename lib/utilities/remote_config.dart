@@ -1,5 +1,6 @@
 import "package:firebase_remote_config/firebase_remote_config.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:pub_semver/pub_semver.dart";
 
 abstract class RemoteConfig {
@@ -43,6 +44,7 @@ abstract class RemoteConfig {
   static Future<void> initialize() async {
     if (constants.isWindows) return;
 
+    utilities.Stopwatch.startStopTimer("initializeRemoteConfig");
     final remoteConfigInstance = FirebaseRemoteConfig.instance
       ..setConfigSettings(
         RemoteConfigSettings(
@@ -53,6 +55,7 @@ abstract class RemoteConfig {
     remoteConfigInstance.setDefaults(constants.remoteConfigDefaults);
     await remoteConfigInstance.fetchAndActivate();
     _firebaseRemoteConfig = remoteConfigInstance;
+    utilities.Stopwatch.startStopTimer("initializeRemoteConfig");
   }
 
   static getDefaultValue(String key) => constants.remoteConfigDefaults[key];

@@ -17,6 +17,8 @@ import "package:responsive_framework/responsive_framework.dart";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await utilities.initializeDesktop();
+
+  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
   await Future.wait([
     if (!constants.isDebug)
       SystemChrome.setPreferredOrientations([
@@ -28,10 +30,13 @@ void main() async {
       options: firebase_options.DefaultFirebaseOptions.currentPlatform,
     ),
   ]);
+  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
 
   try {
     if (constants.isAndroid) {
+      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
       await FlutterDisplayMode.setHighRefreshRate();
+      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
     }
   } catch (_) {}
 

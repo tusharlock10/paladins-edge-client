@@ -1,6 +1,7 @@
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:flutter/foundation.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
+import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class Analytics {
   static var analyticsEnabled = false;
@@ -8,10 +9,12 @@ abstract class Analytics {
   static Future<void> initialize() async {
     if (constants.isWindows) return;
 
+    utilities.Stopwatch.startStopTimer("initializeAnalytics");
     analyticsEnabled = !constants.isDebug;
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
       analyticsEnabled,
     );
+    utilities.Stopwatch.startStopTimer("initializeAnalytics");
 
     return;
   }
