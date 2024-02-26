@@ -111,7 +111,7 @@ class HomeQueueChart extends HookConsumerWidget {
                 ),
               );
       },
-      [],
+      [getQueueTime],
     );
 
     final getQueuePlayerCount = useCallback(
