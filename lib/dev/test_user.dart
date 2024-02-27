@@ -6,9 +6,9 @@ class TestUser {
   final String uid;
 
   const TestUser({
-    this.name = "Test User",
-    this.email = "test@paladinsedge.app",
-    this.uid = "62763576287735635",
+    this.name = "Test2 User",
+    this.email = "test2@paladinsedge.app",
+    this.uid = "62763576287735636",
   });
 }
 

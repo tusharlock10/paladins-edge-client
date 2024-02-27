@@ -40,5 +40,6 @@ abstract class Navigation {
   /// Redirects to login screen if an unauthenticated
   /// user lands on a protected route
   static String? protectedRouteRedirect(BuildContext _, GoRouterState state) =>
-      Global.isAuthenticated ? null : screens.Login.routePath;
+      Global.isAuthenticated ? null : screens.Main.routePath;
+  // TODO: also open the login modal
 }

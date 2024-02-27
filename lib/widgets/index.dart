@@ -1,6 +1,7 @@
 export "./api_status_message.dart";
 export "./button.dart";
 export "./champion_loadout_card.dart";
+export "./connect_player_modal.dart";
 export "./debug_alert.dart";
 export "./elevated_avatar.dart";
 export "./fast_image.dart";

@@ -21,14 +21,6 @@ class Feedback extends HookConsumerWidget {
     pageBuilder: _routeBuilder,
   );
 
-  static const connectProfileRouteName = "connect-profile-feedback";
-  static const connectProfileRoutePath = "feedback";
-  static final connectProfileGoRoute = GoRoute(
-    name: connectProfileRouteName,
-    path: connectProfileRoutePath,
-    pageBuilder: _routeBuilder,
-  );
-
   const Feedback({Key? key}) : super(key: key);
 
   @override

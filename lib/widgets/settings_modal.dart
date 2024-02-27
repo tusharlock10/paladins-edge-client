@@ -81,6 +81,7 @@ class _SettingsModal extends HookConsumerWidget {
     final settings = ref.watch(
       providers.appState.select((_) => _.settings),
     );
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -130,10 +131,10 @@ class _SettingsModal extends HookConsumerWidget {
       [settings],
     );
 
-    final navigateToLogin = useCallback(
+    final navigateToMain = useCallback(
       () {
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Login.routeName);
+        utilities.Navigation.navigate(context, screens.Main.routeName);
       },
       [],
     );
@@ -155,7 +156,7 @@ class _SettingsModal extends HookConsumerWidget {
         final isLoggedOut = await authProvider.logout();
 
         if (isLoggedOut) {
-          navigateToLogin();
+          navigateToMain();
         } else {
           onLogoutFail();
         }
@@ -220,27 +221,28 @@ class _SettingsModal extends HookConsumerWidget {
             ),
           ),
           const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Visibility(
-                visible: isLoggingOut.value,
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                child: const LoadingIndicator(size: 24),
-              ),
-              const SizedBox(width: 10),
-              button_widget.Button(
-                color: Colors.red,
-                onPressed: onLogout,
-                label: "Logout",
-                trailing: FeatherIcons.logOut,
-                disabled: isLoggingOut.value,
-              ),
-              const SizedBox(width: 34),
-            ],
-          ),
+          if (!isGuest)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: isLoggingOut.value,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: const LoadingIndicator(size: 24),
+                ),
+                const SizedBox(width: 10),
+                button_widget.Button(
+                  color: Colors.red,
+                  onPressed: onLogout,
+                  label: "Logout",
+                  trailing: FeatherIcons.logOut,
+                  disabled: isLoggingOut.value,
+                ),
+                const SizedBox(width: 34),
+              ],
+            ),
           const SizedBox(height: 15),
         ],
       ),

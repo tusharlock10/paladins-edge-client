@@ -15,6 +15,9 @@ abstract class AnalyticsEvent {
 
   // navigation drawer events
   static const changeTheme = "change_theme";
+  static const settings = "settings";
+
+  // settings events
   static const userLogout = "user_logout";
   static const guestLogout = "guest_logout";
 
