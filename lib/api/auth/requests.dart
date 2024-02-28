@@ -4,40 +4,16 @@ import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 abstract class AuthRequests {
-  static Future<responses.CheckPlayerClaimedResponse?> checkPlayerClaimed({
+  static Future<responses.ConnectPlayerResponse?> connectPlayer({
     required String playerId,
-  }) async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.checkPlayerClaimed,
-        queryParameters: {
-          "playerId": playerId,
-        },
-      );
-      if (response.data != null) {
-        return responses.CheckPlayerClaimedResponse.fromJson(response.data!);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  static Future<responses.ClaimPlayerResponse?> claimPlayer({
-    required String playerId,
-    required String verification,
   }) async {
     try {
       final response = await utilities.api.post<Map<String, dynamic>>(
-        constants.Urls.claimPlayer,
-        data: {
-          "verification": verification,
-          "playerId": playerId,
-        },
+        constants.Urls.connectPlayer,
+        data: {"playerId": playerId},
       );
       if (response.data != null) {
-        return responses.ClaimPlayerResponse.fromJson(response.data!);
+        return responses.ConnectPlayerResponse.fromJson(response.data!);
       }
 
       return null;
@@ -60,32 +36,13 @@ abstract class AuthRequests {
     }
   }
 
-  static Future<bool> fcmToken({required String fcmToken}) async {
-    try {
-      await utilities.api
-          .post(constants.Urls.fcmToken, data: {"fcmToken": fcmToken});
-
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
   static Future<responses.LoginResponse?> login({
-    required String uid,
-    required String email,
-    required String name,
-    required String verification,
+    required String idToken,
   }) async {
     try {
       final response = await utilities.api.post<Map<String, dynamic>>(
         constants.Urls.login,
-        data: {
-          "uid": uid,
-          "email": email,
-          "name": name,
-          "verification": verification,
-        },
+        data: {"idToken": idToken},
       );
       if (response.data != null) {
         return responses.LoginResponse.fromJson(response.data!);

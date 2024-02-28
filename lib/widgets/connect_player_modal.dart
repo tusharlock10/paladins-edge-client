@@ -18,8 +18,8 @@ void showConnectPlayerModal(BuildContext context) {
   );
   final height = utilities.responsiveCondition(
     context,
-    desktop: size.height / 2.5,
-    tablet: size.height / 2,
+    desktop: size.height / 2,
+    tablet: size.height / 1.75,
     mobile: size.height / 1.5,
   );
 
@@ -201,6 +201,7 @@ class _ConnectPlayerList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final authProvider = ref.read(providers.auth);
     final lowerSearchList = ref.watch(
       providers.players.select((_) => _.lowerSearchList),
     );
@@ -210,6 +211,7 @@ class _ConnectPlayerList extends HookConsumerWidget {
 
     // State
     final selectedPlayer = useState<api.LowerSearch?>(null);
+    final isConnecting = useState<bool>(false);
 
     // Effects
     useEffect(
@@ -221,26 +223,72 @@ class _ConnectPlayerList extends HookConsumerWidget {
       [selectedPlayer, lowerSearchList],
     );
 
+    // Methods
+    final onCancel = useCallback(
+      () {
+        selectedPlayer.value = null;
+      },
+      [selectedPlayer],
+    );
+
+    final onConnect = useCallback(
+      () async {
+        if (selectedPlayer.value == null) return;
+
+        isConnecting.value = true;
+        await authProvider.connectPlayer(selectedPlayer.value!.playerId);
+        isConnecting.value = false;
+      },
+      [selectedPlayer, isConnecting],
+    );
+
     return Expanded(
       child: Card(
         clipBehavior: Clip.hardEdge,
         child: selectedPlayer.value != null
-            ? Column(
-                children: [
-                  ListTile(
-                    onTap: () {},
-                    title: Text(selectedPlayer.value!.name),
-                    subtitle: Text(selectedPlayer.value!.platform),
-                    trailing: Text(selectedPlayer.value!.playerId),
-                    subtitleTextStyle: textTheme.bodyLarge?.copyWith(
-                      fontSize: 14,
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "#${selectedPlayer.value?.playerId}",
+                          style: textTheme.bodyLarge?.copyWith(fontSize: 16),
+                        ),
+                        Text(
+                          selectedPlayer.value?.name ?? "",
+                          style: textTheme.displayLarge?.copyWith(fontSize: 22),
+                        ),
+                      ],
                     ),
-                  ),
-                  widgets.Button(
-                    label: "Link Profile",
-                    onPressed: () {},
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Text(
+                      "Connect to your profile?",
+                      style: textTheme.bodyLarge?.copyWith(fontSize: 14),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        widgets.Button(
+                          label: "Cancel",
+                          color: Colors.red,
+                          onPressed: onCancel,
+                          disabled: isConnecting.value,
+                        ),
+                        const SizedBox(width: 10),
+                        widgets.Button(
+                          label: "Connect",
+                          onPressed: onConnect,
+                          disabled: isConnecting.value,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
             : ListView.separated(
                 itemCount: lowerSearchList.length,

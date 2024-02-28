@@ -52,10 +52,6 @@ class Player {
   @HiveField(0)
   final String playerId;
 
-  /// id of the connected user model
-  @HiveField(1)
-  final String? userId;
-
   /// name of the player in the game eg. tusharlock10
   @HiveField(2)
   final String name;
@@ -147,7 +143,6 @@ class Player {
     required this.accountCreationDate,
     required this.lastLoginDate,
     required this.ranked,
-    this.userId,
     String? title,
     this.lastUpdatedFriends,
     this.lastUpdatedPlayer,

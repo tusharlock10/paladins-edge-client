@@ -15,7 +15,7 @@ abstract class Global {
 
   /// Whether the user is connected to a player
   /// If user is logged in and player=null,
-  /// then navigate to connectProfile
+  /// then open connectPlayer modal
   static bool isPlayerConnected = false;
 
   /// used to detect if the route is being accessed initially

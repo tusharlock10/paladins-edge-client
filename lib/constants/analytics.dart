@@ -10,7 +10,7 @@ abstract class AnalyticsEvent {
   static const newUserLogin = "new_user_login";
   static const existingUserLogin = "existing_user_login";
   static const guestLogin = "guest_login";
-  static const claimProfile = "claim_profile";
+  static const connectPlayer = "connect_player";
   static const guestToUserConversion = "guest_to_user_conversion";
 
   // navigation drawer events

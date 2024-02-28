@@ -31,7 +31,7 @@ abstract class Navigation {
   }
 
   /// Sanitized routePath by adding / in front
-  /// eg. `connectProfile => /connectProfile`
+  /// eg. `friends => /friends`
   /// eg. `/ => /`
   /// eg. `/login => /login`
   static String sanitizeRoutePath(String routePath) =>
