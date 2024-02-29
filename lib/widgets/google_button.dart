@@ -4,7 +4,6 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:paladinsedge/gen/assets.gen.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
-import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class GoogleButton extends HookWidget {
@@ -26,8 +25,6 @@ class GoogleButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // Variables
-    final enableGuestLogin = utilities.RemoteConfig.enableGuestLogin;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -79,7 +76,7 @@ class GoogleButton extends HookWidget {
           ),
         ),
         const SizedBox(height: 10),
-        if ((onGuestLogin != null) && enableGuestLogin)
+        if (onGuestLogin != null)
           widgets.InteractiveText(
             "Continue as guest",
             onTap: onGuestLogin!,

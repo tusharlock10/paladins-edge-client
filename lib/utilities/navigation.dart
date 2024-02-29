@@ -31,14 +31,13 @@ abstract class Navigation {
   }
 
   /// Sanitized routePath by adding / in front
-  /// eg. `connectProfile => /connectProfile`
+  /// eg. `friends => /friends`
   /// eg. `/ => /`
-  /// eg. `/login => /login`
   static String sanitizeRoutePath(String routePath) =>
       routePath[0] == "/" ? routePath : "/$routePath";
 
   /// Redirects to login screen if an unauthenticated
   /// user lands on a protected route
   static String? protectedRouteRedirect(BuildContext _, GoRouterState state) =>
-      Global.isAuthenticated ? null : screens.Login.routePath;
+      Global.isAuthenticated ? null : screens.Main.routePath;
 }

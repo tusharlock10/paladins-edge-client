@@ -3,7 +3,6 @@ import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/providers/index.dart" as providers;
-import "package:paladinsedge/screens/index.dart" as screens;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/button.dart" as button_widget;
 import "package:paladinsedge/widgets/loading_indicator.dart";
@@ -81,6 +80,7 @@ class _SettingsModal extends HookConsumerWidget {
     final settings = ref.watch(
       providers.appState.select((_) => _.settings),
     );
+    final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
@@ -130,14 +130,6 @@ class _SettingsModal extends HookConsumerWidget {
       [settings],
     );
 
-    final navigateToLogin = useCallback(
-      () {
-        utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, screens.Login.routeName);
-      },
-      [],
-    );
-
     final onLogoutFail = useCallback(
       () {
         showToast(
@@ -149,13 +141,19 @@ class _SettingsModal extends HookConsumerWidget {
       [],
     );
 
+    final onLogoutSuccess = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
+
     final onLogout = useCallback(
       () async {
         isLoggingOut.value = true;
         final isLoggedOut = await authProvider.logout();
-
         if (isLoggedOut) {
-          navigateToLogin();
+          onLogoutSuccess();
         } else {
           onLogoutFail();
         }
@@ -220,27 +218,28 @@ class _SettingsModal extends HookConsumerWidget {
             ),
           ),
           const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Visibility(
-                visible: isLoggingOut.value,
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                child: const LoadingIndicator(size: 24),
-              ),
-              const SizedBox(width: 10),
-              button_widget.Button(
-                color: Colors.red,
-                onPressed: onLogout,
-                label: "Logout",
-                trailing: FeatherIcons.logOut,
-                disabled: isLoggingOut.value,
-              ),
-              const SizedBox(width: 34),
-            ],
-          ),
+          if (!isGuest)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: isLoggingOut.value,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: const LoadingIndicator(size: 24),
+                ),
+                const SizedBox(width: 10),
+                button_widget.Button(
+                  color: Colors.red,
+                  onPressed: onLogout,
+                  label: "Logout",
+                  trailing: FeatherIcons.logOut,
+                  disabled: isLoggingOut.value,
+                ),
+                const SizedBox(width: 34),
+              ],
+            ),
           const SizedBox(height: 15),
         ],
       ),

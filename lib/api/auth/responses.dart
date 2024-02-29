@@ -31,35 +31,18 @@ class LoginResponse {
 }
 
 @JsonSerializable()
-class CheckPlayerClaimedResponse {
-  final bool exists;
+class ConnectPlayerResponse {
+  final User user;
+  final Player player;
 
-  CheckPlayerClaimedResponse({
-    required this.exists,
+  ConnectPlayerResponse({
+    required this.user,
+    required this.player,
   });
 
-  factory CheckPlayerClaimedResponse.fromJson(Map<String, dynamic> json) =>
-      _$CheckPlayerClaimedResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$CheckPlayerClaimedResponseToJson(this);
-}
-
-@JsonSerializable()
-class ClaimPlayerResponse {
-  final bool verified;
-  final User? user;
-  final Player? player;
-  final String? reason;
-
-  ClaimPlayerResponse({
-    required this.verified,
-    this.user,
-    this.player,
-    this.reason,
-  });
-
-  factory ClaimPlayerResponse.fromJson(Map<String, dynamic> json) =>
-      _$ClaimPlayerResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ClaimPlayerResponseToJson(this);
+  factory ConnectPlayerResponse.fromJson(Map<String, dynamic> json) =>
+      _$ConnectPlayerResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ConnectPlayerResponseToJson(this);
 }
 
 @JsonSerializable()

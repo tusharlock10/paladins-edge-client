@@ -74,7 +74,6 @@ class PlayerAdapter extends TypeAdapter<Player> {
       accountCreationDate: fields[13] as DateTime,
       lastLoginDate: fields[14] as DateTime,
       ranked: fields[15] as Ranked,
-      userId: fields[1] as String?,
       title: fields[3] as String?,
       lastUpdatedFriends: fields[16] as DateTime?,
       lastUpdatedPlayer: fields[17] as DateTime?,
@@ -87,11 +86,9 @@ class PlayerAdapter extends TypeAdapter<Player> {
   @override
   void write(BinaryWriter writer, Player obj) {
     writer
-      ..writeByte(21)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.playerId)
-      ..writeByte(1)
-      ..write(obj.userId)
       ..writeByte(2)
       ..write(obj.name)
       ..writeByte(3)
@@ -177,7 +174,6 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
           DateTime.parse(json['accountCreationDate'] as String),
       lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
       ranked: Ranked.fromJson(json['ranked'] as Map<String, dynamic>),
-      userId: json['userId'] as String?,
       title: json['title'] as String?,
       lastUpdatedFriends: json['lastUpdatedFriends'] == null
           ? null
@@ -198,7 +194,6 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'playerId': instance.playerId,
-      'userId': instance.userId,
       'name': instance.name,
       'title': instance.title,
       'avatarUrl': instance.avatarUrl,

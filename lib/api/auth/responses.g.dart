@@ -22,37 +22,18 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'player': instance.player,
     };
 
-CheckPlayerClaimedResponse _$CheckPlayerClaimedResponseFromJson(
+ConnectPlayerResponse _$ConnectPlayerResponseFromJson(
         Map<String, dynamic> json) =>
-    CheckPlayerClaimedResponse(
-      exists: json['exists'] as bool,
+    ConnectPlayerResponse(
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      player: Player.fromJson(json['player'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$CheckPlayerClaimedResponseToJson(
-        CheckPlayerClaimedResponse instance) =>
+Map<String, dynamic> _$ConnectPlayerResponseToJson(
+        ConnectPlayerResponse instance) =>
     <String, dynamic>{
-      'exists': instance.exists,
-    };
-
-ClaimPlayerResponse _$ClaimPlayerResponseFromJson(Map<String, dynamic> json) =>
-    ClaimPlayerResponse(
-      verified: json['verified'] as bool,
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      player: json['player'] == null
-          ? null
-          : Player.fromJson(json['player'] as Map<String, dynamic>),
-      reason: json['reason'] as String?,
-    );
-
-Map<String, dynamic> _$ClaimPlayerResponseToJson(
-        ClaimPlayerResponse instance) =>
-    <String, dynamic>{
-      'verified': instance.verified,
       'user': instance.user,
       'player': instance.player,
-      'reason': instance.reason,
     };
 
 EssentialsResponse _$EssentialsResponseFromJson(Map<String, dynamic> json) =>
