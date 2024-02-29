@@ -81,7 +81,6 @@ class ScreenInitialization extends HookConsumerWidget {
         }
         utilities.initializeApi();
         await Future.wait([
-          utilities.RSACrypto.initialize(),
           utilities.RealtimeGlobalChat.initialize(),
           utilities.Analytics.initialize(),
           utilities.RealtimeGlobalChat.initialize(),

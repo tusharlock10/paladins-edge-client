@@ -10,6 +10,7 @@ import "package:paladinsedge/screens/main/main_bottom_tabs.dart";
 import "package:paladinsedge/screens/main/main_pages.dart";
 import "package:paladinsedge/screens/main/main_pages_stack.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
+import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class Main extends HookConsumerWidget {
   static const routeName = "main";
@@ -30,6 +31,23 @@ class Main extends HookConsumerWidget {
     final appStateProvider = ref.read(providers.appState);
     final bottomTabIndex = ref.watch(
       providers.appState.select((_) => _.bottomTabIndex),
+    );
+    final user = ref.watch(providers.auth.select((_) => _.user));
+    final player = ref.watch(providers.auth.select((_) => _.player));
+
+    // Effects
+    useEffect(
+      () {
+        // if user is logged in but no player is connected, then show player modal
+        if (user != null && player == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            widgets.showConnectPlayerModal(context);
+          });
+        }
+
+        return null;
+      },
+      [user, player],
     );
 
     // Methods

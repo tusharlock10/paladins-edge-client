@@ -53,18 +53,18 @@ class _LoginModal extends HookConsumerWidget {
     final isLoggingIn = useState(false);
 
     // Methods
-    final goBack = useCallback(
+    final onLoginSuccess = useCallback(
       () {
         utilities.Navigation.pop(context);
       },
       [],
     );
 
-    final onGoogleSignInFail = useCallback(
-      (String error, int errorCode) {
+    final onLoginFail = useCallback(
+      (String? error, int? errorCode) {
         showToast(
           context: context,
-          text: error,
+          text: error ?? "Unable to login",
           type: ToastType.error,
           errorCode: errorCode,
         );
@@ -79,18 +79,15 @@ class _LoginModal extends HookConsumerWidget {
         }
 
         isLoggingIn.value = true;
-
         final response = await authProvider.signInWithGoogle();
+        isLoggingIn.value = false;
         if (response.result) {
-          goBack();
+          onLoginSuccess();
         } else {
-          isLoggingIn.value = false;
-          if (response.errorCode == null && response.errorMessage == null) {
-            onGoogleSignInFail(response.errorMessage!, response.errorCode!);
-          }
+          onLoginFail(response.errorMessage, response.errorCode);
         }
       },
-      [],
+      [isLoggingIn, onLoginSuccess, onLoginFail],
     );
 
     return Column(

@@ -1,9 +1,7 @@
 abstract class LoginCTA {
   static final friendsDrawer =
       """Friends section allows you to view your in-game friend list,
-mark your friends as favorites and
-notifies when you favourite friend comes online
-"""
+mark your friends as favorites"""
           .replaceAll("\n", " ");
 
   static final activeMatchDrawer = """Active Match section allows you to

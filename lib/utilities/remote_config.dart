@@ -7,13 +7,6 @@ abstract class RemoteConfig {
   static FirebaseRemoteConfig? _firebaseRemoteConfig;
 
   /// Getters
-  static bool get enableGuestLogin {
-    const key = constants.RemoteConfigParams.enableGuestLogin;
-    if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);
-
-    return _firebaseRemoteConfig!.getBool(key);
-  }
-
   static bool get paladinsApiUnavailable {
     const key = constants.RemoteConfigParams.paladinsApiUnavailable;
     if (_firebaseRemoteConfig == null) return RemoteConfig.getDefaultValue(key);

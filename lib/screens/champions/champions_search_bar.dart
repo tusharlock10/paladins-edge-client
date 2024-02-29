@@ -203,7 +203,7 @@ class ChampionsSearchBar extends HookConsumerWidget {
         child: TextField(
           focusNode: focusNode,
           controller: textController,
-          maxLength: 16,
+          maxLength: 20,
           enableInteractiveSelection: true,
           style: textStyle?.copyWith(color: Colors.white),
           onChanged: championsProvider.filterChampionsBySearch,

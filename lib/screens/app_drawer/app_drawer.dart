@@ -19,7 +19,7 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final isPlatformSupported = !constants.isWindows;
+    final authProvider = ref.read(providers.auth);
     final appStateProvider = ref.read(providers.appState);
     final playersProvider = ref.read(providers.players);
     final player = ref.watch(providers.auth.select((_) => _.player));
@@ -29,10 +29,14 @@ class AppDrawer extends HookConsumerWidget {
     );
 
     // Variables
+    final isPlatformSupported = !constants.isWindows;
     final themeMode = settings.themeMode;
     final nextThemeMode = settings.cycleThemeMode();
     final themeModeName = constants.themeNames[themeMode];
     final nextThemeModeName = constants.themeNames[nextThemeMode];
+
+    // State
+    final isLoggingIn = useState(false);
 
     // Hooks
     final showPlayerDependentButtons = useMemoized(
@@ -43,7 +47,7 @@ class AppDrawer extends HookConsumerWidget {
         // login on the specific screen
         return player != null || isGuest;
       },
-      [],
+      [player, isGuest],
     );
 
     // Methods
@@ -109,16 +113,13 @@ class AppDrawer extends HookConsumerWidget {
           onActiveMatchHelper();
         }
       },
-      [isGuest],
+      [onActiveMatchHelper, isGuest],
     );
 
     final onFeedback = useCallback(
       () {
-        final routeName = showPlayerDependentButtons
-            ? screens.Feedback.routeName
-            : screens.Feedback.connectProfileRouteName;
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, routeName);
+        utilities.Navigation.navigate(context, screens.Feedback.routeName);
       },
       [showPlayerDependentButtons],
     );
@@ -145,7 +146,7 @@ class AppDrawer extends HookConsumerWidget {
           onGlobalChatHelper();
         }
       },
-      [isGuest],
+      [onGlobalChatHelper, isGuest],
     );
 
     final onSavedMatchesHelper = useCallback(
@@ -170,7 +171,7 @@ class AppDrawer extends HookConsumerWidget {
           onSavedMatchesHelper();
         }
       },
-      [isGuest],
+      [onSavedMatchesHelper, isGuest],
     );
 
     final onLeaderboard = useCallback(
@@ -191,13 +192,10 @@ class AppDrawer extends HookConsumerWidget {
 
     final onFAQ = useCallback(
       () {
-        final routeName = showPlayerDependentButtons
-            ? screens.Faqs.routeName
-            : screens.Faqs.connectProfileRouteName;
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(context, routeName);
+        utilities.Navigation.navigate(context, screens.Faqs.routeName);
       },
-      [showPlayerDependentButtons],
+      [],
     );
 
     final onSettings = useCallback(
@@ -206,6 +204,43 @@ class AppDrawer extends HookConsumerWidget {
         widgets.showSettingsModal(context);
       },
       [],
+    );
+
+    final onLoginSuccess = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
+
+    final onLoginFail = useCallback(
+      (String? error, int? errorCode) {
+        widgets.showToast(
+          context: context,
+          text: error ?? "Unable to login",
+          type: widgets.ToastType.error,
+          errorCode: errorCode,
+        );
+      },
+      [],
+    );
+
+    final onGoogleSignIn = useCallback(
+      () async {
+        if (isLoggingIn.value) {
+          return;
+        }
+
+        isLoggingIn.value = true;
+        final response = await authProvider.signInWithGoogle();
+        isLoggingIn.value = false;
+        if (response.result) {
+          onLoginSuccess();
+        } else {
+          onLoginFail(response.errorMessage, response.errorCode);
+        }
+      },
+      [isLoggingIn, onLoginSuccess, onLoginFail],
     );
 
     return widgets.PopShortcut(
@@ -292,6 +327,12 @@ class AppDrawer extends HookConsumerWidget {
                         subTitle: "Set your preferences",
                         onPressed: onSettings,
                       ),
+                      if (isGuest)
+                        AppDrawerButton(
+                          label: "Login",
+                          subTitle: "To experience all features",
+                          onPressed: onGoogleSignIn,
+                        ),
                     ],
                   ),
                 ),

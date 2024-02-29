@@ -9,18 +9,17 @@ import "package:google_sign_in/google_sign_in.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
-import "package:paladinsedge/dev/index.dart" as dev;
 import "package:paladinsedge/models/index.dart" as models;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
-class _GetFirebaseUserResponse {
-  final UserCredential? firebaseUser;
+class _GetFirebaseAuthResponse {
+  final String? idToken;
   final int? errorCode;
   final String? errorMessage;
 
-  _GetFirebaseUserResponse({
-    this.firebaseUser,
+  _GetFirebaseAuthResponse({
+    this.idToken,
     this.errorCode,
     this.errorMessage,
   });
@@ -130,41 +129,23 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Sign-in the user with his/her `Google` account
   Future<data_classes.SignInProviderResponse> signInWithGoogle() async {
-    final String uid, email, name;
-    if (dev.testUser == null) {
-      final firebaseUserResponse = await _getFirebaseUser();
-      final firebaseUser = firebaseUserResponse.firebaseUser;
+    final firebaseAuthResponse = await _getFirebaseAuthCredentials();
+    final idToken = firebaseAuthResponse.idToken;
 
-      if (firebaseUserResponse.errorCode == 0) {
-        // user has closed the popup window
-        return data_classes.SignInProviderResponse(result: false);
-      }
-
-      if (firebaseUser == null) {
-        return data_classes.SignInProviderResponse(
-          result: false,
-          errorCode: firebaseUserResponse.errorCode,
-          errorMessage: firebaseUserResponse.errorMessage,
-        );
-      }
-      uid = firebaseUser.user!.uid;
-      email = firebaseUser.user!.email!;
-      name = firebaseUser.user!.displayName!;
-    } else {
-      // in development use test user
-      uid = dev.testUser!.uid;
-      email = dev.testUser!.email;
-      name = dev.testUser!.name;
+    if (firebaseAuthResponse.errorCode == 0) {
+      // user has closed the popup window
+      return data_classes.SignInProviderResponse(result: false);
     }
 
-    final verification = utilities.RSACrypto.encryptRSA("$name$email$uid");
+    if (idToken == null) {
+      return data_classes.SignInProviderResponse(
+        result: false,
+        errorCode: firebaseAuthResponse.errorCode,
+        errorMessage: firebaseAuthResponse.errorMessage,
+      );
+    }
 
-    final response = await api.AuthRequests.login(
-      uid: uid,
-      email: email,
-      name: name,
-      verification: verification,
-    );
+    final response = await api.AuthRequests.login(idToken: idToken);
 
     if (response == null) {
       return data_classes.SignInProviderResponse(
@@ -180,15 +161,15 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
+    isGuest = false;
     if (player != null) utilities.Global.isPlayerConnected = true;
-    _recordLoginAnalytics();
 
+    _recordLoginAnalytics();
     // upon successful login, send FCM token and deviceDetail to server
     _sendDeviceDetail();
     // save response in local db
     _saveResponse(response);
 
-    isGuest = false;
     notifyListeners();
 
     return data_classes.SignInProviderResponse(result: true);
@@ -211,17 +192,17 @@ class _AuthNotifier extends ChangeNotifier {
     // 3) remove user, player, token from provider
     // 4) Clear user's storage
 
-    try {
-      await GoogleSignIn().signOut();
-    } catch (_) {
-      return false;
-    }
-
-    if (!isGuest) {
-      final result = await api.AuthRequests.logout();
-      if (!result) {
+    if (!constants.isWindows) {
+      try {
+        await GoogleSignIn().signOut();
+      } catch (_) {
         return false;
       }
+    }
+
+    if (!isGuest && !constants.isWindows) {
+      final result = await api.AuthRequests.logout();
+      if (!result) return false;
       utilities.Analytics.logEvent(constants.AnalyticsEvent.userLogout);
     } else {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.guestLogin);
@@ -240,50 +221,29 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = null;
     utilities.Global.isAuthenticated = false;
+    isGuest = true;
+    if (player != null) utilities.Global.isPlayerConnected = false;
+
+    notifyListeners();
 
     return true;
   }
 
-  Future<bool?> checkPlayerClaimed(
-    String playerId,
-  ) async {
-    final response = await api.AuthRequests.checkPlayerClaimed(
-      playerId: playerId,
-    );
+  /// Connect a player profile to the user
+  Future<api.ConnectPlayerResponse?> connectPlayer(String playerId) async {
+    final response = await api.AuthRequests.connectPlayer(playerId: playerId);
+    if (response == null) return null;
 
-    return response?.exists;
-  }
+    player = response.player;
+    user = response.user;
 
-  /// Claim a player profile and connect it to the user
-  Future<api.ClaimPlayerResponse?> claimPlayer(
-    String otp,
-    String playerId,
-  ) async {
-    // Sends an otp and playerId to server to check
-    // if a loadout exists with that OTP
-    // if it does, then player is verified
+    utilities.Database.saveUser(response.user);
+    utilities.Database.savePlayer(player!);
 
-    final verification = utilities.RSACrypto.encryptRSA(otp);
+    utilities.Global.isPlayerConnected = true;
+    utilities.Analytics.logEvent(constants.AnalyticsEvent.connectPlayer);
 
-    final response = await api.AuthRequests.claimPlayer(
-      verification: verification,
-      playerId: playerId,
-    );
-
-    if (response != null && response.verified) {
-      // if verified, then save the user and player in the provider
-
-      user = response.user;
-      player = response.player;
-      if (user != null) utilities.Database.saveUser(user!);
-      if (player != null) {
-        utilities.Database.savePlayer(player!);
-        utilities.Global.isPlayerConnected = true;
-        utilities.Analytics.logEvent(constants.AnalyticsEvent.claimProfile);
-      }
-
-      notifyListeners();
-    }
+    notifyListeners();
 
     return response;
   }
@@ -468,26 +428,26 @@ class _AuthNotifier extends ChangeNotifier {
     user = null;
   }
 
-  Future<_GetFirebaseUserResponse> _getFirebaseUser() async {
+  Future<_GetFirebaseAuthResponse> _getFirebaseAuthCredentials() async {
     final GoogleSignInAccount? googleUser;
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (error) {
       if (error is PlatformException) {
-        return _GetFirebaseUserResponse(
+        return _GetFirebaseAuthResponse(
           errorCode: 0,
           errorMessage: error.toString(),
         );
       }
 
-      return _GetFirebaseUserResponse(
+      return _GetFirebaseAuthResponse(
         errorCode: 1,
         errorMessage: error.toString(),
       );
     }
 
     if (googleUser == null) {
-      return _GetFirebaseUserResponse(
+      return _GetFirebaseAuthResponse(
         errorCode: 2,
         errorMessage: "User not found for this Google Account",
       );
@@ -497,7 +457,7 @@ class _AuthNotifier extends ChangeNotifier {
     try {
       googleAuth = await googleUser.authentication;
     } catch (error) {
-      return _GetFirebaseUserResponse(
+      return _GetFirebaseAuthResponse(
         errorCode: 3,
         errorMessage: error.toString(),
       );
@@ -508,19 +468,21 @@ class _AuthNotifier extends ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    final firebaseUser =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+    final firebaseUser = await FirebaseAuth.instance.signInWithCredential(
+      credential,
+    );
 
     if (firebaseUser.user == null ||
         firebaseUser.user?.email == null ||
         firebaseUser.user?.displayName == null) {
-      return _GetFirebaseUserResponse(
+      return _GetFirebaseAuthResponse(
         errorCode: 4,
         errorMessage: "User not found for this Google Account",
       );
     }
+    final idToken = await firebaseUser.user!.getIdToken();
 
-    return _GetFirebaseUserResponse(firebaseUser: firebaseUser);
+    return _GetFirebaseAuthResponse(idToken: idToken);
   }
 
   /// Send device details to server
