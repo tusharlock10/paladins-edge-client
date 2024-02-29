@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
+import "package:paladinsedge/widgets/loading_indicator.dart";
 
 enum ButtonStyle {
   solid,
@@ -12,6 +13,8 @@ class Button extends StatelessWidget {
   final bool disabled;
   final MaterialColor color;
   final ButtonStyle style;
+  final double width;
+  final bool isLoading;
   final Color? backgroundColor;
   final IconData? leading;
   final IconData? trailing;
@@ -24,6 +27,8 @@ class Button extends StatelessWidget {
     this.disabled = false,
     this.color = theme.themeMaterialColor,
     this.style = ButtonStyle.solid,
+    this.width = 128,
+    this.isLoading = false,
     this.backgroundColor,
     this.leading,
     this.trailing,
@@ -39,22 +44,23 @@ class Button extends StatelessWidget {
     final color1 = isLightTheme ? color.shade50 : color.shade700;
     final color2 = isLightTheme ? color.shade700 : color.shade50;
     final outlinedColor = isLightTheme ? color2 : color1;
+    final isDisabled = disabled || isLoading;
 
     return style == ButtonStyle.outlined
         ? SizedBox(
             height: 36,
-            width: 128,
+            width: width,
             child: TextButton(
               style: TextButton.styleFrom(
                 backgroundColor: backgroundColor,
-                elevation: disabled ? 0 : elevation,
+                elevation: isDisabled ? 0 : elevation,
                 shape: const StadiumBorder(),
                 side: BorderSide(
                   color: outlinedColor,
                   width: 1,
                 ),
               ),
-              onPressed: disabled ? null : onPressed,
+              onPressed: isDisabled ? null : onPressed,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -71,7 +77,7 @@ class Button extends StatelessWidget {
                     label,
                     style: TextStyle(
                       fontSize: 14,
-                      color: disabled ? null : outlinedColor,
+                      color: isDisabled ? null : outlinedColor,
                     ).merge(labelStyle),
                   ),
                   if (trailing != null)
@@ -80,7 +86,7 @@ class Button extends StatelessWidget {
                       child: Icon(
                         trailing,
                         size: 14,
-                        color: disabled ? null : outlinedColor,
+                        color: isDisabled ? null : outlinedColor,
                       ),
                     ),
                 ],
@@ -89,18 +95,26 @@ class Button extends StatelessWidget {
           )
         : SizedBox(
             height: 36,
-            width: 128,
+            width: width,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: color1,
-                elevation: disabled ? 0 : elevation,
+                elevation: isDisabled ? 0 : elevation,
                 shape: const StadiumBorder(),
               ),
-              onPressed: disabled ? null : onPressed,
+              onPressed: isDisabled ? null : onPressed,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (leading != null)
+                  if (isLoading)
+                    const Padding(
+                      padding: EdgeInsets.only(right: 7.5),
+                      child: LoadingIndicator(
+                        size: 14,
+                        lineWidth: 1.5,
+                      ),
+                    ),
+                  if (leading != null && !isLoading)
                     Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Icon(
@@ -113,16 +127,16 @@ class Button extends StatelessWidget {
                     label,
                     style: TextStyle(
                       fontSize: 14,
-                      color: disabled ? null : color2,
+                      color: isDisabled ? null : color2,
                     ).merge(labelStyle),
                   ),
-                  if (trailing != null)
+                  if (trailing != null && !isLoading)
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Icon(
                         trailing,
                         size: 14,
-                        color: disabled ? null : color2,
+                        color: isDisabled ? null : color2,
                       ),
                     ),
                 ],

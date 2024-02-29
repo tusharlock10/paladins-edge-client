@@ -161,14 +161,15 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
+    isGuest = false;
     if (player != null) utilities.Global.isPlayerConnected = true;
+
     _recordLoginAnalytics();
     // upon successful login, send FCM token and deviceDetail to server
     _sendDeviceDetail();
     // save response in local db
     _saveResponse(response);
 
-    isGuest = false;
     notifyListeners();
 
     return data_classes.SignInProviderResponse(result: true);
@@ -220,6 +221,10 @@ class _AuthNotifier extends ChangeNotifier {
 
     utilities.api.options.headers["authorization"] = null;
     utilities.Global.isAuthenticated = false;
+    isGuest = true;
+    if (player != null) utilities.Global.isPlayerConnected = false;
+
+    notifyListeners();
 
     return true;
   }

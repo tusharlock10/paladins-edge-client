@@ -33,7 +33,6 @@ abstract class Navigation {
   /// Sanitized routePath by adding / in front
   /// eg. `friends => /friends`
   /// eg. `/ => /`
-  /// eg. `/login => /login`
   static String sanitizeRoutePath(String routePath) =>
       routePath[0] == "/" ? routePath : "/$routePath";
 
@@ -41,5 +40,4 @@ abstract class Navigation {
   /// user lands on a protected route
   static String? protectedRouteRedirect(BuildContext _, GoRouterState state) =>
       Global.isAuthenticated ? null : screens.Main.routePath;
-  // TODO: also open the login modal
 }

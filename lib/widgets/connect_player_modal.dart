@@ -60,10 +60,23 @@ class _ConnectPlayerHeader extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Hi, $firstName",
-            style: textTheme.bodyLarge?.copyWith(fontSize: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Hi, $firstName",
+                style: textTheme.displayLarge?.copyWith(fontSize: 18),
+              ),
+              Text(
+                "required",
+                style: textTheme.bodyLarge?.copyWith(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
           ),
+          const SizedBox(height: 10),
           Text(
             "Link Paladins Edge to your profile, search your name and tap to connect",
             style: textTheme.bodyLarge?.copyWith(fontSize: 14),
@@ -231,13 +244,23 @@ class _ConnectPlayerList extends HookConsumerWidget {
       [selectedPlayer],
     );
 
+    final onConnected = useCallback(
+      () {
+        utilities.Navigation.pop(context);
+      },
+      [],
+    );
+
     final onConnect = useCallback(
       () async {
         if (selectedPlayer.value == null) return;
 
         isConnecting.value = true;
-        await authProvider.connectPlayer(selectedPlayer.value!.playerId);
+        final response = await authProvider.connectPlayer(
+          selectedPlayer.value!.playerId,
+        );
         isConnecting.value = false;
+        if (response != null) onConnected();
       },
       [selectedPlayer, isConnecting],
     );
@@ -281,9 +304,10 @@ class _ConnectPlayerList extends HookConsumerWidget {
                         ),
                         const SizedBox(width: 10),
                         widgets.Button(
-                          label: "Connect",
+                          label: isConnecting.value ? "Connecting" : "Connect",
+                          width: isConnecting.value ? 150 : 132,
                           onPressed: onConnect,
-                          disabled: isConnecting.value,
+                          isLoading: isConnecting.value,
                         ),
                       ],
                     ),
