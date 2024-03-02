@@ -4,8 +4,10 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:package_info_plus/package_info_plus.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
+import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
-import "package:paladinsedge/widgets/index.dart" as widgets;
+import "package:paladinsedge/widgets/debug_alert.dart";
+import "package:paladinsedge/widgets/loading_indicator.dart";
 import "package:pub_semver/pub_semver.dart";
 
 /// Screen initialization widget
@@ -42,6 +44,16 @@ class ScreenInitialization extends HookConsumerWidget {
 
     // Variables
     final textTheme = Theme.of(context).textTheme;
+    final lightTextTheme = theme.lightTheme.textTheme;
+    const loginHelpText = constants.isWeb
+        ? constants.loginHelpTextWeb
+        : constants.loginHelpTextMobile;
+    const loginHelpTitle =
+        "Loading issues on ${constants.isWeb ? 'Web' : 'Mobile'}";
+
+    // Hooks
+    final showLoadingFAQ = useState(false);
+    final showLoadingHelp = useState(false);
 
     // Methods
     final initApp = useCallback(
@@ -69,7 +81,7 @@ class ScreenInitialization extends HookConsumerWidget {
           // if some variables are missing then open up an alert
           // and do not let the app proceed forward
           utilities.postFrameCallback(
-            () => widgets.showDebugAlert(
+            () => showDebugAlert(
               context: context,
               isDismissible: false,
               message: 'Env variable ${missingEnvs.join(", ")} not found',
@@ -101,6 +113,13 @@ class ScreenInitialization extends HookConsumerWidget {
       [],
     );
 
+    final onLoadingHelp = useCallback(
+      () {
+        showLoadingHelp.value = !showLoadingHelp.value;
+      },
+      [showLoadingHelp],
+    );
+
     // Effects
     useEffect(
       () {
@@ -109,6 +128,17 @@ class ScreenInitialization extends HookConsumerWidget {
         return null;
       },
       [isInitialized],
+    );
+
+    useEffect(
+      () {
+        Future.delayed(const Duration(seconds: 7)).then(
+          (value) => showLoadingFAQ.value = true,
+        );
+
+        return null;
+      },
+      [],
     );
 
     return isInitialized && screen != null
@@ -125,46 +155,103 @@ class ScreenInitialization extends HookConsumerWidget {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: isForceUpdatePending
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.spaceBetween,
               children: [
-                isForceUpdatePending
-                    ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Pending update",
-                                style: textTheme.displayLarge?.copyWith(
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                "Unfortunately this new update brings some breaking changes due to which you are required to update",
-                                textAlign: TextAlign.center,
-                                style: textTheme.bodyLarge?.copyWith(
-                                  fontSize: 16,
-                                  color: Colors.white.withOpacity(0.85),
-                                ),
-                              ),
-                            ],
+                if (isForceUpdatePending)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Pending update",
+                            style: textTheme.displayLarge?.copyWith(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
                           ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Unfortunately this new update brings some breaking changes due to which you are required to update",
+                            textAlign: TextAlign.center,
+                            style: textTheme.bodyLarge?.copyWith(
+                              fontSize: 16,
+                              color: Colors.white.withOpacity(0.85),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (!isForceUpdatePending) ...[
+                  const SizedBox(height: 60),
+                  LoadingIndicator(
+                    lineWidth: 2,
+                    size: 28,
+                    color: Colors.white,
+                    label: Text(
+                      "Please Wait",
+                      style: textTheme.bodyLarge?.copyWith(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                  if (showLoadingHelp.value)
+                    Card(
+                      color: Colors.white,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      elevation: 15,
+                      shadowColor:
+                          theme.lightTheme.shadowColor.withOpacity(0.5),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
                         ),
-                      )
-                    : widgets.LoadingIndicator(
-                        lineWidth: 2,
-                        size: 28,
-                        color: Colors.white,
-                        label: Text(
-                          "Please Wait",
-                          style: textTheme.bodyLarge?.copyWith(
-                            fontSize: 16,
-                            color: Colors.white.withOpacity(0.8),
+                        child: Column(
+                          children: [
+                            Text(
+                              loginHelpTitle,
+                              style: lightTextTheme.displayLarge
+                                  ?.copyWith(fontSize: 20),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              loginHelpText,
+                              style: lightTextTheme.bodyLarge
+                                  ?.copyWith(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: GestureDetector(
+                      onTap: showLoadingFAQ.value ? onLoadingHelp : null,
+                      child: SizedBox(
+                        height: 50,
+                        child: Center(
+                          child: AnimatedOpacity(
+                            opacity: showLoadingFAQ.value ? 1 : 0,
+                            duration: const Duration(seconds: 1),
+                            child: Text(
+                              "Stuck on loading?",
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontSize: 16,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ],
               ],
             ),
           );
