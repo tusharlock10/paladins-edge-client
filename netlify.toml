@@ -1,17 +1,27 @@
 [[headers]]
-  for = "/assets/FontManifest.json"
+  for = "/assets/*"
   [headers.values]
   Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[headers]]
-  for = "/assets/AssetManifest.json"
+  for = "/.well-known/*"
   [headers.values]
-  Cache-Control = "public, max-age=86400, must-revalidate"
+  Cache-Control = "public, max-age=86400, immutable"
 
 [[headers]]
-  for = "/assets/paladins-edge.env"
+  for = "/icons/*"
   [headers.values]
-  Cache-Control = "public, max-age=86400, must-revalidate"
+  Cache-Control = "public, max-age=86400, immutable"
+
+[[headers]]
+  for = "/splash/*"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, immutable"
+
+[[headers]]
+  for = "/main.dart.js"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, immutable"
 
 [[headers]]
   for = "/manifest.json"
