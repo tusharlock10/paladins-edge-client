@@ -1,0 +1,19 @@
+[[headers]]
+  for = "/assets/FontManifest.json"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/assets/AssetManifest.json"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/assets/paladins-edge.env"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, must-revalidate"
