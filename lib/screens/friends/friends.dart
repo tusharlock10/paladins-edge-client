@@ -37,12 +37,15 @@ class Friends extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final friendsProvider = ref.read(providers.friends);
-    final userPlayerId =
-        ref.watch(providers.auth.select((_) => _.userPlayer?.playerId));
-    final isLoadingFriends =
-        ref.watch(providers.friends.select((_) => _.isLoadingFriends));
-    final fetchedAllFriends =
-        ref.watch(providers.friends.select((_) => _.fetchedAllFriends));
+    final userPlayerId = ref.watch(
+      providers.auth.select((_) => _.userPlayer?.playerId),
+    );
+    final isLoadingFriends = ref.watch(
+      providers.friends.select((_) => _.isLoadingFriends),
+    );
+    final fetchedAllFriends = ref.watch(
+      providers.friends.select((_) => _.fetchedAllFriends),
+    );
 
     // Variables
     final isOtherPlayer =
@@ -85,11 +88,13 @@ class Friends extends HookConsumerWidget {
         edgeOffset: utilities.getTopEdgeOffset(context),
         child: CustomScrollView(
           slivers: [
-            FriendsAppBar(
-              isOtherPlayer: isOtherPlayer,
-              onRefresh: onRefresh,
-              isRefreshing: isRefreshing.value,
-            ),
+            if (playerId != null)
+              FriendsAppBar(
+                isOtherPlayer: isOtherPlayer,
+                onRefresh: onRefresh,
+                isRefreshing: isRefreshing.value,
+                playerId: playerId,
+              ),
             isLoadingFriends
                 ? SliverList(
                     delegate: SliverChildListDelegate.fixed(

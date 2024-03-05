@@ -132,6 +132,8 @@ class _AuthNotifier extends ChangeNotifier {
     final firebaseAuthResponse = await _getFirebaseAuthCredentials();
     final idToken = firebaseAuthResponse.idToken;
 
+    print("ID TOKEN : $idToken");
+
     if (firebaseAuthResponse.errorCode == 0) {
       // user has closed the popup window
       return data_classes.SignInProviderResponse(result: false);
@@ -212,9 +214,8 @@ class _AuthNotifier extends ChangeNotifier {
     clearData();
     ref.read(providers.champions).clearData();
     ref.read(providers.loadout).clearData();
-    ref.read(providers.matches).clearData();
-    ref.read(providers.players).clearData();
     ref.read(providers.appState).clearData();
+    ref.read(providers.search).clearData();
 
     // clear values from the database and utilities
     utilities.Database.clear();
@@ -311,7 +312,7 @@ class _AuthNotifier extends ChangeNotifier {
       (_) => _.match.matchId == matchId,
     );
     if (combinedMatch == null) {
-      final matchDetails = ref.read(providers.matches).matchDetails;
+      final matchDetails = ref.read(providers.matches(matchId)).matchDetails;
       if (matchDetails != null && matchDetails.match.matchId == matchId) {
         combinedMatch = data_classes.CombinedMatch(
           match: matchDetails.match,
@@ -433,6 +434,7 @@ class _AuthNotifier extends ChangeNotifier {
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (error) {
+      print("Error 1 :: ${error.toString()}");
       if (error is PlatformException) {
         return _GetFirebaseAuthResponse(
           errorCode: 0,
@@ -457,6 +459,7 @@ class _AuthNotifier extends ChangeNotifier {
     try {
       googleAuth = await googleUser.authentication;
     } catch (error) {
+      print("Error 2 :: $error");
       return _GetFirebaseAuthResponse(
         errorCode: 3,
         errorMessage: error.toString(),

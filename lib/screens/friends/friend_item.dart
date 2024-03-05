@@ -98,7 +98,7 @@ class FriendItem extends HookConsumerWidget {
 
     final onPressFriendName = useCallback(
       () {
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {

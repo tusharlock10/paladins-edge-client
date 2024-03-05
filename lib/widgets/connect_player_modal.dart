@@ -91,9 +91,10 @@ class _ConnectPlayerSearch extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
-    final lowerSearchList =
-        ref.watch(providers.players.select((_) => _.lowerSearchList));
+    final searchProvider = ref.read(providers.search);
+    final lowerSearchList = ref.watch(
+      providers.search.select((_) => _.lowerSearchList),
+    );
 
     // Variables
     final isLightTheme = Theme.of(context).brightness == Brightness.light;
@@ -128,7 +129,7 @@ class _ConnectPlayerSearch extends HookConsumerWidget {
     final onClear = useCallback(
       () {
         textController.clear();
-        playersProvider.clearSearchList();
+        searchProvider.clearSearchList();
       },
       [],
     );
@@ -145,7 +146,7 @@ class _ConnectPlayerSearch extends HookConsumerWidget {
 
         isLoading.value = true;
 
-        await playersProvider.searchByName(
+        await searchProvider.searchByName(
           playerName: playerName,
           simpleResults: true,
           addInSearchHistory: false,
@@ -216,7 +217,7 @@ class _ConnectPlayerList extends HookConsumerWidget {
     // Providers
     final authProvider = ref.read(providers.auth);
     final lowerSearchList = ref.watch(
-      providers.players.select((_) => _.lowerSearchList),
+      providers.search.select((_) => _.lowerSearchList),
     );
 
     // Variables

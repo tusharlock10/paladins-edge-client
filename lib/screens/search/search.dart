@@ -16,11 +16,13 @@ class Search extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
-    final topSearchList =
-        ref.watch(providers.players.select((_) => _.topSearchList));
-    final lowerSearchList =
-        ref.watch(providers.players.select((_) => _.lowerSearchList));
+    final searchProvider = ref.read(providers.search);
+    final topSearchList = ref.watch(
+      providers.search.select((_) => _.topSearchList),
+    );
+    final lowerSearchList = ref.watch(
+      providers.search.select((_) => _.lowerSearchList),
+    );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
 
     // State
@@ -70,7 +72,7 @@ class Search extends HookConsumerWidget {
 
         isLoading.value = true;
 
-        final response = await playersProvider.searchByName(
+        final response = await searchProvider.searchByName(
           playerName: playerName,
           simpleResults: false,
           addInSearchHistory: addInSearchHistory && !isGuest,
@@ -90,7 +92,7 @@ class Search extends HookConsumerWidget {
     useEffect(
       () {
         if (!isGuest) {
-          playersProvider.loadSearchHistory();
+          searchProvider.loadSearchHistory();
         }
 
         return null;

@@ -8,8 +8,9 @@ class SearchTopList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchProvider = ref.watch(providers.players);
-    final topSearchList = searchProvider.topSearchList;
+    final topSearchList = ref.watch(
+      providers.search.select((_) => _.topSearchList),
+    );
     final childCount = topSearchList.length;
 
     return SliverPadding(

@@ -8,19 +8,22 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailMatches extends HookConsumerWidget {
-  const PlayerDetailMatches({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailMatches({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final isPlayerMatchesLoading = ref.watch(
-      providers.matches.select((_) => _.isPlayerMatchesLoading),
-    );
-    final combinedMatchesPlayerId = ref.watch(
-      providers.matches.select((_) => _.combinedMatchesPlayerId),
+      playerNotifier.select((_) => _.isPlayerMatchesLoading),
     );
     final combinedMatches = ref.watch(
-      providers.matches.select((_) => _.combinedMatches),
+      playerNotifier.select((_) => _.combinedMatches),
     );
     final champions = ref.read(providers.champions).champions;
 
@@ -77,9 +80,7 @@ class PlayerDetailMatches extends HookConsumerWidget {
               final combinedMatch = filteredCombinedMatches.elementAt(index);
               final match = combinedMatch.match;
               final matchPlayer = combinedMatch.matchPlayers.firstOrNullWhere(
-                (_) =>
-                    _.matchId == match.matchId &&
-                    _.playerId == combinedMatchesPlayerId,
+                (_) => _.matchId == match.matchId && _.playerId == playerId,
               );
               final champion = champions.firstOrNullWhere(
                 (_) => _.championId == matchPlayer?.championId,

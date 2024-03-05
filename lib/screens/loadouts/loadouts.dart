@@ -35,18 +35,19 @@ class Loadouts extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final loadoutProvider = ref.read(providers.loadout);
     final championsProvider = ref.read(providers.champions);
-    final playersProvider = ref.read(providers.players);
+    final playerProvider = ref.read(playerNotifier);
     final userPlayerId = ref.read(providers.auth).userPlayer?.playerId;
     final champions = ref.read(providers.champions).champions;
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final loadouts = ref.watch(providers.loadout.select((_) => _.loadouts));
     final isGettingLoadouts = ref.watch(
       providers.loadout.select((_) => _.isGettingLoadouts),
     );
     final isLoadingPlayerData = ref.watch(
-      providers.players.select((_) => _.isLoadingPlayerData),
+      playerNotifier.select((_) => _.isLoadingPlayerData),
     );
     final isLoadingCombinedChampions = ref.watch(
       providers.champions.select((_) => _.isLoadingCombinedChampions),
@@ -93,12 +94,7 @@ class Loadouts extends HookConsumerWidget {
       () {
         // check if player exists,
         // if not, then get player
-        if (player == null) {
-          playersProvider.getPlayerData(
-            playerId: playerId,
-            forceUpdate: false,
-          );
-        }
+        if (player == null) playerProvider.getPlayerData(forceUpdate: false);
 
         return;
       },

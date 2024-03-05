@@ -8,24 +8,30 @@ class FriendsAppBar extends ConsumerWidget {
   final bool isOtherPlayer;
   final RefreshCallback onRefresh;
   final bool isRefreshing;
+  final String playerId;
 
   const FriendsAppBar({
     required this.isOtherPlayer,
     required this.onRefresh,
     required this.isRefreshing,
+    required this.playerId,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final otherPlayerFriends =
-        ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
-    final isLoadingFriends =
-        ref.watch(providers.friends.select((_) => _.isLoadingFriends));
-    final otherPlayer =
-        ref.watch(providers.players.select((_) => _.playerData));
+    final otherPlayerFriends = ref.watch(
+      providers.friends.select((_) => _.otherPlayerFriends),
+    );
+    final isLoadingFriends = ref.watch(
+      providers.friends.select((_) => _.isLoadingFriends),
+    );
+    final otherPlayer = ref.watch(
+      playerNotifier.select((_) => _.playerData),
+    );
 
     // Variables
     final data = isOtherPlayer ? otherPlayerFriends : friends;

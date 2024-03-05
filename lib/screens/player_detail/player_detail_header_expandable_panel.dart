@@ -13,16 +13,22 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class _RecentMatchesBar extends HookConsumerWidget {
-  const _RecentMatchesBar({Key? key}) : super(key: key);
+  final String playerId;
+
+  const _RecentMatchesBar({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final combinedMatches = ref.watch(
-      providers.matches.select((_) => _.combinedMatches),
+      playerNotifier.select((_) => _.combinedMatches),
     );
     final playerInferred = ref.watch(
-      providers.players.select((_) => _.playerInferred),
+      playerNotifier.select((_) => _.playerInferred),
     );
 
     // Hooks
@@ -214,7 +220,7 @@ class _RecentPartyMemberCard extends HookWidget {
     // Methods
     final onTap = useCallback(
       () {
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {
@@ -631,16 +637,22 @@ class _PlayerStatsCard extends StatelessWidget {
 }
 
 class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
-  const PlayerDetailHeaderExpandablePanel({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailHeaderExpandablePanel({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final player = ref.watch(
-      providers.players.select((_) => _.playerData),
+      playerNotifier.select((_) => _.playerData),
     );
     final playerInferred = ref.watch(
-      providers.players.select((_) => _.playerInferred),
+      playerNotifier.select((_) => _.playerInferred),
     );
     final champions = ref.watch(
       providers.champions.select((_) => _.champions),
@@ -692,7 +704,7 @@ class PlayerDetailHeaderExpandablePanel extends HookConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
-        const _RecentMatchesBar(),
+        _RecentMatchesBar(playerId: playerId),
         const SizedBox(height: 20),
         Text(
           "MORE PLAYER INFO",

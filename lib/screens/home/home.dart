@@ -17,7 +17,7 @@ class Home extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
     final queueProvider = ref.read(providers.queue);
-    final matchesProvider = ref.read(providers.matches);
+    final topMatchesProvider = ref.read(providers.topMatches);
     final friendsProvider = ref.read(providers.friends);
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
@@ -31,7 +31,7 @@ class Home extends HookConsumerWidget {
     useEffect(
       () {
         queueProvider.getQueueTimeline(false);
-        matchesProvider.loadTopMatches(false);
+        topMatchesProvider.loadTopMatches(false);
 
         return;
       },
@@ -44,7 +44,7 @@ class Home extends HookConsumerWidget {
         isRefreshing.value = true;
         await Future.wait([
           queueProvider.getQueueTimeline(true),
-          matchesProvider.loadTopMatches(true),
+          topMatchesProvider.loadTopMatches(true),
           if (favouriteFriends != null)
             friendsProvider.getFavouriteFriends(true),
         ]);

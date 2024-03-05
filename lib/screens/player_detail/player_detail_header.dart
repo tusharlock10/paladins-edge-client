@@ -13,18 +13,21 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailHeader extends HookConsumerWidget {
-  const PlayerDetailHeader({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailHeader({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final baseRanks = ref.watch(providers.baseRanks).baseRanks;
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final playerInferred = ref.watch(
-      providers.players.select((_) => _.playerInferred),
-    );
-    final playerId = ref.watch(
-      providers.players.select((_) => _.playerData?.playerId),
+      playerNotifier.select((_) => _.playerInferred),
     );
 
     // Variables
@@ -107,7 +110,9 @@ class PlayerDetailHeader extends HookConsumerWidget {
                                             ),
                                           ],
                                         ),
-                                        const PlayerDetailStatusIndicator(),
+                                        PlayerDetailStatusIndicator(
+                                          playerId: playerId,
+                                        ),
                                         if (isSamePlayerInferred)
                                           AnimatedRotation(
                                             duration: const Duration(
@@ -134,7 +139,9 @@ class PlayerDetailHeader extends HookConsumerWidget {
                         ExpandablePanel(
                           controller: expandedController,
                           collapsed: const SizedBox(),
-                          expanded: const PlayerDetailHeaderExpandablePanel(),
+                          expanded: PlayerDetailHeaderExpandablePanel(
+                            playerId: playerId,
+                          ),
                         ),
                     ],
                   ),
