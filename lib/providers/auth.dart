@@ -37,7 +37,7 @@ class _AuthNotifier extends ChangeNotifier {
   bool isGuest = true;
   String? token;
   models.User? user;
-  models.Player? player;
+  models.Player? userPlayer;
   List<models.FAQ>? faqs;
   List<models.Sponsor>? sponsors;
   List<data_classes.CombinedMatch>? savedMatches;
@@ -109,9 +109,9 @@ class _AuthNotifier extends ChangeNotifier {
   bool checkLogin() {
     token = utilities.Database.getToken();
     user = utilities.Database.getUser();
-    player = utilities.Database.getPlayer();
+    userPlayer = utilities.Database.getPlayer();
 
-    utilities.Global.isPlayerConnected = player != null;
+    utilities.Global.isPlayerConnected = userPlayer != null;
 
     if (token != null) {
       isGuest = false;
@@ -157,12 +157,12 @@ class _AuthNotifier extends ChangeNotifier {
 
     user = response.user;
     token = response.token;
-    player = response.player;
+    userPlayer = response.player;
 
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
     isGuest = false;
-    if (player != null) utilities.Global.isPlayerConnected = true;
+    if (userPlayer != null) utilities.Global.isPlayerConnected = true;
 
     _recordLoginAnalytics();
     // upon successful login, send FCM token and deviceDetail to server
@@ -222,7 +222,7 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.api.options.headers["authorization"] = null;
     utilities.Global.isAuthenticated = false;
     isGuest = true;
-    if (player != null) utilities.Global.isPlayerConnected = false;
+    if (userPlayer != null) utilities.Global.isPlayerConnected = false;
 
     notifyListeners();
 
@@ -234,11 +234,11 @@ class _AuthNotifier extends ChangeNotifier {
     final response = await api.AuthRequests.connectPlayer(playerId: playerId);
     if (response == null) return null;
 
-    player = response.player;
     user = response.user;
+    userPlayer = response.player;
 
     utilities.Database.saveUser(response.user);
-    utilities.Database.savePlayer(player!);
+    utilities.Database.savePlayer(userPlayer!);
 
     utilities.Global.isPlayerConnected = true;
     utilities.Analytics.logEvent(constants.AnalyticsEvent.connectPlayer);
@@ -422,7 +422,7 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   void clearData() {
-    player = null;
+    userPlayer = null;
     token = null;
     isGuest = false;
     user = null;
@@ -503,7 +503,7 @@ class _AuthNotifier extends ChangeNotifier {
       );
     }
     if (user != null) utilities.Analytics.setUserId(user!.uid);
-    if (player != null) {
+    if (userPlayer != null) {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.existingUserLogin);
     } else {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.newUserLogin);

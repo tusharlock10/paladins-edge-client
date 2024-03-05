@@ -33,13 +33,13 @@ class Main extends HookConsumerWidget {
       providers.appState.select((_) => _.bottomTabIndex),
     );
     final user = ref.watch(providers.auth.select((_) => _.user));
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final userPlayer = ref.watch(providers.auth.select((_) => _.userPlayer));
 
     // Effects
     useEffect(
       () {
         // if user is logged in but no player is connected, then show player modal
-        if (user != null && player == null) {
+        if (user != null && userPlayer == null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             widgets.showConnectPlayerModal(context);
           });
@@ -47,7 +47,7 @@ class Main extends HookConsumerWidget {
 
         return null;
       },
-      [user, player],
+      [user, userPlayer],
     );
 
     // Methods

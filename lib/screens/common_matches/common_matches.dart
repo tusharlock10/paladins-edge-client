@@ -34,7 +34,7 @@ class CommonMatches extends HookConsumerWidget {
     // Providers
     final matchesProvider = ref.read(providers.matches);
     final userPlayerId = ref.watch(
-      providers.auth.select((_) => _.player?.playerId),
+      providers.auth.select((_) => _.userPlayer?.playerId),
     );
     final isCommonMatchesLoading = ref.watch(
       providers.matches.select((_) => _.isCommonMatchesLoading),

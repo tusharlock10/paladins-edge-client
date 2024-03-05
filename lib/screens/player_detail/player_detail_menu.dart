@@ -20,7 +20,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
     // Providers
     final playersProvider = ref.read(providers.players);
     final matchesProvider = ref.read(providers.matches);
-    final userPlayer = ref.watch(providers.auth.select((_) => _.player));
+    final userPlayer = ref.watch(providers.auth.select((_) => _.userPlayer));
     final selectedFilter = ref.watch(
       providers.matches.select((_) => _.selectedFilter),
     );

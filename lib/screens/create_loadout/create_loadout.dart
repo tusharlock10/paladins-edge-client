@@ -38,7 +38,7 @@ class CreateLoadout extends HookConsumerWidget {
       providers.loadout.select((_) => _.draftLoadout),
     );
     final playerId = ref.watch(
-      providers.auth.select((_) => _.player?.playerId),
+      providers.auth.select((_) => _.userPlayer?.playerId),
     );
     final isSavingLoadout = ref.watch(
       providers.loadout.select((_) => _.isSavingLoadout),

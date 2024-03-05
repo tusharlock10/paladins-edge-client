@@ -23,9 +23,13 @@ class _FriendsNotifier extends ChangeNotifier {
   _FriendsNotifier({required this.ref});
 
   Future<void> getUserFriends([bool forceUpdate = false]) async {
-    final playerId = ref.read(auth_provider.auth).player?.playerId;
-    final favouriteFriends =
-        ref.read(auth_provider.auth).user?.favouriteFriends;
+    final playerId = ref.read(auth_provider.auth).userPlayer?.playerId;
+    final favouriteFriends = ref
+        .read(
+          auth_provider.auth,
+        )
+        .user
+        ?.favouriteFriends;
     if (playerId == null) return;
 
     if (!forceUpdate) {

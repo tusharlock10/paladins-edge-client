@@ -22,7 +22,7 @@ class AppDrawer extends HookConsumerWidget {
     final authProvider = ref.read(providers.auth);
     final appStateProvider = ref.read(providers.appState);
     final playersProvider = ref.read(providers.players);
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final player = ref.watch(providers.auth.select((_) => _.userPlayer));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final settings = ref.watch(
       providers.appState.select((_) => _.settings),

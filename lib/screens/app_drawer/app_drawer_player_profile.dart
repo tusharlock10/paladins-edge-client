@@ -15,7 +15,7 @@ class AppDrawerPlayerProfile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final baseRanks = ref.watch(providers.baseRanks).baseRanks;
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final player = ref.watch(providers.auth.select((_) => _.userPlayer));
 
     // Variables
     final textTheme = Theme.of(context).textTheme;

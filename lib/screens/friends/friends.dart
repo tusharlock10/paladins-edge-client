@@ -38,7 +38,7 @@ class Friends extends HookConsumerWidget {
     // Providers
     final friendsProvider = ref.read(providers.friends);
     final userPlayerId =
-        ref.watch(providers.auth.select((_) => _.player?.playerId));
+        ref.watch(providers.auth.select((_) => _.userPlayer?.playerId));
     final isLoadingFriends =
         ref.watch(providers.friends.select((_) => _.isLoadingFriends));
     final fetchedAllFriends =
