@@ -132,8 +132,6 @@ class _AuthNotifier extends ChangeNotifier {
     final firebaseAuthResponse = await _getFirebaseAuthCredentials();
     final idToken = firebaseAuthResponse.idToken;
 
-    print("ID TOKEN : $idToken");
-
     if (firebaseAuthResponse.errorCode == 0) {
       // user has closed the popup window
       return data_classes.SignInProviderResponse(result: false);
@@ -430,11 +428,15 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   Future<_GetFirebaseAuthResponse> _getFirebaseAuthCredentials() async {
+    // NOTE: for development login in windows
+    if (constants.isWindows && constants.AppType.isDev) {
+      return _GetFirebaseAuthResponse(idToken: "testUser");
+    }
+
     final GoogleSignInAccount? googleUser;
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (error) {
-      print("Error 1 :: ${error.toString()}");
       if (error is PlatformException) {
         return _GetFirebaseAuthResponse(
           errorCode: 0,
@@ -459,7 +461,6 @@ class _AuthNotifier extends ChangeNotifier {
     try {
       googleAuth = await googleUser.authentication;
     } catch (error) {
-      print("Error 2 :: $error");
       return _GetFirebaseAuthResponse(
         errorCode: 3,
         errorMessage: error.toString(),

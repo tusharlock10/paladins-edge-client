@@ -44,4 +44,7 @@ abstract class AppType {
 
     return developmentShort;
   }
+
+  static bool get isProd => Env.appType == production;
+  static bool get isDev => Env.appType == development;
 }
