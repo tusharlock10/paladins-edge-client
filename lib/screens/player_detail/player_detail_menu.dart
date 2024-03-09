@@ -186,6 +186,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           child: Center(
             child: widgets.Button(
               label: "Active Match",
+              labelStyle: const TextStyle(fontSize: 13),
               disabled: !(playerStatus?.inMatch ?? false),
               elevation: 4,
               onPressed: onPressActiveMatch,
