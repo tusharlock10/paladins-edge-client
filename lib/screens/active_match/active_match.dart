@@ -39,19 +39,21 @@ class ActiveMatch extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
     final championsProvider = ref.read(providers.champions);
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final userPlayer = ref.watch(providers.auth.select((_) => _.userPlayer));
+    final playerStatusPlayerId = playerId ?? userPlayer?.playerId;
+
+    final playerNotifier = providers.players(playerStatusPlayerId!);
+    final playerProvider = ref.read(playerNotifier);
     final isLoadingPlayerStatus = ref.watch(
-      providers.players.select((_) => _.isLoadingPlayerStatus),
+      playerNotifier.select((_) => _.isLoadingPlayerStatus),
     );
     final playerStatus = ref.watch(
-      providers.players.select((_) => _.playerStatus),
+      playerNotifier.select((_) => _.playerStatus),
     );
 
     // Variables
-    final playerStatusPlayerId = playerId ?? player?.playerId;
-    final isUserPlayer = player?.playerId == playerStatusPlayerId;
+    final isUserPlayer = userPlayer?.playerId == playerStatusPlayerId;
 
     // State
     final isRefreshing = useState(false);
@@ -59,9 +61,7 @@ class ActiveMatch extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (playerStatusPlayerId != null) {
-          playersProvider.getPlayerStatus(playerId: playerStatusPlayerId);
-        }
+        playerProvider.getPlayerStatus();
 
         return null;
       },
@@ -92,14 +92,9 @@ class ActiveMatch extends HookConsumerWidget {
     // Methods
     final onRefresh = useCallback(
       () async {
-        if (playerStatusPlayerId != null) {
-          isRefreshing.value = true;
-          await playersProvider.getPlayerStatus(
-            playerId: playerStatusPlayerId,
-            forceUpdate: true,
-          );
-          isRefreshing.value = false;
-        }
+        isRefreshing.value = true;
+        await playerProvider.getPlayerStatus(forceUpdate: true);
+        isRefreshing.value = false;
       },
       [],
     );
@@ -139,7 +134,7 @@ class ActiveMatch extends HookConsumerWidget {
                         status: playerStatus.status,
                         isUserPlayer: isUserPlayer,
                       )
-                    : const ActiveMatchList(),
+                    : ActiveMatchList(playerId: playerStatusPlayerId),
           ],
         ),
       ),

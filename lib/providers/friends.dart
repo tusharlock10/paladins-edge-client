@@ -2,38 +2,25 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/models/index.dart" as models;
-import "package:paladinsedge/providers/auth.dart" as auth_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _FriendsNotifier extends ChangeNotifier {
-  final ChangeNotifierProviderRef<_FriendsNotifier> ref;
+  final String? playerId;
   bool isLoadingFriends = false;
-  bool isLoadingFavouriteFriends = true;
-
-  /// Is true when we have fetched all the friends
-  /// becomes true, when we visit Friends screen
-  bool fetchedAllFriends = false;
-
-  /// List of friends for user's player
   List<models.Player>? friends;
 
-  /// List of friends of otherPlayer
-  List<models.Player>? otherPlayerFriends;
+  _FriendsNotifier({required this.playerId});
 
-  _FriendsNotifier({required this.ref});
-
-  Future<void> getUserFriends([bool forceUpdate = false]) async {
-    final playerId = ref.read(auth_provider.auth).player?.playerId;
-    final favouriteFriends =
-        ref.read(auth_provider.auth).user?.favouriteFriends;
+  Future<void> getFriends([bool forceUpdate = false]) async {
     if (playerId == null) return;
+    if (!forceUpdate && friends != null) return;
 
     if (!forceUpdate) {
       isLoadingFriends = true;
       utilities.postFrameCallback(notifyListeners);
     }
 
-    final response = await api.PlayersRequests.friends(playerId: playerId);
+    final response = await api.PlayersRequests.friends(playerId: playerId!);
     if (response == null) {
       isLoadingFriends = false;
       notifyListeners();
@@ -42,104 +29,14 @@ class _FriendsNotifier extends ChangeNotifier {
     }
 
     if (!forceUpdate) isLoadingFriends = false;
-    final friends = response.friends;
-
-    if (favouriteFriends != null) {
-      // sort the friends on the basis on name
-      friends.sort(
-        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-      );
-
-      // find favourite friends
-      final favouritePlayers = List<models.Player>.empty(growable: true);
-      friends.removeWhere((friend) {
-        if (favouriteFriends.contains(friend.playerId)) {
-          favouritePlayers.add(friend);
-
-          return true;
-        }
-
-        return false;
-      });
-
-      this.friends = favouritePlayers + friends;
-    }
-
-    fetchedAllFriends = true;
+    friends = response.friends;
+    friends?.sort((a, b) => a.name.compareTo(b.name));
 
     notifyListeners();
-  }
-
-  Future<void> getOtherFriends(
-    String playerId, [
-    bool forceUpdate = false,
-  ]) async {
-    if (!forceUpdate) {
-      isLoadingFriends = true;
-      utilities.postFrameCallback(notifyListeners);
-    }
-
-    final response = await api.PlayersRequests.friends(playerId: playerId);
-    if (response == null) {
-      isLoadingFriends = false;
-      notifyListeners();
-
-      return;
-    }
-
-    if (!forceUpdate) isLoadingFriends = false;
-    otherPlayerFriends = response.friends;
-
-    notifyListeners();
-  }
-
-  Future<void> getFavouriteFriends([bool forceUpdate = false]) async {
-    if (!forceUpdate) {
-      isLoadingFavouriteFriends = true;
-      utilities.postFrameCallback(notifyListeners);
-    }
-
-    final response = await api.PlayersRequests.favouriteFriends();
-
-    if (response == null) {
-      if (!forceUpdate) {
-        isLoadingFavouriteFriends = false;
-        notifyListeners();
-      }
-
-      return;
-    }
-
-    final friends = this.friends ?? [];
-    final favouriteFriendsFromApi =
-        response.favouriteFriends.map((_) => _.playerId).toList();
-
-    // find favourite players
-    friends.removeWhere(
-      (friend) => favouriteFriendsFromApi.contains(friend.playerId),
-    );
-
-    this.friends = response.favouriteFriends + friends;
-
-    final user = ref.read(auth_provider.auth).user;
-    user!.favouriteFriends =
-        response.favouriteFriends.map((_) => _.playerId).toList();
-    utilities.Database.saveUser(user);
-
-    if (!forceUpdate) isLoadingFavouriteFriends = false;
-    notifyListeners();
-  }
-
-  /// Clears all user sensitive data upon logout
-  void clearData() {
-    isLoadingFriends = false;
-    isLoadingFavouriteFriends = false;
-    fetchedAllFriends = false;
-    friends = [];
   }
 }
 
 /// Provider to handle friends
-final friends = ChangeNotifierProvider<_FriendsNotifier>(
-  (ref) => _FriendsNotifier(ref: ref),
+final friends = ChangeNotifierProvider.family<_FriendsNotifier, String?>(
+  (_, playerId) => _FriendsNotifier(playerId: playerId),
 );

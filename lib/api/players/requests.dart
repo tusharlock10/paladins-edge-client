@@ -102,21 +102,6 @@ abstract class PlayersRequests {
     }
   }
 
-  static Future<responses.FavouriteFriendsResponse?> favouriteFriends() async {
-    try {
-      final response = await utilities.api.get<Map<String, dynamic>>(
-        constants.Urls.favouriteFriends,
-      );
-      if (response.data != null) {
-        return responses.FavouriteFriendsResponse.fromJson(response.data!);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
-    }
-  }
-
   static Future<responses.UpdateFavouriteFriendResponse?>
       updateFavouriteFriend({
     required String playerId,

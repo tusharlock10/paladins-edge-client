@@ -203,7 +203,7 @@ class ActiveMatchPlayer extends HookConsumerWidget {
       () {
         if (isPrivatePlayer) return;
 
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {

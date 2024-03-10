@@ -6,7 +6,7 @@ import "package:paladinsedge/screens/player_detail/player_detail_sort_tab.dart";
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
-void showPlayerDetailFilterModal(BuildContext context) {
+void showPlayerDetailFilterModal(BuildContext context, String playerId) {
   final screenWidth = MediaQuery.of(context).size.width;
   final width = utilities.responsiveCondition(
     context,
@@ -24,13 +24,18 @@ void showPlayerDetailFilterModal(BuildContext context) {
       ),
     ),
     context: context,
-    builder: (_) => const _PlayerDetailFilterModal(),
+    builder: (_) => _PlayerDetailFilterModal(playerId: playerId),
     constraints: BoxConstraints(maxWidth: width),
   );
 }
 
 class _PlayerDetailFilterModal extends HookWidget {
-  const _PlayerDetailFilterModal({Key? key}) : super(key: key);
+  final String playerId;
+
+  const _PlayerDetailFilterModal({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +96,11 @@ class _PlayerDetailFilterModal extends HookWidget {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: TabBarView(
               children: [
-                PlayerDetailFilterTab(),
-                PlayerDetailSortTab(),
+                PlayerDetailFilterTab(playerId: playerId),
+                PlayerDetailSortTab(playerId: playerId),
               ],
             ),
           ),

@@ -7,14 +7,20 @@ import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailSortTab extends HookConsumerWidget {
-  const PlayerDetailSortTab({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailSortTab({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final matchesProvider = ref.read(providers.matches);
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
     final selectedSort = ref.watch(
-      providers.matches.select((_) => _.selectedSort),
+      playerNotifier.select((_) => _.selectedSort),
     );
 
     // Variables
@@ -40,7 +46,7 @@ class PlayerDetailSortTab extends HookConsumerWidget {
             final isSortSelected = selectedSort == sort;
 
             return widgets.InteractiveCard(
-              onTap: () => matchesProvider.setSort(sort),
+              onTap: () => playerProvider.setSort(sort),
               elevation: isSortSelected ? 2 : 7,
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),

@@ -52,10 +52,11 @@ class MatchDetail extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final matchNotifier = providers.matches(matchId);
     final savedMatches =
         isSavedMatch ? ref.read(providers.auth).savedMatches : null;
     final matchDetails = !isSavedMatch
-        ? ref.watch(providers.matches.select((_) => _.matchDetails))
+        ? ref.watch(matchNotifier.select((_) => _.matchDetails))
         : null;
 
     // Hooks

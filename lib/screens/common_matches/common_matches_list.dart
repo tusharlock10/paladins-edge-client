@@ -8,6 +8,7 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class CommonMatchesList extends HookConsumerWidget {
   final String playerId;
+
   const CommonMatchesList({
     required this.playerId,
     Key? key,
@@ -16,15 +17,16 @@ class CommonMatchesList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final champions = ref.watch(providers.champions.select((_) => _.champions));
     final showUserPlayerMatches = ref.watch(
       providers.appState.select((_) => _.settings.showUserPlayerMatches),
     );
     final userPlayerId = ref.watch(
-      providers.auth.select((_) => _.player?.playerId),
+      providers.auth.select((_) => _.userPlayer?.playerId),
     );
     final commonMatches = ref.watch(
-      providers.matches.select((_) => _.commonMatches),
+      playerNotifier.select((_) => _.commonMatches),
     );
 
     // Variables

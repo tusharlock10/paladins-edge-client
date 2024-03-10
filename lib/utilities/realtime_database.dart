@@ -23,7 +23,7 @@ class RealtimeGlobalChat {
     utilities.Stopwatch.startStopTimer("initializeGlobalChat");
     _connectedRef = FirebaseDatabase.instance.ref(".info/connected");
     _globalChatRef = FirebaseDatabase.instance.ref(
-      "${constants.Env.appType}-global-chat",
+      "${constants.AppType.appType}-global-chat",
     );
     _messagesRef = _globalChatRef!.child("messages");
     _playersOnlineRef = _globalChatRef!.child("players-online");

@@ -7,13 +7,19 @@ import "package:paladinsedge/screens/active_match/active_match_player.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class ActiveMatchList extends HookConsumerWidget {
-  const ActiveMatchList({Key? key}) : super(key: key);
+  final String playerId;
+
+  const ActiveMatchList({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final playerStatus = ref.watch(
-      providers.players.select((_) => _.playerStatus),
+      playerNotifier.select((_) => _.playerStatus),
     );
 
     // Variables

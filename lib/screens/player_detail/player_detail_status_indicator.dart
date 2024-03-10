@@ -6,16 +6,24 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailStatusIndicator extends HookConsumerWidget {
-  const PlayerDetailStatusIndicator({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailStatusIndicator({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final player = ref.watch(providers.players.select((_) => _.playerData));
-    final isLoadingPlayerStatus =
-        ref.watch(providers.players.select((_) => _.isLoadingPlayerStatus));
-    final playerStatus =
-        ref.watch(providers.players.select((_) => _.playerStatus));
+    final playerNotifier = providers.players(playerId);
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
+    final isLoadingPlayerStatus = ref.watch(
+      playerNotifier.select((_) => _.isLoadingPlayerStatus),
+    );
+    final playerStatus = ref.watch(
+      playerNotifier.select((_) => _.playerStatus),
+    );
 
     // Variables
     final status = playerStatus?.status;

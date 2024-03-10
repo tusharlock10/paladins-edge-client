@@ -17,12 +17,17 @@ class Home extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //  Providers
     final queueProvider = ref.read(providers.queue);
-    final matchesProvider = ref.read(providers.matches);
-    final friendsProvider = ref.read(providers.friends);
+    final topMatchesProvider = ref.read(providers.topMatches);
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
+    final player = ref.watch(providers.auth.select((_) => _.userPlayer));
+    final friendProvider = player != null
+        ? ref.read(
+            providers.friends(player.playerId),
+          )
+        : null;
 
     // State
     final isRefreshing = useState(false);
@@ -31,7 +36,7 @@ class Home extends HookConsumerWidget {
     useEffect(
       () {
         queueProvider.getQueueTimeline(false);
-        matchesProvider.loadTopMatches(false);
+        topMatchesProvider.loadTopMatches(false);
 
         return;
       },
@@ -44,9 +49,8 @@ class Home extends HookConsumerWidget {
         isRefreshing.value = true;
         await Future.wait([
           queueProvider.getQueueTimeline(true),
-          matchesProvider.loadTopMatches(true),
-          if (favouriteFriends != null)
-            friendsProvider.getFavouriteFriends(true),
+          topMatchesProvider.loadTopMatches(true),
+          if (friendProvider != null) friendProvider.getFriends(),
         ]);
         isRefreshing.value = false;
       },

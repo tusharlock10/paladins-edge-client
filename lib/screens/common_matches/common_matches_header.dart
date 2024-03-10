@@ -6,14 +6,20 @@ import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
 
 class CommonMatchesHeader extends HookConsumerWidget {
-  const CommonMatchesHeader({Key? key}) : super(key: key);
+  final String playerId;
+
+  const CommonMatchesHeader({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final appStateProvider = ref.read(providers.appState);
     final commonMatches = ref.watch(
-      providers.matches.select((_) => _.commonMatches),
+      playerNotifier.select((_) => _.commonMatches),
     );
     final settings = ref.watch(
       providers.appState.select((_) => _.settings),

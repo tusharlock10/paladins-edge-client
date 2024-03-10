@@ -8,27 +8,26 @@ class FriendsAppBar extends ConsumerWidget {
   final bool isOtherPlayer;
   final RefreshCallback onRefresh;
   final bool isRefreshing;
+  final String playerId;
 
   const FriendsAppBar({
     required this.isOtherPlayer,
     required this.onRefresh,
     required this.isRefreshing,
+    required this.playerId,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final otherPlayerFriends =
-        ref.watch(providers.friends.select((_) => _.otherPlayerFriends));
-    final isLoadingFriends =
-        ref.watch(providers.friends.select((_) => _.isLoadingFriends));
-    final otherPlayer =
-        ref.watch(providers.players.select((_) => _.playerData));
-
-    // Variables
-    final data = isOtherPlayer ? otherPlayerFriends : friends;
+    final playerNotifier = providers.players(playerId);
+    final friendNotifier = providers.friends(playerId);
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
+    final friends = ref.watch(friendNotifier.select((_) => _.friends));
+    final isLoadingFriends = ref.watch(
+      friendNotifier.select((_) => _.isLoadingFriends),
+    );
 
     return SliverAppBar(
       snap: true,
@@ -50,13 +49,13 @@ class FriendsAppBar extends ConsumerWidget {
       title: Column(
         children: [
           Text(
-            isOtherPlayer ? otherPlayer!.name : "Friends",
+            isOtherPlayer && player != null ? player.name : "Friends",
           ),
-          if (!isLoadingFriends && data != null)
+          if (!isLoadingFriends && friends != null)
             Text(
               isOtherPlayer
-                  ? "has ${data.length} friends"
-                  : "you have ${data.length}",
+                  ? "has ${friends.length} friends"
+                  : "you have ${friends.length}",
               style: const TextStyle(fontSize: 12),
             ),
         ],

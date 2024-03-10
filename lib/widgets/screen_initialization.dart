@@ -6,7 +6,6 @@ import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
-import "package:paladinsedge/widgets/debug_alert.dart";
 import "package:paladinsedge/widgets/loading_indicator.dart";
 import "package:pub_semver/pub_semver.dart";
 
@@ -19,8 +18,8 @@ import "package:pub_semver/pub_semver.dart";
 /// To be used on all screens to check if app initialized
 ///
 /// It does 2 things -
-/// 1) Setup essentials and envs
-/// 2) Logs in user is token is present in local db
+/// 1) Setup essentials
+/// 2) Logs in user if token is present in local db
 class ScreenInitialization extends HookConsumerWidget {
   final Widget? screen;
   const ScreenInitialization({
@@ -56,9 +55,17 @@ class ScreenInitialization extends HookConsumerWidget {
     final showLoadingHelp = useState(false);
 
     // Methods
-    final initApp = useCallback(
+    final initDatabase = useCallback(() async {
+      await utilities.Database.initialize();
+      await Future.wait([
+        authProvider.loadEssentials(),
+        itemsProvider.loadItems(),
+        baseRanksProvider.loadBaseRanks(),
+      ]);
+    });
+
+    final checkForceUpdate = useCallback(
       () async {
-        utilities.Stopwatch.startStopTimer("screenInitialization");
         final result = await Future.wait([
           utilities.RemoteConfig.initialize(),
           PackageInfo.fromPlatform(),
@@ -67,47 +74,34 @@ class ScreenInitialization extends HookConsumerWidget {
 
         final currentVersion = Version.parse(packageInfo.version);
         if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
-          return authProvider.setForceUpdatePending();
+          authProvider.setForceUpdatePending();
         }
+      },
+      [],
+    );
 
-        await utilities.Database.initialize();
-        appStateProvider.loadSettings();
+    final initApp = useCallback(
+      () async {
+        utilities.Stopwatch.startStopTimer("screenInitialization");
+
         authProvider.loadPaladinsAssets();
-
-        // first initialize all env variables and check
-        // if all the env variables are loaded properly
-        final missingEnvs = await constants.Env.loadEnv();
-        if (missingEnvs.isNotEmpty) {
-          // if some variables are missing then open up an alert
-          // and do not let the app proceed forward
-          utilities.postFrameCallback(
-            () => showDebugAlert(
-              context: context,
-              isDismissible: false,
-              message: 'Env variable ${missingEnvs.join(", ")} not found',
-              forceShow: true,
-            ),
-          );
-
-          return;
-        }
         utilities.initializeApi();
+
         await Future.wait([
-          utilities.RealtimeGlobalChat.initialize(),
+          checkForceUpdate(),
+          initDatabase(),
           utilities.Analytics.initialize(),
           utilities.RealtimeGlobalChat.initialize(),
-          authProvider.loadEssentials(),
-          itemsProvider.loadItems(),
-          baseRanksProvider.loadBaseRanks(),
         ]);
 
         // load the essentials from hive
         // this depends on initDatabase to be completed
         authProvider.checkLogin();
         authProvider.getApiStatus();
-        authProvider.setAppInitialized();
+        appStateProvider.loadSettings();
 
         utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);
+        authProvider.setAppInitialized();
         utilities.Stopwatch.startStopTimer("screenInitialization");
       },
       [],
@@ -123,11 +117,11 @@ class ScreenInitialization extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (!isInitialized) initApp();
+        initApp();
 
         return null;
       },
-      [isInitialized],
+      [],
     );
 
     useEffect(
@@ -141,7 +135,7 @@ class ScreenInitialization extends HookConsumerWidget {
       [],
     );
 
-    return isInitialized && screen != null
+    return !isForceUpdatePending && isInitialized && screen != null
         ? screen!
         : DecoratedBox(
             decoration: const BoxDecoration(
