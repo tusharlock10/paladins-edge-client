@@ -55,36 +55,14 @@ class ScreenInitialization extends HookConsumerWidget {
     final showLoadingHelp = useState(false);
 
     // Methods
-    final initApp = useCallback(
-      () async {
-        utilities.Stopwatch.startStopTimer("screenInitialization");
-
-        authProvider.loadPaladinsAssets();
-
-        await utilities.Database.initialize();
-        appStateProvider.loadSettings();
-
-        utilities.initializeApi();
-        await Future.wait([
-          utilities.RealtimeGlobalChat.initialize(),
-          utilities.Analytics.initialize(),
-          utilities.RealtimeGlobalChat.initialize(),
-          authProvider.loadEssentials(),
-          itemsProvider.loadItems(),
-          baseRanksProvider.loadBaseRanks(),
-        ]);
-
-        // load the essentials from hive
-        // this depends on initDatabase to be completed
-        authProvider.checkLogin();
-        authProvider.getApiStatus();
-        authProvider.setAppInitialized();
-
-        utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);
-        utilities.Stopwatch.startStopTimer("screenInitialization");
-      },
-      [],
-    );
+    final initDatabase = useCallback(() async {
+      await utilities.Database.initialize();
+      await Future.wait([
+        authProvider.loadEssentials(),
+        itemsProvider.loadItems(),
+        baseRanksProvider.loadBaseRanks(),
+      ]);
+    });
 
     final checkForceUpdate = useCallback(
       () async {
@@ -102,6 +80,33 @@ class ScreenInitialization extends HookConsumerWidget {
       [],
     );
 
+    final initApp = useCallback(
+      () async {
+        utilities.Stopwatch.startStopTimer("screenInitialization");
+
+        authProvider.loadPaladinsAssets();
+        utilities.initializeApi();
+
+        await Future.wait([
+          checkForceUpdate(),
+          initDatabase(),
+          utilities.Analytics.initialize(),
+          utilities.RealtimeGlobalChat.initialize(),
+        ]);
+
+        // load the essentials from hive
+        // this depends on initDatabase to be completed
+        authProvider.checkLogin();
+        authProvider.getApiStatus();
+        appStateProvider.loadSettings();
+
+        utilities.Analytics.logEvent(constants.AnalyticsEvent.appInitialized);
+        authProvider.setAppInitialized();
+        utilities.Stopwatch.startStopTimer("screenInitialization");
+      },
+      [],
+    );
+
     final onLoadingHelp = useCallback(
       () {
         showLoadingHelp.value = !showLoadingHelp.value;
@@ -112,7 +117,6 @@ class ScreenInitialization extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        checkForceUpdate();
         initApp();
 
         return null;
@@ -131,7 +135,7 @@ class ScreenInitialization extends HookConsumerWidget {
       [],
     );
 
-    return isInitialized && screen != null
+    return !isForceUpdatePending && isInitialized && screen != null
         ? screen!
         : DecoratedBox(
             decoration: const BoxDecoration(

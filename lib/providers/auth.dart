@@ -77,24 +77,17 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Loads and the `essentials` from local db and syncs it with server
   Future<void> loadEssentials() async {
-    // gets the essential data for the app
-
-    // getting the essential data from local until the api call is completed
+    // get the essentials from local db
     final savedEssentials = utilities.Database.getEssentials();
+    final future = _getEssentials();
 
-    api.EssentialsResponse? response;
-    while (true) {
-      response = await api.AuthRequests.essentials();
-      if (response == null && savedEssentials != null) {
-        utilities.Global.essentials = savedEssentials;
-
-        return;
-      }
-      if (response != null) break;
+    if (savedEssentials != null) {
+      // if saved essentials are found, don't wait for future
+      utilities.Global.essentials = savedEssentials;
+    } else {
+      // wait for future, if essentials are not found
+      await future;
     }
-
-    utilities.Database.saveEssentials(response.essentials);
-    utilities.Global.essentials = response.essentials;
   }
 
   /// Checks whether the paladins API is in working state
@@ -425,6 +418,20 @@ class _AuthNotifier extends ChangeNotifier {
     token = null;
     isGuest = false;
     user = null;
+  }
+
+  Future<void> _getEssentials() async {
+    while (true) {
+      final response = await api.AuthRequests.essentials();
+      if (response != null) {
+        utilities.Global.essentials = response.essentials;
+        utilities.Database.saveEssentials(response.essentials);
+
+        return;
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 
   Future<_GetFirebaseAuthResponse> _getFirebaseAuthCredentials() async {
