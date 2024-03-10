@@ -64,7 +64,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
         );
         playerProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.ActiveMatch.routeName,
           params: {"playerId": player.playerId},
@@ -81,7 +81,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerFriends,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.Friends.routeName,
           params: {
@@ -100,7 +100,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerChampions,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerChampions.routeName,
           params: {
@@ -141,7 +141,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.commonMatches,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.CommonMatches.routeName,
           params: {

@@ -5,9 +5,11 @@ import "package:paladinsedge/screens/friends/friend_item.dart";
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class FriendsList extends ConsumerWidget {
+  final String? playerId;
   final bool isOtherPlayer;
 
   const FriendsList({
+    required this.playerId,
     required this.isOtherPlayer,
     Key? key,
   }) : super(key: key);
@@ -15,17 +17,14 @@ class FriendsList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final friends = ref.watch(providers.friends.select((_) => _.friends));
-    final otherPlayerFriends = ref.watch(
-      providers.friends.select((_) => _.otherPlayerFriends),
-    );
+    final friendNotifier = providers.friends(playerId);
+    final friends = ref.watch(friendNotifier.select((_) => _.friends));
 
     // Variables
     int crossAxisCount;
     double horizontalPadding;
     double width;
     final size = MediaQuery.of(context).size;
-    final data = isOtherPlayer ? otherPlayerFriends : friends;
     if (size.height < size.width) {
       // for landscape mode
       crossAxisCount = 2;
@@ -40,7 +39,7 @@ class FriendsList extends ConsumerWidget {
     final itemWidth = width / crossAxisCount;
     double childAspectRatio = itemWidth / FriendItem.itemHeight;
 
-    return data == null
+    return friends == null
         ? SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
@@ -72,9 +71,9 @@ class FriendsList extends ConsumerWidget {
               delegate: SliverChildBuilderDelegate(
                 (_, index) => FriendItem(
                   isOtherPlayer: isOtherPlayer,
-                  friend: data[index],
+                  friend: friends[index],
                 ),
-                childCount: data.length,
+                childCount: friends.length,
               ),
             ),
           );

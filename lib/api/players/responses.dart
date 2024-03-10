@@ -105,17 +105,6 @@ class FriendsResponse {
 }
 
 @JsonSerializable()
-class FavouriteFriendsResponse {
-  final List<Player> favouriteFriends;
-
-  FavouriteFriendsResponse({required this.favouriteFriends});
-
-  factory FavouriteFriendsResponse.fromJson(Map<String, dynamic> json) =>
-      _$FavouriteFriendsResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$FavouriteFriendsResponseToJson(this);
-}
-
-@JsonSerializable()
 class UpdateFavouriteFriendResponse {
   final List<String> favouriteFriends;
 

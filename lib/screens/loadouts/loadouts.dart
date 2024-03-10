@@ -59,17 +59,17 @@ class Loadouts extends HookConsumerWidget {
       (_) => _.championId == championId,
     );
     final isOtherPlayer = userPlayerId != playerId;
-
     final crossAxisCount = utilities.responsiveCondition(
       context,
       desktop: 2,
       tablet: 2,
       mobile: 1,
     );
+    final width = MediaQuery.of(context).size.width;
     final double horizontalPadding = utilities.responsiveCondition(
       context,
-      desktop: 30,
-      tablet: 30,
+      desktop: width * 0.15,
+      tablet: width * 0.1,
       mobile: 10,
     );
 

@@ -67,7 +67,7 @@ class PlayerChampions extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerViewLoadout,
           {"champion": champion.name},
         );
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.Loadouts.routeName,
           params: {

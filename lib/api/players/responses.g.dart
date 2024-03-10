@@ -113,20 +113,6 @@ Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) =>
       'friends': instance.friends,
     };
 
-FavouriteFriendsResponse _$FavouriteFriendsResponseFromJson(
-        Map<String, dynamic> json) =>
-    FavouriteFriendsResponse(
-      favouriteFriends: (json['favouriteFriends'] as List<dynamic>)
-          .map((e) => Player.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$FavouriteFriendsResponseToJson(
-        FavouriteFriendsResponse instance) =>
-    <String, dynamic>{
-      'favouriteFriends': instance.favouriteFriends,
-    };
-
 UpdateFavouriteFriendResponse _$UpdateFavouriteFriendResponseFromJson(
         Map<String, dynamic> json) =>
     UpdateFavouriteFriendResponse(
