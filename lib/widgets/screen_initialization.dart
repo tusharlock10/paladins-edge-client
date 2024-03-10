@@ -6,7 +6,6 @@ import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/utilities/index.dart" as utilities;
-import "package:paladinsedge/widgets/debug_alert.dart";
 import "package:paladinsedge/widgets/loading_indicator.dart";
 import "package:pub_semver/pub_semver.dart";
 
@@ -19,8 +18,8 @@ import "package:pub_semver/pub_semver.dart";
 /// To be used on all screens to check if app initialized
 ///
 /// It does 2 things -
-/// 1) Setup essentials and envs
-/// 2) Logs in user is token is present in local db
+/// 1) Setup essentials
+/// 2) Logs in user if token is present in local db
 class ScreenInitialization extends HookConsumerWidget {
   final Widget? screen;
   const ScreenInitialization({
@@ -59,38 +58,12 @@ class ScreenInitialization extends HookConsumerWidget {
     final initApp = useCallback(
       () async {
         utilities.Stopwatch.startStopTimer("screenInitialization");
-        final result = await Future.wait([
-          utilities.RemoteConfig.initialize(),
-          PackageInfo.fromPlatform(),
-        ]);
-        final packageInfo = result.last as PackageInfo;
 
-        final currentVersion = Version.parse(packageInfo.version);
-        if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
-          return authProvider.setForceUpdatePending();
-        }
+        authProvider.loadPaladinsAssets();
 
         await utilities.Database.initialize();
         appStateProvider.loadSettings();
-        authProvider.loadPaladinsAssets();
 
-        // first initialize all env variables and check
-        // if all the env variables are loaded properly
-        final missingEnvs = await constants.Env.loadEnv();
-        if (missingEnvs.isNotEmpty) {
-          // if some variables are missing then open up an alert
-          // and do not let the app proceed forward
-          utilities.postFrameCallback(
-            () => showDebugAlert(
-              context: context,
-              isDismissible: false,
-              message: 'Env variable ${missingEnvs.join(", ")} not found',
-              forceShow: true,
-            ),
-          );
-
-          return;
-        }
         utilities.initializeApi();
         await Future.wait([
           utilities.RealtimeGlobalChat.initialize(),
@@ -113,6 +86,22 @@ class ScreenInitialization extends HookConsumerWidget {
       [],
     );
 
+    final checkForceUpdate = useCallback(
+      () async {
+        final result = await Future.wait([
+          utilities.RemoteConfig.initialize(),
+          PackageInfo.fromPlatform(),
+        ]);
+        final packageInfo = result.last as PackageInfo;
+
+        final currentVersion = Version.parse(packageInfo.version);
+        if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
+          authProvider.setForceUpdatePending();
+        }
+      },
+      [],
+    );
+
     final onLoadingHelp = useCallback(
       () {
         showLoadingHelp.value = !showLoadingHelp.value;
@@ -123,11 +112,12 @@ class ScreenInitialization extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (!isInitialized) initApp();
+        checkForceUpdate();
+        initApp();
 
         return null;
       },
-      [isInitialized],
+      [],
     );
 
     useEffect(

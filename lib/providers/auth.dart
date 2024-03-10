@@ -429,7 +429,7 @@ class _AuthNotifier extends ChangeNotifier {
 
   Future<_GetFirebaseAuthResponse> _getFirebaseAuthCredentials() async {
     // NOTE: for development login in windows
-    if (constants.isWindows && constants.AppType.isDev) {
+    if (constants.isWindows && constants.isDebug) {
       return _GetFirebaseAuthResponse(idToken: "testUser");
     }
 

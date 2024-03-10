@@ -37,7 +37,7 @@ class AppDrawerInfo extends StatelessWidget {
                   text: "v${packageInfo.version}",
                   spacing: 5,
                 ),
-                const widgets.TextChip(
+                widgets.TextChip(
                   color: Colors.green,
                   text: constants.releaseTag,
                   spacing: 5,
@@ -54,7 +54,7 @@ class AppDrawerInfo extends StatelessWidget {
               tooltip: "View on GitHub",
               splashRadius: 22,
               icon: const Icon(FeatherIcons.github),
-              onPressed: () => launchUrlString(constants.Env.githubLink),
+              onPressed: () => launchUrlString(constants.githubLink),
             ),
           ],
         );
