@@ -31,33 +31,29 @@ class PlayerDetail extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final matchesProvider = ref.read(providers.matches);
-    final playersProvider = ref.read(providers.players);
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
     final championsProvider = ref.read(providers.champions);
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final isLoadingPlayerData = ref.watch(
-      providers.players.select((_) => _.isLoadingPlayerData),
+      playerNotifier.select((_) => _.isLoadingPlayerData),
     );
     final playerStatus = ref.watch(
-      providers.players.select((_) => _.playerStatus),
-    );
-    final combinedMatchesPlayerId = ref.watch(
-      providers.matches.select((_) => _.combinedMatchesPlayerId),
+      playerNotifier.select((_) => _.playerStatus),
     );
     final playerChampionsPlayerId = ref.watch(
       providers.champions.select((_) => _.playerChampionsPlayerId),
     );
     final playerInferred = ref.watch(
-      providers.players.select((_) => _.playerInferred),
+      providers.players(playerId).select((_) => _.playerInferred),
     );
     final playerStreak = ref.watch(
-      providers.matches.select((_) => _.playerStreak),
+      playerNotifier.select((_) => _.playerStreak),
     );
 
     // Variables
     final isSamePlayer = player?.playerId == playerId;
     final isSamePlayerStatus = playerStatus?.playerId == playerId;
-    final isSamePlayerMatches = combinedMatchesPlayerId == playerId;
     final isSamePlayerChampions = playerChampionsPlayerId == playerId;
     final isSamePlayerInferred = playerInferred?.playerId == playerId;
 
@@ -67,30 +63,22 @@ class PlayerDetail extends HookConsumerWidget {
     // Methods
     final getPlayerDetails = useCallback(
       ({bool forceUpdate = false}) async {
-        matchesProvider.clearAppliedFiltersAndSort();
-        if (!isSamePlayerMatches || forceUpdate) {
-          matchesProvider.resetPlayerMatches(forceUpdate: forceUpdate);
-        }
+        playerProvider.clearAppliedFiltersAndSort();
+        playerProvider.resetPlayerMatches(forceUpdate: forceUpdate);
         await Future.wait([
           if (!isSamePlayer || forceUpdate)
-            playersProvider.getPlayerData(
-              playerId: playerId,
-              forceUpdate: forceUpdate,
-            ),
+            playerProvider.getPlayerData(forceUpdate: forceUpdate),
           if (!isSamePlayerStatus || forceUpdate)
-            playersProvider.getPlayerStatus(
-              playerId: playerId,
-              onlyStatus: true,
+            playerProvider.getPlayerStatus(
               forceUpdate: forceUpdate,
+              onlyStatus: true,
             ),
         ]);
 
         await Future.wait([
-          if (!isSamePlayerMatches || forceUpdate)
-            matchesProvider.getPlayerMatches(
-              playerId: playerId,
-              forceUpdate: forceUpdate,
-            ),
+          playerProvider.getPlayerMatches(
+            forceUpdate: forceUpdate,
+          ),
           if (!isSamePlayerChampions || forceUpdate)
             championsProvider.getPlayerChampions(
               playerId: playerId,
@@ -99,13 +87,12 @@ class PlayerDetail extends HookConsumerWidget {
         ]);
 
         if (!isSamePlayerInferred || forceUpdate) {
-          playersProvider.getPlayerInferred(playerId: playerId);
+          playerProvider.getPlayerInferred();
         }
       },
       [
         isSamePlayer,
         isSamePlayerStatus,
-        isSamePlayerMatches,
         isSamePlayerChampions,
         playerId,
       ],
@@ -126,7 +113,7 @@ class PlayerDetail extends HookConsumerWidget {
         getPlayerDetails();
 
         // reset the player and filters data in provider when unmounting
-        return matchesProvider.clearAppliedFiltersAndSort;
+        return playerProvider.clearAppliedFiltersAndSort;
       },
       [playerId],
     );
@@ -144,9 +131,9 @@ class PlayerDetail extends HookConsumerWidget {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 5),
-            child: PlayerDetailMenu(),
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: PlayerDetailMenu(playerId: playerId),
           ),
         ],
         title: isLoadingPlayerData || player == null
@@ -197,10 +184,10 @@ class PlayerDetail extends HookConsumerWidget {
             )
           : widgets.Refresh(
               onRefresh: onRefresh,
-              child: const Stack(
+              child: Stack(
                 children: [
-                  PlayerDetailMatches(),
-                  PlayerDetailHeader(),
+                  PlayerDetailMatches(playerId: playerId),
+                  PlayerDetailHeader(playerId: playerId),
                 ],
               ),
             ),

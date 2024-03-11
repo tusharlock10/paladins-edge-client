@@ -32,18 +32,13 @@ class CommonMatches extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final matchesProvider = ref.read(providers.matches);
-    final userPlayerId = ref.watch(
-      providers.auth.select((_) => _.player?.playerId),
-    );
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
     final isCommonMatchesLoading = ref.watch(
-      providers.matches.select((_) => _.isCommonMatchesLoading),
-    );
-    final commonMatchesPlayerId = ref.watch(
-      providers.matches.select((_) => _.commonMatchesPlayerId),
+      playerNotifier.select((_) => _.isCommonMatchesLoading),
     );
     final commonMatches = ref.watch(
-      providers.matches.select((_) => _.commonMatches),
+      playerNotifier.select((_) => _.commonMatches),
     );
 
     // Variables
@@ -54,16 +49,11 @@ class CommonMatches extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (userPlayerId != null && playerId != commonMatchesPlayerId) {
-          matchesProvider.getCommonMatches(
-            userPlayerId: userPlayerId,
-            playerId: playerId,
-          );
-        }
+        playerProvider.getCommonMatches();
 
         return;
       },
-      [commonMatchesPlayerId, playerId],
+      [],
     );
 
     return Scaffold(
@@ -86,7 +76,7 @@ class CommonMatches extends HookConsumerWidget {
                   )
                 : const Text("Common Matches"),
           ),
-          if (!hideList) const CommonMatchesHeader(),
+          if (!hideList) CommonMatchesHeader(playerId: playerId),
           hideList
               ? SliverList(
                   delegate: SliverChildListDelegate.fixed(

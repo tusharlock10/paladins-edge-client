@@ -21,8 +21,7 @@ class AppDrawer extends HookConsumerWidget {
     // Providers
     final authProvider = ref.read(providers.auth);
     final appStateProvider = ref.read(providers.appState);
-    final playersProvider = ref.read(providers.players);
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final player = ref.watch(providers.auth.select((_) => _.userPlayer));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final settings = ref.watch(
       providers.appState.select((_) => _.settings),
@@ -89,7 +88,6 @@ class AppDrawer extends HookConsumerWidget {
     final onActiveMatchHelper = useCallback(
       () {
         if (player == null) return;
-        playersProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
         utilities.Navigation.navigate(
           context,

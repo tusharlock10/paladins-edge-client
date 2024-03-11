@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 env:
-  flutter_version: "3.19.1"
+  flutter_version: "3.19.3"
 
 jobs:
   build-apk:
@@ -28,7 +25,6 @@ jobs:
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
@@ -54,30 +50,11 @@ jobs:
       - name: Build apk
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
-      # Run below tasks only if its a push
-      - name: Get flutter version
-        if: ${{ github.event_name == 'push' }}
-        id: flutter_version
-        uses: NiklasLehnfeld/flutter-version-number-action@main
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
         with:
-          file-path: ./pubspec.yaml
-
-      - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          custom_tag: ${{ steps.flutter_version.outputs.version-number }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create a GitHub release
-        if: ${{ github.event_name == 'push' }}
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          artifacts: "./build/app/outputs/flutter-apk/app-release.apk"
+          name: app-release.apk
+          path: ./build/app/outputs/flutter-apk/app-release.apk
 
   build-bundle:
     name: "build bundle 🛠️"
@@ -95,7 +72,6 @@ jobs:
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-prod.env ./paladins-edge.env
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
@@ -130,13 +106,10 @@ jobs:
       - name: Build bundle
         run: flutter build appbundle --release --build-number=${{ github.run_number }}
 
-      # Run the below tasks only if its a push
       - name: Get release notes
-        if: ${{ github.event_name == 'push' }}
         run: git log -1 --pretty="PRODUCTION BUILD - Commit %h%n- Date %cs%n- %s" > release_notes.txt
 
       - name: Upload bundle to app distribution
-        if: ${{ github.event_name == 'push' }}
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: 1:280154424805:android:06755c7776c617c0aa1b0c
@@ -144,3 +117,84 @@ jobs:
           groups: Developers
           releaseNotesFile: ./release_notes.txt
           file: ./build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.aab
+          path: ./build/app/outputs/bundle/release/app-release.aab
+
+  build-web:
+    name: "build web 🌐"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.PE_PRIVATE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PE_PRIVATE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PE_AWS_REGION }}
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.flutter_version }}
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Build web
+        run: flutter build web --release --build-number=${{ github.run_number }}
+
+      - name: Deploy to S3
+        run: aws s3 sync ./build/web/ s3://${{ secrets.PE_WEB_BUCKET_NAME }}/ --delete
+
+      - name: Create zip archive
+        run: zip -r web.zip ./build/web/
+
+      - name: Upload web
+        uses: actions/upload-artifact@v4
+        with:
+          name: web.zip
+          path: ./web.zip
+
+  create-release:
+    name: "create release 📦"
+    needs: [build-apk, build-bundle, build-web]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Get flutter version
+        id: flutter_version
+        uses: NiklasLehnfeld/flutter-version-number-action@main
+        with:
+          file-path: ./pubspec.yaml
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          custom_tag: ${{ steps.flutter_version.outputs.version-number }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: |
+            ./artifacts/app-release.apk,
+            ./artifacts/app-release.aab, 
+            ./artifacts/web.zip

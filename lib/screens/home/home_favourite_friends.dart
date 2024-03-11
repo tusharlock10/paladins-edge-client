@@ -11,14 +11,18 @@ class HomeFavouriteFriends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final friendsProvider = ref.read(providers.friends);
-    final isLoadingFavouriteFriends = ref.watch(
-      providers.friends.select((_) => _.isLoadingFavouriteFriends),
-    );
-    final friends = ref.watch(providers.friends.select((_) => _.friends));
     final favouriteFriends = ref.watch(
       providers.auth.select((_) => _.user?.favouriteFriends),
     );
+    final player = ref.watch(
+      providers.auth.select((_) => _.userPlayer),
+    );
+    final friendNotifier = providers.friends(player?.playerId);
+    final friendProvider = ref.read(friendNotifier);
+    final isLoadingFriends = ref.watch(
+      friendNotifier.select((_) => _.isLoadingFriends),
+    );
+    final friends = ref.watch(friendNotifier.select((_) => _.friends));
 
     // Variables
     final headingText =
@@ -41,14 +45,14 @@ class HomeFavouriteFriends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        friendsProvider.getFavouriteFriends();
+        friendProvider.getFriends();
 
         return;
       },
-      [],
+      [friendProvider],
     );
 
-    return isLoadingFavouriteFriends
+    return isLoadingFriends
         ? const widgets.LoadingIndicator(
             lineWidth: 2,
             size: 28,

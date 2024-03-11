@@ -8,14 +8,20 @@ import "package:paladinsedge/theme/index.dart" as theme;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailFilterTab extends HookConsumerWidget {
-  const PlayerDetailFilterTab({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailFilterTab({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final matchesProvider = ref.read(providers.matches);
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
     final selectedFilter = ref.watch(
-      providers.matches.select((_) => _.selectedFilter),
+      playerNotifier.select((_) => _.selectedFilter),
     );
 
     // Variables
@@ -43,7 +49,7 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
         data_classes.MatchFilterValue filterValue,
       ) {
         if (isFilterValueSelected) {
-          return matchesProvider.setFilterValue(null, null);
+          return playerProvider.setFilterValue(null, null);
         }
 
         if (filterValue.type == data_classes.MatchFilterValueType.dates) {
@@ -51,11 +57,11 @@ class PlayerDetailFilterTab extends HookConsumerWidget {
             context,
             filterName,
             filterValue,
-            matchesProvider.setFilterValue,
+            playerProvider.setFilterValue,
           );
         }
 
-        matchesProvider.setFilterValue(filterName, filterValue);
+        playerProvider.setFilterValue(filterName, filterValue);
       },
       [],
     );

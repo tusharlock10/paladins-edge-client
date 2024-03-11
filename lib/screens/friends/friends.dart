@@ -36,18 +36,18 @@ class Friends extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final friendsProvider = ref.read(providers.friends);
-    final userPlayerId =
-        ref.watch(providers.auth.select((_) => _.player?.playerId));
-    final isLoadingFriends =
-        ref.watch(providers.friends.select((_) => _.isLoadingFriends));
-    final fetchedAllFriends =
-        ref.watch(providers.friends.select((_) => _.fetchedAllFriends));
-
+    final userPlayerId = ref.watch(
+      providers.auth.select((_) => _.userPlayer?.playerId),
+    );
     // Variables
     final isOtherPlayer =
         otherPlayerId != userPlayerId && otherPlayerId != null;
     final playerId = otherPlayerId ?? userPlayerId;
+    final friendNotifier = providers.friends(playerId);
+    final friendProvider = ref.read(friendNotifier);
+    final isLoadingFriends = ref.watch(
+      friendNotifier.select((_) => _.isLoadingFriends),
+    );
 
     // State
     final isRefreshing = useState(false);
@@ -55,25 +55,17 @@ class Friends extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (playerId != null && isOtherPlayer) {
-          friendsProvider.getOtherFriends(playerId, false);
-        } else if (playerId != null && !fetchedAllFriends) {
-          friendsProvider.getUserFriends();
-        }
+        friendProvider.getFriends();
 
         return;
       },
-      [playerId, fetchedAllFriends, isOtherPlayer],
+      [friendProvider],
     );
 
     final onRefresh = useCallback(
       () async {
         isRefreshing.value = true;
-        if (playerId != null && isOtherPlayer) {
-          await friendsProvider.getOtherFriends(playerId, true);
-        } else if (playerId != null) {
-          await friendsProvider.getUserFriends(true);
-        }
+        await friendProvider.getFriends(true);
         isRefreshing.value = false;
       },
       [],
@@ -85,11 +77,13 @@ class Friends extends HookConsumerWidget {
         edgeOffset: utilities.getTopEdgeOffset(context),
         child: CustomScrollView(
           slivers: [
-            FriendsAppBar(
-              isOtherPlayer: isOtherPlayer,
-              onRefresh: onRefresh,
-              isRefreshing: isRefreshing.value,
-            ),
+            if (playerId != null)
+              FriendsAppBar(
+                isOtherPlayer: isOtherPlayer,
+                onRefresh: onRefresh,
+                isRefreshing: isRefreshing.value,
+                playerId: playerId,
+              ),
             isLoadingFriends
                 ? SliverList(
                     delegate: SliverChildListDelegate.fixed(
@@ -108,6 +102,7 @@ class Friends extends HookConsumerWidget {
                     ),
                   )
                 : FriendsList(
+                    playerId: playerId,
                     isOtherPlayer: isOtherPlayer,
                   ),
           ],
@@ -125,10 +120,9 @@ class Friends extends HookConsumerWidget {
     if (int.tryParse(paramPlayerId) == null) {
       return const CupertinoPage(child: screens.NotFound());
     }
-    final otherPlayerId = paramPlayerId;
 
     return CupertinoPage(
-      child: widgets.PopShortcut(child: Friends(otherPlayerId: otherPlayerId)),
+      child: widgets.PopShortcut(child: Friends(otherPlayerId: paramPlayerId)),
     );
   }
 

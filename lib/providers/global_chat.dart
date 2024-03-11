@@ -243,11 +243,12 @@ class _GlobalChatNotifier extends ChangeNotifier {
 /// Provider to handle globalChat
 final globalChat = ChangeNotifierProvider(
   (ref) {
-    final player = ref.watch(auth_provider.auth.select((_) => _.player));
+    final userPlayer =
+        ref.watch(auth_provider.auth.select((_) => _.userPlayer));
     final isGuest = ref.watch(auth_provider.auth.select((_) => _.isGuest));
 
     return _GlobalChatNotifier(
-      player: player,
+      player: userPlayer,
       isGuest: isGuest,
     );
   },

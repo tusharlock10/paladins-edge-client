@@ -13,24 +13,29 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 
 class PlayerDetailMenu extends HookConsumerWidget {
-  const PlayerDetailMenu({Key? key}) : super(key: key);
+  final String playerId;
+
+  const PlayerDetailMenu({
+    required this.playerId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
-    final matchesProvider = ref.read(providers.matches);
-    final userPlayer = ref.watch(providers.auth.select((_) => _.player));
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
+    final userPlayer = ref.watch(providers.auth.select((_) => _.userPlayer));
     final selectedFilter = ref.watch(
-      providers.matches.select((_) => _.selectedFilter),
+      playerNotifier.select((_) => _.selectedFilter),
     );
     final selectedSort = ref.watch(
-      providers.matches.select((_) => _.selectedSort),
+      playerNotifier.select((_) => _.selectedSort),
     );
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
     final playerStatus = ref.watch(
-      providers.players.select((_) => _.playerStatus),
+      playerNotifier.select((_) => _.playerStatus),
     );
 
     // Variables
@@ -57,9 +62,9 @@ class PlayerDetailMenu extends HookConsumerWidget {
         utilities.Analytics.logEvent(
           constants.AnalyticsEvent.otherPlayerActiveMatch,
         );
-        playersProvider.resetPlayerStatus();
+        playerProvider.resetPlayerStatus();
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.ActiveMatch.routeName,
           params: {"playerId": player.playerId},
@@ -76,7 +81,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerFriends,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.Friends.routeName,
           params: {
@@ -95,7 +100,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerChampions,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerChampions.routeName,
           params: {
@@ -112,7 +117,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.playerMatchesFilterSort,
         );
         utilities.Navigation.pop(context);
-        showPlayerDetailFilterModal(context);
+        showPlayerDetailFilterModal(context, playerId);
       },
       [],
     );
@@ -136,7 +141,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           constants.AnalyticsEvent.commonMatches,
         );
         utilities.Navigation.pop(context);
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.CommonMatches.routeName,
           params: {
@@ -149,7 +154,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
 
     final onClear = useCallback(
       () {
-        matchesProvider.clearAppliedFiltersAndSort();
+        playerProvider.clearAppliedFiltersAndSort();
         utilities.Navigation.pop(context);
       },
       [],
@@ -181,6 +186,7 @@ class PlayerDetailMenu extends HookConsumerWidget {
           child: Center(
             child: widgets.Button(
               label: "Active Match",
+              labelStyle: const TextStyle(fontSize: 13),
               disabled: !(playerStatus?.inMatch ?? false),
               elevation: 4,
               onPressed: onPressActiveMatch,

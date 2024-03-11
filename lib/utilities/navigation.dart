@@ -20,6 +20,22 @@ abstract class Navigation {
     );
   }
 
+  /// Navigate to the screen with the name and params using go_router,
+  /// pushes the new screen on top of the old screen in teh router stack
+  static void push(
+    BuildContext context,
+    String routeName, {
+    Map<String, String>? params,
+    Map<String, String>? queryParams,
+  }) {
+    Analytics.logScreenEntry(routeName);
+    GoRouter.of(context).pushNamed(
+      routeName,
+      pathParameters: params ?? const {},
+      queryParameters: queryParams ?? const {},
+    );
+  }
+
   /// Checks if can we pop
   static bool canPop(BuildContext context) => Navigator.of(context).canPop();
 

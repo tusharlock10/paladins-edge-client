@@ -40,7 +40,7 @@ class ChampionDetail extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final isGuest = ref.watch(providers.auth.select((_) => _.isGuest));
-    final player = ref.watch(providers.auth.select((_) => _.player));
+    final player = ref.watch(providers.auth.select((_) => _.userPlayer));
     final championsProvider = ref.read(providers.champions);
     final champions = ref.watch(providers.champions.select((_) => _.champions));
     final isLoadingCombinedChampions = ref.watch(

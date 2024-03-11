@@ -265,7 +265,7 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
     final onPressPlayer = useCallback(
       () {
         if (isPrivatePlayer) return null;
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {

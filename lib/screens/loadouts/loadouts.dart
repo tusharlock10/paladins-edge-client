@@ -35,18 +35,19 @@ class Loadouts extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
+    final playerNotifier = providers.players(playerId);
     final loadoutProvider = ref.read(providers.loadout);
     final championsProvider = ref.read(providers.champions);
-    final playersProvider = ref.read(providers.players);
-    final userPlayerId = ref.read(providers.auth).player?.playerId;
+    final playerProvider = ref.read(playerNotifier);
+    final userPlayerId = ref.read(providers.auth).userPlayer?.playerId;
     final champions = ref.read(providers.champions).champions;
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final loadouts = ref.watch(providers.loadout.select((_) => _.loadouts));
     final isGettingLoadouts = ref.watch(
       providers.loadout.select((_) => _.isGettingLoadouts),
     );
     final isLoadingPlayerData = ref.watch(
-      providers.players.select((_) => _.isLoadingPlayerData),
+      playerNotifier.select((_) => _.isLoadingPlayerData),
     );
     final isLoadingCombinedChampions = ref.watch(
       providers.champions.select((_) => _.isLoadingCombinedChampions),
@@ -58,17 +59,17 @@ class Loadouts extends HookConsumerWidget {
       (_) => _.championId == championId,
     );
     final isOtherPlayer = userPlayerId != playerId;
-
     final crossAxisCount = utilities.responsiveCondition(
       context,
       desktop: 2,
       tablet: 2,
       mobile: 1,
     );
+    final width = MediaQuery.of(context).size.width;
     final double horizontalPadding = utilities.responsiveCondition(
       context,
-      desktop: 30,
-      tablet: 30,
+      desktop: width * 0.15,
+      tablet: width * 0.1,
       mobile: 10,
     );
 
@@ -93,12 +94,7 @@ class Loadouts extends HookConsumerWidget {
       () {
         // check if player exists,
         // if not, then get player
-        if (player == null) {
-          playersProvider.getPlayerData(
-            playerId: playerId,
-            forceUpdate: false,
-          );
-        }
+        if (player == null) playerProvider.getPlayerData(forceUpdate: false);
 
         return;
       },

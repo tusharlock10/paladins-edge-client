@@ -30,7 +30,7 @@ class LeaderboardPlayer extends HookWidget {
     // Methods
     final onPressLeaderboardPlayer = useCallback(
       () {
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {

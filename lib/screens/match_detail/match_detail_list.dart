@@ -24,10 +24,11 @@ class MatchDetailList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Providers
-    final matchesProvider = !isSavedMatch ? ref.read(providers.matches) : null;
+    // Providers ̰
+    final matchNotifier = providers.matches(matchId);
+    final matchProvider = !isSavedMatch ? ref.read(matchNotifier) : null;
     final isMatchDetailsLoading = !isSavedMatch
-        ? ref.watch(providers.matches.select((_) => _.isMatchDetailsLoading))
+        ? ref.watch(matchNotifier.select((_) => _.isMatchDetailsLoading))
         : false;
     final champions = ref.watch(providers.champions.select((_) => _.champions));
 
@@ -52,11 +53,11 @@ class MatchDetailList extends HookConsumerWidget {
     // Effects
     useEffect(
       () {
-        if (matchesProvider == null) return null;
+        if (matchProvider == null) return null;
         // call matchDetail api
-        matchesProvider.getMatchDetails(matchId);
+        matchProvider.getMatchDetails();
 
-        return matchesProvider.resetMatchDetails;
+        return matchProvider.resetMatchDetails;
       },
       [],
     );

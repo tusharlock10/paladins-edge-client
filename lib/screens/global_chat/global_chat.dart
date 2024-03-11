@@ -46,7 +46,7 @@ class GlobalChat extends HookConsumerWidget {
     // Methods
     final onAvatarTap = useCallback(
       (types.User author) {
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.PlayerDetail.routeName,
           params: {

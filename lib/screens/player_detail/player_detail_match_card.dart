@@ -86,7 +86,7 @@ class PlayerDetailMatchCard extends HookConsumerWidget {
         if (isSavedMatch) routeName = screens.MatchDetail.savedMatchRouteName;
         if (isCommonMatch) routeName = screens.MatchDetail.commonMatchRouteName;
 
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           routeName,
           params: {

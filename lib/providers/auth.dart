@@ -37,7 +37,7 @@ class _AuthNotifier extends ChangeNotifier {
   bool isGuest = true;
   String? token;
   models.User? user;
-  models.Player? player;
+  models.Player? userPlayer;
   List<models.FAQ>? faqs;
   List<models.Sponsor>? sponsors;
   List<data_classes.CombinedMatch>? savedMatches;
@@ -77,24 +77,17 @@ class _AuthNotifier extends ChangeNotifier {
 
   /// Loads and the `essentials` from local db and syncs it with server
   Future<void> loadEssentials() async {
-    // gets the essential data for the app
-
-    // getting the essential data from local until the api call is completed
+    // get the essentials from local db
     final savedEssentials = utilities.Database.getEssentials();
+    final future = _getEssentials();
 
-    api.EssentialsResponse? response;
-    while (true) {
-      response = await api.AuthRequests.essentials();
-      if (response == null && savedEssentials != null) {
-        utilities.Global.essentials = savedEssentials;
-
-        return;
-      }
-      if (response != null) break;
+    if (savedEssentials != null) {
+      // if saved essentials are found, don't wait for future
+      utilities.Global.essentials = savedEssentials;
+    } else {
+      // wait for future, if essentials are not found
+      await future;
     }
-
-    utilities.Database.saveEssentials(response.essentials);
-    utilities.Global.essentials = response.essentials;
   }
 
   /// Checks whether the paladins API is in working state
@@ -109,9 +102,9 @@ class _AuthNotifier extends ChangeNotifier {
   bool checkLogin() {
     token = utilities.Database.getToken();
     user = utilities.Database.getUser();
-    player = utilities.Database.getPlayer();
+    userPlayer = utilities.Database.getPlayer();
 
-    utilities.Global.isPlayerConnected = player != null;
+    utilities.Global.isPlayerConnected = userPlayer != null;
 
     if (token != null) {
       isGuest = false;
@@ -157,12 +150,12 @@ class _AuthNotifier extends ChangeNotifier {
 
     user = response.user;
     token = response.token;
-    player = response.player;
+    userPlayer = response.player;
 
     utilities.api.options.headers["authorization"] = "Bearer $token";
     utilities.Global.isAuthenticated = true;
     isGuest = false;
-    if (player != null) utilities.Global.isPlayerConnected = true;
+    if (userPlayer != null) utilities.Global.isPlayerConnected = true;
 
     _recordLoginAnalytics();
     // upon successful login, send FCM token and deviceDetail to server
@@ -212,9 +205,8 @@ class _AuthNotifier extends ChangeNotifier {
     clearData();
     ref.read(providers.champions).clearData();
     ref.read(providers.loadout).clearData();
-    ref.read(providers.matches).clearData();
-    ref.read(providers.players).clearData();
     ref.read(providers.appState).clearData();
+    ref.read(providers.search).clearData();
 
     // clear values from the database and utilities
     utilities.Database.clear();
@@ -222,7 +214,7 @@ class _AuthNotifier extends ChangeNotifier {
     utilities.api.options.headers["authorization"] = null;
     utilities.Global.isAuthenticated = false;
     isGuest = true;
-    if (player != null) utilities.Global.isPlayerConnected = false;
+    if (userPlayer != null) utilities.Global.isPlayerConnected = false;
 
     notifyListeners();
 
@@ -234,11 +226,11 @@ class _AuthNotifier extends ChangeNotifier {
     final response = await api.AuthRequests.connectPlayer(playerId: playerId);
     if (response == null) return null;
 
-    player = response.player;
     user = response.user;
+    userPlayer = response.player;
 
     utilities.Database.saveUser(response.user);
-    utilities.Database.savePlayer(player!);
+    utilities.Database.savePlayer(userPlayer!);
 
     utilities.Global.isPlayerConnected = true;
     utilities.Analytics.logEvent(constants.AnalyticsEvent.connectPlayer);
@@ -311,7 +303,7 @@ class _AuthNotifier extends ChangeNotifier {
       (_) => _.match.matchId == matchId,
     );
     if (combinedMatch == null) {
-      final matchDetails = ref.read(providers.matches).matchDetails;
+      final matchDetails = ref.read(providers.matches(matchId)).matchDetails;
       if (matchDetails != null && matchDetails.match.matchId == matchId) {
         combinedMatch = data_classes.CombinedMatch(
           match: matchDetails.match,
@@ -422,13 +414,32 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   void clearData() {
-    player = null;
+    userPlayer = null;
     token = null;
     isGuest = false;
     user = null;
   }
 
+  Future<void> _getEssentials() async {
+    while (true) {
+      final response = await api.AuthRequests.essentials();
+      if (response != null) {
+        utilities.Global.essentials = response.essentials;
+        utilities.Database.saveEssentials(response.essentials);
+
+        return;
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  }
+
   Future<_GetFirebaseAuthResponse> _getFirebaseAuthCredentials() async {
+    // NOTE: for development login in windows
+    if (constants.isWindows && constants.isDebug) {
+      return _GetFirebaseAuthResponse(idToken: "testUser");
+    }
+
     final GoogleSignInAccount? googleUser;
     try {
       googleUser = await GoogleSignIn().signIn();
@@ -503,7 +514,7 @@ class _AuthNotifier extends ChangeNotifier {
       );
     }
     if (user != null) utilities.Analytics.setUserId(user!.uid);
-    if (player != null) {
+    if (userPlayer != null) {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.existingUserLogin);
     } else {
       utilities.Analytics.logEvent(constants.AnalyticsEvent.newUserLogin);

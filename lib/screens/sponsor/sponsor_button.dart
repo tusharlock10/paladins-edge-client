@@ -12,7 +12,7 @@ class SponsorButton extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton.icon(
-            onPressed: () => launchUrlString(constants.Env.sponsorLink),
+            onPressed: () => launchUrlString(constants.sponsorLink),
             icon: const Icon(
               FeatherIcons.heart,
               color: Colors.white,

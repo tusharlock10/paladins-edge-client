@@ -21,7 +21,7 @@ class SearchAppBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
+    final searchProvider = ref.read(providers.search);
     final appStateProvider = ref.read(providers.appState);
     final bottomTabIndex = ref.watch(
       providers.appState.select((_) => _.bottomTabIndex),
@@ -62,7 +62,7 @@ class SearchAppBar extends HookConsumerWidget {
     // Methods
     final onClear = useCallback(
       () {
-        playersProvider.clearSearchList();
+        searchProvider.clearSearchList();
         textController.clear();
         onChangeText("");
       },

@@ -1,9 +1,10 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:paladinsedge/constants/platforms.dart";
 
 const isDebug = kDebugMode;
 const apiTimeout = isDebug ? 10 * 1000 : 20 * 1000;
-const releaseTag = "stable";
+final releaseTag = isWindows ? "alpha" : "stable";
 
 abstract class NotificationChannels {
   static const friends = "friends";
@@ -82,3 +83,7 @@ const themeNames = {
   ThemeMode.light: "light",
   ThemeMode.system: "system",
 };
+
+const baseUrl = "https://api.paladinsedge.app";
+const githubLink = "https://github.com/tusharlock10/paladins-edge-client";
+const sponsorLink = "https://github.com/sponsors/tusharlock10";

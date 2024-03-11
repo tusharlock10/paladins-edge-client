@@ -11,7 +11,7 @@ on:
       - develop
 
 env:
-  flutter_version: "3.19.1"
+  flutter_version: "3.19.3"
 
 jobs:
   build-test-apk:
@@ -30,7 +30,6 @@ jobs:
 
       - name: Download credential files
         run: |
-          aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/paladins-edge-stage.env ./paladins-edge.env
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/google-services.json ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/upload-keystore.jks ./android/app/
           aws s3 cp s3://${{ secrets.PE_PRIVATE_AWS_S3_BUCKET_NAME }}/credentials/client/key.properties ./android/
@@ -61,3 +60,9 @@ jobs:
           groups: Developers
           releaseNotesFile: ./release_notes.txt
           file: ./build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: ./build/app/outputs/flutter-apk/app-release.apk

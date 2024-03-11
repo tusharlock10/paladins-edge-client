@@ -19,7 +19,7 @@ class SearchHistory extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
     final searchHistory = ref.watch(
-      providers.players.select((_) => _.searchHistory),
+      providers.search.select((_) => _.searchHistory),
     );
 
     // Variables

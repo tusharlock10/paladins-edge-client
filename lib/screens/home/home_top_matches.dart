@@ -10,18 +10,18 @@ class HomeTopMatches extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final isTopMatchesLoading = ref.watch(
-      providers.matches.select((_) => _.isTopMatchesLoading),
+    final isLoading = ref.watch(
+      providers.topMatches.select((_) => _.isLoading),
     );
     final topMatches = ref.watch(
-      providers.matches.select((_) => _.topMatches),
+      providers.topMatches.select((_) => _.topMatches),
     );
 
     // Variables
     const itemHeight = 70.0;
     final textTheme = Theme.of(context).textTheme;
 
-    return isTopMatchesLoading
+    return isLoading
         ? const widgets.LoadingIndicator(
             lineWidth: 2,
             size: 28,

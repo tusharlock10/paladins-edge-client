@@ -30,8 +30,9 @@ class PlayerChampions extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
-    final playersProvider = ref.read(providers.players);
-    final player = ref.watch(providers.players.select((_) => _.playerData));
+    final playerNotifier = providers.players(playerId);
+    final playerProvider = ref.read(playerNotifier);
+    final player = ref.watch(playerNotifier.select((_) => _.playerData));
     final playerChampions = ref.watch(
       providers.champions.select((_) => _.playerChampions),
     );
@@ -50,12 +51,7 @@ class PlayerChampions extends HookConsumerWidget {
     useEffect(
       () {
         // if player is null, get it from server
-        if (player == null) {
-          playersProvider.getPlayerData(
-            playerId: playerId,
-            forceUpdate: false,
-          );
-        }
+        if (player == null) playerProvider.getPlayerData(forceUpdate: false);
 
         return;
       },
@@ -71,7 +67,7 @@ class PlayerChampions extends HookConsumerWidget {
           constants.AnalyticsEvent.otherPlayerViewLoadout,
           {"champion": champion.name},
         );
-        utilities.Navigation.navigate(
+        utilities.Navigation.push(
           context,
           screens.Loadouts.routeName,
           params: {
