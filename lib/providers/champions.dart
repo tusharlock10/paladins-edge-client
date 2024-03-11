@@ -4,9 +4,12 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/data_classes/index.dart" as data_classes;
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/auth.dart" as auth_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _ChampionsNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef<_ChampionsNotifier> ref;
+
   /// loading state for combinedChampions
   bool isLoadingCombinedChampions = false;
 
@@ -41,6 +44,8 @@ class _ChampionsNotifier extends ChangeNotifier {
   // holds the list of favourite champions of the user
   Set<int> favouriteChampions = {};
 
+  _ChampionsNotifier({required this.ref});
+
   /// Finds and returns the champion from its championId
   models.Champion? findChampion(int championId) {
     return champions.firstOrNullWhere((_) => _.championId == championId);
@@ -52,12 +57,14 @@ class _ChampionsNotifier extends ChangeNotifier {
     // don't show loading indicator when refreshing
     if (!forceUpdate) isLoadingCombinedChampions = true;
 
+    final player = ref.read(auth_provider.auth).userPlayer;
+
     final result = await Future.wait([
       // champions do not have forceUpdate
       // return previous value if forceUpdate
       _loadChampions(forceUpdate),
       _loadUserPlayerChampions(forceUpdate),
-      _loadFavouriteChampions(),
+      player == null ? Future.value(null) : _loadFavouriteChampions(),
     ]);
 
     // if champions is null, then abort this operation
@@ -326,4 +333,6 @@ class _ChampionsNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle champions
-final champions = ChangeNotifierProvider((_) => _ChampionsNotifier());
+final champions = ChangeNotifierProvider<_ChampionsNotifier>(
+  (ref) => _ChampionsNotifier(ref: ref),
+);
