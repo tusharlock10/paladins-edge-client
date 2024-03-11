@@ -3,12 +3,16 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:paladinsedge/api/index.dart" as api;
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
+import "package:paladinsedge/providers/auth.dart" as auth_provider;
 import "package:paladinsedge/utilities/index.dart" as utilities;
 
 class _SearchNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef<_SearchNotifier> ref;
   List<api.LowerSearch> lowerSearchList = [];
   List<models.Player> topSearchList = [];
   List<models.SearchHistory> searchHistory = [];
+
+  _SearchNotifier({required this.ref});
 
   // Loads the `searchHistory` data for the user from local db and
   /// syncs it with server for showing in Search screen
@@ -53,6 +57,9 @@ class _SearchNotifier extends ChangeNotifier {
     required String playerName,
     required String playerId,
   }) async {
+    // insert in history, but save it only if the user is not a guest
+    final isGuest = ref.read(auth_provider.auth).isGuest;
+
     // remove existing searchItem
     final index = searchHistory.indexWhere((_) => _.playerId == playerId);
     if (index != -1) searchHistory.removeAt(index);
@@ -66,8 +73,11 @@ class _SearchNotifier extends ChangeNotifier {
     searchHistory.insert(0, searchItem);
 
     // remove all entries from searchBox and reinsert entries
-    await utilities.Database.searchHistoryBox?.clear();
-    searchHistory.forEach(utilities.Database.saveSearchHistory);
+    // only works if user is not a guest
+    if (!isGuest) {
+      await utilities.Database.searchHistoryBox?.clear();
+      searchHistory.forEach(utilities.Database.saveSearchHistory);
+    }
   }
 
   Future<api.SearchPlayersResponse?> searchByName({
@@ -131,4 +141,6 @@ class _SearchNotifier extends ChangeNotifier {
 }
 
 /// Provider to handle baseRanks
-final search = ChangeNotifierProvider((_) => _SearchNotifier());
+final search = ChangeNotifierProvider<_SearchNotifier>(
+  (ref) => _SearchNotifier(ref: ref),
+);
