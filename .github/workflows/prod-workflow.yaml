@@ -170,6 +170,9 @@ jobs:
     needs: [build-apk, build-bundle, build-web]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
