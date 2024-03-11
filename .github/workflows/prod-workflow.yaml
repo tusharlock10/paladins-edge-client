@@ -178,6 +178,12 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: Unzip All Artifacts
+        run: |
+          unzip ./artifacts/app-release.apk.zip -d ./artifacts/apk
+          unzip ./artifacts/app-release.aab.zip -d ./artifacts/aab
+          unzip ./artifacts/web.zip -d ./artifacts/web
+
       - name: Get flutter version
         id: flutter_version
         uses: NiklasLehnfeld/flutter-version-number-action@main
@@ -198,6 +204,6 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           artifacts: |
-            ./artifacts/app-release.apk,
-            ./artifacts/app-release.aab, 
-            ./artifacts/web.zip
+            ./artifacts/apk/app-release.apk,
+            ./artifacts/aab/app-release.aab, 
+            ./artifacts/web/web.zip
