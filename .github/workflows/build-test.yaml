@@ -60,3 +60,9 @@ jobs:
           groups: Developers
           releaseNotesFile: ./release_notes.txt
           file: ./build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: ./build/app/outputs/flutter-apk/app-release.apk
