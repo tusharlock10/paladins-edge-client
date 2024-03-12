@@ -1,8 +1,10 @@
-// a singleton class for string global variables
+import "dart:convert";
 
+import "package:flutter/services.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/models/index.dart" as models;
 
+/// a singleton class for string global variables
 abstract class Global {
   /// Contains all the essentials data of the app
   static models.Essentials? essentials;
@@ -31,4 +33,24 @@ abstract class Global {
     constants.ChampionAssetType.talents: <String>{},
     constants.ChampionAssetType.ranks: <String>{},
   };
+
+  /// gets the list of locally available paladinsAssets
+  static Future<void> initPaladinsAssets() async {
+    if (constants.isWeb) return;
+
+    final manifestContent = await rootBundle.loadString("AssetManifest.json");
+    final manifestMap = jsonDecode(manifestContent) as Map<String, dynamic>;
+    final allPaladinsAssets = manifestMap.keys.where(
+      (_) => _.contains("paladins_assets"),
+    );
+    final assetTypes = Global.paladinsAssets.keys;
+    for (final asset in allPaladinsAssets) {
+      for (final assetType in assetTypes) {
+        if (asset.contains(assetType)) {
+          Global.paladinsAssets[assetType]?.add(asset);
+          break;
+        }
+      }
+    }
+  }
 }

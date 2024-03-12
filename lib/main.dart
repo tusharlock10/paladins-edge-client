@@ -1,12 +1,9 @@
-import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "package:flutter_displaymode/flutter_displaymode.dart";
+import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_web_plugins/url_strategy.dart";
 import "package:overlay_support/overlay_support.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
-import "package:paladinsedge/firebase_options.dart" as firebase_options;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/router/index.dart" as router;
 import "package:paladinsedge/theme/index.dart" as theme;
@@ -14,34 +11,35 @@ import "package:paladinsedge/utilities/index.dart" as utilities;
 import "package:paladinsedge/widgets/index.dart" as widgets;
 import "package:responsive_framework/responsive_framework.dart";
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await utilities.initializeDesktop();
+Future<void> init() async {
+  utilities.Stopwatch.startStopTimer("appInitialization");
 
-  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // init basic services
   await Future.wait([
-    if (!constants.isDebug)
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]),
-    Firebase.initializeApp(
-      name: constants.isMobile ? "root" : null,
-      options: firebase_options.DefaultFirebaseOptions.currentPlatform,
-    ),
+    utilities.initFirebaseApp(),
+    utilities.Database.initialize(),
+    utilities.Global.initPaladinsAssets(),
+    utilities.setDeviceOrientation(),
+    utilities.setHighRefreshRate(),
+    utilities.initPackageInfo(),
   ]);
-  utilities.Stopwatch.startStopTimer("initializeFirebaseApp");
 
-  try {
-    if (constants.isAndroid) {
-      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
-      await FlutterDisplayMode.setHighRefreshRate();
-      utilities.Stopwatch.startStopTimer("setHighRefreshRate");
-    }
-  } catch (_) {}
+  // init firebase services
+  await Future.wait([
+    utilities.Analytics.initialize(),
+    utilities.RealtimeGlobalChat.initialize(),
+    utilities.RemoteConfig.initialize(),
+  ]);
 
   usePathUrlStrategy();
+  utilities.Stopwatch.startStopTimer("appInitialization");
+}
 
+void main() async {
+  await init();
   runApp(const ProviderScope(child: PaladinsEdgeApp()));
 }
 

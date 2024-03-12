@@ -1,5 +1,3 @@
-import "dart:convert";
-
 import "package:dartx/dartx.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
@@ -55,38 +53,22 @@ class _AuthNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// gets the list of locally available paladinsAssets
-  Future<void> loadPaladinsAssets() async {
-    if (constants.isWeb) return;
-
-    final manifestContent = await rootBundle.loadString("AssetManifest.json");
-    final manifestMap = jsonDecode(manifestContent) as Map<String, dynamic>;
-    final allPaladinsAssets = manifestMap.keys.where(
-      (_) => _.contains("paladins_assets"),
-    );
-    final assetTypes = utilities.Global.paladinsAssets.keys;
-    for (final asset in allPaladinsAssets) {
-      for (final assetType in assetTypes) {
-        if (asset.contains(assetType)) {
-          utilities.Global.paladinsAssets[assetType]?.add(asset);
-          break;
-        }
-      }
-    }
-  }
-
   /// Loads and the `essentials` from local db and syncs it with server
-  Future<void> loadEssentials() async {
+  Future<bool> loadEssentials({required bool forceRetry}) async {
     // get the essentials from local db
     final savedEssentials = utilities.Database.getEssentials();
-    final future = _getEssentials();
+    final future = _getEssentials(forceRetry);
 
     if (savedEssentials != null) {
       // if saved essentials are found, don't wait for future
       utilities.Global.essentials = savedEssentials;
+
+      return true;
     } else {
       // wait for future, if essentials are not found
-      await future;
+      final success = await future; // success true/false in fetching essentials
+
+      return success;
     }
   }
 
@@ -420,15 +402,18 @@ class _AuthNotifier extends ChangeNotifier {
     user = null;
   }
 
-  Future<void> _getEssentials() async {
+  Future<bool> _getEssentials(bool forceRetry) async {
     while (true) {
       final response = await api.AuthRequests.essentials();
       if (response != null) {
         utilities.Global.essentials = response.essentials;
         utilities.Database.saveEssentials(response.essentials);
 
-        return;
+        return true;
       }
+
+      // if retrying is not allowed, then return
+      if (!forceRetry) return false;
 
       await Future.delayed(const Duration(seconds: 1));
     }
