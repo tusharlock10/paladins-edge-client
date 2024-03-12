@@ -53,7 +53,7 @@ jobs:
       - name: Upload apk
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
+          name: apk
           path: ./build/app/outputs/flutter-apk/app-release.apk
 
   build-bundle:
@@ -121,7 +121,7 @@ jobs:
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.aab
+          name: aab
           path: ./build/app/outputs/bundle/release/app-release.aab
 
   build-web:
@@ -162,7 +162,7 @@ jobs:
       - name: Upload web
         uses: actions/upload-artifact@v4
         with:
-          name: web.zip
+          name: web
           path: ./web.zip
 
   create-release:
@@ -170,10 +170,16 @@ jobs:
     needs: [build-apk, build-bundle, build-web]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: ./artifacts
+      
+      - name: View files
+        run: ls ./artifacts
 
       - name: Get flutter version
         id: flutter_version
@@ -195,6 +201,6 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           artifacts: |
-            ./artifacts/app-release.apk,
-            ./artifacts/app-release.aab, 
-            ./artifacts/web.zip
+            ./artifacts/apk/app-release.apk,
+            ./artifacts/aab/app-release.aab, 
+            ./artifacts/web/web.zip
