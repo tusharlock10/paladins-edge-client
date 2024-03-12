@@ -16,6 +16,10 @@ Future<void> init() async {
 
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // remove the splash screen regardless after 2 seconds
+  Future.delayed(const Duration(seconds: 3)).then(
+    (value) => FlutterNativeSplash.remove(),
+  );
 
   // init basic services
   await Future.wait([

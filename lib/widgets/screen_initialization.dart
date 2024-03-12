@@ -70,17 +70,11 @@ class ScreenInitialization extends HookConsumerWidget {
         checkForceUpdatePending();
 
         utilities.Stopwatch.startStopTimer("screenInitialization");
-        final results = await Future.wait([
-          authProvider.loadEssentials(forceRetry: false),
+        await Future.wait([
+          authProvider.loadEssentials(),
           itemsProvider.loadItems(),
           baseRanksProvider.loadBaseRanks(),
         ]);
-
-        final essentialsLoaded = results.first as bool;
-        if (!essentialsLoaded) {
-          // passing forceRetry will keep the app blocked until essentials are loaded
-          await authProvider.loadEssentials(forceRetry: true);
-        }
 
         authProvider.checkLogin();
         authProvider.getApiStatus();

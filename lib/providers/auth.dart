@@ -54,10 +54,10 @@ class _AuthNotifier extends ChangeNotifier {
   }
 
   /// Loads and the `essentials` from local db and syncs it with server
-  Future<bool> loadEssentials({required bool forceRetry}) async {
+  Future<bool> loadEssentials() async {
     // get the essentials from local db
     final savedEssentials = utilities.Database.getEssentials();
-    final future = _getEssentials(forceRetry);
+    final future = _getEssentials();
 
     if (savedEssentials != null) {
       // if saved essentials are found, don't wait for future
@@ -402,7 +402,7 @@ class _AuthNotifier extends ChangeNotifier {
     user = null;
   }
 
-  Future<bool> _getEssentials(bool forceRetry) async {
+  Future<bool> _getEssentials() async {
     while (true) {
       final response = await api.AuthRequests.essentials();
       if (response != null) {
@@ -411,9 +411,6 @@ class _AuthNotifier extends ChangeNotifier {
 
         return true;
       }
-
-      // if retrying is not allowed, then return
-      if (!forceRetry) return false;
 
       await Future.delayed(const Duration(seconds: 1));
     }
