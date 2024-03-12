@@ -177,12 +177,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./artifacts
-
-      - name: Unzip All Artifacts
-        run: |
-          unzip ./artifacts/apk/app-release.apk.zip -d ./artifacts/apk
-          unzip ./artifacts/aab/app-release.aab.zip -d ./artifacts/aab
-          unzip ./artifacts/web/web.zip.zip -d ./artifacts/web
+      
+      - name: View files
+        run: ls ./artifacts
 
       - name: Get flutter version
         id: flutter_version
