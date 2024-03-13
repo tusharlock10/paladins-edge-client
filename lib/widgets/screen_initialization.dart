@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:package_info_plus/package_info_plus.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/theme/index.dart" as theme;
@@ -55,24 +55,9 @@ class ScreenInitialization extends HookConsumerWidget {
     final showLoadingHelp = useState(false);
 
     // Methods
-    final initDatabase = useCallback(() async {
-      await utilities.Database.initialize();
-      await Future.wait([
-        authProvider.loadEssentials(),
-        itemsProvider.loadItems(),
-        baseRanksProvider.loadBaseRanks(),
-      ]);
-    });
-
-    final checkForceUpdate = useCallback(
-      () async {
-        final result = await Future.wait([
-          utilities.RemoteConfig.initialize(),
-          PackageInfo.fromPlatform(),
-        ]);
-        final packageInfo = result.last as PackageInfo;
-
-        final currentVersion = Version.parse(packageInfo.version);
+    final checkForceUpdatePending = useCallback(
+      () {
+        final currentVersion = Version.parse(utilities.packageInfo!.version);
         if (currentVersion < utilities.RemoteConfig.lowestSupportedVersion) {
           authProvider.setForceUpdatePending();
         }
@@ -82,20 +67,15 @@ class ScreenInitialization extends HookConsumerWidget {
 
     final initApp = useCallback(
       () async {
+        checkForceUpdatePending();
+
         utilities.Stopwatch.startStopTimer("screenInitialization");
-
-        authProvider.loadPaladinsAssets();
-        utilities.initializeApi();
-
         await Future.wait([
-          checkForceUpdate(),
-          initDatabase(),
-          utilities.Analytics.initialize(),
-          utilities.RealtimeGlobalChat.initialize(),
+          authProvider.loadEssentials(),
+          itemsProvider.loadItems(),
+          baseRanksProvider.loadBaseRanks(),
         ]);
 
-        // load the essentials from hive
-        // this depends on initDatabase to be completed
         authProvider.checkLogin();
         authProvider.getApiStatus();
         appStateProvider.loadSettings();
@@ -122,6 +102,15 @@ class ScreenInitialization extends HookConsumerWidget {
         return null;
       },
       [],
+    );
+
+    useEffect(
+      () {
+        if (isInitialized) FlutterNativeSplash.remove();
+
+        return null;
+      },
+      [isInitialized],
     );
 
     useEffect(
