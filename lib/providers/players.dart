@@ -23,6 +23,7 @@ class _PlayersNotifier extends ChangeNotifier {
   models.PlayerInferred? playerInferred;
   List<data_classes.CombinedMatch>? combinedMatches;
   List<data_classes.CombinedMatch>? commonMatches;
+  data_classes.PlayerTimedStats? timedStats;
 
   /// Matches filter and sorting
   String selectedSort = data_classes.MatchSort.defaultSort;
@@ -138,19 +139,22 @@ class _PlayersNotifier extends ChangeNotifier {
 
     combinedMatches = tempMatchesMap.values.toList();
 
-    // sort combinedMatches based on the selectedSort
+    // sort combinedMatches based on the default sorting (i.e. sorting by date)
     if (combinedMatches != null) {
       combinedMatches = data_classes.MatchSort.getSortedMatches(
         combinedMatches: combinedMatches!,
-        sort: selectedSort,
+        sort: data_classes.MatchSort.defaultSort,
       );
+      playerStreak = utilities.getPlayerStreak(combinedMatches!, playerId);
+      timedStats = utilities.getPlayerTimedStats(
+        combinedMatches!,
+        data_classes.TimedStatsType.days1,
+        playerId,
+      );
+      print("TIMED :: ${timedStats!.totalMatches}");
+      print("TIMED TOTAL :: ${timedStats!.totalStats.kills}");
+      print("TIMED AVG :: ${timedStats!.averageStats.kills}");
     }
-
-    // get the playerStreak
-    playerStreak = utilities.getPlayerStreak(
-      combinedMatches,
-      playerId,
-    );
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
 

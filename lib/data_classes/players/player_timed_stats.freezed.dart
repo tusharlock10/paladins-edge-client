@@ -16,17 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PlayerTimedStats {
+// type of timed stats
   TimedStatsType get timedStatsType =>
       throw _privateConstructorUsedError; // for calculating rank diff
-  BaseRank get startingRank => throw _privateConstructorUsedError;
-  BaseRank get endingRank =>
-      throw _privateConstructorUsedError; // per match data
-  Map<String, int> get matchesType =>
-      throw _privateConstructorUsedError; // average matches data
-  int get totalMatches => throw _privateConstructorUsedError;
+  Ranked? get rankedStart => throw _privateConstructorUsedError;
+  Ranked? get rankedEnd =>
+      throw _privateConstructorUsedError; // count of played things
+  Map<String, int> get queuesPlayed => throw _privateConstructorUsedError;
+  List<int> get mostPlayedChampions =>
+      throw _privateConstructorUsedError; // matches data
   int get wins => throw _privateConstructorUsedError;
   int get losses => throw _privateConstructorUsedError;
-  MatchPlayerStats get averageStats => throw _privateConstructorUsedError;
+  Duration get totalMatchesDuration => throw _privateConstructorUsedError;
+  MatchPlayerStats get totalStats => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PlayerTimedStatsCopyWith<PlayerTimedStats> get copyWith =>
@@ -41,13 +43,14 @@ abstract class $PlayerTimedStatsCopyWith<$Res> {
   @useResult
   $Res call(
       {TimedStatsType timedStatsType,
-      BaseRank startingRank,
-      BaseRank endingRank,
-      Map<String, int> matchesType,
-      int totalMatches,
+      Ranked? rankedStart,
+      Ranked? rankedEnd,
+      Map<String, int> queuesPlayed,
+      List<int> mostPlayedChampions,
       int wins,
       int losses,
-      MatchPlayerStats averageStats});
+      Duration totalMatchesDuration,
+      MatchPlayerStats totalStats});
 }
 
 /// @nodoc
@@ -64,35 +67,36 @@ class _$PlayerTimedStatsCopyWithImpl<$Res, $Val extends PlayerTimedStats>
   @override
   $Res call({
     Object? timedStatsType = null,
-    Object? startingRank = null,
-    Object? endingRank = null,
-    Object? matchesType = null,
-    Object? totalMatches = null,
+    Object? rankedStart = freezed,
+    Object? rankedEnd = freezed,
+    Object? queuesPlayed = null,
+    Object? mostPlayedChampions = null,
     Object? wins = null,
     Object? losses = null,
-    Object? averageStats = null,
+    Object? totalMatchesDuration = null,
+    Object? totalStats = null,
   }) {
     return _then(_value.copyWith(
       timedStatsType: null == timedStatsType
           ? _value.timedStatsType
           : timedStatsType // ignore: cast_nullable_to_non_nullable
               as TimedStatsType,
-      startingRank: null == startingRank
-          ? _value.startingRank
-          : startingRank // ignore: cast_nullable_to_non_nullable
-              as BaseRank,
-      endingRank: null == endingRank
-          ? _value.endingRank
-          : endingRank // ignore: cast_nullable_to_non_nullable
-              as BaseRank,
-      matchesType: null == matchesType
-          ? _value.matchesType
-          : matchesType // ignore: cast_nullable_to_non_nullable
+      rankedStart: freezed == rankedStart
+          ? _value.rankedStart
+          : rankedStart // ignore: cast_nullable_to_non_nullable
+              as Ranked?,
+      rankedEnd: freezed == rankedEnd
+          ? _value.rankedEnd
+          : rankedEnd // ignore: cast_nullable_to_non_nullable
+              as Ranked?,
+      queuesPlayed: null == queuesPlayed
+          ? _value.queuesPlayed
+          : queuesPlayed // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      totalMatches: null == totalMatches
-          ? _value.totalMatches
-          : totalMatches // ignore: cast_nullable_to_non_nullable
-              as int,
+      mostPlayedChampions: null == mostPlayedChampions
+          ? _value.mostPlayedChampions
+          : mostPlayedChampions // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       wins: null == wins
           ? _value.wins
           : wins // ignore: cast_nullable_to_non_nullable
@@ -101,9 +105,13 @@ class _$PlayerTimedStatsCopyWithImpl<$Res, $Val extends PlayerTimedStats>
           ? _value.losses
           : losses // ignore: cast_nullable_to_non_nullable
               as int,
-      averageStats: null == averageStats
-          ? _value.averageStats
-          : averageStats // ignore: cast_nullable_to_non_nullable
+      totalMatchesDuration: null == totalMatchesDuration
+          ? _value.totalMatchesDuration
+          : totalMatchesDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      totalStats: null == totalStats
+          ? _value.totalStats
+          : totalStats // ignore: cast_nullable_to_non_nullable
               as MatchPlayerStats,
     ) as $Val);
   }
@@ -119,13 +127,14 @@ abstract class _$$PlayerTimedStatsImplCopyWith<$Res>
   @useResult
   $Res call(
       {TimedStatsType timedStatsType,
-      BaseRank startingRank,
-      BaseRank endingRank,
-      Map<String, int> matchesType,
-      int totalMatches,
+      Ranked? rankedStart,
+      Ranked? rankedEnd,
+      Map<String, int> queuesPlayed,
+      List<int> mostPlayedChampions,
       int wins,
       int losses,
-      MatchPlayerStats averageStats});
+      Duration totalMatchesDuration,
+      MatchPlayerStats totalStats});
 }
 
 /// @nodoc
@@ -140,35 +149,36 @@ class __$$PlayerTimedStatsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? timedStatsType = null,
-    Object? startingRank = null,
-    Object? endingRank = null,
-    Object? matchesType = null,
-    Object? totalMatches = null,
+    Object? rankedStart = freezed,
+    Object? rankedEnd = freezed,
+    Object? queuesPlayed = null,
+    Object? mostPlayedChampions = null,
     Object? wins = null,
     Object? losses = null,
-    Object? averageStats = null,
+    Object? totalMatchesDuration = null,
+    Object? totalStats = null,
   }) {
     return _then(_$PlayerTimedStatsImpl(
       timedStatsType: null == timedStatsType
           ? _value.timedStatsType
           : timedStatsType // ignore: cast_nullable_to_non_nullable
               as TimedStatsType,
-      startingRank: null == startingRank
-          ? _value.startingRank
-          : startingRank // ignore: cast_nullable_to_non_nullable
-              as BaseRank,
-      endingRank: null == endingRank
-          ? _value.endingRank
-          : endingRank // ignore: cast_nullable_to_non_nullable
-              as BaseRank,
-      matchesType: null == matchesType
-          ? _value._matchesType
-          : matchesType // ignore: cast_nullable_to_non_nullable
+      rankedStart: freezed == rankedStart
+          ? _value.rankedStart
+          : rankedStart // ignore: cast_nullable_to_non_nullable
+              as Ranked?,
+      rankedEnd: freezed == rankedEnd
+          ? _value.rankedEnd
+          : rankedEnd // ignore: cast_nullable_to_non_nullable
+              as Ranked?,
+      queuesPlayed: null == queuesPlayed
+          ? _value._queuesPlayed
+          : queuesPlayed // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      totalMatches: null == totalMatches
-          ? _value.totalMatches
-          : totalMatches // ignore: cast_nullable_to_non_nullable
-              as int,
+      mostPlayedChampions: null == mostPlayedChampions
+          ? _value._mostPlayedChampions
+          : mostPlayedChampions // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       wins: null == wins
           ? _value.wins
           : wins // ignore: cast_nullable_to_non_nullable
@@ -177,9 +187,13 @@ class __$$PlayerTimedStatsImplCopyWithImpl<$Res>
           ? _value.losses
           : losses // ignore: cast_nullable_to_non_nullable
               as int,
-      averageStats: null == averageStats
-          ? _value.averageStats
-          : averageStats // ignore: cast_nullable_to_non_nullable
+      totalMatchesDuration: null == totalMatchesDuration
+          ? _value.totalMatchesDuration
+          : totalMatchesDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      totalStats: null == totalStats
+          ? _value.totalStats
+          : totalStats // ignore: cast_nullable_to_non_nullable
               as MatchPlayerStats,
     ));
   }
@@ -187,48 +201,61 @@ class __$$PlayerTimedStatsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlayerTimedStatsImpl implements _PlayerTimedStats {
+class _$PlayerTimedStatsImpl extends _PlayerTimedStats {
   _$PlayerTimedStatsImpl(
       {required this.timedStatsType,
-      required this.startingRank,
-      required this.endingRank,
-      required final Map<String, int> matchesType,
-      required this.totalMatches,
+      required this.rankedStart,
+      required this.rankedEnd,
+      required final Map<String, int> queuesPlayed,
+      required final List<int> mostPlayedChampions,
       required this.wins,
       required this.losses,
-      required this.averageStats})
-      : _matchesType = matchesType;
+      required this.totalMatchesDuration,
+      required this.totalStats})
+      : _queuesPlayed = queuesPlayed,
+        _mostPlayedChampions = mostPlayedChampions,
+        super._();
 
+// type of timed stats
   @override
   final TimedStatsType timedStatsType;
 // for calculating rank diff
   @override
-  final BaseRank startingRank;
+  final Ranked? rankedStart;
   @override
-  final BaseRank endingRank;
-// per match data
-  final Map<String, int> _matchesType;
-// per match data
+  final Ranked? rankedEnd;
+// count of played things
+  final Map<String, int> _queuesPlayed;
+// count of played things
   @override
-  Map<String, int> get matchesType {
-    if (_matchesType is EqualUnmodifiableMapView) return _matchesType;
+  Map<String, int> get queuesPlayed {
+    if (_queuesPlayed is EqualUnmodifiableMapView) return _queuesPlayed;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_matchesType);
+    return EqualUnmodifiableMapView(_queuesPlayed);
   }
 
-// average matches data
+  final List<int> _mostPlayedChampions;
   @override
-  final int totalMatches;
+  List<int> get mostPlayedChampions {
+    if (_mostPlayedChampions is EqualUnmodifiableListView)
+      return _mostPlayedChampions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mostPlayedChampions);
+  }
+
+// matches data
   @override
   final int wins;
   @override
   final int losses;
   @override
-  final MatchPlayerStats averageStats;
+  final Duration totalMatchesDuration;
+  @override
+  final MatchPlayerStats totalStats;
 
   @override
   String toString() {
-    return 'PlayerTimedStats(timedStatsType: $timedStatsType, startingRank: $startingRank, endingRank: $endingRank, matchesType: $matchesType, totalMatches: $totalMatches, wins: $wins, losses: $losses, averageStats: $averageStats)';
+    return 'PlayerTimedStats(timedStatsType: $timedStatsType, rankedStart: $rankedStart, rankedEnd: $rankedEnd, queuesPlayed: $queuesPlayed, mostPlayedChampions: $mostPlayedChampions, wins: $wins, losses: $losses, totalMatchesDuration: $totalMatchesDuration, totalStats: $totalStats)';
   }
 
   @override
@@ -238,31 +265,34 @@ class _$PlayerTimedStatsImpl implements _PlayerTimedStats {
             other is _$PlayerTimedStatsImpl &&
             (identical(other.timedStatsType, timedStatsType) ||
                 other.timedStatsType == timedStatsType) &&
-            (identical(other.startingRank, startingRank) ||
-                other.startingRank == startingRank) &&
-            (identical(other.endingRank, endingRank) ||
-                other.endingRank == endingRank) &&
+            (identical(other.rankedStart, rankedStart) ||
+                other.rankedStart == rankedStart) &&
+            (identical(other.rankedEnd, rankedEnd) ||
+                other.rankedEnd == rankedEnd) &&
             const DeepCollectionEquality()
-                .equals(other._matchesType, _matchesType) &&
-            (identical(other.totalMatches, totalMatches) ||
-                other.totalMatches == totalMatches) &&
+                .equals(other._queuesPlayed, _queuesPlayed) &&
+            const DeepCollectionEquality()
+                .equals(other._mostPlayedChampions, _mostPlayedChampions) &&
             (identical(other.wins, wins) || other.wins == wins) &&
             (identical(other.losses, losses) || other.losses == losses) &&
-            (identical(other.averageStats, averageStats) ||
-                other.averageStats == averageStats));
+            (identical(other.totalMatchesDuration, totalMatchesDuration) ||
+                other.totalMatchesDuration == totalMatchesDuration) &&
+            (identical(other.totalStats, totalStats) ||
+                other.totalStats == totalStats));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       timedStatsType,
-      startingRank,
-      endingRank,
-      const DeepCollectionEquality().hash(_matchesType),
-      totalMatches,
+      rankedStart,
+      rankedEnd,
+      const DeepCollectionEquality().hash(_queuesPlayed),
+      const DeepCollectionEquality().hash(_mostPlayedChampions),
       wins,
       losses,
-      averageStats);
+      totalMatchesDuration,
+      totalStats);
 
   @JsonKey(ignore: true)
   @override
@@ -272,33 +302,37 @@ class _$PlayerTimedStatsImpl implements _PlayerTimedStats {
           this, _$identity);
 }
 
-abstract class _PlayerTimedStats implements PlayerTimedStats {
+abstract class _PlayerTimedStats extends PlayerTimedStats {
   factory _PlayerTimedStats(
       {required final TimedStatsType timedStatsType,
-      required final BaseRank startingRank,
-      required final BaseRank endingRank,
-      required final Map<String, int> matchesType,
-      required final int totalMatches,
+      required final Ranked? rankedStart,
+      required final Ranked? rankedEnd,
+      required final Map<String, int> queuesPlayed,
+      required final List<int> mostPlayedChampions,
       required final int wins,
       required final int losses,
-      required final MatchPlayerStats averageStats}) = _$PlayerTimedStatsImpl;
+      required final Duration totalMatchesDuration,
+      required final MatchPlayerStats totalStats}) = _$PlayerTimedStatsImpl;
+  _PlayerTimedStats._() : super._();
 
-  @override
+  @override // type of timed stats
   TimedStatsType get timedStatsType;
   @override // for calculating rank diff
-  BaseRank get startingRank;
+  Ranked? get rankedStart;
   @override
-  BaseRank get endingRank;
-  @override // per match data
-  Map<String, int> get matchesType;
-  @override // average matches data
-  int get totalMatches;
+  Ranked? get rankedEnd;
+  @override // count of played things
+  Map<String, int> get queuesPlayed;
   @override
+  List<int> get mostPlayedChampions;
+  @override // matches data
   int get wins;
   @override
   int get losses;
   @override
-  MatchPlayerStats get averageStats;
+  Duration get totalMatchesDuration;
+  @override
+  MatchPlayerStats get totalStats;
   @override
   @JsonKey(ignore: true)
   _$$PlayerTimedStatsImplCopyWith<_$PlayerTimedStatsImpl> get copyWith =>

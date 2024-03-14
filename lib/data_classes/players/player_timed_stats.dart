@@ -1,5 +1,5 @@
 import "package:freezed_annotation/freezed_annotation.dart";
-import "package:paladinsedge/models/index.dart" show BaseRank, MatchPlayerStats;
+import "package:paladinsedge/models/index.dart" show Ranked, MatchPlayerStats;
 
 part "player_timed_stats.freezed.dart";
 
@@ -21,20 +21,31 @@ abstract class TimedStatsValues {
 
 @freezed
 class PlayerTimedStats with _$PlayerTimedStats {
+  PlayerTimedStats._();
+
   factory PlayerTimedStats({
+    // type of timed stats
     required TimedStatsType timedStatsType,
 
     // for calculating rank diff
-    required BaseRank startingRank,
-    required BaseRank endingRank,
+    required Ranked? rankedStart,
+    required Ranked? rankedEnd,
 
-    // per match data
-    required Map<String, int> matchesType,
+    // count of played things
+    required Map<String, int> queuesPlayed,
+    required List<int> mostPlayedChampions,
 
-    // average matches data
-    required int totalMatches,
+    // matches data
     required int wins,
     required int losses,
-    required MatchPlayerStats averageStats,
+    required Duration totalMatchesDuration,
+    required MatchPlayerStats totalStats,
   }) = _PlayerTimedStats;
+
+  int get totalMatches => wins + losses;
+  num get damagePerMinute =>
+      totalStats.totalDamageDealt / totalMatchesDuration.inMinutes;
+  num get healingPerMinute =>
+      totalStats.healingDone / totalMatchesDuration.inMinutes;
+  MatchPlayerStats get averageStats => totalStats / totalMatches;
 }

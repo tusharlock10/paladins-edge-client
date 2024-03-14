@@ -1,5 +1,7 @@
 // The match that is completed
 
+import "dart:math";
+
 import "package:hive/hive.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:paladinsedge/constants/index.dart" show TypeIds;
@@ -76,6 +78,65 @@ class MatchPlayerStats {
   factory MatchPlayerStats.fromJson(Map<String, dynamic> json) =>
       _$MatchPlayerStatsFromJson(json);
   Map<String, dynamic> toJson() => _$MatchPlayerStatsToJson(this);
+
+  /// adds all the values from the two MatchPlayerStats instances,
+  /// except for the value biggestKillStreak, which takes the max, instead of adding
+  MatchPlayerStats operator +(MatchPlayerStats other) {
+    return MatchPlayerStats(
+      kills: kills + other.kills,
+      assists: assists + other.assists,
+      deaths: deaths + other.deaths,
+      weaponDamageDealt: weaponDamageDealt + other.weaponDamageDealt,
+      totalDamageDealt: totalDamageDealt + other.totalDamageDealt,
+      damageShielded: damageShielded + other.damageShielded,
+      totalDamageTaken: totalDamageTaken + other.totalDamageTaken,
+      selfHealingDone: selfHealingDone + other.selfHealingDone,
+      healingDone: healingDone + other.healingDone,
+      biggestKillStreak: max(biggestKillStreak, other.biggestKillStreak),
+      totalMultiKills: totalMultiKills + other.totalMultiKills,
+      objectiveTime: objectiveTime + other.objectiveTime,
+      creditsEarned: creditsEarned + other.creditsEarned,
+    );
+  }
+
+  /// divides all the values in MatchPlayerStats by the divisor number,
+  /// except for the value biggestKillStreak, which remains unchanged
+  MatchPlayerStats operator /(num divisor) {
+    return MatchPlayerStats(
+      kills: kills / divisor,
+      assists: assists / divisor,
+      deaths: deaths / divisor,
+      weaponDamageDealt: weaponDamageDealt / divisor,
+      totalDamageDealt: totalDamageDealt / divisor,
+      damageShielded: damageShielded / divisor,
+      totalDamageTaken: totalDamageTaken / divisor,
+      selfHealingDone: selfHealingDone / divisor,
+      healingDone: healingDone / divisor,
+      biggestKillStreak: biggestKillStreak,
+      totalMultiKills: totalMultiKills / divisor,
+      objectiveTime: objectiveTime / divisor,
+      creditsEarned: creditsEarned / divisor,
+    );
+  }
+
+  /// creates a new MatchPlayerStats instance with all values 0
+  static MatchPlayerStats createEmpty() {
+    return MatchPlayerStats(
+      kills: 0,
+      assists: 0,
+      deaths: 0,
+      weaponDamageDealt: 0,
+      totalDamageDealt: 0,
+      damageShielded: 0,
+      totalDamageTaken: 0,
+      selfHealingDone: 0,
+      healingDone: 0,
+      biggestKillStreak: 0,
+      totalMultiKills: 0,
+      objectiveTime: 0,
+      creditsEarned: 0,
+    );
+  }
 }
 
 @JsonSerializable()
@@ -204,8 +265,8 @@ class Match {
   /// time when the match started
   final DateTime matchStartTime;
 
-  /// duration of the match
-  final int matchDuration;
+  /// duration of the match, received in seconds
+  final Duration matchDuration;
 
   /// queue of the match
   final String queue;
@@ -235,14 +296,14 @@ class Match {
     required this.team1Score,
     required this.team2Score,
     required this.matchStartTime,
-    required this.matchDuration,
     required this.queue,
     required this.map,
     required this.region,
     required this.isRankedMatch,
     required this.championBans,
     required this.isInComplete,
-  });
+    required int matchDuration,
+  }) : matchDuration = Duration(seconds: matchDuration);
 
   factory Match.fromJson(Map<String, dynamic> json) => _$MatchFromJson(json);
   Map<String, dynamic> toJson() => _$MatchToJson(this);

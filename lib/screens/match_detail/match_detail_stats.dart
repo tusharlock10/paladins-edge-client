@@ -17,7 +17,7 @@ class MatchDetailStats extends StatelessWidget {
     final match = combinedMatch?.match;
     if (match == null) return const SizedBox.shrink();
     final matchDuration = printDuration(
-      Duration(seconds: match.matchDuration),
+      match.matchDuration,
       abbreviated: true,
       upperTersity: DurationTersity.minute,
       conjugation: " ",

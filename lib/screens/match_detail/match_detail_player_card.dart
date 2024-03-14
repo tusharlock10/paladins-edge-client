@@ -112,14 +112,11 @@ class MatchDetailPlayerCard extends HookConsumerWidget {
 
     final damagePerMinute = useMemoized(
       () {
-        // matchDuration is in seconds
-        final result = match.matchDuration < 1
-            ? 0
-            : matchPlayer.playerStats.totalDamageDealt *
-                60 /
-                match.matchDuration;
+        final minutes = match.matchDuration.inMinutes;
+        final damage = matchPlayer.playerStats.totalDamageDealt;
+        if (minutes == 0) return damage;
 
-        return result.toInt();
+        return damage / minutes;
       },
       [match, matchPlayer],
     );

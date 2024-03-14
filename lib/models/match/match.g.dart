@@ -169,7 +169,6 @@ Match _$MatchFromJson(Map<String, dynamic> json) => Match(
       team1Score: json['team1Score'] as int,
       team2Score: json['team2Score'] as int,
       matchStartTime: DateTime.parse(json['matchStartTime'] as String),
-      matchDuration: json['matchDuration'] as int,
       queue: json['queue'] as String,
       map: json['map'] as String,
       region: json['region'] as String,
@@ -177,6 +176,7 @@ Match _$MatchFromJson(Map<String, dynamic> json) => Match(
       championBans:
           (json['championBans'] as List<dynamic>).map((e) => e as int).toList(),
       isInComplete: json['isInComplete'] as bool,
+      matchDuration: json['matchDuration'] as int,
     );
 
 Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
@@ -185,7 +185,7 @@ Map<String, dynamic> _$MatchToJson(Match instance) => <String, dynamic>{
       'team1Score': instance.team1Score,
       'team2Score': instance.team2Score,
       'matchStartTime': instance.matchStartTime.toIso8601String(),
-      'matchDuration': instance.matchDuration,
+      'matchDuration': instance.matchDuration.inMicroseconds,
       'queue': instance.queue,
       'map': instance.map,
       'region': instance.region,
