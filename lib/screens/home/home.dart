@@ -4,6 +4,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:paladinsedge/constants/index.dart" as constants;
 import "package:paladinsedge/providers/index.dart" as providers;
 import "package:paladinsedge/screens/home/home_favourite_friends.dart";
+import "package:paladinsedge/screens/home/home_player_timed_stats.dart";
 import "package:paladinsedge/screens/home/home_queue_chart.dart";
 import "package:paladinsedge/screens/home/home_queue_details.dart";
 import "package:paladinsedge/screens/home/home_top_matches.dart";
@@ -95,6 +96,11 @@ class Home extends HookConsumerWidget {
                 ),
                 if (!isGuest) const SizedBox(height: 20),
                 if (!isGuest) const HomeFavouriteFriends(),
+                if (player != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: HomePlayerTimedStats(playerId: player.playerId),
+                  ),
                 const SizedBox(height: 20),
                 const HomeTopMatches(),
                 const SizedBox(height: 20),

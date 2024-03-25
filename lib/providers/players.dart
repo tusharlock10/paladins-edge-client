@@ -151,9 +151,6 @@ class _PlayersNotifier extends ChangeNotifier {
         data_classes.TimedStatsType.days1,
         playerId,
       );
-      print("TIMED :: ${timedStats!.totalMatches}");
-      print("TIMED TOTAL :: ${timedStats!.totalStats.kills}");
-      print("TIMED AVG :: ${timedStats!.averageStats.kills}");
     }
 
     if (!forceUpdate) isPlayerMatchesLoading = false;
