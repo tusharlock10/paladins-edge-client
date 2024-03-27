@@ -476,35 +476,35 @@ class _PlayerInfo extends StatelessWidget {
     final humanizedTime = utilities.getFormattedPlayTime(player.hoursPlayed);
 
     return SizedBox(
-      height: _PlayerStatsCard.itemHeight,
+      height: widgets.PlayerStatsCard.itemHeight,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: utilities.insertBetween(
           [
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Total Matches",
               stat: player.totalLosses + player.totalWins,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Level",
               stat: player.level,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Play Time",
               stat: 0,
               statString: humanizedTime,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Player Since",
               stat: 0,
               statString: playerSince,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Region",
               stat: 0,
               statString: player.region,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Platform",
               stat: 0,
               statString: player.platform,
@@ -532,104 +532,47 @@ class _RecentPlayerStats extends StatelessWidget {
     final kdaColor = utilities.getKDAColor(kda);
 
     return SizedBox(
-      height: _PlayerStatsCard.itemHeight,
+      height: widgets.PlayerStatsCard.itemHeight,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: utilities.insertBetween(
           [
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "KDA",
               stat: 0,
               statString: kdaFormatted,
               color: kdaColor,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Kills",
               stat: playerStats.kills,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Deaths",
               stat: playerStats.deaths,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Damage",
               stat: playerStats.totalDamageDealt,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Healing",
               stat: playerStats.healingDone,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Dmg Taken",
               stat: playerStats.totalDamageTaken,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Credits",
               stat: playerStats.creditsEarned,
             ),
-            _PlayerStatsCard(
+            widgets.PlayerStatsCard(
               title: "Shielding",
               stat: playerStats.damageShielded,
             ),
           ],
           const SizedBox(width: 10),
-        ),
-      ),
-    );
-  }
-}
-
-class _PlayerStatsCard extends StatelessWidget {
-  static const itemHeight = 56.0;
-  static const itemWidth = 120.0;
-  final String title;
-  final num stat;
-  final String? statString;
-  final Color? color;
-  const _PlayerStatsCard({
-    required this.title,
-    required this.stat,
-    this.statString,
-    this.color,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Variables
-    final isLightTheme = Theme.of(context).brightness == Brightness.light;
-    final textTheme = Theme.of(context).textTheme;
-    String formattedStat = statString ??
-        (stat < 10000
-            ? stat.toStringAsPrecision(stat.toInt().toString().length + 1)
-            : utilities.humanizeNumber(stat));
-
-    if (num.tryParse(formattedStat)?.toInt() == stat) {
-      formattedStat = stat.toInt().toString();
-    }
-
-    return SizedBox(
-      width: itemWidth,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(isLightTheme ? 0.75 : 0.25),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 3),
-            Text(
-              formattedStat,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyLarge?.copyWith(color: color, fontSize: 14),
-            ),
-          ],
         ),
       ),
     );
